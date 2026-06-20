@@ -6,7 +6,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "ocracy"
-version = "0.0.2"
+version = "0.1.0"
 description = "Facade to many implementations of (OCR) image-to-text-characters engines"
 readme = "README.md"
 requires-python = ">=3.10"

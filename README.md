@@ -153,6 +153,21 @@ normalization helpers, credential handling, and packaging — is captured as an
 agent **skill** at `ocracy/data/skills/ocracy-add-backend/SKILL.md`. The
 `ocracy/backends/tesseract/` package is a complete worked example.
 
+## Agent skills (Claude Code & other AI agents)
+
+ocracy ships three Anthropic-style **skills** (under `ocracy/data/skills/`,
+installed with the package) so AI coding agents can both *use* and *extend* it:
+
+| Skill | Audience | What it helps with |
+|---|---|---|
+| `ocracy` | users | OCR an image/PDF, choose & install a backend, read the result |
+| `ocracy-choose-backend` | users | filter & compare the 64-backend ledger to pick the right engine |
+| `ocracy-add-backend` | developers | wrap a new engine behind ocracy's interface (scaffold → adapter → validate) |
+
+In a repo using Claude Code they're discoverable via the `.claude/skills/`
+symlink bridge; they also travel with `pip install ocracy` under
+`ocracy/data/skills/`.
+
 ## How it works
 
 - `ocracy/base.py` — the normalized types (`OcrResult`, `TextBlock`, `BBox`).
