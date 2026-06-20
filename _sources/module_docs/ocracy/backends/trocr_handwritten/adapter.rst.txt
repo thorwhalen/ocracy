@@ -1,0 +1,4 @@
+ocracy.backends.trocr_handwritten.adapter
+=========================================
+.. automodule:: ocracy.backends.trocr_handwritten.adapter
+   :members:

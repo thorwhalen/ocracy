@@ -1,0 +1,4 @@
+ocracy.backends.ocr_space.adapter
+=================================
+.. automodule:: ocracy.backends.ocr_space.adapter
+   :members:

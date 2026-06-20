@@ -1,0 +1,4 @@
+ocracy.backends.pix2tex_latex_ocr.adapter
+=========================================
+.. automodule:: ocracy.backends.pix2tex_latex_ocr.adapter
+   :members:

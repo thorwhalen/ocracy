@@ -1,0 +1,4 @@
+ocracy.backends.tesseract.config
+================================
+.. automodule:: ocracy.backends.tesseract.config
+   :members:

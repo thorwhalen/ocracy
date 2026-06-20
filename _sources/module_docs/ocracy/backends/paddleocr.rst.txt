@@ -1,0 +1,4 @@
+ocracy.backends.paddleocr
+=========================
+.. automodule:: ocracy.backends.paddleocr
+   :members:

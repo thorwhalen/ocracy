@@ -1,0 +1,4 @@
+ocracy.registry
+===============
+.. automodule:: ocracy.registry
+   :members:

@@ -1,0 +1,647 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ocracy &mdash; ocracy 0.0.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../_static/documentation_options.js?v=e3a6060d"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../_static/copybutton.js?v=f281be69"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ocracy.__main__" href="ocracy/__main__.html" />
+    <link rel="prev" title="Welcome to ocracy’s documentation!" href="../index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            ocracy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">ocracy</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#ocracy.BBox"><code class="docutils literal notranslate"><span class="pre">BBox</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ocracy.BBox.as_tuple"><code class="docutils literal notranslate"><span class="pre">BBox.as_tuple</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ocracy.BBox.from_polygon"><code class="docutils literal notranslate"><span class="pre">BBox.from_polygon()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ocracy.BBox.xywh"><code class="docutils literal notranslate"><span class="pre">BBox.xywh</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ocracy.BackendInfo"><code class="docutils literal notranslate"><span class="pre">BackendInfo</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ocracy.BaseOcrAdapter"><code class="docutils literal notranslate"><span class="pre">BaseOcrAdapter</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ocracy.Catalog"><code class="docutils literal notranslate"><span class="pre">Catalog</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ocracy.Catalog.can"><code class="docutils literal notranslate"><span class="pre">Catalog.can()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ocracy.Catalog.compare"><code class="docutils literal notranslate"><span class="pre">Catalog.compare()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ocracy.Catalog.filter"><code class="docutils literal notranslate"><span class="pre">Catalog.filter()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ocracy.Catalog.supports_language"><code class="docutils literal notranslate"><span class="pre">Catalog.supports_language()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ocracy.Catalog.to_dataframe"><code class="docutils literal notranslate"><span class="pre">Catalog.to_dataframe()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ocracy.OcrResult"><code class="docutils literal notranslate"><span class="pre">OcrResult</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ocracy.OcrResult.at_level"><code class="docutils literal notranslate"><span class="pre">OcrResult.at_level()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ocracy.OcrResult.filter_confidence"><code class="docutils literal notranslate"><span class="pre">OcrResult.filter_confidence()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ocracy.OcrResult.from_blocks"><code class="docutils literal notranslate"><span class="pre">OcrResult.from_blocks()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ocracy.OcrResult.from_text"><code class="docutils literal notranslate"><span class="pre">OcrResult.from_text()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ocracy.OcrResult.markdown"><code class="docutils literal notranslate"><span class="pre">OcrResult.markdown</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ocracy.OcrResult.mean_confidence"><code class="docutils literal notranslate"><span class="pre">OcrResult.mean_confidence</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ocracy.ServiceCollection"><code class="docutils literal notranslate"><span class="pre">ServiceCollection</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ocracy.TextBlock"><code class="docutils literal notranslate"><span class="pre">TextBlock</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ocracy.TextBlock.text"><code class="docutils literal notranslate"><span class="pre">TextBlock.text</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ocracy.TextBlock.bbox"><code class="docutils literal notranslate"><span class="pre">TextBlock.bbox</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ocracy.TextBlock.confidence"><code class="docutils literal notranslate"><span class="pre">TextBlock.confidence</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ocracy.TextBlock.level"><code class="docutils literal notranslate"><span class="pre">TextBlock.level</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ocracy.TextBlock.language"><code class="docutils literal notranslate"><span class="pre">TextBlock.language</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#ocracy.TextBlock.meta"><code class="docutils literal notranslate"><span class="pre">TextBlock.meta</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#ocracy.find"><code class="docutils literal notranslate"><span class="pre">find()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ocracy.get_config"><code class="docutils literal notranslate"><span class="pre">get_config()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ocracy.get_default_backend"><code class="docutils literal notranslate"><span class="pre">get_default_backend()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ocracy.list_backends"><code class="docutils literal notranslate"><span class="pre">list_backends()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ocracy.make_block"><code class="docutils literal notranslate"><span class="pre">make_block()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ocracy.ocr"><code class="docutils literal notranslate"><span class="pre">ocr()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ocracy.read_text"><code class="docutils literal notranslate"><span class="pre">read_text()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ocracy.register_backend"><code class="docutils literal notranslate"><span class="pre">register_backend()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ocracy.scaffold_backend"><code class="docutils literal notranslate"><span class="pre">scaffold_backend()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ocracy.services"><code class="docutils literal notranslate"><span class="pre">services</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ocracy.validate_adapter"><code class="docutils literal notranslate"><span class="pre">validate_adapter()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/__main__.html">ocracy.__main__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/backends.html">ocracy.backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/backends/_template.html">ocracy.backends._template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/backends/_template/adapter.html">ocracy.backends._template.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/backends/_template/config.html">ocracy.backends._template.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/backends/aws_textract.html">ocracy.backends.aws_textract</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/backends/aws_textract/adapter.html">ocracy.backends.aws_textract.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/backends/aws_textract/config.html">ocracy.backends.aws_textract.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/backends/azure_document_intelligence.html">ocracy.backends.azure_document_intelligence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/backends/azure_document_intelligence/adapter.html">ocracy.backends.azure_document_intelligence.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/backends/azure_document_intelligence/config.html">ocracy.backends.azure_document_intelligence.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/backends/claude_vision.html">ocracy.backends.claude_vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/backends/claude_vision/adapter.html">ocracy.backends.claude_vision.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/backends/claude_vision/config.html">ocracy.backends.claude_vision.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/backends/easyocr.html">ocracy.backends.easyocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/backends/easyocr/adapter.html">ocracy.backends.easyocr.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/backends/easyocr/config.html">ocracy.backends.easyocr.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/backends/google_vision.html">ocracy.backends.google_vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/backends/google_vision/adapter.html">ocracy.backends.google_vision.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/backends/google_vision/config.html">ocracy.backends.google_vision.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/backends/gpt_4o_vision.html">ocracy.backends.gpt_4o_vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/backends/gpt_4o_vision/adapter.html">ocracy.backends.gpt_4o_vision.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/backends/gpt_4o_vision/config.html">ocracy.backends.gpt_4o_vision.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/backends/mathpix.html">ocracy.backends.mathpix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/backends/mathpix/adapter.html">ocracy.backends.mathpix.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/backends/mathpix/config.html">ocracy.backends.mathpix.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/backends/mistral_ocr.html">ocracy.backends.mistral_ocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/backends/mistral_ocr/adapter.html">ocracy.backends.mistral_ocr.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/backends/mistral_ocr/config.html">ocracy.backends.mistral_ocr.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/backends/ocr_space.html">ocracy.backends.ocr_space</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/backends/ocr_space/adapter.html">ocracy.backends.ocr_space.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/backends/ocr_space/config.html">ocracy.backends.ocr_space.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/backends/ocrmac.html">ocracy.backends.ocrmac</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/backends/ocrmac/adapter.html">ocracy.backends.ocrmac.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/backends/ocrmac/config.html">ocracy.backends.ocrmac.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/backends/paddleocr.html">ocracy.backends.paddleocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/backends/paddleocr/adapter.html">ocracy.backends.paddleocr.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/backends/paddleocr/config.html">ocracy.backends.paddleocr.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/backends/pix2tex_latex_ocr.html">ocracy.backends.pix2tex_latex_ocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/backends/pix2tex_latex_ocr/adapter.html">ocracy.backends.pix2tex_latex_ocr.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/backends/pix2tex_latex_ocr/config.html">ocracy.backends.pix2tex_latex_ocr.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/backends/rapidocr.html">ocracy.backends.rapidocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/backends/rapidocr/adapter.html">ocracy.backends.rapidocr.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/backends/rapidocr/config.html">ocracy.backends.rapidocr.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/backends/tesseract.html">ocracy.backends.tesseract</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/backends/tesseract/adapter.html">ocracy.backends.tesseract.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/backends/tesseract/config.html">ocracy.backends.tesseract.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/backends/trocr_handwritten.html">ocracy.backends.trocr_handwritten</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/backends/trocr_handwritten/adapter.html">ocracy.backends.trocr_handwritten.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/backends/trocr_handwritten/config.html">ocracy.backends.trocr_handwritten.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/base.html">ocracy.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/catalog.html">ocracy.catalog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/credentials.html">ocracy.credentials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/make_backend.html">ocracy.make_backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/registry.html">ocracy.registry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/services.html">ocracy.services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/tools.html">ocracy.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/translation.html">ocracy.translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/util.html">ocracy.util</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ocracy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">ocracy</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/module_docs/ocracy.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-ocracy">
+<span id="ocracy"></span><h1>ocracy<a class="headerlink" href="#module-ocracy" title="Link to this heading"></a></h1>
+<p>ocracy — one facade over many OCR engines, plus a ledger to choose between them.</p>
+<p>OCR (“read the text in this image”) is solved a dozen different ways: local
+engines (Tesseract, EasyOCR, PaddleOCR), cloud APIs (Google Vision, AWS
+Textract, Azure), and VLM-based readers — each with its own install, API,
+pricing, language coverage, and quirks. ocracy gives you:</p>
+<ol class="arabic">
+<li><p><strong>A uniform facade.</strong> Call <a class="reference internal" href="#ocracy.ocr" title="ocracy.ocr"><code class="xref py py-func docutils literal notranslate"><span class="pre">ocr()</span></code></a> and get the same <a class="reference internal" href="ocracy/base.html#ocracy.base.OcrResult" title="ocracy.base.OcrResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">OcrResult</span></code></a>
+back no matter which backend ran:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">ocracy</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">ocracy</span><span class="o">.</span><span class="n">ocr</span><span class="p">(</span><span class="s2">&quot;scan.png&quot;</span><span class="p">)</span>          <span class="c1"># default (first installed) backend</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>                            <span class="c1"># -&gt; the recognized text</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">ocracy</span><span class="o">.</span><span class="n">ocr</span><span class="p">(</span><span class="s2">&quot;scan.png&quot;</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="s2">&quot;easyocr&quot;</span><span class="p">,</span> <span class="n">languages</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;en&quot;</span><span class="p">,</span> <span class="s2">&quot;fr&quot;</span><span class="p">])</span>
+</pre></div>
+</div>
+<p>Convenience: <a class="reference internal" href="#ocracy.read_text" title="ocracy.read_text"><code class="xref py py-func docutils literal notranslate"><span class="pre">read_text()</span></code></a> returns just the string.</p>
+</li>
+<li><p><strong>A ledger / gallery</strong> of <em>every</em> engine we researched — not only the ones
+with a working facade — so you can choose with eyes open:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ocracy</span><span class="o">.</span><span class="n">catalog</span>                                   <span class="c1"># the whole ledger</span>
+<span class="n">ocracy</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">is_local</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">open_source</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>     <span class="c1"># filter it</span>
+<span class="n">ocracy</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">handwriting</span><span class="o">=</span><span class="s2">&quot;yes&quot;</span><span class="p">,</span> <span class="n">is_remote</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ocracy</span><span class="o">.</span><span class="n">catalog</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span>                    <span class="c1"># browse as a table</span>
+</pre></div>
+</div>
+<p>The ledger lives in data (<code class="docutils literal notranslate"><span class="pre">ocracy/data/backends.json</span></code>), not code.</p>
+</li>
+<li><p><strong>Tools to build new facades.</strong> The catalog is large; ocracy ships a facade
+for a curated subset and gives you the machinery (and a SKILL) to add any
+other one in minutes:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.make_backend</span><span class="w"> </span><span class="kn">import</span> <span class="n">scaffold_backend</span><span class="p">,</span> <span class="n">validate_adapter</span>
+<span class="n">scaffold_backend</span><span class="p">(</span><span class="s2">&quot;mathpix&quot;</span><span class="p">)</span>    <span class="c1"># generate a backend package from the ledger</span>
+<span class="n">validate_adapter</span><span class="p">(</span><span class="s2">&quot;tesseract&quot;</span><span class="p">)</span>  <span class="c1"># smoke-test an adapter end to end</span>
+</pre></div>
+</div>
+</li>
+</ol>
+<p>Three tiers of access, from simplest to most powerful:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ocracy</span><span class="o">.</span><span class="n">ocr</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>                                <span class="c1"># facade, default backend</span>
+<span class="n">ocracy</span><span class="o">.</span><span class="n">services</span><span class="o">.</span><span class="n">tesseract</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">lang</span><span class="o">=</span><span class="s2">&quot;fra&quot;</span><span class="p">)</span>  <span class="c1"># pick a backend</span>
+<span class="n">ocracy</span><span class="o">.</span><span class="n">services</span><span class="o">.</span><span class="n">tesseract</span><span class="o">.</span><span class="n">adapter</span>              <span class="c1"># raw engine adapter</span>
+</pre></div>
+</div>
+<dl class="py class">
+<dt class="sig sig-object py" id="ocracy.BBox">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ocracy.</span></span><span class="sig-name descname"><span class="pre">BBox</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polygon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocracy/base.html#BBox"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.BBox" title="Link to this definition"></a></dt>
+<dd><p>An axis-aligned bounding box in pixel coordinates (origin = top-left).</p>
+<p><code class="docutils literal notranslate"><span class="pre">polygon</span></code> optionally carries the original (possibly rotated) vertices as a
+sequence of <code class="docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">y)</span></code> points; the axis-aligned <code class="docutils literal notranslate"><span class="pre">x0/y0/x1/y1</span></code> are always
+populated (derived from the polygon if a backend only gives one).</p>
+<dl class="py property">
+<dt class="sig sig-object py" id="ocracy.BBox.as_tuple">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">as_tuple</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#ocracy.BBox.as_tuple" title="Link to this definition"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">(x0,</span> <span class="pre">y0,</span> <span class="pre">x1,</span> <span class="pre">y1)</span></code> — the convention PIL’s <code class="docutils literal notranslate"><span class="pre">crop</span></code> expects.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ocracy.BBox.from_polygon">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_polygon</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="ocracy/base.html#ocracy.base.BBox" title="ocracy.base.BBox"><span class="pre">BBox</span></a></span></span><a class="reference internal" href="../_modules/ocracy/base.html#BBox.from_polygon"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.BBox.from_polygon" title="Link to this definition"></a></dt>
+<dd><p>Build a box from polygon vertices <code class="docutils literal notranslate"><span class="pre">[(x,</span> <span class="pre">y),</span> <span class="pre">...]</span></code>.</p>
+<p>The axis-aligned extent is computed from the vertices and the original
+polygon is preserved for callers that care about rotation.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ocracy.BBox.xywh">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">xywh</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#ocracy.BBox.xywh" title="Link to this definition"></a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">y,</span> <span class="pre">width,</span> <span class="pre">height)</span></code> — the convention many drawing libs expect.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ocracy.BackendInfo">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ocracy.</span></span><span class="sig-name descname"><span class="pre">BackendInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">record</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">implemented</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocracy/catalog.html#BackendInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.BackendInfo" title="Link to this definition"></a></dt>
+<dd><p>One backend’s ledger entry — a read-only, attribute-and-dict accessible record.</p>
+<p>Wraps the raw record dict so that new fields added to the JSON are available
+immediately (via attribute or key access) without code changes, while a few
+commonly used fields get typed properties for convenience and discoverability.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ocracy.BaseOcrAdapter">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ocracy.</span></span><span class="sig-name descname"><span class="pre">BaseOcrAdapter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocracy/make_backend.html#BaseOcrAdapter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.BaseOcrAdapter" title="Link to this definition"></a></dt>
+<dd><p>Optional base class for backend adapters.</p>
+<p>Stores the config, builds a kwarg translator from <code class="docutils literal notranslate"><span class="pre">config['param_map']</span></code>,
+and implements <code class="docutils literal notranslate"><span class="pre">read</span></code> as: translate normalized kwargs -&gt; native kwargs -&gt;
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">_read()</span></code>. Subclasses implement <code class="xref py py-meth docutils literal notranslate"><span class="pre">_read()</span></code> and return an
+<a class="reference internal" href="ocracy/base.html#ocracy.base.OcrResult" title="ocracy.base.OcrResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">OcrResult</span></code></a>.</p>
+<p>Adapters are not <em>required</em> to subclass this — the registry only needs an
+<code class="docutils literal notranslate"><span class="pre">Adapter</span></code> class with a <code class="docutils literal notranslate"><span class="pre">read(image,</span> <span class="pre">**kwargs)</span></code> method — but doing so
+removes the boilerplate.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ocracy.Catalog">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ocracy.</span></span><span class="sig-name descname"><span class="pre">Catalog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">_records</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocracy/catalog.html#Catalog"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.Catalog" title="Link to this definition"></a></dt>
+<dd><p>A filterable, dict-like collection of <a class="reference internal" href="#ocracy.BackendInfo" title="ocracy.BackendInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">BackendInfo</span></code></a>, keyed by id.</p>
+<p>Loaded lazily from <code class="xref py py-data docutils literal notranslate"><span class="pre">DEFAULT_LEDGER_PATH</span></code> (override via the <code class="docutils literal notranslate"><span class="pre">path</span></code>
+argument or the <code class="docutils literal notranslate"><span class="pre">OCRACY_LEDGER</span></code> environment variable). <a class="reference internal" href="#ocracy.Catalog.filter" title="ocracy.Catalog.filter"><code class="xref py py-meth docutils literal notranslate"><span class="pre">filter()</span></code></a>
+returns a <em>new</em> <code class="docutils literal notranslate"><span class="pre">Catalog</span></code> over the matching subset, so filters compose:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">catalog</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">is_remote</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pricing_model</span><span class="o">=</span><span class="s2">&quot;free_tier_then_paid&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="ocracy.Catalog.can">
+<span class="sig-name descname"><span class="pre">can</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">capability</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="ocracy/catalog.html#ocracy.catalog.Catalog" title="ocracy.catalog.Catalog"><span class="pre">Catalog</span></a></span></span><a class="reference internal" href="../_modules/ocracy/catalog.html#Catalog.can"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.Catalog.can" title="Link to this definition"></a></dt>
+<dd><p>Backends with a non-plain-text <code class="docutils literal notranslate"><span class="pre">capability</span></code> (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;math&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;tables&quot;</span></code>).</p>
+<p>Matches either the <code class="docutils literal notranslate"><span class="pre">beyond_text</span></code> list or a <code class="docutils literal notranslate"><span class="pre">&lt;capability&gt;</span></code> field set
+to <code class="docutils literal notranslate"><span class="pre">&quot;yes&quot;</span></code> (e.g. <code class="docutils literal notranslate"><span class="pre">handwriting</span></code>, <code class="docutils literal notranslate"><span class="pre">tables</span></code>, <code class="docutils literal notranslate"><span class="pre">math_formula</span></code>).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ocracy.Catalog.compare">
+<span class="sig-name descname"><span class="pre">compare</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ids</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">fields</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">('name',</span> <span class="pre">'is_local',</span> <span class="pre">'is_remote',</span> <span class="pre">'open_source',</span> <span class="pre">'pricing_model',</span> <span class="pre">'price_note',</span> <span class="pre">'accuracy_tier',</span> <span class="pre">'languages_count',</span> <span class="pre">'handwriting',</span> <span class="pre">'math_formula',</span> <span class="pre">'tables',</span> <span class="pre">'best_for')</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/ocracy/catalog.html#Catalog.compare"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.Catalog.compare" title="Link to this definition"></a></dt>
+<dd><p>A trimmed, side-by-side view of selected backends and fields.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ocracy.Catalog.filter">
+<span class="sig-name descname"><span class="pre">filter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">predicate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="ocracy/catalog.html#ocracy.catalog.BackendInfo" title="ocracy.catalog.BackendInfo"><span class="pre">BackendInfo</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">implemented</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">criteria</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="ocracy/catalog.html#ocracy.catalog.Catalog" title="ocracy.catalog.Catalog"><span class="pre">Catalog</span></a></span></span><a class="reference internal" href="../_modules/ocracy/catalog.html#Catalog.filter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.Catalog.filter" title="Link to this definition"></a></dt>
+<dd><p>Return a new <code class="docutils literal notranslate"><span class="pre">Catalog</span></code> of backends matching every criterion.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>predicate</strong> – An arbitrary <code class="docutils literal notranslate"><span class="pre">BackendInfo</span> <span class="pre">-&gt;</span> <span class="pre">bool</span></code> callable.</p></li>
+<li><p><strong>implemented</strong> – If set, keep only (un)implemented backends.</p></li>
+<li><p><strong>**criteria</strong> – <code class="docutils literal notranslate"><span class="pre">field=value</span></code> constraints. <code class="docutils literal notranslate"><span class="pre">value</span></code> may be a
+set/list/tuple meaning “one of”. Free-text fields
+(<code class="docutils literal notranslate"><span class="pre">languages_note</span></code>, <code class="docutils literal notranslate"><span class="pre">beyond_text</span></code>, <code class="docutils literal notranslate"><span class="pre">output_formats</span></code>) use a
+case-insensitive substring match.</p></li>
+</ul>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">catalog</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">is_local</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">open_source</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">handwriting</span><span class="o">=</span><span class="s2">&quot;yes&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ocracy.Catalog.supports_language">
+<span class="sig-name descname"><span class="pre">supports_language</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">language</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="ocracy/catalog.html#ocracy.catalog.Catalog" title="ocracy.catalog.Catalog"><span class="pre">Catalog</span></a></span></span><a class="reference internal" href="../_modules/ocracy/catalog.html#Catalog.supports_language"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.Catalog.supports_language" title="Link to this definition"></a></dt>
+<dd><p>Backends whose <code class="docutils literal notranslate"><span class="pre">languages_note</span></code> mentions <code class="docutils literal notranslate"><span class="pre">language</span></code> (name or code).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ocracy.Catalog.to_dataframe">
+<span class="sig-name descname"><span class="pre">to_dataframe</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocracy/catalog.html#Catalog.to_dataframe"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.Catalog.to_dataframe" title="Link to this definition"></a></dt>
+<dd><p>Return a pandas DataFrame of the catalog (pandas imported lazily).</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ocracy.OcrResult">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ocracy.</span></span><span class="sig-name descname"><span class="pre">OcrResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blocks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="ocracy/base.html#ocracy.base.TextBlock" title="ocracy.base.TextBlock"><span class="pre">TextBlock</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">raw</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocracy/base.html#OcrResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.OcrResult" title="Link to this definition"></a></dt>
+<dd><p>The normalized result of reading an image with any backend.</p>
+<p><code class="docutils literal notranslate"><span class="pre">text</span></code> is the headline payload: the full recognized text in reading order.
+<code class="docutils literal notranslate"><span class="pre">blocks</span></code> carries the structured units (with boxes/confidences) when the
+backend provides them. <code class="docutils literal notranslate"><span class="pre">raw</span></code> is the untouched backend output. <code class="docutils literal notranslate"><span class="pre">meta</span></code>
+holds cross-cutting extras (languages, page count, a Markdown rendering,
+timing, …).</p>
+<p>Progressive disclosure:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">ocracy</span><span class="o">.</span><span class="n">ocr</span><span class="p">(</span><span class="s2">&quot;scan.png&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>              <span class="c1"># -&gt; the text</span>
+<span class="n">result</span><span class="o">.</span><span class="n">text</span>                <span class="c1"># -&gt; the same string</span>
+<span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">result</span><span class="p">:</span>        <span class="c1"># -&gt; iterate TextBlocks (lines by default)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">line</span><span class="o">.</span><span class="n">confidence</span><span class="p">)</span>
+<span class="n">result</span><span class="o">.</span><span class="n">words</span>               <span class="c1"># -&gt; only word-level blocks</span>
+<span class="n">result</span><span class="o">.</span><span class="n">mean_confidence</span>     <span class="c1"># -&gt; average confidence, if available</span>
+<span class="n">result</span><span class="o">.</span><span class="n">raw</span>                 <span class="c1"># -&gt; engine-specific structure</span>
+</pre></div>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="ocracy.OcrResult.at_level">
+<span class="sig-name descname"><span class="pre">at_level</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="ocracy/base.html#ocracy.base.TextBlock" title="ocracy.base.TextBlock"><span class="pre">TextBlock</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/ocracy/base.html#OcrResult.at_level"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.OcrResult.at_level" title="Link to this definition"></a></dt>
+<dd><p>Blocks at a given granularity (<code class="docutils literal notranslate"><span class="pre">&quot;word&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;line&quot;</span></code>, …).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ocracy.OcrResult.filter_confidence">
+<span class="sig-name descname"><span class="pre">filter_confidence</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_confidence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="ocracy/base.html#ocracy.base.OcrResult" title="ocracy.base.OcrResult"><span class="pre">OcrResult</span></a></span></span><a class="reference internal" href="../_modules/ocracy/base.html#OcrResult.filter_confidence"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.OcrResult.filter_confidence" title="Link to this definition"></a></dt>
+<dd><p>Return a copy keeping only blocks at or above <code class="docutils literal notranslate"><span class="pre">min_confidence</span></code>.</p>
+<p>Blocks without a confidence are dropped. <code class="docutils literal notranslate"><span class="pre">text</span></code> is rebuilt from the
+surviving blocks (joined by newline).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ocracy.OcrResult.from_blocks">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_blocks</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">blocks</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="ocracy/base.html#ocracy.base.TextBlock" title="ocracy.base.TextBlock"><span class="pre">TextBlock</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">raw</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">joiner</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'\n'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">meta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="ocracy/base.html#ocracy.base.OcrResult" title="ocracy.base.OcrResult"><span class="pre">OcrResult</span></a></span></span><a class="reference internal" href="../_modules/ocracy/base.html#OcrResult.from_blocks"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.OcrResult.from_blocks" title="Link to this definition"></a></dt>
+<dd><p>Build a result from structured blocks.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">text</span></code> is not given it is synthesized by joining the blocks’ text in
+their given order with <code class="docutils literal notranslate"><span class="pre">joiner</span></code> (callers should pass blocks already in
+reading order, or pre-join and pass <code class="docutils literal notranslate"><span class="pre">text</span></code> explicitly).</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ocracy.OcrResult.from_text">
+<span class="property"><span class="k"><span class="pre">classmethod</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">from_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">raw</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">meta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="ocracy/base.html#ocracy.base.OcrResult" title="ocracy.base.OcrResult"><span class="pre">OcrResult</span></a></span></span><a class="reference internal" href="../_modules/ocracy/base.html#OcrResult.from_text"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.OcrResult.from_text" title="Link to this definition"></a></dt>
+<dd><p>Build a minimal result from just a text string (no geometry).</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ocracy.OcrResult.markdown">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">markdown</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#ocracy.OcrResult.markdown" title="Link to this definition"></a></dt>
+<dd><p>Markdown rendering if the backend produced one (else <code class="docutils literal notranslate"><span class="pre">None</span></code>).</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ocracy.OcrResult.mean_confidence">
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">mean_confidence</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><a class="headerlink" href="#ocracy.OcrResult.mean_confidence" title="Link to this definition"></a></dt>
+<dd><p>Mean confidence over blocks that report one, or <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ocracy.ServiceCollection">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ocracy.</span></span><span class="sig-name descname"><span class="pre">ServiceCollection</span></span><a class="reference internal" href="../_modules/ocracy/services.html#ServiceCollection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.ServiceCollection" title="Link to this definition"></a></dt>
+<dd><p>Lazy mapping of backend ids -&gt; <code class="xref py py-class docutils literal notranslate"><span class="pre">ServiceHandle</span></code>.</p>
+<p>Supports dict-style (<code class="docutils literal notranslate"><span class="pre">services['tesseract']</span></code>) and attribute-style
+(<code class="docutils literal notranslate"><span class="pre">services.tesseract</span></code>) access.</p>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ocracy.TextBlock">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ocracy.</span></span><span class="sig-name descname"><span class="pre">TextBlock</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bbox</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="ocracy/base.html#ocracy.base.BBox" title="ocracy.base.BBox"><span class="pre">BBox</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">confidence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'line'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">language</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocracy/base.html#TextBlock"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.TextBlock" title="Link to this definition"></a></dt>
+<dd><p>One recognized unit of text.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocracy.TextBlock.text">
+<span class="sig-name descname"><span class="pre">text</span></span><a class="headerlink" href="#ocracy.TextBlock.text" title="Link to this definition"></a></dt>
+<dd><p>The recognized string for this unit.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocracy.TextBlock.bbox">
+<span class="sig-name descname"><span class="pre">bbox</span></span><a class="headerlink" href="#ocracy.TextBlock.bbox" title="Link to this definition"></a></dt>
+<dd><p>Where it was found (pixel coordinates), if the backend reports it.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="ocracy/base.html#ocracy.base.BBox" title="ocracy.base.BBox">ocracy.base.BBox</a> | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocracy.TextBlock.confidence">
+<span class="sig-name descname"><span class="pre">confidence</span></span><a class="headerlink" href="#ocracy.TextBlock.confidence" title="Link to this definition"></a></dt>
+<dd><p>Recognition confidence in <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1]</span></code> (normalized by ocracy
+from whatever scale the backend used), if available.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocracy.TextBlock.level">
+<span class="sig-name descname"><span class="pre">level</span></span><a class="headerlink" href="#ocracy.TextBlock.level" title="Link to this definition"></a></dt>
+<dd><p>Granularity — one of <code class="xref py py-data docutils literal notranslate"><span class="pre">LEVELS</span></code> (“word”, “line”, …).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocracy.TextBlock.language">
+<span class="sig-name descname"><span class="pre">language</span></span><a class="headerlink" href="#ocracy.TextBlock.language" title="Link to this definition"></a></dt>
+<dd><p>Detected/declared language code for this unit, if any.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str | None</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ocracy.TextBlock.meta">
+<span class="sig-name descname"><span class="pre">meta</span></span><a class="headerlink" href="#ocracy.TextBlock.meta" title="Link to this definition"></a></dt>
+<dd><p>Backend-specific extras (font size, style, page index, …).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ocracy.find">
+<span class="sig-prename descclassname"><span class="pre">ocracy.</span></span><span class="sig-name descname"><span class="pre">find</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">criteria</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="ocracy/catalog.html#ocracy.catalog.Catalog" title="ocracy.catalog.Catalog"><span class="pre">Catalog</span></a></span></span><a class="reference internal" href="../_modules/ocracy.html#find"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.find" title="Link to this definition"></a></dt>
+<dd><p>Filter the ledger; shorthand for <a class="reference internal" href="ocracy/catalog.html#ocracy.catalog.Catalog.filter" title="ocracy.catalog.Catalog.filter"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ocracy.catalog.Catalog.filter()</span></code></a>.</p>
+<p>Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ocracy</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">is_local</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">open_source</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">handwriting</span><span class="o">=</span><span class="s2">&quot;yes&quot;</span><span class="p">)</span>
+<span class="n">ocracy</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">implemented</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>        <span class="c1"># only backends ocracy can run now</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ocracy.get_config">
+<span class="sig-prename descclassname"><span class="pre">ocracy.</span></span><span class="sig-name descname"><span class="pre">get_config</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">backend_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../_modules/ocracy/registry.html#get_config"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.get_config" title="Link to this definition"></a></dt>
+<dd><p>A backend’s <code class="docutils literal notranslate"><span class="pre">BACKEND_CONFIG</span></code> without loading its adapter.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ocracy.get_default_backend">
+<span class="sig-prename descclassname"><span class="pre">ocracy.</span></span><span class="sig-name descname"><span class="pre">get_default_backend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">capability</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'read'</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">require_available</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/ocracy/registry.html#get_default_backend"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.get_default_backend" title="Link to this definition"></a></dt>
+<dd><p>Pick a sensible default backend id for a capability.</p>
+<p>Strategy (OCR-tuned): prefer a backend explicitly flagged <code class="docutils literal notranslate"><span class="pre">default_for</span></code> the
+capability <em>and</em> whose dependency is importable; then any importable backend
+for the capability; then — if <code class="docutils literal notranslate"><span class="pre">require_available</span></code> is False or nothing is
+installed — the first registered candidate (using it will raise a helpful
+install error).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ocracy.list_backends">
+<span class="sig-prename descclassname"><span class="pre">ocracy.</span></span><span class="sig-name descname"><span class="pre">list_backends</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">capability</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/ocracy/registry.html#list_backends"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.list_backends" title="Link to this definition"></a></dt>
+<dd><p>Sorted ids of implemented backends, optionally filtered by capability.</p>
+<p>A backend matches <code class="docutils literal notranslate"><span class="pre">capability</span></code> if it appears in the backend’s
+<code class="docutils literal notranslate"><span class="pre">capabilities</span></code> list (the primary <code class="docutils literal notranslate"><span class="pre">&quot;read&quot;</span></code> is implied for all).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ocracy.make_block">
+<span class="sig-prename descclassname"><span class="pre">ocracy.</span></span><span class="sig-name descname"><span class="pre">make_block</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">bbox</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">confidence</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">conf_scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'word'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">language</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">meta</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="ocracy/base.html#ocracy.base.TextBlock" title="ocracy.base.TextBlock"><span class="pre">TextBlock</span></a></span></span><a class="reference internal" href="../_modules/ocracy/make_backend.html#make_block"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.make_block" title="Link to this definition"></a></dt>
+<dd><p>Build a normalized <a class="reference internal" href="ocracy/base.html#ocracy.base.TextBlock" title="ocracy.base.TextBlock"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextBlock</span></code></a>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">bbox</span></code> may be any shape accepted by <code class="xref py py-func docutils literal notranslate"><span class="pre">as_bbox()</span></code>. <code class="docutils literal notranslate"><span class="pre">confidence</span></code> is
+normalized to <code class="docutils literal notranslate"><span class="pre">[0,</span> <span class="pre">1]</span></code> via <code class="docutils literal notranslate"><span class="pre">conf_scale</span></code> (e.g. <code class="docutils literal notranslate"><span class="pre">conf_scale=100</span></code> for
+percent-scale engines).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ocracy.ocr">
+<span class="sig-prename descclassname"><span class="pre">ocracy.</span></span><span class="sig-name descname"><span class="pre">ocr</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PILImage</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">NDArray</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="ocracy/base.html#ocracy.base.OcrResult" title="ocracy.base.OcrResult"><span class="pre">OcrResult</span></a></span></span><a class="reference internal" href="../_modules/ocracy.html#ocr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.ocr" title="Link to this definition"></a></dt>
+<dd><p>Read text from an image with any backend, returning a normalized result.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>image</strong> – A path, <code class="docutils literal notranslate"><span class="pre">http(s)</span></code> URL, <code class="docutils literal notranslate"><span class="pre">bytes</span></code>, PIL image, or numpy array.</p></li>
+<li><p><strong>backend</strong> – Backend id (see <a class="reference internal" href="#ocracy.list_backends" title="ocracy.list_backends"><code class="xref py py-func docutils literal notranslate"><span class="pre">list_backends()</span></code></a>). Defaults to the first
+<em>installed</em> implemented backend (see <a class="reference internal" href="#ocracy.get_default_backend" title="ocracy.get_default_backend"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_default_backend()</span></code></a>).</p></li>
+<li><p><strong>**kwargs</strong> – Normalized, backend-translated options (e.g. <code class="docutils literal notranslate"><span class="pre">languages</span></code>).
+Unknown options for the chosen backend are warned about and dropped.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>An <a class="reference internal" href="ocracy/base.html#ocracy.base.OcrResult" title="ocracy.base.OcrResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">OcrResult</span></code></a> (<code class="docutils literal notranslate"><span class="pre">str(result)</span></code> is the text).</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ocracy.read_text">
+<span class="sig-prename descclassname"><span class="pre">ocracy.</span></span><span class="sig-name descname"><span class="pre">read_text</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">PILImage</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">NDArray</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/ocracy.html#read_text"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.read_text" title="Link to this definition"></a></dt>
+<dd><p>Like <a class="reference internal" href="#ocracy.ocr" title="ocracy.ocr"><code class="xref py py-func docutils literal notranslate"><span class="pre">ocr()</span></code></a> but returns just the recognized text string.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ocracy.register_backend">
+<span class="sig-prename descclassname"><span class="pre">ocracy.</span></span><span class="sig-name descname"><span class="pre">register_backend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">backend_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">adapter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/ocracy/registry.html#register_backend"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.register_backend" title="Link to this definition"></a></dt>
+<dd><p>Register a backend at runtime (for third-party plugins).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>backend_id</strong> – Unique identifier.</p></li>
+<li><p><strong>config</strong> – <code class="docutils literal notranslate"><span class="pre">BACKEND_CONFIG</span></code>-shaped dict (needs at least <code class="docutils literal notranslate"><span class="pre">name</span></code>).</p></li>
+<li><p><strong>adapter</strong> – Optional pre-instantiated adapter; else loaded lazily from
+<code class="docutils literal notranslate"><span class="pre">config['module_path']</span></code> when first used.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ocracy.scaffold_backend">
+<span class="sig-prename descclassname"><span class="pre">ocracy.</span></span><span class="sig-name descname"><span class="pre">scaffold_backend</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">backend_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">dest</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">Path</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">overwrite</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ledger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extra_overrides</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Path</span></span></span><a class="reference internal" href="../_modules/ocracy/make_backend.html#scaffold_backend"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.scaffold_backend" title="Link to this definition"></a></dt>
+<dd><p>Create a new <code class="docutils literal notranslate"><span class="pre">ocracy/backends/&lt;id&gt;/</span></code> package from the template.</p>
+<p>Pre-fills <code class="docutils literal notranslate"><span class="pre">config.py</span></code> from the backend’s ledger entry (if any) so you only
+have to flesh out <code class="docutils literal notranslate"><span class="pre">param_map</span></code> and implement <code class="docutils literal notranslate"><span class="pre">adapter.py</span></code>’s <code class="docutils literal notranslate"><span class="pre">_read</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>backend_id</strong> – The ledger id (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;easyocr&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;google-vision&quot;</span></code>). The
+on-disk module name uses underscores; the config <code class="docutils literal notranslate"><span class="pre">id</span></code> keeps the id
+verbatim.</p></li>
+<li><p><strong>dest</strong> – Target directory (defaults to <code class="docutils literal notranslate"><span class="pre">ocracy/backends/&lt;id_underscored&gt;</span></code>).</p></li>
+<li><p><strong>overwrite</strong> – Allow writing into an existing non-empty directory.</p></li>
+<li><p><strong>ledger</strong> – A <a class="reference internal" href="ocracy/catalog.html#ocracy.catalog.Catalog" title="ocracy.catalog.Catalog"><code class="xref py py-class docutils literal notranslate"><span class="pre">Catalog</span></code></a> to read the record from
+(defaults to the shipped catalog).</p></li>
+<li><p><strong>extra_overrides</strong> – Extra config-key overrides applied on top of the record.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>The path to the created backend package.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="ocracy.services">
+<span class="sig-prename descclassname"><span class="pre">ocracy.</span></span><span class="sig-name descname"><span class="pre">services</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ServiceCollection</span> <span class="pre">backends=['aws-textract',</span> <span class="pre">'azure-document-intelligence',</span> <span class="pre">'claude-vision',</span> <span class="pre">'easyocr',</span> <span class="pre">'google-vision',</span> <span class="pre">'gpt-4o-vision',</span> <span class="pre">'mathpix',</span> <span class="pre">'mistral-ocr',</span> <span class="pre">'ocr-space',</span> <span class="pre">'ocrmac',</span> <span class="pre">'paddleocr',</span> <span class="pre">'pix2tex-latex-ocr',</span> <span class="pre">'rapidocr',</span> <span class="pre">'tesseract',</span> <span class="pre">'trocr-handwritten']&gt;</span></span><a class="headerlink" href="#ocracy.services" title="Link to this definition"></a></dt>
+<dd><p>Singleton service collection for per-backend access (<code class="docutils literal notranslate"><span class="pre">services.tesseract</span></code>).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ocracy.validate_adapter">
+<span class="sig-prename descclassname"><span class="pre">ocracy.</span></span><span class="sig-name descname"><span class="pre">validate_adapter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">backend_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">image</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">expect_text</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../_modules/ocracy/make_backend.html#validate_adapter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.validate_adapter" title="Link to this definition"></a></dt>
+<dd><p>Smoke-test a backend adapter end to end, returning a report dict.</p>
+<p>Loads the adapter (reporting unavailability instead of raising), runs
+<code class="docutils literal notranslate"><span class="pre">read</span></code> on a generated (or supplied) image, and checks the contract: an
+<a class="reference internal" href="ocracy/base.html#ocracy.base.OcrResult" title="ocracy.base.OcrResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">OcrResult</span></code></a> came back with text and/or blocks. Never
+raises on a <em>recognition</em> mismatch — it returns what happened so callers can
+decide.</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../index.html" class="btn btn-neutral float-left" title="Welcome to ocracy’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="ocracy/__main__.html" class="btn btn-neutral float-right" title="ocracy.__main__" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,4 @@
+ocracy.backends.claude_vision.adapter
+=====================================
+.. automodule:: ocracy.backends.claude_vision.adapter
+   :members:

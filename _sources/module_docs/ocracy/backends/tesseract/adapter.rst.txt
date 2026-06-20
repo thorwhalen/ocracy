@@ -1,0 +1,4 @@
+ocracy.backends.tesseract.adapter
+=================================
+.. automodule:: ocracy.backends.tesseract.adapter
+   :members:

@@ -1,0 +1,4 @@
+ocracy.backends._template.adapter
+=================================
+.. automodule:: ocracy.backends._template.adapter
+   :members:

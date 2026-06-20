@@ -1,0 +1,4 @@
+ocracy.backends.gpt_4o_vision.adapter
+=====================================
+.. automodule:: ocracy.backends.gpt_4o_vision.adapter
+   :members:

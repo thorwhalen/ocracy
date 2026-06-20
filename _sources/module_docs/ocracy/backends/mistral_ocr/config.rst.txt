@@ -1,0 +1,4 @@
+ocracy.backends.mistral_ocr.config
+==================================
+.. automodule:: ocracy.backends.mistral_ocr.config
+   :members:

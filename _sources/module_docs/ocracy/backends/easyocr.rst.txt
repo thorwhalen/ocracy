@@ -1,0 +1,4 @@
+ocracy.backends.easyocr
+=======================
+.. automodule:: ocracy.backends.easyocr
+   :members:

@@ -1,0 +1,4 @@
+ocracy.backends.azure_document_intelligence.config
+==================================================
+.. automodule:: ocracy.backends.azure_document_intelligence.config
+   :members:

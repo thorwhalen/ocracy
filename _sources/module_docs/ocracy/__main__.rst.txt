@@ -1,0 +1,4 @@
+ocracy.__main__
+===============
+.. automodule:: ocracy.__main__
+   :members:

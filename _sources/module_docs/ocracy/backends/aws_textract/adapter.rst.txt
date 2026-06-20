@@ -1,0 +1,4 @@
+ocracy.backends.aws_textract.adapter
+====================================
+.. automodule:: ocracy.backends.aws_textract.adapter
+   :members:

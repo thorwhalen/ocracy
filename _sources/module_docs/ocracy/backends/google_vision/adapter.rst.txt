@@ -1,0 +1,4 @@
+ocracy.backends.google_vision.adapter
+=====================================
+.. automodule:: ocracy.backends.google_vision.adapter
+   :members:

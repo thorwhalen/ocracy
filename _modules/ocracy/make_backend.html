@@ -1,0 +1,543 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ocracy.make_backend &mdash; ocracy 0.0.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=e3a6060d"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ocracy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy.html">ocracy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/__main__.html">ocracy.__main__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends.html">ocracy.backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/_template.html">ocracy.backends._template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/_template/adapter.html">ocracy.backends._template.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/_template/config.html">ocracy.backends._template.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/aws_textract.html">ocracy.backends.aws_textract</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/aws_textract/adapter.html">ocracy.backends.aws_textract.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/aws_textract/config.html">ocracy.backends.aws_textract.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/azure_document_intelligence.html">ocracy.backends.azure_document_intelligence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/azure_document_intelligence/adapter.html">ocracy.backends.azure_document_intelligence.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/azure_document_intelligence/config.html">ocracy.backends.azure_document_intelligence.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/claude_vision.html">ocracy.backends.claude_vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/claude_vision/adapter.html">ocracy.backends.claude_vision.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/claude_vision/config.html">ocracy.backends.claude_vision.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/easyocr.html">ocracy.backends.easyocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/easyocr/adapter.html">ocracy.backends.easyocr.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/easyocr/config.html">ocracy.backends.easyocr.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/google_vision.html">ocracy.backends.google_vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/google_vision/adapter.html">ocracy.backends.google_vision.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/google_vision/config.html">ocracy.backends.google_vision.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/gpt_4o_vision.html">ocracy.backends.gpt_4o_vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/gpt_4o_vision/adapter.html">ocracy.backends.gpt_4o_vision.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/gpt_4o_vision/config.html">ocracy.backends.gpt_4o_vision.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/mathpix.html">ocracy.backends.mathpix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/mathpix/adapter.html">ocracy.backends.mathpix.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/mathpix/config.html">ocracy.backends.mathpix.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/mistral_ocr.html">ocracy.backends.mistral_ocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/mistral_ocr/adapter.html">ocracy.backends.mistral_ocr.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/mistral_ocr/config.html">ocracy.backends.mistral_ocr.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/ocr_space.html">ocracy.backends.ocr_space</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/ocr_space/adapter.html">ocracy.backends.ocr_space.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/ocr_space/config.html">ocracy.backends.ocr_space.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/ocrmac.html">ocracy.backends.ocrmac</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/ocrmac/adapter.html">ocracy.backends.ocrmac.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/ocrmac/config.html">ocracy.backends.ocrmac.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/paddleocr.html">ocracy.backends.paddleocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/paddleocr/adapter.html">ocracy.backends.paddleocr.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/paddleocr/config.html">ocracy.backends.paddleocr.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/pix2tex_latex_ocr.html">ocracy.backends.pix2tex_latex_ocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/pix2tex_latex_ocr/adapter.html">ocracy.backends.pix2tex_latex_ocr.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/pix2tex_latex_ocr/config.html">ocracy.backends.pix2tex_latex_ocr.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/rapidocr.html">ocracy.backends.rapidocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/rapidocr/adapter.html">ocracy.backends.rapidocr.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/rapidocr/config.html">ocracy.backends.rapidocr.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/tesseract.html">ocracy.backends.tesseract</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/tesseract/adapter.html">ocracy.backends.tesseract.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/tesseract/config.html">ocracy.backends.tesseract.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/trocr_handwritten.html">ocracy.backends.trocr_handwritten</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/trocr_handwritten/adapter.html">ocracy.backends.trocr_handwritten.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/trocr_handwritten/config.html">ocracy.backends.trocr_handwritten.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/base.html">ocracy.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/catalog.html">ocracy.catalog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/credentials.html">ocracy.credentials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/make_backend.html">ocracy.make_backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/registry.html">ocracy.registry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/services.html">ocracy.services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/tools.html">ocracy.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/translation.html">ocracy.translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/util.html">ocracy.util</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ocracy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+          <li class="breadcrumb-item"><a href="../ocracy.html">ocracy</a></li>
+      <li class="breadcrumb-item active">ocracy.make_backend</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for ocracy.make_backend</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Abstraction tools for *building* OCR facades.</span>
+
+<span class="sd">Writing a new backend should be mostly declarative. This module supplies the</span>
+<span class="sd">reusable machinery so an adapter is just &quot;call the engine, return normalized</span>
+<span class="sd">blocks&quot;:</span>
+
+<span class="sd">- :class:`BaseOcrAdapter` — subclass it and implement :meth:`~BaseOcrAdapter._read`;</span>
+<span class="sd">  kwarg translation (via the backend&#39;s ``param_map``) is handled for you.</span>
+<span class="sd">- :func:`make_block` / :func:`as_bbox` — build normalized :class:`~ocracy.base.TextBlock`</span>
+<span class="sd">  / :class:`~ocracy.base.BBox` from whatever shape the engine returned, including</span>
+<span class="sd">  confidence-scale normalization (e.g. Tesseract&#39;s ``0..100`` -&gt; ``0..1``).</span>
+<span class="sd">- :func:`scaffold_backend` — generate a new ``ocracy/backends/&lt;id&gt;/`` package from</span>
+<span class="sd">  the template, pre-filled from the ledger entry. This is the one-command way to</span>
+<span class="sd">  start a facade for any backend in the catalog.</span>
+<span class="sd">- :func:`make_test_image` / :func:`validate_adapter` — smoke-test an adapter end</span>
+<span class="sd">  to end so you know a new facade actually works.</span>
+
+<span class="sd">These are the &quot;abstraction tools and skills that know the process&quot; — the</span>
+<span class="sd">companion :file:`SKILL.md` walks an agent (or human) through using them.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">re</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Iterable</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Union</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BBox</span><span class="p">,</span> <span class="n">OcrResult</span><span class="p">,</span> <span class="n">TextBlock</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.translation</span><span class="w"> </span><span class="kn">import</span> <span class="n">make_kwargs_translator</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;BaseOcrAdapter&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;make_block&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;as_bbox&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;normalize_confidence&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;scaffold_backend&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;make_test_image&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;validate_adapter&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+<span class="n">_TEMPLATE_DIR</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">&quot;backends&quot;</span> <span class="o">/</span> <span class="s2">&quot;_template&quot;</span>
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># Adapter base class</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="BaseOcrAdapter">
+<a class="viewcode-back" href="../../module_docs/ocracy/make_backend.html#ocracy.BaseOcrAdapter">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">BaseOcrAdapter</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Optional base class for backend adapters.</span>
+
+<span class="sd">    Stores the config, builds a kwarg translator from ``config[&#39;param_map&#39;]``,</span>
+<span class="sd">    and implements ``read`` as: translate normalized kwargs -&gt; native kwargs -&gt;</span>
+<span class="sd">    :meth:`_read`. Subclasses implement :meth:`_read` and return an</span>
+<span class="sd">    :class:`~ocracy.base.OcrResult`.</span>
+
+<span class="sd">    Adapters are not *required* to subclass this — the registry only needs an</span>
+<span class="sd">    ``Adapter`` class with a ``read(image, **kwargs)`` method — but doing so</span>
+<span class="sd">    removes the boilerplate.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">config</span> <span class="o">=</span> <span class="n">config</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">backend_id</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;id&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">param_map</span> <span class="o">=</span> <span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;param_map&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_translate</span> <span class="o">=</span> <span class="n">make_kwargs_translator</span><span class="p">(</span><span class="n">param_map</span><span class="p">)</span> <span class="k">if</span> <span class="n">param_map</span> <span class="k">else</span> <span class="kc">None</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OcrResult</span><span class="p">:</span>
+        <span class="n">native</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_translate</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_translate</span> <span class="k">else</span> <span class="nb">dict</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_read</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="o">**</span><span class="n">native</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="o">**</span><span class="n">native_kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OcrResult</span><span class="p">:</span>  <span class="c1"># pragma: no cover</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">._read is not implemented for &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;backend </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">backend_id</span><span class="si">!r}</span><span class="s2">.&quot;</span>
+        <span class="p">)</span></div>
+
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># Result-building helpers</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="normalize_confidence">
+<a class="viewcode-back" href="../../module_docs/ocracy/make_backend.html#ocracy.normalize_confidence">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">normalize_confidence</span><span class="p">(</span>
+    <span class="n">value</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">],</span> <span class="o">*</span><span class="p">,</span> <span class="n">scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Normalize a raw confidence to ``[0, 1]`` (dividing by ``scale``).</span>
+
+<span class="sd">    ``None`` passes through. Use ``scale=100`` for engines that report ``0..100``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">None</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">/</span> <span class="n">scale</span> <span class="k">if</span> <span class="n">scale</span> <span class="ow">and</span> <span class="n">scale</span> <span class="o">!=</span> <span class="mf">1.0</span> <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="nb">min</span><span class="p">(</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">v</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="as_bbox">
+<a class="viewcode-back" href="../../module_docs/ocracy/make_backend.html#ocracy.as_bbox">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">as_bbox</span><span class="p">(</span><span class="n">obj</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="n">BBox</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Coerce common bbox shapes into a :class:`~ocracy.base.BBox`.</span>
+
+<span class="sd">    Accepts a ``BBox`` (returned as-is), a 4-tuple ``(x0, y0, x1, y1)``, or a</span>
+<span class="sd">    polygon ``[(x, y), ...]`` (4+ points). ``None`` passes through.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">obj</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">BBox</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">obj</span>
+    <span class="n">seq</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span> <span class="ow">and</span> <span class="nb">all</span><span class="p">(</span><span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">))</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">seq</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">BBox</span><span class="p">(</span><span class="nb">float</span><span class="p">(</span><span class="n">seq</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">seq</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">seq</span><span class="p">[</span><span class="mi">2</span><span class="p">]),</span> <span class="nb">float</span><span class="p">(</span><span class="n">seq</span><span class="p">[</span><span class="mi">3</span><span class="p">]))</span>
+    <span class="k">return</span> <span class="n">BBox</span><span class="o">.</span><span class="n">from_polygon</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="make_block">
+<a class="viewcode-back" href="../../module_docs/ocracy/make_backend.html#ocracy.make_block">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_block</span><span class="p">(</span>
+    <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">bbox</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">confidence</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">conf_scale</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span>
+    <span class="n">level</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;word&quot;</span><span class="p">,</span>
+    <span class="n">language</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">meta</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">TextBlock</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Build a normalized :class:`~ocracy.base.TextBlock`.</span>
+
+<span class="sd">    ``bbox`` may be any shape accepted by :func:`as_bbox`. ``confidence`` is</span>
+<span class="sd">    normalized to ``[0, 1]`` via ``conf_scale`` (e.g. ``conf_scale=100`` for</span>
+<span class="sd">    percent-scale engines).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">TextBlock</span><span class="p">(</span>
+        <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span>
+        <span class="n">bbox</span><span class="o">=</span><span class="n">as_bbox</span><span class="p">(</span><span class="n">bbox</span><span class="p">),</span>
+        <span class="n">confidence</span><span class="o">=</span><span class="n">normalize_confidence</span><span class="p">(</span><span class="n">confidence</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="n">conf_scale</span><span class="p">),</span>
+        <span class="n">level</span><span class="o">=</span><span class="n">level</span><span class="p">,</span>
+        <span class="n">language</span><span class="o">=</span><span class="n">language</span><span class="p">,</span>
+        <span class="n">meta</span><span class="o">=</span><span class="n">meta</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># Scaffolding a new backend from the ledger</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+<span class="n">_TEMPLATE_LINE</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span>
+    <span class="c1"># A config line tagged for scaffold rewriting. Trailing text after the</span>
+    <span class="c1"># ``# TEMPLATE`` marker (a usage hint) is allowed and ignored.</span>
+    <span class="sa">r</span><span class="s1">&#39;^(?P&lt;indent&gt;\s*)&quot;(?P&lt;key&gt;\w+)&quot;:\s*(?P&lt;val&gt;.*?),\s*#\s*TEMPLATE\b.*$&#39;</span>
+<span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_fmt_value</span><span class="p">(</span><span class="n">v</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="c1"># Booleans first (bool is a subclass of int and of json&#39;s number handling).</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">bool</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;True&quot;</span> <span class="k">if</span> <span class="n">v</span> <span class="k">else</span> <span class="s2">&quot;False&quot;</span>
+    <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;&quot;&quot;&#39;</span>
+    <span class="c1"># json.dumps emits a correctly-escaped, Python-compatible literal — crucial</span>
+    <span class="c1"># for strings that contain quotes/backslashes (e.g. a description mentioning</span>
+    <span class="c1"># a &quot;sandwich&quot; PDF), which naive f-string quoting would turn into invalid code.</span>
+    <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">ensure_ascii</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_overrides_from_record</span><span class="p">(</span><span class="n">backend_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">record</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Map a ledger record onto the template&#39;s ``# TEMPLATE`` config keys.&quot;&quot;&quot;</span>
+    <span class="n">record</span> <span class="o">=</span> <span class="n">record</span> <span class="ow">or</span> <span class="p">{}</span>
+    <span class="n">pip_install</span> <span class="o">=</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;python_install&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="n">pip_install</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;^\s*pip\s+install\s+&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">pip_install</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="n">desc</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;best_for&quot;</span><span class="p">)</span>
+        <span class="ow">or</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;pros&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[</span><span class="kc">None</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="ow">or</span> <span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span>
+        <span class="ow">or</span> <span class="n">backend_id</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="p">{</span>
+        <span class="s2">&quot;id&quot;</span><span class="p">:</span> <span class="n">backend_id</span><span class="p">,</span>
+        <span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">backend_id</span><span class="p">,</span>
+        <span class="s2">&quot;display_name&quot;</span><span class="p">:</span> <span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;name&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;display_name&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">backend_id</span><span class="p">,</span>
+        <span class="s2">&quot;pip_install&quot;</span><span class="p">:</span> <span class="n">pip_install</span> <span class="ow">or</span> <span class="s2">&quot;PACKAGE&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;import_name&quot;</span><span class="p">:</span> <span class="n">backend_id</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">),</span>
+        <span class="s2">&quot;license&quot;</span><span class="p">:</span> <span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;license&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;unknown&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;is_local&quot;</span><span class="p">:</span> <span class="nb">bool</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;is_local&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)),</span>
+        <span class="s2">&quot;is_remote&quot;</span><span class="p">:</span> <span class="nb">bool</span><span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;is_remote&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)),</span>
+        <span class="s2">&quot;description&quot;</span><span class="p">:</span> <span class="n">desc</span><span class="p">,</span>
+    <span class="p">}</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_render_config</span><span class="p">(</span><span class="n">template_text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">overrides</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="n">out_lines</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">template_text</span><span class="o">.</span><span class="n">splitlines</span><span class="p">():</span>
+        <span class="n">m</span> <span class="o">=</span> <span class="n">_TEMPLATE_LINE</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">m</span> <span class="ow">and</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;key&quot;</span><span class="p">)</span> <span class="ow">in</span> <span class="n">overrides</span><span class="p">:</span>
+            <span class="n">key</span> <span class="o">=</span> <span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;key&quot;</span><span class="p">)</span>
+            <span class="n">out_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;</span><span class="si">{</span><span class="n">m</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="s2">&quot;indent&quot;</span><span class="p">)</span><span class="si">}</span><span class="s1">&quot;</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">&quot;: </span><span class="si">{</span><span class="n">_fmt_value</span><span class="p">(</span><span class="n">overrides</span><span class="p">[</span><span class="n">key</span><span class="p">])</span><span class="si">}</span><span class="s1">,&#39;</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">out_lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out_lines</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="n">template_text</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="scaffold_backend">
+<a class="viewcode-back" href="../../module_docs/ocracy/make_backend.html#ocracy.scaffold_backend">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">scaffold_backend</span><span class="p">(</span>
+    <span class="n">backend_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">dest</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">overwrite</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">ledger</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">extra_overrides</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Path</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Create a new ``ocracy/backends/&lt;id&gt;/`` package from the template.</span>
+
+<span class="sd">    Pre-fills ``config.py`` from the backend&#39;s ledger entry (if any) so you only</span>
+<span class="sd">    have to flesh out ``param_map`` and implement ``adapter.py``&#39;s ``_read``.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        backend_id: The ledger id (e.g. ``&quot;easyocr&quot;``, ``&quot;google-vision&quot;``). The</span>
+<span class="sd">            on-disk module name uses underscores; the config ``id`` keeps the id</span>
+<span class="sd">            verbatim.</span>
+<span class="sd">        dest: Target directory (defaults to ``ocracy/backends/&lt;id_underscored&gt;``).</span>
+<span class="sd">        overwrite: Allow writing into an existing non-empty directory.</span>
+<span class="sd">        ledger: A :class:`~ocracy.catalog.Catalog` to read the record from</span>
+<span class="sd">            (defaults to the shipped catalog).</span>
+<span class="sd">        extra_overrides: Extra config-key overrides applied on top of the record.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The path to the created backend package.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">record</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">ledger</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.catalog</span><span class="w"> </span><span class="kn">import</span> <span class="n">catalog</span> <span class="k">as</span> <span class="n">ledger</span>
+        <span class="k">if</span> <span class="n">backend_id</span> <span class="ow">in</span> <span class="n">ledger</span><span class="p">:</span>
+            <span class="n">record</span> <span class="o">=</span> <span class="n">ledger</span><span class="p">[</span><span class="n">backend_id</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>
+        <span class="n">record</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">overrides</span> <span class="o">=</span> <span class="n">_overrides_from_record</span><span class="p">(</span><span class="n">backend_id</span><span class="p">,</span> <span class="n">record</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">extra_overrides</span><span class="p">:</span>
+        <span class="n">overrides</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">extra_overrides</span><span class="p">)</span>
+
+    <span class="n">module_name</span> <span class="o">=</span> <span class="n">backend_id</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;_&quot;</span><span class="p">)</span>
+    <span class="n">dest</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">dest</span><span class="p">)</span> <span class="k">if</span> <span class="n">dest</span> <span class="k">else</span> <span class="p">(</span><span class="n">_TEMPLATE_DIR</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="n">module_name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">dest</span><span class="o">.</span><span class="n">exists</span><span class="p">()</span> <span class="ow">and</span> <span class="nb">any</span><span class="p">(</span><span class="n">dest</span><span class="o">.</span><span class="n">iterdir</span><span class="p">())</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">overwrite</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">FileExistsError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">dest</span><span class="si">}</span><span class="s2"> already exists and is not empty (pass overwrite=True).&quot;</span>
+        <span class="p">)</span>
+    <span class="n">dest</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">parents</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">exist_ok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="n">config_text</span> <span class="o">=</span> <span class="n">_render_config</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">_TEMPLATE_DIR</span> <span class="o">/</span> <span class="s2">&quot;config.py&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">),</span> <span class="n">overrides</span>
+    <span class="p">)</span>
+    <span class="n">adapter_text</span> <span class="o">=</span> <span class="p">(</span><span class="n">_TEMPLATE_DIR</span> <span class="o">/</span> <span class="s2">&quot;adapter.py&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+    <span class="n">init_text</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="sa">f</span><span class="s1">&#39;&quot;&quot;&quot;</span><span class="si">{</span><span class="n">overrides</span><span class="p">[</span><span class="s2">&quot;display_name&quot;</span><span class="p">]</span><span class="si">}</span><span class="s1"> backend for ocracy.&quot;&quot;&quot;</span><span class="se">\n</span><span class="s1">&#39;</span>
+    <span class="p">)</span>
+
+    <span class="p">(</span><span class="n">dest</span> <span class="o">/</span> <span class="s2">&quot;__init__.py&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">init_text</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+    <span class="p">(</span><span class="n">dest</span> <span class="o">/</span> <span class="s2">&quot;config.py&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">config_text</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+    <span class="p">(</span><span class="n">dest</span> <span class="o">/</span> <span class="s2">&quot;adapter.py&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">write_text</span><span class="p">(</span><span class="n">adapter_text</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">dest</span></div>
+
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># Validation</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+
+
+<div class="viewcode-block" id="make_test_image">
+<a class="viewcode-back" href="../../module_docs/ocracy/make_backend.html#ocracy.make_test_image">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">make_test_image</span><span class="p">(</span><span class="n">text</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;OCR test 123&quot;</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="mi">640</span><span class="p">,</span> <span class="mi">140</span><span class="p">),</span> <span class="n">font_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">48</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Render a black-on-white test image with ``text`` (needs Pillow).</span>
+
+<span class="sd">    Uses a real TrueType font (DejaVuSans, then Pillow&#39;s sized default) at a</span>
+<span class="sd">    legible size so OCR engines can actually read it — important for</span>
+<span class="sd">    :func:`validate_adapter` to be a meaningful smoke test.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">check_import</span>
+
+    <span class="n">pil_image</span> <span class="o">=</span> <span class="n">check_import</span><span class="p">(</span><span class="s2">&quot;PIL.Image&quot;</span><span class="p">,</span> <span class="n">install_hint</span><span class="o">=</span><span class="s2">&quot;Pillow&quot;</span><span class="p">,</span> <span class="n">feature</span><span class="o">=</span><span class="s2">&quot;make_test_image&quot;</span><span class="p">)</span>
+    <span class="n">pil_draw</span> <span class="o">=</span> <span class="n">check_import</span><span class="p">(</span><span class="s2">&quot;PIL.ImageDraw&quot;</span><span class="p">,</span> <span class="n">install_hint</span><span class="o">=</span><span class="s2">&quot;Pillow&quot;</span><span class="p">,</span> <span class="n">feature</span><span class="o">=</span><span class="s2">&quot;make_test_image&quot;</span><span class="p">)</span>
+
+    <span class="n">font</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">from</span><span class="w"> </span><span class="nn">PIL</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageFont</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">font</span> <span class="o">=</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">truetype</span><span class="p">(</span><span class="s2">&quot;DejaVuSans.ttf&quot;</span><span class="p">,</span> <span class="n">font_size</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">OSError</span><span class="p">:</span>
+            <span class="c1"># Pillow &gt;= 10.1 supports a size argument to the bundled default font.</span>
+            <span class="n">font</span> <span class="o">=</span> <span class="n">ImageFont</span><span class="o">.</span><span class="n">load_default</span><span class="p">(</span><span class="n">font_size</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>  <span class="c1"># noqa: BLE001 - fall back to the unsized default</span>
+        <span class="n">font</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="n">img</span> <span class="o">=</span> <span class="n">pil_image</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="s2">&quot;RGB&quot;</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="s2">&quot;white&quot;</span><span class="p">)</span>
+    <span class="n">draw</span> <span class="o">=</span> <span class="n">pil_draw</span><span class="o">.</span><span class="n">Draw</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+    <span class="n">draw</span><span class="o">.</span><span class="n">text</span><span class="p">((</span><span class="mi">20</span><span class="p">,</span> <span class="mi">40</span><span class="p">),</span> <span class="n">text</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="s2">&quot;black&quot;</span><span class="p">,</span> <span class="n">font</span><span class="o">=</span><span class="n">font</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">img</span></div>
+
+
+
+<div class="viewcode-block" id="validate_adapter">
+<a class="viewcode-back" href="../../module_docs/ocracy/make_backend.html#ocracy.validate_adapter">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">validate_adapter</span><span class="p">(</span>
+    <span class="n">backend_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">image</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">expect_text</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Smoke-test a backend adapter end to end, returning a report dict.</span>
+
+<span class="sd">    Loads the adapter (reporting unavailability instead of raising), runs</span>
+<span class="sd">    ``read`` on a generated (or supplied) image, and checks the contract: an</span>
+<span class="sd">    :class:`~ocracy.base.OcrResult` came back with text and/or blocks. Never</span>
+<span class="sd">    raises on a *recognition* mismatch — it returns what happened so callers can</span>
+<span class="sd">    decide.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">ocracy</span><span class="w"> </span><span class="kn">import</span> <span class="n">registry</span>
+
+    <span class="n">report</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;backend&quot;</span><span class="p">:</span> <span class="n">backend_id</span><span class="p">,</span> <span class="s2">&quot;available&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;ran&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span> <span class="s2">&quot;ok&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">registry</span><span class="o">.</span><span class="n">get_config</span><span class="p">(</span><span class="n">backend_id</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">KeyError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">report</span><span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;not registered: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="n">report</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">adapter</span> <span class="o">=</span> <span class="n">registry</span><span class="o">.</span><span class="n">get_backend</span><span class="p">(</span><span class="n">backend_id</span><span class="p">)[</span><span class="s2">&quot;adapter&quot;</span><span class="p">]</span>
+    <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="n">report</span><span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;adapter import failed: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="n">report</span>
+
+    <span class="c1"># Adapters import their engine lazily, so the class loads even without it.</span>
+    <span class="c1"># &quot;Available&quot; must reflect whether the engine dependency is actually present.</span>
+    <span class="n">report</span><span class="p">[</span><span class="s2">&quot;available&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">registry</span><span class="o">.</span><span class="n">_is_available</span><span class="p">(</span><span class="n">backend_id</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">report</span><span class="p">[</span><span class="s2">&quot;available&quot;</span><span class="p">]:</span>
+        <span class="n">cfg</span> <span class="o">=</span> <span class="n">registry</span><span class="o">.</span><span class="n">get_config</span><span class="p">(</span><span class="n">backend_id</span><span class="p">)</span>
+        <span class="n">report</span><span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;engine not importable (</span><span class="si">{</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;import_name&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">); &quot;</span>
+            <span class="sa">f</span><span class="s2">&quot;install with: pip install </span><span class="si">{</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;pip_install&#39;</span><span class="p">,</span><span class="w"> </span><span class="n">backend_id</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="n">report</span>
+
+    <span class="k">if</span> <span class="n">image</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">image</span> <span class="o">=</span> <span class="n">make_test_image</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+            <span class="n">report</span><span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;cannot generate test image: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="k">return</span> <span class="n">report</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">adapter</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
+        <span class="n">report</span><span class="p">[</span><span class="s2">&quot;ran&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># noqa: BLE001 - report any runtime error</span>
+        <span class="n">report</span><span class="p">[</span><span class="s2">&quot;error&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">e</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="k">return</span> <span class="n">report</span>
+
+    <span class="n">report</span><span class="p">[</span><span class="s2">&quot;returns_ocrresult&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">OcrResult</span><span class="p">)</span>
+    <span class="n">report</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">report</span><span class="p">[</span><span class="s2">&quot;n_blocks&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s2">&quot;blocks&quot;</span><span class="p">,</span> <span class="p">[])</span> <span class="ow">or</span> <span class="p">[])</span>
+    <span class="n">report</span><span class="p">[</span><span class="s2">&quot;mean_confidence&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s2">&quot;mean_confidence&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">report</span><span class="p">[</span><span class="s2">&quot;has_bbox&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">any</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">bbox</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="s2">&quot;blocks&quot;</span><span class="p">,</span> <span class="p">[]))</span>
+    <span class="n">text_ok</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">((</span><span class="n">report</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span> <span class="ow">or</span> <span class="n">report</span><span class="p">[</span><span class="s2">&quot;n_blocks&quot;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span>
+    <span class="k">if</span> <span class="n">expect_text</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">text_ok</span> <span class="o">=</span> <span class="n">expect_text</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="ow">in</span> <span class="p">(</span><span class="n">report</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span>
+    <span class="n">report</span><span class="p">[</span><span class="s2">&quot;ok&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">report</span><span class="p">[</span><span class="s2">&quot;returns_ocrresult&quot;</span><span class="p">]</span> <span class="ow">and</span> <span class="n">text_ok</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">report</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,222 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ocracy.translation &mdash; ocracy 0.0.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=e3a6060d"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="ocracy.util" href="util.html" />
+    <link rel="prev" title="ocracy.tools" href="tools.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ocracy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../ocracy.html">ocracy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="__main__.html">ocracy.__main__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends.html">ocracy.backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/_template.html">ocracy.backends._template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/_template/adapter.html">ocracy.backends._template.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/_template/config.html">ocracy.backends._template.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/aws_textract.html">ocracy.backends.aws_textract</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/aws_textract/adapter.html">ocracy.backends.aws_textract.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/aws_textract/config.html">ocracy.backends.aws_textract.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/azure_document_intelligence.html">ocracy.backends.azure_document_intelligence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/azure_document_intelligence/adapter.html">ocracy.backends.azure_document_intelligence.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/azure_document_intelligence/config.html">ocracy.backends.azure_document_intelligence.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/claude_vision.html">ocracy.backends.claude_vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/claude_vision/adapter.html">ocracy.backends.claude_vision.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/claude_vision/config.html">ocracy.backends.claude_vision.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/easyocr.html">ocracy.backends.easyocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/easyocr/adapter.html">ocracy.backends.easyocr.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/easyocr/config.html">ocracy.backends.easyocr.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/google_vision.html">ocracy.backends.google_vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/google_vision/adapter.html">ocracy.backends.google_vision.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/google_vision/config.html">ocracy.backends.google_vision.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/gpt_4o_vision.html">ocracy.backends.gpt_4o_vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/gpt_4o_vision/adapter.html">ocracy.backends.gpt_4o_vision.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/gpt_4o_vision/config.html">ocracy.backends.gpt_4o_vision.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/mathpix.html">ocracy.backends.mathpix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/mathpix/adapter.html">ocracy.backends.mathpix.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/mathpix/config.html">ocracy.backends.mathpix.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/mistral_ocr.html">ocracy.backends.mistral_ocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/mistral_ocr/adapter.html">ocracy.backends.mistral_ocr.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/mistral_ocr/config.html">ocracy.backends.mistral_ocr.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/ocr_space.html">ocracy.backends.ocr_space</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/ocr_space/adapter.html">ocracy.backends.ocr_space.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/ocr_space/config.html">ocracy.backends.ocr_space.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/ocrmac.html">ocracy.backends.ocrmac</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/ocrmac/adapter.html">ocracy.backends.ocrmac.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/ocrmac/config.html">ocracy.backends.ocrmac.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/paddleocr.html">ocracy.backends.paddleocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/paddleocr/adapter.html">ocracy.backends.paddleocr.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/paddleocr/config.html">ocracy.backends.paddleocr.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/pix2tex_latex_ocr.html">ocracy.backends.pix2tex_latex_ocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/pix2tex_latex_ocr/adapter.html">ocracy.backends.pix2tex_latex_ocr.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/pix2tex_latex_ocr/config.html">ocracy.backends.pix2tex_latex_ocr.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/rapidocr.html">ocracy.backends.rapidocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/rapidocr/adapter.html">ocracy.backends.rapidocr.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/rapidocr/config.html">ocracy.backends.rapidocr.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/tesseract.html">ocracy.backends.tesseract</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/tesseract/adapter.html">ocracy.backends.tesseract.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/tesseract/config.html">ocracy.backends.tesseract.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/trocr_handwritten.html">ocracy.backends.trocr_handwritten</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/trocr_handwritten/adapter.html">ocracy.backends.trocr_handwritten.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="backends/trocr_handwritten/config.html">ocracy.backends.trocr_handwritten.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="base.html">ocracy.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="catalog.html">ocracy.catalog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="credentials.html">ocracy.credentials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="make_backend.html">ocracy.make_backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="registry.html">ocracy.registry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="services.html">ocracy.services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html">ocracy.tools</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">ocracy.translation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#ocracy.translation.make_kwargs_translator"><code class="docutils literal notranslate"><span class="pre">make_kwargs_translator()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ocracy.translation.validate_param"><code class="docutils literal notranslate"><span class="pre">validate_param()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="util.html">ocracy.util</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ocracy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">ocracy.translation</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/module_docs/ocracy/translation.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-ocracy.translation">
+<span id="ocracy-translation"></span><h1>ocracy.translation<a class="headerlink" href="#module-ocracy.translation" title="Link to this heading"></a></h1>
+<p>Parameter translation between ocracy’s normalized kwargs and native engines.</p>
+<p>Every backend exposes its own parameter names and scales (<code class="docutils literal notranslate"><span class="pre">lang</span></code> vs
+<code class="docutils literal notranslate"><span class="pre">languages</span></code> vs <code class="docutils literal notranslate"><span class="pre">language_hints</span></code>; thresholds in <code class="docutils literal notranslate"><span class="pre">0..1</span></code> vs <code class="docutils literal notranslate"><span class="pre">0..100</span></code>; pixel
+vs point units). A backend declares a <code class="docutils literal notranslate"><span class="pre">param_map</span></code> in its <code class="docutils literal notranslate"><span class="pre">BACKEND_CONFIG</span></code>
+mapping <em>normalized</em> names to native ones, and <a class="reference internal" href="#ocracy.translation.make_kwargs_translator" title="ocracy.translation.make_kwargs_translator"><code class="xref py py-func docutils literal notranslate"><span class="pre">make_kwargs_translator()</span></code></a>
+turns that declaration into a function that rewrites caller kwargs into the
+shape the engine wants. This keeps the facade’s vocabulary stable while letting
+each adapter stay a thin shim.</p>
+<p>This mirrors the translation layer used by the sibling <code class="docutils literal notranslate"><span class="pre">denote</span></code> facade so the
+two packages feel the same to read and extend.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="ocracy.translation.make_kwargs_translator">
+<span class="sig-prename descclassname"><span class="pre">ocracy.translation.</span></span><span class="sig-name descname"><span class="pre">make_kwargs_translator</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param_map</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">on_unsupported</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'warn'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Callable</span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">[</span></span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dict</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../../_modules/ocracy/translation.html#make_kwargs_translator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.translation.make_kwargs_translator" title="Link to this definition"></a></dt>
+<dd><p>Create a function that translates normalized kwargs to native kwargs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>param_map</strong> – <p>Mapping of <code class="docutils literal notranslate"><span class="pre">normalized_name</span> <span class="pre">-&gt;</span> <span class="pre">native</span> <span class="pre">config</span> <span class="pre">dict</span></code> where the
+config dict may have:</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">native_name</span></code> (str): the backend’s parameter name (defaults to
+the normalized name).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">coerce</span></code> (callable): transform the value (e.g. seconds -&gt; ms,
+<code class="docutils literal notranslate"><span class="pre">[&quot;en&quot;,&quot;fr&quot;]</span> <span class="pre">-&gt;</span> <span class="pre">&quot;eng+fra&quot;</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">default</span></code> (Any): value to inject when the caller omits the param.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">None</span></code> as the whole value: the parameter is explicitly <em>not</em>
+supported by this backend.</p></li>
+</ul>
+</p></li>
+<li><p><strong>on_unsupported</strong> – What to do with caller params absent from <code class="docutils literal notranslate"><span class="pre">param_map</span></code>:
+<code class="docutils literal notranslate"><span class="pre">&quot;warn&quot;</span></code> (default), <code class="docutils literal notranslate"><span class="pre">&quot;raise&quot;</span></code>, or <code class="docutils literal notranslate"><span class="pre">&quot;ignore&quot;</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A <code class="docutils literal notranslate"><span class="pre">translate(**kwargs)</span> <span class="pre">-&gt;</span> <span class="pre">dict</span></code> function.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ocracy.translation.validate_param">
+<span class="sig-prename descclassname"><span class="pre">ocracy.translation.</span></span><span class="sig-name descname"><span class="pre">validate_param</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Any</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="reference internal" href="../../_modules/ocracy/translation.html#validate_param"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.translation.validate_param" title="Link to this definition"></a></dt>
+<dd><p>Validate a single parameter against <code class="docutils literal notranslate"><span class="pre">min</span></code>/<code class="docutils literal notranslate"><span class="pre">max</span></code>/<code class="docutils literal notranslate"><span class="pre">choices</span></code> in config.</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="tools.html" class="btn btn-neutral float-left" title="ocracy.tools" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="util.html" class="btn btn-neutral float-right" title="ocracy.util" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

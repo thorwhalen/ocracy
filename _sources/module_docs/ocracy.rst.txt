@@ -1,0 +1,4 @@
+ocracy
+======
+.. automodule:: ocracy
+   :members:

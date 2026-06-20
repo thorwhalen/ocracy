@@ -1,0 +1,4 @@
+ocracy.backends.mistral_ocr.adapter
+===================================
+.. automodule:: ocracy.backends.mistral_ocr.adapter
+   :members:

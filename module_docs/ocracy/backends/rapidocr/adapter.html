@@ -1,0 +1,183 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ocracy.backends.rapidocr.adapter &mdash; ocracy 0.0.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../../../_static/documentation_options.js?v=e3a6060d"></script>
+      <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+    <link rel="next" title="ocracy.backends.rapidocr.config" href="config.html" />
+    <link rel="prev" title="ocracy.backends.rapidocr" href="../rapidocr.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../../../index.html" class="icon icon-home">
+            ocracy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../ocracy.html">ocracy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../__main__.html">ocracy.__main__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../backends.html">ocracy.backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_template.html">ocracy.backends._template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_template/adapter.html">ocracy.backends._template.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../_template/config.html">ocracy.backends._template.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../aws_textract.html">ocracy.backends.aws_textract</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../aws_textract/adapter.html">ocracy.backends.aws_textract.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../aws_textract/config.html">ocracy.backends.aws_textract.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../azure_document_intelligence.html">ocracy.backends.azure_document_intelligence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../azure_document_intelligence/adapter.html">ocracy.backends.azure_document_intelligence.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../azure_document_intelligence/config.html">ocracy.backends.azure_document_intelligence.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../claude_vision.html">ocracy.backends.claude_vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../claude_vision/adapter.html">ocracy.backends.claude_vision.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../claude_vision/config.html">ocracy.backends.claude_vision.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../easyocr.html">ocracy.backends.easyocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../easyocr/adapter.html">ocracy.backends.easyocr.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../easyocr/config.html">ocracy.backends.easyocr.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../google_vision.html">ocracy.backends.google_vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../google_vision/adapter.html">ocracy.backends.google_vision.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../google_vision/config.html">ocracy.backends.google_vision.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gpt_4o_vision.html">ocracy.backends.gpt_4o_vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gpt_4o_vision/adapter.html">ocracy.backends.gpt_4o_vision.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gpt_4o_vision/config.html">ocracy.backends.gpt_4o_vision.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mathpix.html">ocracy.backends.mathpix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mathpix/adapter.html">ocracy.backends.mathpix.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mathpix/config.html">ocracy.backends.mathpix.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mistral_ocr.html">ocracy.backends.mistral_ocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mistral_ocr/adapter.html">ocracy.backends.mistral_ocr.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../mistral_ocr/config.html">ocracy.backends.mistral_ocr.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ocr_space.html">ocracy.backends.ocr_space</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ocr_space/adapter.html">ocracy.backends.ocr_space.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ocr_space/config.html">ocracy.backends.ocr_space.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ocrmac.html">ocracy.backends.ocrmac</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ocrmac/adapter.html">ocracy.backends.ocrmac.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../ocrmac/config.html">ocracy.backends.ocrmac.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../paddleocr.html">ocracy.backends.paddleocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../paddleocr/adapter.html">ocracy.backends.paddleocr.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../paddleocr/config.html">ocracy.backends.paddleocr.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pix2tex_latex_ocr.html">ocracy.backends.pix2tex_latex_ocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pix2tex_latex_ocr/adapter.html">ocracy.backends.pix2tex_latex_ocr.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../pix2tex_latex_ocr/config.html">ocracy.backends.pix2tex_latex_ocr.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../rapidocr.html">ocracy.backends.rapidocr</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">ocracy.backends.rapidocr.adapter</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#ocracy.backends.rapidocr.adapter.Adapter"><code class="docutils literal notranslate"><span class="pre">Adapter</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="config.html">ocracy.backends.rapidocr.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tesseract.html">ocracy.backends.tesseract</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tesseract/adapter.html">ocracy.backends.tesseract.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tesseract/config.html">ocracy.backends.tesseract.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../trocr_handwritten.html">ocracy.backends.trocr_handwritten</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../trocr_handwritten/adapter.html">ocracy.backends.trocr_handwritten.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../trocr_handwritten/config.html">ocracy.backends.trocr_handwritten.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../base.html">ocracy.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../catalog.html">ocracy.catalog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../credentials.html">ocracy.credentials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../make_backend.html">ocracy.make_backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../registry.html">ocracy.registry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../services.html">ocracy.services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tools.html">ocracy.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../translation.html">ocracy.translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../util.html">ocracy.util</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../../index.html">ocracy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">ocracy.backends.rapidocr.adapter</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../../_sources/module_docs/ocracy/backends/rapidocr/adapter.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-ocracy.backends.rapidocr.adapter">
+<span id="ocracy-backends-rapidocr-adapter"></span><h1>ocracy.backends.rapidocr.adapter<a class="headerlink" href="#module-ocracy.backends.rapidocr.adapter" title="Link to this heading"></a></h1>
+<p>Adapter for RapidOCR — image -&gt; text + quad boxes via ONNXRuntime PP-OCR.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="ocracy.backends.rapidocr.adapter.Adapter">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ocracy.backends.rapidocr.adapter.</span></span><span class="sig-name descname"><span class="pre">Adapter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../../_modules/ocracy/backends/rapidocr/adapter.html#Adapter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.backends.rapidocr.adapter.Adapter" title="Link to this definition"></a></dt>
+<dd><p>RapidOCR adapter (lazily builds and caches one engine).</p>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../rapidocr.html" class="btn btn-neutral float-left" title="ocracy.backends.rapidocr" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="config.html" class="btn btn-neutral float-right" title="ocracy.backends.rapidocr.config" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,4 @@
+ocracy.backends.trocr_handwritten.config
+========================================
+.. automodule:: ocracy.backends.trocr_handwritten.config
+   :members:

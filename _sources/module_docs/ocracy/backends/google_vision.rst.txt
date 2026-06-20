@@ -1,0 +1,4 @@
+ocracy.backends.google_vision
+=============================
+.. automodule:: ocracy.backends.google_vision
+   :members:

@@ -1,0 +1,4 @@
+ocracy.backends.paddleocr.adapter
+=================================
+.. automodule:: ocracy.backends.paddleocr.adapter
+   :members:
