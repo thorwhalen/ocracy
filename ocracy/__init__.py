@@ -81,7 +81,15 @@ __all__ = [
     "__version__",
 ]
 
-__version__ = "0.1.0"
+# Derive the version from installed package metadata (the pyproject SSOT, which CI
+# auto-bumps) so __version__ never drifts from a hardcoded literal.
+from importlib.metadata import PackageNotFoundError as _PNFE, version as _version
+
+try:
+    __version__ = _version("ocracy")
+except _PNFE:  # running from a source tree without install metadata
+    __version__ = "0.0.0+source"
+del _version, _PNFE
 
 #: Singleton service collection for per-backend access (``services.tesseract``).
 services = ServiceCollection()
