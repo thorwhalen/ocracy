@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ocracy.util &mdash; ocracy 0.1.0 documentation</title>
+  <title>ocracy.util &mdash; ocracy 0.1.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../../_static/documentation_options.js?v=a58bc63e"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -242,7 +242,9 @@
 <span class="k">def</span><span class="w"> </span><span class="nf">to_pil</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageInput</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert any supported input into a PIL ``Image`` (lazy import).&quot;&quot;&quot;</span>
     <span class="c1"># ``PIL.Image`` is the module exposing ``open`` / ``fromarray``.</span>
-    <span class="n">pil_image</span> <span class="o">=</span> <span class="n">check_import</span><span class="p">(</span><span class="s2">&quot;PIL.Image&quot;</span><span class="p">,</span> <span class="n">install_hint</span><span class="o">=</span><span class="s2">&quot;Pillow&quot;</span><span class="p">,</span> <span class="n">feature</span><span class="o">=</span><span class="s2">&quot;image decoding&quot;</span><span class="p">)</span>
+    <span class="n">pil_image</span> <span class="o">=</span> <span class="n">check_import</span><span class="p">(</span>
+        <span class="s2">&quot;PIL.Image&quot;</span><span class="p">,</span> <span class="n">install_hint</span><span class="o">=</span><span class="s2">&quot;Pillow&quot;</span><span class="p">,</span> <span class="n">feature</span><span class="o">=</span><span class="s2">&quot;image decoding&quot;</span>
+    <span class="p">)</span>
     <span class="n">kind</span> <span class="o">=</span> <span class="n">classify_input</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;pil&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">image</span>
@@ -300,9 +302,7 @@
 
 <div class="viewcode-block" id="ensure_file_path">
 <a class="viewcode-back" href="../../module_docs/ocracy/util.html#ocracy.util.ensure_file_path">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">ensure_file_path</span><span class="p">(</span>
-    <span class="n">image</span><span class="p">:</span> <span class="n">ImageInput</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">suffix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;.png&quot;</span>
-<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ensure_file_path</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageInput</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">suffix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;.png&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Return ``(path, is_temp)`` for any supported input.</span>
 
 <span class="sd">    Existing on-disk paths are returned untouched (``is_temp=False``). In-memory</span>
@@ -312,7 +312,9 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">classify_input</span><span class="p">(</span><span class="n">image</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;path&quot;</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">fspath</span><span class="p">(</span><span class="n">image</span><span class="p">),</span> <span class="kc">False</span>
-    <span class="n">data</span> <span class="o">=</span> <span class="n">load_image_bytes</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">suffix</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;JPG&quot;</span><span class="p">,</span> <span class="s2">&quot;JPEG&quot;</span><span class="p">))</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">load_image_bytes</span><span class="p">(</span>
+        <span class="n">image</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">suffix</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;JPG&quot;</span><span class="p">,</span> <span class="s2">&quot;JPEG&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
     <span class="n">fd</span><span class="p">,</span> <span class="n">path</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkstemp</span><span class="p">(</span><span class="n">suffix</span><span class="o">=</span><span class="n">suffix</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;ocracy_&quot;</span><span class="p">)</span>
     <span class="k">with</span> <span class="n">os</span><span class="o">.</span><span class="n">fdopen</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>

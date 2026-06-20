@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ocracy &mdash; ocracy 0.1.0 documentation</title>
+  <title>ocracy &mdash; ocracy 0.1.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../_static/documentation_options.js?v=a58bc63e"></script>
       <script src="../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -216,7 +216,15 @@
     <span class="s2">&quot;__version__&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 
-<span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;0.1.0&quot;</span>
+<span class="c1"># Derive the version from installed package metadata (the pyproject SSOT, which CI</span>
+<span class="c1"># auto-bumps) so __version__ never drifts from a hardcoded literal.</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">importlib.metadata</span><span class="w"> </span><span class="kn">import</span> <span class="n">PackageNotFoundError</span> <span class="k">as</span> <span class="n">_PNFE</span><span class="p">,</span> <span class="n">version</span> <span class="k">as</span> <span class="n">_version</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">__version__</span> <span class="o">=</span> <span class="n">_version</span><span class="p">(</span><span class="s2">&quot;ocracy&quot;</span><span class="p">)</span>
+<span class="k">except</span> <span class="n">_PNFE</span><span class="p">:</span>  <span class="c1"># running from a source tree without install metadata</span>
+    <span class="n">__version__</span> <span class="o">=</span> <span class="s2">&quot;0.0.0+source&quot;</span>
+<span class="k">del</span> <span class="n">_version</span><span class="p">,</span> <span class="n">_PNFE</span>
 
 <span class="c1">#: Singleton service collection for per-backend access (``services.tesseract``).</span>
 <span class="n">services</span> <span class="o">=</span> <span class="n">ServiceCollection</span><span class="p">()</span>

@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ocracy.backends.ocr_space.adapter &mdash; ocracy 0.1.0 documentation</title>
+  <title>ocracy.backends.ocr_space.adapter &mdash; ocracy 0.1.1 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../../../../_static/documentation_options.js?v=a58bc63e"></script>
       <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -147,7 +147,9 @@
 <span class="k">class</span><span class="w"> </span><span class="nc">Adapter</span><span class="p">(</span><span class="n">BaseOcrAdapter</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;OCR.space REST adapter.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span><span class="w"> </span><span class="nf">_read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="s2">&quot;eng&quot;</span><span class="p">,</span> <span class="n">isOverlayRequired</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">extra</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OcrResult</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">_read</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="s2">&quot;eng&quot;</span><span class="p">,</span> <span class="n">isOverlayRequired</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">extra</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OcrResult</span><span class="p">:</span>
         <span class="c1"># Resolve credentials first (cheap, dependency-free) so a missing key fails</span>
         <span class="c1"># fast with guidance before we import/network.</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.credentials</span><span class="w"> </span><span class="kn">import</span> <span class="n">resolve_credential</span>
@@ -161,6 +163,7 @@
         <span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
 
         <span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_url</span><span class="p">,</span> <span class="n">load_image_bytes</span>
+
         <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s2">&quot;apikey&quot;</span><span class="p">:</span> <span class="n">api_key</span><span class="p">,</span>
             <span class="s2">&quot;language&quot;</span><span class="p">:</span> <span class="n">language</span><span class="p">,</span>
@@ -193,10 +196,16 @@
                 <span class="n">w</span> <span class="o">=</span> <span class="n">word</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Width&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
                 <span class="n">h</span> <span class="o">=</span> <span class="n">word</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Height&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
                 <span class="n">blocks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                    <span class="n">make_block</span><span class="p">(</span><span class="n">word</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;WordText&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span> <span class="n">bbox</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span> <span class="o">+</span> <span class="n">w</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">h</span><span class="p">),</span> <span class="n">level</span><span class="o">=</span><span class="s2">&quot;word&quot;</span><span class="p">)</span>
+                    <span class="n">make_block</span><span class="p">(</span>
+                        <span class="n">word</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;WordText&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+                        <span class="n">bbox</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span> <span class="o">+</span> <span class="n">w</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">h</span><span class="p">),</span>
+                        <span class="n">level</span><span class="o">=</span><span class="s2">&quot;word&quot;</span><span class="p">,</span>
+                    <span class="p">)</span>
                 <span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">OcrResult</span><span class="o">.</span><span class="n">from_blocks</span><span class="p">(</span><span class="n">blocks</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">backend_id</span><span class="p">,</span> <span class="n">raw</span><span class="o">=</span><span class="n">result</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">OcrResult</span><span class="o">.</span><span class="n">from_blocks</span><span class="p">(</span>
+            <span class="n">blocks</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">backend_id</span><span class="p">,</span> <span class="n">raw</span><span class="o">=</span><span class="n">result</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="n">text</span>
+        <span class="p">)</span></div>
 
 </pre></div>
 
