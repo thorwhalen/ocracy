@@ -40,10 +40,12 @@ pip install "ocracy[table]"         # pandas, for catalog.to_dataframe()
 | ocrmac (Apple Vision) | `ocrmac` | local (macOS) | free | `ocracy[ocrmac]` | on-device, handwriting |
 | OCR.space | `ocr-space` | remote | free tier | `ocracy[ocr-space]` | zero-install REST |
 | Google Cloud Vision | `google-vision` | remote | paid (+free tier) | `ocracy[google-vision]` | high accuracy, handwriting, structure |
+| AWS Textract | `aws-textract` | remote | paid (+free tier) | `ocracy[aws-textract]` | business docs, handwriting (forms/tables in analyze mode) |
+| Azure Document Intelligence | `azure-document-intelligence` | remote | paid (+free tier) | `ocracy[azure]` | layout/tables/handwriting, on-prem container option |
 | Mistral OCR | `mistral-ocr` | remote | paid (pay-as-you-go) | `ocracy[mistral]` | cheap VLM → clean Markdown + math/tables |
 | Mathpix | `mathpix` | remote | paid (+free tier) | `ocracy[mathpix]` | math/handwriting → LaTeX & Markdown |
 
-…plus **55 more** engines/services catalogued in the ledger that you can turn into
+…plus **53 more** engines/services catalogued in the ledger that you can turn into
 a working façade with one command (see *Add a backend* below).
 
 ## Three tiers of access
@@ -62,6 +64,26 @@ switch engines: `result.text`, `result.words` / `result.lines`, each block's
 `.bbox` and `.confidence` (normalized to 0..1), `result.mean_confidence`,
 `result.markdown` (when a backend produces it), and `result.raw` (the untouched
 engine output).
+
+## Command line
+
+Install the CLI extra (`pip install "ocracy[cli]"`) for an `ocracy` command:
+
+```bash
+ocracy read scan.png                          # print recognized text
+ocracy read scan.png --backend easyocr --languages en,fr
+ocracy read scan.png --output json            # text + blocks (boxes, confidence)
+ocracy backends                               # backends you can run now
+ocracy backends --capability math
+ocracy find --local --free --handwriting      # browse/filter the ledger
+ocracy info google-vision                     # a backend's full record
+ocracy scaffold surya                          # start a new façade from the ledger
+ocracy validate tesseract                      # smoke-test a backend
+```
+
+Everything is also reachable as `python -m ocracy <command>`. `argh` builds the
+parser from the function signatures in `ocracy/tools.py`; `argcomplete` gives tab
+completion when activated.
 
 ## The ledger — choose a backend with eyes open
 
@@ -102,6 +124,8 @@ allows 25,000 requests/month. Get a key: https://ocr.space/ocrapi/freekey
 |---|---|---|
 | `ocr-space` | `OCR_SPACE_API_KEY` | <https://ocr.space/ocrapi/freekey> (free, 25k/month) |
 | `google-vision` | `GOOGLE_APPLICATION_CREDENTIALS` (service-account JSON path) | <https://cloud.google.com/vision/docs/setup> |
+| `aws-textract` | `AWS_ACCESS_KEY_ID` + `AWS_SECRET_ACCESS_KEY` + `AWS_DEFAULT_REGION` | <https://docs.aws.amazon.com/textract/latest/dg/getting-started.html> |
+| `azure-document-intelligence` | `AZURE_DOCUMENT_INTELLIGENCE_KEY` + `AZURE_DOCUMENT_INTELLIGENCE_ENDPOINT` | <https://learn.microsoft.com/azure/ai-services/document-intelligence/create-document-intelligence-resource> |
 | `mistral-ocr` | `MISTRAL_API_KEY` | <https://console.mistral.ai/api-keys> |
 | `mathpix` | `MATHPIX_APP_ID` + `MATHPIX_APP_KEY` | <https://mathpix.com/ocr-api> |
 
@@ -139,6 +163,7 @@ agent **skill** at `ocracy/data/skills/ocracy-add-backend/SKILL.md`. The
   `make_block`, `scaffold_backend`, `validate_adapter`).
 - `ocracy/backends/<id>/` — one subpackage per engine (`config.py` + `adapter.py`).
 - `ocracy/credentials.py` — credential resolution for remote backends.
+- `ocracy/tools.py` + `ocracy/__main__.py` — the `ocracy` CLI (argh).
 
 The architecture mirrors the sibling façade packages
 [`denote`](https://github.com/thorwhalen/denote) (audio→symbol) and

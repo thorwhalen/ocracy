@@ -13,7 +13,8 @@ from ocracy.make_backend import validate_adapter
 
 IMPLEMENTED = [
     "tesseract", "easyocr", "rapidocr", "paddleocr", "ocrmac",
-    "ocr-space", "google-vision", "mathpix", "mistral-ocr",
+    "ocr-space", "google-vision", "mistral-ocr", "mathpix",
+    "aws-textract", "azure-document-intelligence",
 ]
 LOCAL = ["tesseract", "easyocr", "rapidocr", "paddleocr", "ocrmac"]
 
