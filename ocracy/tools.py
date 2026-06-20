@@ -72,7 +72,11 @@ def backends(*, capability: Optional[str] = None):
     for bid in ids:
         info_ = ocracy.catalog[bid] if bid in ocracy.catalog else None
         where = (
-            "+".join(w for w, on in (("local", info_.is_local), ("remote", info_.is_remote)) if on)
+            "+".join(
+                w
+                for w, on in (("local", info_.is_local), ("remote", info_.is_remote))
+                if on
+            )
             if info_
             else "?"
         )
@@ -85,7 +89,9 @@ def info(backend_id: str):
 
     :param backend_id: A ledger id, e.g. ``google-vision`` (see ``ocracy find``).
     """
-    return json.dumps(ocracy.catalog[backend_id].to_dict(), indent=2, ensure_ascii=False, default=str)
+    return json.dumps(
+        ocracy.catalog[backend_id].to_dict(), indent=2, ensure_ascii=False, default=str
+    )
 
 
 def find(
@@ -133,9 +139,15 @@ def find(
     lines = []
     for bid in cat.ids:
         i = cat[bid]
-        where = "+".join(w for w, on in (("local", i.is_local), ("remote", i.is_remote)) if on)
+        where = "+".join(
+            w for w, on in (("local", i.is_local), ("remote", i.is_remote)) if on
+        )
         flag = "✓" if i.implemented else " "
-        lines.append(f"[{flag}] {bid:26} [{where:13}] {i._record.get('pricing_model','')!s:20} {i._record.get('best_for','') or ''}"[:160])
+        lines.append(
+            f"[{flag}] {bid:26} [{where:13}] {i._record.get('pricing_model', '')!s:20} {i._record.get('best_for', '') or ''}"[
+                :160
+            ]
+        )
     header = f"{len(cat)} backend(s) ([✓] = implemented):"
     return header + "\n" + "\n".join(lines)
 
@@ -155,7 +167,9 @@ def validate(backend_id: str):
 
     :param backend_id: The backend id to validate (e.g. ``tesseract``).
     """
-    return json.dumps(ocracy.validate_adapter(backend_id), indent=2, ensure_ascii=False, default=str)
+    return json.dumps(
+        ocracy.validate_adapter(backend_id), indent=2, ensure_ascii=False, default=str
+    )
 
 
 # SSOT list of CLI-dispatchable functions.

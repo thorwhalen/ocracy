@@ -247,9 +247,7 @@ def scaffold_backend(
         (_TEMPLATE_DIR / "config.py").read_text(encoding="utf-8"), overrides
     )
     adapter_text = (_TEMPLATE_DIR / "adapter.py").read_text(encoding="utf-8")
-    init_text = (
-        f'"""{overrides["display_name"]} backend for ocracy."""\n'
-    )
+    init_text = f'"""{overrides["display_name"]} backend for ocracy."""\n'
 
     (dest / "__init__.py").write_text(init_text, encoding="utf-8")
     (dest / "config.py").write_text(config_text, encoding="utf-8")
@@ -262,7 +260,9 @@ def scaffold_backend(
 # ---------------------------------------------------------------------------
 
 
-def make_test_image(text: str = "OCR test 123", *, size=(640, 140), font_size: int = 48):
+def make_test_image(
+    text: str = "OCR test 123", *, size=(640, 140), font_size: int = 48
+):
     """Render a black-on-white test image with ``text`` (needs Pillow).
 
     Uses a real TrueType font (DejaVuSans, then Pillow's sized default) at a
@@ -271,8 +271,12 @@ def make_test_image(text: str = "OCR test 123", *, size=(640, 140), font_size: i
     """
     from ocracy.util import check_import
 
-    pil_image = check_import("PIL.Image", install_hint="Pillow", feature="make_test_image")
-    pil_draw = check_import("PIL.ImageDraw", install_hint="Pillow", feature="make_test_image")
+    pil_image = check_import(
+        "PIL.Image", install_hint="Pillow", feature="make_test_image"
+    )
+    pil_draw = check_import(
+        "PIL.ImageDraw", install_hint="Pillow", feature="make_test_image"
+    )
 
     font = None
     try:
@@ -305,7 +309,12 @@ def validate_adapter(
     """
     from ocracy import registry
 
-    report: dict = {"backend": backend_id, "available": False, "ran": False, "ok": False}
+    report: dict = {
+        "backend": backend_id,
+        "available": False,
+        "ran": False,
+        "ok": False,
+    }
 
     try:
         registry.get_config(backend_id)

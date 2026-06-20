@@ -8,10 +8,23 @@ automatically. macOS only.
 
 # ISO-639-1 -> Apple Vision language preference (BCP-47-ish) codes.
 _ISO1_TO_VISION = {
-    "en": "en-US", "fr": "fr-FR", "de": "de-DE", "es": "es-ES", "it": "it-IT",
-    "pt": "pt-BR", "nl": "nl-NL", "zh": "zh-Hans", "zh-cn": "zh-Hans",
-    "zh-tw": "zh-Hant", "ja": "ja-JP", "ko": "ko-KR", "ru": "ru-RU",
-    "uk": "uk-UA", "ar": "ar-SA", "th": "th-TH", "vi": "vi-VT",
+    "en": "en-US",
+    "fr": "fr-FR",
+    "de": "de-DE",
+    "es": "es-ES",
+    "it": "it-IT",
+    "pt": "pt-BR",
+    "nl": "nl-NL",
+    "zh": "zh-Hans",
+    "zh-cn": "zh-Hans",
+    "zh-tw": "zh-Hant",
+    "ja": "ja-JP",
+    "ko": "ko-KR",
+    "ru": "ru-RU",
+    "uk": "uk-UA",
+    "ar": "ar-SA",
+    "th": "th-TH",
+    "vi": "vi-VT",
 }
 
 
@@ -48,6 +61,9 @@ BACKEND_CONFIG = {
             "native_name": "language_preference",
             "coerce": _to_vision_langs,
         },
-        "recognition_level": {"native_name": "recognition_level", "default": "accurate"},
+        "recognition_level": {
+            "native_name": "recognition_level",
+            "default": "accurate",
+        },
     },
 }

@@ -9,10 +9,23 @@ entry, ``paddleocr-ppstructure``; this façade wraps the text OCR.)
 
 # ISO-639-1 -> PaddleOCR language codes (PaddleOCR uses some full names).
 _ISO1_TO_PADDLE = {
-    "en": "en", "zh": "ch", "zh-cn": "ch", "zh-tw": "chinese_cht",
-    "fr": "french", "de": "german", "ja": "japan", "ko": "korean",
-    "ru": "cyrillic", "ar": "arabic", "hi": "devanagari", "ta": "ta",
-    "te": "te", "it": "it", "es": "es", "pt": "pt", "nl": "nl",
+    "en": "en",
+    "zh": "ch",
+    "zh-cn": "ch",
+    "zh-tw": "chinese_cht",
+    "fr": "french",
+    "de": "german",
+    "ja": "japan",
+    "ko": "korean",
+    "ru": "cyrillic",
+    "ar": "arabic",
+    "hi": "devanagari",
+    "ta": "ta",
+    "te": "te",
+    "it": "it",
+    "es": "es",
+    "pt": "pt",
+    "nl": "nl",
 }
 
 
@@ -40,6 +53,10 @@ BACKEND_CONFIG = {
         "with polygon boxes and confidence. CPU-capable; GPU helps."
     ),
     "param_map": {
-        "languages": {"native_name": "lang", "coerce": _to_paddle_lang, "default": "en"},
+        "languages": {
+            "native_name": "lang",
+            "coerce": _to_paddle_lang,
+            "default": "en",
+        },
     },
 }

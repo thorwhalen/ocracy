@@ -20,7 +20,10 @@ class Adapter(BaseOcrAdapter):
 
                 self._client = vision.ImageAnnotatorClient()
             except Exception as e:  # DefaultCredentialsError and friends
-                if "default credentials" in str(e).lower() or "credential" in str(e).lower():
+                if (
+                    "default credentials" in str(e).lower()
+                    or "credential" in str(e).lower()
+                ):
                     raise MissingCredentialError(
                         "Google Cloud Vision could not find credentials.\n"
                         + credential_help("google-vision")
@@ -36,7 +39,11 @@ class Adapter(BaseOcrAdapter):
         client = self._get_client()
         content = load_image_bytes(image)
         vimage = vision.Image(content=content)
-        ctx = vision.ImageContext(language_hints=language_hints) if language_hints else None
+        ctx = (
+            vision.ImageContext(language_hints=language_hints)
+            if language_hints
+            else None
+        )
 
         if document:
             response = client.document_text_detection(image=vimage, image_context=ctx)
@@ -50,7 +57,7 @@ class Adapter(BaseOcrAdapter):
         text = fta.text if fta and fta.text else ""
 
         blocks = []
-        for page in (fta.pages if fta else []):
+        for page in fta.pages if fta else []:
             for block in page.blocks:
                 for para in block.paragraphs:
                     for word in para.words:
@@ -70,4 +77,6 @@ class Adapter(BaseOcrAdapter):
         if not text and response.text_annotations:
             text = response.text_annotations[0].description
 
-        return OcrResult.from_blocks(blocks, backend=self.backend_id, raw=response, text=text)
+        return OcrResult.from_blocks(
+            blocks, backend=self.backend_id, raw=response, text=text
+        )

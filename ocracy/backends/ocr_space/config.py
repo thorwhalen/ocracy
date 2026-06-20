@@ -8,11 +8,31 @@ engine 1/2/3 (2 is the multilingual default). Needs an ``OCR_SPACE_API_KEY``
 
 # ISO-639-1 -> OCR.space language codes.
 _ISO1_TO_OCRSPACE = {
-    "ar": "ara", "bg": "bul", "zh": "chs", "zh-cn": "chs", "zh-tw": "cht",
-    "hr": "hrv", "cs": "cze", "da": "dan", "nl": "dut", "en": "eng",
-    "fi": "fin", "fr": "fre", "de": "ger", "el": "gre", "hu": "hun",
-    "ko": "kor", "it": "ita", "ja": "jpn", "pl": "pol", "pt": "por",
-    "ru": "rus", "sl": "slv", "es": "spa", "sv": "swe", "tr": "tur",
+    "ar": "ara",
+    "bg": "bul",
+    "zh": "chs",
+    "zh-cn": "chs",
+    "zh-tw": "cht",
+    "hr": "hrv",
+    "cs": "cze",
+    "da": "dan",
+    "nl": "dut",
+    "en": "eng",
+    "fi": "fin",
+    "fr": "fre",
+    "de": "ger",
+    "el": "gre",
+    "hu": "hun",
+    "ko": "kor",
+    "it": "ita",
+    "ja": "jpn",
+    "pl": "pol",
+    "pt": "por",
+    "ru": "rus",
+    "sl": "slv",
+    "es": "spa",
+    "sv": "swe",
+    "tr": "tur",
 }
 
 

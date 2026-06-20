@@ -37,7 +37,9 @@ class Adapter(BaseOcrAdapter):
             y0 = (1.0 - (y + h)) * height  # flip to top-left origin
             y1 = (1.0 - y) * height
             blocks.append(
-                make_block(text, bbox=(x0, y0, x1, y1), confidence=float(conf), level="line")
+                make_block(
+                    text, bbox=(x0, y0, x1, y1), confidence=float(conf), level="line"
+                )
             )
 
         return OcrResult.from_blocks(blocks, backend=self.backend_id, raw=annotations)

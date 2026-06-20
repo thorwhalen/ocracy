@@ -98,9 +98,14 @@ class BackendInfo(Mapping):
         return dict(self._record)
 
     def __repr__(self) -> str:
-        where = "+".join(
-            w for w, on in (("local", self.is_local), ("remote", self.is_remote)) if on
-        ) or "?"
+        where = (
+            "+".join(
+                w
+                for w, on in (("local", self.is_local), ("remote", self.is_remote))
+                if on
+            )
+            or "?"
+        )
         impl = "implemented" if self.implemented else "listed"
         return f"<BackendInfo {self.id!r} [{where}] {impl}>"
 

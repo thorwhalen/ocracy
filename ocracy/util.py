@@ -95,7 +95,9 @@ def _fetch_url(url: str, *, timeout: float = 30.0) -> bytes:
 def to_pil(image: ImageInput):
     """Convert any supported input into a PIL ``Image`` (lazy import)."""
     # ``PIL.Image`` is the module exposing ``open`` / ``fromarray``.
-    pil_image = check_import("PIL.Image", install_hint="Pillow", feature="image decoding")
+    pil_image = check_import(
+        "PIL.Image", install_hint="Pillow", feature="image decoding"
+    )
     kind = classify_input(image)
     if kind == "pil":
         return image
@@ -144,9 +146,7 @@ def load_image_bytes(image: ImageInput, *, fmt: str = "PNG") -> bytes:
     return buf.getvalue()
 
 
-def ensure_file_path(
-    image: ImageInput, *, suffix: str = ".png"
-) -> Tuple[str, bool]:
+def ensure_file_path(image: ImageInput, *, suffix: str = ".png") -> Tuple[str, bool]:
     """Return ``(path, is_temp)`` for any supported input.
 
     Existing on-disk paths are returned untouched (``is_temp=False``). In-memory
@@ -156,7 +156,9 @@ def ensure_file_path(
     """
     if classify_input(image) == "path":
         return os.fspath(image), False
-    data = load_image_bytes(image, fmt=suffix.lstrip(".").upper().replace("JPG", "JPEG"))
+    data = load_image_bytes(
+        image, fmt=suffix.lstrip(".").upper().replace("JPG", "JPEG")
+    )
     fd, path = tempfile.mkstemp(suffix=suffix, prefix="ocracy_")
     with os.fdopen(fd, "wb") as f:
         f.write(data)

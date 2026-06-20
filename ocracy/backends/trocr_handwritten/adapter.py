@@ -38,5 +38,8 @@ class Adapter(BaseOcrAdapter):
         generated_ids = model.generate(pixel_values)
         text = processor.batch_decode(generated_ids, skip_special_tokens=True)[0]
         return OcrResult.from_text(
-            text, backend=self.backend_id, raw={"model_name": model_name}, model=model_name
+            text,
+            backend=self.backend_id,
+            raw={"model_name": model_name},
+            model=model_name,
         )

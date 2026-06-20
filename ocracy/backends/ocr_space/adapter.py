@@ -9,7 +9,9 @@ _ENDPOINT = "https://api.ocr.space/parse/image"
 class Adapter(BaseOcrAdapter):
     """OCR.space REST adapter."""
 
-    def _read(self, image, *, language="eng", isOverlayRequired=True, **extra) -> OcrResult:
+    def _read(
+        self, image, *, language="eng", isOverlayRequired=True, **extra
+    ) -> OcrResult:
         # Resolve credentials first (cheap, dependency-free) so a missing key fails
         # fast with guidance before we import/network.
         from ocracy.credentials import resolve_credential
@@ -23,6 +25,7 @@ class Adapter(BaseOcrAdapter):
         import requests
 
         from ocracy.util import is_url, load_image_bytes
+
         payload = {
             "apikey": api_key,
             "language": language,
@@ -55,7 +58,13 @@ class Adapter(BaseOcrAdapter):
                 w = word.get("Width", 0)
                 h = word.get("Height", 0)
                 blocks.append(
-                    make_block(word.get("WordText", ""), bbox=(x, y, x + w, y + h), level="word")
+                    make_block(
+                        word.get("WordText", ""),
+                        bbox=(x, y, x + w, y + h),
+                        level="word",
+                    )
                 )
 
-        return OcrResult.from_blocks(blocks, backend=self.backend_id, raw=result, text=text)
+        return OcrResult.from_blocks(
+            blocks, backend=self.backend_id, raw=result, text=text
+        )

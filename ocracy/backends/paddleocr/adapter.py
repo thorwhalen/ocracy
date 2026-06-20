@@ -22,7 +22,9 @@ class Adapter(BaseOcrAdapter):
             from paddleocr import PaddleOCR
 
             try:
-                self._engines[lang] = PaddleOCR(use_angle_cls=True, lang=lang, show_log=False)
+                self._engines[lang] = PaddleOCR(
+                    use_angle_cls=True, lang=lang, show_log=False
+                )
             except TypeError:
                 # Newer PaddleOCR dropped/renamed those kwargs.
                 self._engines[lang] = PaddleOCR(lang=lang)
@@ -47,6 +49,8 @@ class Adapter(BaseOcrAdapter):
                 box, (text, score) = item
             except (TypeError, ValueError):
                 continue
-            blocks.append(make_block(text, bbox=box, confidence=float(score), level="line"))
+            blocks.append(
+                make_block(text, bbox=box, confidence=float(score), level="line")
+            )
 
         return OcrResult.from_blocks(blocks, backend=self.backend_id, raw=raw)

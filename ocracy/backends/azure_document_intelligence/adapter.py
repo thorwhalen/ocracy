@@ -13,7 +13,9 @@ from ocracy.make_backend import BaseOcrAdapter, make_block
 class Adapter(BaseOcrAdapter):
     """Azure Document Intelligence adapter."""
 
-    def _read(self, image, *, model_id="prebuilt-read", endpoint=None, **extra) -> OcrResult:
+    def _read(
+        self, image, *, model_id="prebuilt-read", endpoint=None, **extra
+    ) -> OcrResult:
         # Resolve credentials first (cheap, dependency-free) so missing key/endpoint
         # fails fast with guidance before we import the SDK / network.
         from ocracy.credentials import (
@@ -64,4 +66,6 @@ class Adapter(BaseOcrAdapter):
                     )
                 )
 
-        return OcrResult.from_blocks(blocks, backend=self.backend_id, raw=result, text=text)
+        return OcrResult.from_blocks(
+            blocks, backend=self.backend_id, raw=result, text=text
+        )
