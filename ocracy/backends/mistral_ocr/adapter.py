@@ -13,18 +13,20 @@ class Adapter(BaseOcrAdapter):
     """Mistral OCR API adapter."""
 
     def _read(self, image, *, model="mistral-ocr-latest", **extra) -> OcrResult:
-        import base64
-
-        from mistralai import Mistral
-
         from ocracy.credentials import resolve_credential
-        from ocracy.util import load_image_bytes
 
         api_key = resolve_credential(
             "mistral-ocr",
             api_key=extra.pop("api_key", None),
             env_var=self.config.get("api_env_var"),
         )
+
+        import base64
+
+        from mistralai import Mistral
+
+        from ocracy.util import load_image_bytes
+
         data = load_image_bytes(image)
         b64 = base64.b64encode(data).decode("ascii")
 

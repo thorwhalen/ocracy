@@ -18,16 +18,13 @@ class Adapter(BaseOcrAdapter):
     """Mathpix Convert API adapter."""
 
     def _read(self, image, *, formats=None, **extra) -> OcrResult:
-        import json as _json
-
-        import requests
-
+        # Resolve credentials first (cheap, dependency-free) so a missing key fails
+        # fast with guidance before we import/network.
         from ocracy.credentials import (
             MissingCredentialError,
             credential_help,
             resolve_credential,
         )
-        from ocracy.util import load_image_bytes
 
         app_key = resolve_credential(
             "mathpix",
@@ -39,6 +36,12 @@ class Adapter(BaseOcrAdapter):
             raise MissingCredentialError(
                 "Mathpix also needs MATHPIX_APP_ID.\n" + credential_help("mathpix")
             )
+
+        import json as _json
+
+        import requests
+
+        from ocracy.util import load_image_bytes
 
         formats = formats or ["text", "latex_styled"]
         options = {"formats": formats, "math_inline_delimiters": ["$", "$"]}

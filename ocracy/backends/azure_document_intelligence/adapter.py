@@ -14,15 +14,13 @@ class Adapter(BaseOcrAdapter):
     """Azure Document Intelligence adapter."""
 
     def _read(self, image, *, model_id="prebuilt-read", endpoint=None, **extra) -> OcrResult:
-        from azure.ai.documentintelligence import DocumentIntelligenceClient
-        from azure.core.credentials import AzureKeyCredential
-
+        # Resolve credentials first (cheap, dependency-free) so missing key/endpoint
+        # fails fast with guidance before we import the SDK / network.
         from ocracy.credentials import (
             MissingCredentialError,
             credential_help,
             resolve_credential,
         )
-        from ocracy.util import load_image_bytes
 
         key = resolve_credential(
             "azure-document-intelligence",
@@ -36,6 +34,11 @@ class Adapter(BaseOcrAdapter):
                 "(AZURE_DOCUMENT_INTELLIGENCE_ENDPOINT).\n"
                 + credential_help("azure-document-intelligence")
             )
+
+        from azure.ai.documentintelligence import DocumentIntelligenceClient
+        from azure.core.credentials import AzureKeyCredential
+
+        from ocracy.util import load_image_bytes
 
         data = load_image_bytes(image)
         client = DocumentIntelligenceClient(endpoint, AzureKeyCredential(key))
