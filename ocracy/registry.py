@@ -88,6 +88,9 @@ def _load_adapter(backend_id: str):
         pip_install = config.get("pip_install", backend_id)
         raise ImportError(
             f"Backend {backend_id!r} requires: pip install {pip_install}\n"
+            f"Full install guidance (the ocracy extra, system deps, GPU, weights): "
+            f"ocracy.requirements({backend_id!r}).instructions()  "
+            f"or: ocracy install {backend_id}\n"
             f"Original error: {e}"
         ) from e
     return entry["adapter"]

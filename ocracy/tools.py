@@ -12,7 +12,17 @@ from typing import Optional
 
 import ocracy
 
-__all__ = ["read", "backends", "info", "find", "scaffold", "validate"]
+__all__ = [
+    "read",
+    "backends",
+    "info",
+    "find",
+    "scaffold",
+    "validate",
+    "requirements",
+    "doctor",
+    "install",
+]
 
 
 def _split_csv(value: Optional[str]):
@@ -172,5 +182,57 @@ def validate(backend_id: str):
     )
 
 
+def requirements(backend_id: str, *, gpu: bool = False):
+    """Show what a backend needs to run (pip, system deps, GPU, weights, creds).
+
+    :param backend_id: Backend id, e.g. ``paddleocr``.
+    :param gpu: Include GPU-wheel guidance.
+    """
+    return ocracy.requirements(backend_id, gpu=gpu).instructions()
+
+
+def doctor():
+    """Report which backends are usable now, and how to install the rest."""
+    rep = ocracy.doctor()
+    lines = ["Available now:"]
+    lines += [f"  ✓ {b}" for b in rep["available"]] or ["  (none)"]
+    lines.append("Not installed:")
+    for bid, hint in sorted(rep["missing"].items()):
+        lines.append(f"  ✗ {bid:26} {hint}")
+    return "\n".join(lines)
+
+
+def install(backend_id: str, *, gpu: bool = False, yes: bool = False):
+    """Plan (default) or run (``--yes``) the pip install for a backend.
+
+    Without ``--yes`` it prints the plan and changes nothing. System deps and GPU
+    wheels are surfaced, not run automatically.
+
+    :param backend_id: Backend id to install, e.g. ``rapidocr``.
+    :param gpu: Surface GPU-wheel guidance.
+    :param yes: Actually run ``pip install`` (otherwise just print the plan).
+    """
+    res = ocracy.install(backend_id, gpu=gpu, yes=yes)
+    if res.get("ran"):
+        ok = res.get("available_after")
+        if ok:
+            return f"Installed — '{backend_id}' is ready. ✓"
+        return (
+            f"pip exit {res['returncode']}; '{backend_id}' still not importable.\n"
+            + res["requirements"].instructions()
+        )
+    return res.get("message") or res["requirements"].instructions()
+
+
 # SSOT list of CLI-dispatchable functions.
-_dispatch_funcs = [read, backends, info, find, scaffold, validate]
+_dispatch_funcs = [
+    read,
+    backends,
+    info,
+    find,
+    scaffold,
+    validate,
+    requirements,
+    doctor,
+    install,
+]

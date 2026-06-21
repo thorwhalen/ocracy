@@ -57,6 +57,12 @@ If the chosen backend's dependency is missing, ocracy raises a clear
 `pip install ...` error. If a *remote* backend's credential is missing, the error
 tells you which env var to set and links where to get a key.
 
+For heavier setups — Paddle's framework, Torch engines, Tesseract's *system*
+binary, GPU wheels, first-run model weights — use the install helpers:
+`ocracy.doctor()` (what's usable now), `ocracy.requirements("paddleocr").instructions()`
+(the exact OS-aware plan), `ocracy.install("rapidocr", yes=True)` (run it + verify),
+or the **ocracy-install-backend** skill.
+
 ## Reading the result
 
 Every backend returns the same `OcrResult`:

@@ -48,6 +48,24 @@ pip install "ocracy[table]"         # pandas, for catalog.to_dataframe()
 …plus **53 more** engines/services catalogued in the ledger that you can turn into
 a working façade with one command (see *Add a backend* below).
 
+### Getting a backend running
+
+Some backends need more than `pip install` (Tesseract's *system* binary, Paddle's
+framework, GPU wheels, first-run model weights, or an API key). ocracy turns that
+into structured, OS-aware guidance — handy for humans and AI agents alike:
+
+```python
+ocracy.doctor()                       # what's usable now vs what each missing one needs
+ocracy.check("paddleocr")             # -> True/False (usable right now?)
+print(ocracy.requirements("paddleocr").instructions())   # exact plan: pip + system deps + GPU + weights
+ocracy.install("rapidocr", yes=True)  # run the pip install + verify (yes=False = dry run)
+```
+```bash
+ocracy doctor · ocracy requirements paddleocr --gpu · ocracy install rapidocr --yes
+```
+`requirements()` even suggests a *lighter alternative* when one exists (e.g.
+PaddleOCR → RapidOCR). The `ocracy-install-backend` skill drives all of this.
+
 ## Three tiers of access
 
 From simplest to most powerful — reach for the next tier only when you need it:
@@ -162,6 +180,7 @@ installed with the package) so AI coding agents can both *use* and *extend* it:
 |---|---|---|
 | `ocracy` | users | OCR an image/PDF, choose & install a backend, read the result |
 | `ocracy-choose-backend` | users | filter & compare the 64-backend ledger to pick the right engine |
+| `ocracy-install-backend` | users / agents | get a backend running — heavy installs, system deps, GPU, weights, keys |
 | `ocracy-add-backend` | developers | wrap a new engine behind ocracy's interface (scaffold → adapter → validate) |
 
 In a repo using Claude Code they're discoverable via the `.claude/skills/`

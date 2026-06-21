@@ -55,6 +55,14 @@ from ocracy.make_backend import (
     scaffold_backend,
     validate_adapter,
 )
+from ocracy.install import (
+    Requirements,
+    available_backends,
+    check,
+    doctor,
+    install,
+    requirements,
+)
 
 __all__ = [
     "ocr",
@@ -78,6 +86,12 @@ __all__ = [
     "make_block",
     "scaffold_backend",
     "validate_adapter",
+    "requirements",
+    "check",
+    "doctor",
+    "install",
+    "available_backends",
+    "Requirements",
     "__version__",
 ]
 
