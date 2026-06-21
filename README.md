@@ -35,8 +35,8 @@ pip install "ocracy[table]"         # pandas, for catalog.to_dataframe()
 |---|---|---|---|---|---|
 | Tesseract | `tesseract` | local | free | `ocracy[tesseract]` (+ system `tesseract`) | 100+ language baseline |
 | EasyOCR | `easyocr` | local | free | `ocracy[easyocr]` | 80+ languages, scene text |
-| RapidOCR | `rapidocr` | local | free | `ocracy[rapidocr]` | PP-OCR accuracy, light ONNX (no Paddle) |
-| PaddleOCR | `paddleocr` | local | free | `ocracy[paddleocr]` | top OSS accuracy, strong CJK, 100+ langs |
+| RapidOCR | `rapidocr` | local | free | `ocracy[rapidocr]` | same PP-OCR models as Paddle, light CPU/ONNX — **recommended default for local plain text** |
+| PaddleOCR | `paddleocr` | local | free | `ocracy[paddleocr]` | the platform: server models, GPU, on-ramp to tables/layout (PP-Structure) & VL — heavier install |
 | ocrmac (Apple Vision) | `ocrmac` | local (macOS) | free | `ocracy[ocrmac]` | on-device, handwriting |
 | OCR.space | `ocr-space` | remote | free tier | `ocracy[ocr-space]` | zero-install REST |
 | Google Cloud Vision | `google-vision` | remote | paid (+free tier) | `ocracy[google-vision]` | high accuracy, handwriting, structure |

@@ -84,7 +84,10 @@ _RECIPES: Dict[str, dict] = {
         "extra": "rapidocr",
         "weights": "Model weights ship inside the wheel — no first-run download.",
         "notes": [
-            "Light, CPU-only (ONNXRuntime); the easiest 'high accuracy' local install."
+            "Light, CPU-only (ONNXRuntime); the recommended default for local plain-text OCR.",
+            "Runs the same PP-OCR models as paddleocr. For tables/layout/formula "
+            "(PP-Structure), the larger server models, GPU-scale throughput, or "
+            "fine-tuning, use paddleocr instead.",
         ],
     },
     "paddleocr": {
@@ -93,9 +96,15 @@ _RECIPES: Dict[str, dict] = {
         "gpu": "For GPU, replace paddlepaddle with the CUDA build: pip install paddlepaddle-gpu "
         "(match your CUDA version per https://www.paddlepaddle.org.cn/en/install/quick).",
         "weights": "Downloads PP-OCR model weights on first use (cached under ~/.paddleocr).",
-        "alt": "rapidocr (runs the same PP-OCR models via ONNX without the PaddlePaddle framework)",
+        "alt": "rapidocr — the same PP-OCR text models via ONNX, lighter and CPU-only "
+        "(plain-text recognition only)",
         "notes": [
-            "PaddlePaddle wheels are platform/Python-version sensitive; if pip struggles, try rapidocr."
+            "For plain printed text, prefer rapidocr (lighter, same models). Choose "
+            "paddleocr when you want the larger server models, GPU throughput, "
+            "fine-tuning, or to grow into PP-Structure (tables/layout/formula) / "
+            "PaddleOCR-VL — capabilities RapidOCR does not provide.",
+            "PaddlePaddle wheels are platform/Python-version sensitive; if the install "
+            "fights you and you only need plain text, switch to rapidocr.",
         ],
     },
     "ocrmac": {
