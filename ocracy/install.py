@@ -83,7 +83,9 @@ _RECIPES: Dict[str, dict] = {
     "rapidocr": {
         "extra": "rapidocr",
         "weights": "Model weights ship inside the wheel — no first-run download.",
-        "notes": ["Light, CPU-only (ONNXRuntime); the easiest 'high accuracy' local install."],
+        "notes": [
+            "Light, CPU-only (ONNXRuntime); the easiest 'high accuracy' local install."
+        ],
     },
     "paddleocr": {
         "extra": "paddleocr",
@@ -92,7 +94,9 @@ _RECIPES: Dict[str, dict] = {
         "(match your CUDA version per https://www.paddlepaddle.org.cn/en/install/quick).",
         "weights": "Downloads PP-OCR model weights on first use (cached under ~/.paddleocr).",
         "alt": "rapidocr (runs the same PP-OCR models via ONNX without the PaddlePaddle framework)",
-        "notes": ["PaddlePaddle wheels are platform/Python-version sensitive; if pip struggles, try rapidocr."],
+        "notes": [
+            "PaddlePaddle wheels are platform/Python-version sensitive; if pip struggles, try rapidocr."
+        ],
     },
     "ocrmac": {
         "extra": "ocrmac",
@@ -168,12 +172,16 @@ class Requirements:
         if self.weights:
             lines.append(f"  • {self.weights}")
         if self.heavy:
-            lines.append("  • Note: large download (deep-learning framework + weights).")
+            lines.append(
+                "  • Note: large download (deep-learning framework + weights)."
+            )
         if self.alternative:
             lines.append(f"  • Lighter alternative: {self.alternative}.")
         for note in self.notes:
             lines.append(f"  • {note}")
-        lines.append(f"Verify:   python -c \"import ocracy; print(ocracy.check('{self.backend_id}'))\"")
+        lines.append(
+            f"Verify:   python -c \"import ocracy; print(ocracy.check('{self.backend_id}'))\""
+        )
         return "\n".join(lines)
 
     def __str__(self) -> str:
@@ -220,7 +228,9 @@ def requirements(backend_id: str, *, gpu: bool = False) -> Requirements:
 
     system = list(recipe.get("system", {}).get(_platform(), []))
     api_env = cfg.get("api_env_var") or record.get("api_env_var") or ""
-    credentials = _credential_lines(api_env, backend_id) if is_remote and api_env else []
+    credentials = (
+        _credential_lines(api_env, backend_id) if is_remote and api_env else []
+    )
 
     notes = list(recipe.get("notes", []))
     if not implemented:
@@ -315,7 +325,9 @@ def install(
         result["message"] = req.instructions()
         return result
     if not yes:
-        result["message"] = "Dry run — pass yes=True to run the pip install.\n" + req.instructions()
+        result["message"] = (
+            "Dry run — pass yes=True to run the pip install.\n" + req.instructions()
+        )
         return result
 
     import subprocess
@@ -334,7 +346,11 @@ def install(
     if verify and proc.returncode == 0:
         # Importability is module-cached; probe in a fresh interpreter.
         probe = subprocess.run(
-            [sys.executable, "-c", f"import ocracy; print(ocracy.check('{backend_id}'))"],
+            [
+                sys.executable,
+                "-c",
+                f"import ocracy; print(ocracy.check('{backend_id}'))",
+            ],
             capture_output=True,
             text=True,
         )
