@@ -56,6 +56,7 @@
    module_docs/ocracy/base
    module_docs/ocracy/catalog
    module_docs/ocracy/credentials
+   module_docs/ocracy/install
    module_docs/ocracy/make_backend
    module_docs/ocracy/registry
    module_docs/ocracy/services

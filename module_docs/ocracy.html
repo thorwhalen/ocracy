@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ocracy &mdash; ocracy 0.1.1 documentation</title>
+  <title>ocracy &mdash; ocracy 0.1.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../_static/documentation_options.js?v=a58bc63e"></script>
+      <script src="../_static/documentation_options.js?v=92734c54"></script>
       <script src="../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -75,6 +75,10 @@
 <li class="toctree-l3"><a class="reference internal" href="#ocracy.OcrResult.mean_confidence"><code class="docutils literal notranslate"><span class="pre">OcrResult.mean_confidence</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#ocracy.Requirements"><code class="docutils literal notranslate"><span class="pre">Requirements</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ocracy.Requirements.instructions"><code class="docutils literal notranslate"><span class="pre">Requirements.instructions()</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="#ocracy.ServiceCollection"><code class="docutils literal notranslate"><span class="pre">ServiceCollection</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ocracy.TextBlock"><code class="docutils literal notranslate"><span class="pre">TextBlock</span></code></a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#ocracy.TextBlock.text"><code class="docutils literal notranslate"><span class="pre">TextBlock.text</span></code></a></li>
@@ -85,14 +89,19 @@
 <li class="toctree-l3"><a class="reference internal" href="#ocracy.TextBlock.meta"><code class="docutils literal notranslate"><span class="pre">TextBlock.meta</span></code></a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#ocracy.available_backends"><code class="docutils literal notranslate"><span class="pre">available_backends()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ocracy.check"><code class="docutils literal notranslate"><span class="pre">check()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ocracy.doctor"><code class="docutils literal notranslate"><span class="pre">doctor()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ocracy.find"><code class="docutils literal notranslate"><span class="pre">find()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ocracy.get_config"><code class="docutils literal notranslate"><span class="pre">get_config()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ocracy.get_default_backend"><code class="docutils literal notranslate"><span class="pre">get_default_backend()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ocracy.install"><code class="docutils literal notranslate"><span class="pre">install()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ocracy.list_backends"><code class="docutils literal notranslate"><span class="pre">list_backends()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ocracy.make_block"><code class="docutils literal notranslate"><span class="pre">make_block()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ocracy.ocr"><code class="docutils literal notranslate"><span class="pre">ocr()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ocracy.read_text"><code class="docutils literal notranslate"><span class="pre">read_text()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ocracy.register_backend"><code class="docutils literal notranslate"><span class="pre">register_backend()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ocracy.requirements"><code class="docutils literal notranslate"><span class="pre">requirements()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ocracy.scaffold_backend"><code class="docutils literal notranslate"><span class="pre">scaffold_backend()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ocracy.services"><code class="docutils literal notranslate"><span class="pre">services</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ocracy.validate_adapter"><code class="docutils literal notranslate"><span class="pre">validate_adapter()</span></code></a></li>
@@ -151,6 +160,7 @@
 <li class="toctree-l1"><a class="reference internal" href="ocracy/base.html">ocracy.base</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ocracy/catalog.html">ocracy.catalog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ocracy/credentials.html">ocracy.credentials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="ocracy/install.html">ocracy.install</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ocracy/make_backend.html">ocracy.make_backend</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ocracy/registry.html">ocracy.registry</a></li>
 <li class="toctree-l1"><a class="reference internal" href="ocracy/services.html">ocracy.services</a></li>
@@ -402,6 +412,18 @@ reading order, or pre-join and pass <code class="docutils literal notranslate"><
 </dd></dl>
 
 <dl class="py class">
+<dt class="sig sig-object py" id="ocracy.Requirements">
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ocracy.</span></span><span class="sig-name descname"><span class="pre">Requirements</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">backend_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">implemented</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">available</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_local</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_remote</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pip_command</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extra</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">system</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">system_note</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gpu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">heavy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alternative</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">credentials</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">notes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocracy/install.html#Requirements"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.Requirements" title="Link to this definition"></a></dt>
+<dd><p>What a backend needs to run — structured for an agent to act on.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ocracy.Requirements.instructions">
+<span class="sig-name descname"><span class="pre">instructions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../_modules/ocracy/install.html#Requirements.instructions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.Requirements.instructions" title="Link to this definition"></a></dt>
+<dd><p>An agent-/human-readable, copy-pasteable install plan.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="ocracy.ServiceCollection">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ocracy.</span></span><span class="sig-name descname"><span class="pre">ServiceCollection</span></span><a class="reference internal" href="../_modules/ocracy/services.html#ServiceCollection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.ServiceCollection" title="Link to this definition"></a></dt>
 <dd><p>Lazy mapping of backend ids -&gt; <code class="xref py py-class docutils literal notranslate"><span class="pre">ServiceHandle</span></code>.</p>
@@ -483,6 +505,25 @@ from whatever scale the backend used), if available.</p>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="ocracy.available_backends">
+<span class="sig-prename descclassname"><span class="pre">ocracy.</span></span><span class="sig-name descname"><span class="pre">available_backends</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="../_modules/ocracy/install.html#available_backends"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.available_backends" title="Link to this definition"></a></dt>
+<dd><p>Implemented backends whose dependency is importable right now.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ocracy.check">
+<span class="sig-prename descclassname"><span class="pre">ocracy.</span></span><span class="sig-name descname"><span class="pre">check</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">backend_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="../_modules/ocracy/install.html#check"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.check" title="Link to this definition"></a></dt>
+<dd><p>Is <code class="docutils literal notranslate"><span class="pre">backend_id</span></code> importable / usable right now? (no install, no network).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ocracy.doctor">
+<span class="sig-prename descclassname"><span class="pre">ocracy.</span></span><span class="sig-name descname"><span class="pre">doctor</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../_modules/ocracy/install.html#doctor"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.doctor" title="Link to this definition"></a></dt>
+<dd><p>Report which implemented backends are usable now and what the rest need.</p>
+<p>Returns <code class="docutils literal notranslate"><span class="pre">{&quot;available&quot;:</span> <span class="pre">[...],</span> <span class="pre">&quot;missing&quot;:</span> <span class="pre">{id:</span> <span class="pre">one-line</span> <span class="pre">install</span> <span class="pre">hint}}</span></code>.</p>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="ocracy.find">
 <span class="sig-prename descclassname"><span class="pre">ocracy.</span></span><span class="sig-name descname"><span class="pre">find</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">criteria</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="ocracy/catalog.html#ocracy.catalog.Catalog" title="ocracy.catalog.Catalog"><span class="pre">Catalog</span></a></span></span><a class="reference internal" href="../_modules/ocracy.html#find"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.find" title="Link to this definition"></a></dt>
 <dd><p>Filter the ledger; shorthand for <a class="reference internal" href="ocracy/catalog.html#ocracy.catalog.Catalog.filter" title="ocracy.catalog.Catalog.filter"><code class="xref py py-meth docutils literal notranslate"><span class="pre">ocracy.catalog.Catalog.filter()</span></code></a>.</p>
@@ -508,6 +549,19 @@ capability <em>and</em> whose dependency is importable; then any importable back
 for the capability; then — if <code class="docutils literal notranslate"><span class="pre">require_available</span></code> is False or nothing is
 installed — the first registered candidate (using it will raise a helpful
 install error).</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ocracy.install">
+<span class="sig-prename descclassname"><span class="pre">ocracy.</span></span><span class="sig-name descname"><span class="pre">install</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">backend_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">yes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gpu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verify</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upgrade</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="reference internal" href="../_modules/ocracy/install.html#install"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.install" title="Link to this definition"></a></dt>
+<dd><p>Plan (and optionally run) the pip install for a backend.</p>
+<p>With <code class="docutils literal notranslate"><span class="pre">yes=False</span></code> (default) this is a <strong>dry run</strong>: it returns the plan
+without changing anything — call <code class="docutils literal notranslate"><span class="pre">result['requirements'].instructions()</span></code> to
+show it. With <code class="docutils literal notranslate"><span class="pre">yes=True</span></code> it runs <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span></code> for the backend’s extra in
+the current interpreter, then (if <code class="docutils literal notranslate"><span class="pre">verify</span></code>) checks importability.</p>
+<p>System dependencies and GPU wheels are <em>surfaced</em>, never run automatically
+(they need sudo/brew or an environment-specific CUDA choice) — run those
+yourself from <code class="docutils literal notranslate"><span class="pre">result['requirements'].system</span></code> / <code class="docutils literal notranslate"><span class="pre">.gpu</span></code>.</p>
 </dd></dl>
 
 <dl class="py function">
@@ -567,6 +621,15 @@ Unknown options for the chosen backend are warned about and dropped.</p></li>
 </ul>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ocracy.requirements">
+<span class="sig-prename descclassname"><span class="pre">ocracy.</span></span><span class="sig-name descname"><span class="pre">requirements</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">backend_id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">gpu</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="ocracy/install.html#ocracy.install.Requirements" title="ocracy.install.Requirements"><span class="pre">Requirements</span></a></span></span><a class="reference internal" href="../_modules/ocracy/install.html#requirements"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.requirements" title="Link to this definition"></a></dt>
+<dd><p>Return structured install <a class="reference internal" href="#ocracy.Requirements" title="ocracy.Requirements"><code class="xref py py-class docutils literal notranslate"><span class="pre">Requirements</span></code></a> for <code class="docutils literal notranslate"><span class="pre">backend_id</span></code>.</p>
+<p>Works for both implemented backends (uses the <code class="docutils literal notranslate"><span class="pre">ocracy[extra]</span></code> install and
+the recipe) and ledger-only backends (falls back to the ledger’s
+<code class="docutils literal notranslate"><span class="pre">python_install</span></code> string). Pass <code class="docutils literal notranslate"><span class="pre">gpu=True</span></code> to surface GPU wheel guidance.</p>
 </dd></dl>
 
 <dl class="py function">

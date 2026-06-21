@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ocracy.tools &mdash; ocracy 0.1.1 documentation</title>
+  <title>ocracy.tools &mdash; ocracy 0.1.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=a58bc63e"></script>
+      <script src="../../_static/documentation_options.js?v=92734c54"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -100,6 +100,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/base.html">ocracy.base</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/catalog.html">ocracy.catalog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/credentials.html">ocracy.credentials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/install.html">ocracy.install</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/make_backend.html">ocracy.make_backend</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/registry.html">ocracy.registry</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/services.html">ocracy.services</a></li>
@@ -148,7 +149,17 @@
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">ocracy</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;read&quot;</span><span class="p">,</span> <span class="s2">&quot;backends&quot;</span><span class="p">,</span> <span class="s2">&quot;info&quot;</span><span class="p">,</span> <span class="s2">&quot;find&quot;</span><span class="p">,</span> <span class="s2">&quot;scaffold&quot;</span><span class="p">,</span> <span class="s2">&quot;validate&quot;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;read&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;backends&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;info&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;find&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;scaffold&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;validate&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;requirements&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;doctor&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;install&quot;</span><span class="p">,</span>
+<span class="p">]</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_split_csv</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]):</span>
@@ -326,8 +337,69 @@
 
 
 
+<div class="viewcode-block" id="requirements">
+<a class="viewcode-back" href="../../module_docs/ocracy/tools.html#ocracy.tools.requirements">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">requirements</span><span class="p">(</span><span class="n">backend_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">gpu</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Show what a backend needs to run (pip, system deps, GPU, weights, creds).</span>
+
+<span class="sd">    :param backend_id: Backend id, e.g. ``paddleocr``.</span>
+<span class="sd">    :param gpu: Include GPU-wheel guidance.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">ocracy</span><span class="o">.</span><span class="n">requirements</span><span class="p">(</span><span class="n">backend_id</span><span class="p">,</span> <span class="n">gpu</span><span class="o">=</span><span class="n">gpu</span><span class="p">)</span><span class="o">.</span><span class="n">instructions</span><span class="p">()</span></div>
+
+
+
+<div class="viewcode-block" id="doctor">
+<a class="viewcode-back" href="../../module_docs/ocracy/tools.html#ocracy.tools.doctor">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">doctor</span><span class="p">():</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Report which backends are usable now, and how to install the rest.&quot;&quot;&quot;</span>
+    <span class="n">rep</span> <span class="o">=</span> <span class="n">ocracy</span><span class="o">.</span><span class="n">doctor</span><span class="p">()</span>
+    <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Available now:&quot;</span><span class="p">]</span>
+    <span class="n">lines</span> <span class="o">+=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;  ✓ </span><span class="si">{</span><span class="n">b</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">rep</span><span class="p">[</span><span class="s2">&quot;available&quot;</span><span class="p">]]</span> <span class="ow">or</span> <span class="p">[</span><span class="s2">&quot;  (none)&quot;</span><span class="p">]</span>
+    <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;Not installed:&quot;</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">bid</span><span class="p">,</span> <span class="n">hint</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">rep</span><span class="p">[</span><span class="s2">&quot;missing&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()):</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  ✗ </span><span class="si">{</span><span class="n">bid</span><span class="si">:</span><span class="s2">26</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">hint</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="install">
+<a class="viewcode-back" href="../../module_docs/ocracy/tools.html#ocracy.tools.install">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">install</span><span class="p">(</span><span class="n">backend_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">gpu</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">yes</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Plan (default) or run (``--yes``) the pip install for a backend.</span>
+
+<span class="sd">    Without ``--yes`` it prints the plan and changes nothing. System deps and GPU</span>
+<span class="sd">    wheels are surfaced, not run automatically.</span>
+
+<span class="sd">    :param backend_id: Backend id to install, e.g. ``rapidocr``.</span>
+<span class="sd">    :param gpu: Surface GPU-wheel guidance.</span>
+<span class="sd">    :param yes: Actually run ``pip install`` (otherwise just print the plan).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">ocracy</span><span class="o">.</span><span class="n">install</span><span class="p">(</span><span class="n">backend_id</span><span class="p">,</span> <span class="n">gpu</span><span class="o">=</span><span class="n">gpu</span><span class="p">,</span> <span class="n">yes</span><span class="o">=</span><span class="n">yes</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">res</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ran&quot;</span><span class="p">):</span>
+        <span class="n">ok</span> <span class="o">=</span> <span class="n">res</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;available_after&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ok</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Installed — &#39;</span><span class="si">{</span><span class="n">backend_id</span><span class="si">}</span><span class="s2">&#39; is ready. ✓&quot;</span>
+        <span class="k">return</span> <span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;pip exit </span><span class="si">{</span><span class="n">res</span><span class="p">[</span><span class="s1">&#39;returncode&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">; &#39;</span><span class="si">{</span><span class="n">backend_id</span><span class="si">}</span><span class="s2">&#39; still not importable.</span><span class="se">\n</span><span class="s2">&quot;</span>
+            <span class="o">+</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;requirements&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">instructions</span><span class="p">()</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">res</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;message&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">res</span><span class="p">[</span><span class="s2">&quot;requirements&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">instructions</span><span class="p">()</span></div>
+
+
+
 <span class="c1"># SSOT list of CLI-dispatchable functions.</span>
-<span class="n">_dispatch_funcs</span> <span class="o">=</span> <span class="p">[</span><span class="n">read</span><span class="p">,</span> <span class="n">backends</span><span class="p">,</span> <span class="n">info</span><span class="p">,</span> <span class="n">find</span><span class="p">,</span> <span class="n">scaffold</span><span class="p">,</span> <span class="n">validate</span><span class="p">]</span>
+<span class="n">_dispatch_funcs</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="n">read</span><span class="p">,</span>
+    <span class="n">backends</span><span class="p">,</span>
+    <span class="n">info</span><span class="p">,</span>
+    <span class="n">find</span><span class="p">,</span>
+    <span class="n">scaffold</span><span class="p">,</span>
+    <span class="n">validate</span><span class="p">,</span>
+    <span class="n">requirements</span><span class="p">,</span>
+    <span class="n">doctor</span><span class="p">,</span>
+    <span class="n">install</span><span class="p">,</span>
+<span class="p">]</span>
 </pre></div>
 
            </div>

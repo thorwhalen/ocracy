@@ -1,0 +1,532 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ocracy.install &mdash; ocracy 0.1.2 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=92734c54"></script>
+      <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
+      <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            ocracy
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy.html">ocracy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/__main__.html">ocracy.__main__</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends.html">ocracy.backends</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/_template.html">ocracy.backends._template</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/_template/adapter.html">ocracy.backends._template.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/_template/config.html">ocracy.backends._template.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/aws_textract.html">ocracy.backends.aws_textract</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/aws_textract/adapter.html">ocracy.backends.aws_textract.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/aws_textract/config.html">ocracy.backends.aws_textract.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/azure_document_intelligence.html">ocracy.backends.azure_document_intelligence</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/azure_document_intelligence/adapter.html">ocracy.backends.azure_document_intelligence.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/azure_document_intelligence/config.html">ocracy.backends.azure_document_intelligence.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/claude_vision.html">ocracy.backends.claude_vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/claude_vision/adapter.html">ocracy.backends.claude_vision.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/claude_vision/config.html">ocracy.backends.claude_vision.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/easyocr.html">ocracy.backends.easyocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/easyocr/adapter.html">ocracy.backends.easyocr.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/easyocr/config.html">ocracy.backends.easyocr.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/google_vision.html">ocracy.backends.google_vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/google_vision/adapter.html">ocracy.backends.google_vision.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/google_vision/config.html">ocracy.backends.google_vision.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/gpt_4o_vision.html">ocracy.backends.gpt_4o_vision</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/gpt_4o_vision/adapter.html">ocracy.backends.gpt_4o_vision.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/gpt_4o_vision/config.html">ocracy.backends.gpt_4o_vision.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/mathpix.html">ocracy.backends.mathpix</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/mathpix/adapter.html">ocracy.backends.mathpix.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/mathpix/config.html">ocracy.backends.mathpix.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/mistral_ocr.html">ocracy.backends.mistral_ocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/mistral_ocr/adapter.html">ocracy.backends.mistral_ocr.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/mistral_ocr/config.html">ocracy.backends.mistral_ocr.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/ocr_space.html">ocracy.backends.ocr_space</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/ocr_space/adapter.html">ocracy.backends.ocr_space.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/ocr_space/config.html">ocracy.backends.ocr_space.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/ocrmac.html">ocracy.backends.ocrmac</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/ocrmac/adapter.html">ocracy.backends.ocrmac.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/ocrmac/config.html">ocracy.backends.ocrmac.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/paddleocr.html">ocracy.backends.paddleocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/paddleocr/adapter.html">ocracy.backends.paddleocr.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/paddleocr/config.html">ocracy.backends.paddleocr.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/pix2tex_latex_ocr.html">ocracy.backends.pix2tex_latex_ocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/pix2tex_latex_ocr/adapter.html">ocracy.backends.pix2tex_latex_ocr.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/pix2tex_latex_ocr/config.html">ocracy.backends.pix2tex_latex_ocr.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/rapidocr.html">ocracy.backends.rapidocr</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/rapidocr/adapter.html">ocracy.backends.rapidocr.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/rapidocr/config.html">ocracy.backends.rapidocr.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/tesseract.html">ocracy.backends.tesseract</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/tesseract/adapter.html">ocracy.backends.tesseract.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/tesseract/config.html">ocracy.backends.tesseract.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/trocr_handwritten.html">ocracy.backends.trocr_handwritten</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/trocr_handwritten/adapter.html">ocracy.backends.trocr_handwritten.adapter</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/backends/trocr_handwritten/config.html">ocracy.backends.trocr_handwritten.config</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/base.html">ocracy.base</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/catalog.html">ocracy.catalog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/credentials.html">ocracy.credentials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/install.html">ocracy.install</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/make_backend.html">ocracy.make_backend</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/registry.html">ocracy.registry</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/services.html">ocracy.services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/tools.html">ocracy.tools</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/translation.html">ocracy.translation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../module_docs/ocracy/util.html">ocracy.util</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">ocracy</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+          <li class="breadcrumb-item"><a href="../ocracy.html">ocracy</a></li>
+      <li class="breadcrumb-item active">ocracy.install</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for ocracy.install</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Install helpers — make it easy (for a human *or* an AI agent) to get a backend running.</span>
+
+<span class="sd">Many backends are not just ``pip install`` away: Tesseract needs a *system*</span>
+<span class="sd">binary, PaddleOCR pulls a deep-learning framework (with separate CPU/GPU wheels),</span>
+<span class="sd">Torch-based engines (EasyOCR, TrOCR, pix2tex) are heavy and download model weights</span>
+<span class="sd">on first use, and the remote backends need a credential rather than a package.</span>
+
+<span class="sd">This module turns those realities into structured, OS-aware guidance an agent can</span>
+<span class="sd">act on:</span>
+
+<span class="sd">- :func:`requirements` — what a backend needs (pip extra, system deps for *this*</span>
+<span class="sd">  OS, GPU notes, model-weight notes, credential env vars), plus whether it&#39;s</span>
+<span class="sd">  already importable. ``Requirements.instructions()`` renders an agent-/human-</span>
+<span class="sd">  readable plan.</span>
+<span class="sd">- :func:`check` / :func:`doctor` — is a backend (or every backend) usable right now?</span>
+<span class="sd">- :func:`install` — optionally run the ``pip install`` for a backend (with</span>
+<span class="sd">  confirmation) and verify it. System deps and GPU wheels are *surfaced*, not run</span>
+<span class="sd">  automatically (they need sudo/brew or environment-specific CUDA choices).</span>
+
+<span class="sd">The companion ``ocracy-install-backend`` skill walks an agent through using these.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">dataclasses</span><span class="w"> </span><span class="kn">import</span> <span class="n">dataclass</span><span class="p">,</span> <span class="n">field</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">List</span><span class="p">,</span> <span class="n">Optional</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;Requirements&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;requirements&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;check&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;available_backends&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;doctor&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;install&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_platform</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="n">p</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">platform</span>
+    <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;darwin&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;darwin&quot;</span>
+    <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;linux&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;linux&quot;</span>
+    <span class="k">if</span> <span class="n">p</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;win&quot;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">&quot;windows&quot;</span>
+    <span class="k">return</span> <span class="n">p</span>
+
+
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="c1"># Per-backend install recipes (the tricky knowledge, in one place)</span>
+<span class="c1">#</span>
+<span class="c1"># Only fields that differ from the trivial &quot;pip install ocracy[&lt;id&gt;]&quot; need an</span>
+<span class="c1"># entry. ``extra`` is the pyproject extra name when it differs from the backend id.</span>
+<span class="c1"># ``system`` maps platform -&gt; shell commands. ``gpu`` is an alternative/extra pip</span>
+<span class="c1"># line for GPU. ``weights`` notes first-run model downloads. ``alt`` suggests a</span>
+<span class="c1"># lighter backend with comparable results.</span>
+<span class="c1"># ---------------------------------------------------------------------------</span>
+<span class="n">_RECIPES</span><span class="p">:</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">&quot;tesseract&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;extra&quot;</span><span class="p">:</span> <span class="s2">&quot;tesseract&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;system&quot;</span><span class="p">:</span> <span class="p">{</span>
+            <span class="s2">&quot;darwin&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;brew install tesseract&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;linux&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;sudo apt-get update &amp;&amp; sudo apt-get install -y tesseract-ocr&quot;</span><span class="p">],</span>
+            <span class="s2">&quot;windows&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="s2">&quot;Install the UB-Mannheim Tesseract build: &quot;</span>
+                <span class="s2">&quot;https://github.com/UB-Mannheim/tesseract/wiki  (or: choco install tesseract)&quot;</span>
+            <span class="p">],</span>
+        <span class="p">},</span>
+        <span class="s2">&quot;system_note&quot;</span><span class="p">:</span> <span class="s2">&quot;Tesseract needs the system &#39;tesseract&#39; binary (the pip package is only a wrapper).&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;notes&quot;</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s2">&quot;Extra languages: &#39;brew install tesseract-lang&#39; (macOS) or &quot;</span>
+            <span class="s2">&quot;&#39;apt-get install tesseract-ocr-&lt;lang&gt;&#39; (Linux), e.g. tesseract-ocr-fra.&quot;</span>
+        <span class="p">],</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;easyocr&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;extra&quot;</span><span class="p">:</span> <span class="s2">&quot;easyocr&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;heavy&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s2">&quot;gpu&quot;</span><span class="p">:</span> <span class="s2">&quot;For GPU, install a CUDA build of torch first (see https://pytorch.org/get-started/locally/).&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;weights&quot;</span><span class="p">:</span> <span class="s2">&quot;Downloads recognition/detection model weights on first use (cached under ~/.EasyOCR).&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;alt&quot;</span><span class="p">:</span> <span class="s2">&quot;rapidocr (same PP-OCR-class accuracy, much lighter install, no Torch)&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;rapidocr&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;extra&quot;</span><span class="p">:</span> <span class="s2">&quot;rapidocr&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;weights&quot;</span><span class="p">:</span> <span class="s2">&quot;Model weights ship inside the wheel — no first-run download.&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;notes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Light, CPU-only (ONNXRuntime); the easiest &#39;high accuracy&#39; local install.&quot;</span><span class="p">],</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;paddleocr&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;extra&quot;</span><span class="p">:</span> <span class="s2">&quot;paddleocr&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;heavy&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s2">&quot;gpu&quot;</span><span class="p">:</span> <span class="s2">&quot;For GPU, replace paddlepaddle with the CUDA build: pip install paddlepaddle-gpu &quot;</span>
+        <span class="s2">&quot;(match your CUDA version per https://www.paddlepaddle.org.cn/en/install/quick).&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;weights&quot;</span><span class="p">:</span> <span class="s2">&quot;Downloads PP-OCR model weights on first use (cached under ~/.paddleocr).&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;alt&quot;</span><span class="p">:</span> <span class="s2">&quot;rapidocr (runs the same PP-OCR models via ONNX without the PaddlePaddle framework)&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;notes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;PaddlePaddle wheels are platform/Python-version sensitive; if pip struggles, try rapidocr.&quot;</span><span class="p">],</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;ocrmac&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;extra&quot;</span><span class="p">:</span> <span class="s2">&quot;ocrmac&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;system_note&quot;</span><span class="p">:</span> <span class="s2">&quot;macOS only — uses the built-in Apple Vision framework (no extra system install).&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;notes&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;Not available on Linux/Windows.&quot;</span><span class="p">],</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;pix2tex-latex-ocr&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;extra&quot;</span><span class="p">:</span> <span class="s2">&quot;pix2tex&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;heavy&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s2">&quot;gpu&quot;</span><span class="p">:</span> <span class="s2">&quot;GPU optional; install a CUDA torch build for speed (https://pytorch.org/get-started/locally/).&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;weights&quot;</span><span class="p">:</span> <span class="s2">&quot;Downloads the LaTeX-OCR model on first use.&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="s2">&quot;trocr-handwritten&quot;</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">&quot;extra&quot;</span><span class="p">:</span> <span class="s2">&quot;trocr&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;heavy&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s2">&quot;gpu&quot;</span><span class="p">:</span> <span class="s2">&quot;GPU optional; install a CUDA torch build for speed (https://pytorch.org/get-started/locally/).&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;weights&quot;</span><span class="p">:</span> <span class="s2">&quot;Downloads the TrOCR checkpoint from Hugging Face on first use (~1.3 GB for base).&quot;</span><span class="p">,</span>
+    <span class="p">},</span>
+    <span class="c1"># Remote backends — the &#39;install&#39; is mostly a small client + a credential.</span>
+    <span class="s2">&quot;ocr-space&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;extra&quot;</span><span class="p">:</span> <span class="s2">&quot;ocr-space&quot;</span><span class="p">},</span>
+    <span class="s2">&quot;google-vision&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;extra&quot;</span><span class="p">:</span> <span class="s2">&quot;google-vision&quot;</span><span class="p">},</span>
+    <span class="s2">&quot;aws-textract&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;extra&quot;</span><span class="p">:</span> <span class="s2">&quot;aws-textract&quot;</span><span class="p">},</span>
+    <span class="s2">&quot;azure-document-intelligence&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;extra&quot;</span><span class="p">:</span> <span class="s2">&quot;azure&quot;</span><span class="p">},</span>
+    <span class="s2">&quot;mistral-ocr&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;extra&quot;</span><span class="p">:</span> <span class="s2">&quot;mistral&quot;</span><span class="p">},</span>
+    <span class="s2">&quot;mathpix&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;extra&quot;</span><span class="p">:</span> <span class="s2">&quot;mathpix&quot;</span><span class="p">},</span>
+    <span class="s2">&quot;claude-vision&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;extra&quot;</span><span class="p">:</span> <span class="s2">&quot;anthropic&quot;</span><span class="p">},</span>
+    <span class="s2">&quot;gpt-4o-vision&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;extra&quot;</span><span class="p">:</span> <span class="s2">&quot;openai&quot;</span><span class="p">},</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="Requirements">
+<a class="viewcode-back" href="../../module_docs/ocracy/install.html#ocracy.Requirements">[docs]</a>
+<span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Requirements</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;What a backend needs to run — structured for an agent to act on.&quot;&quot;&quot;</span>
+
+    <span class="n">backend_id</span><span class="p">:</span> <span class="nb">str</span>
+    <span class="n">implemented</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">available</span><span class="p">:</span> <span class="nb">bool</span>  <span class="c1"># importable / usable right now</span>
+    <span class="n">is_local</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">is_remote</span><span class="p">:</span> <span class="nb">bool</span>
+    <span class="n">pip_command</span><span class="p">:</span> <span class="nb">str</span>  <span class="c1"># the line to run</span>
+    <span class="n">extra</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">system</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>  <span class="c1"># OS-specific shell commands</span>
+    <span class="n">system_note</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">gpu</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">weights</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">heavy</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">alternative</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">credentials</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>  <span class="c1"># &quot;ENV_VAR — where to get it&quot;</span>
+    <span class="n">notes</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Requirements.instructions">
+<a class="viewcode-back" href="../../module_docs/ocracy/install.html#ocracy.Requirements.instructions">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">instructions</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;An agent-/human-readable, copy-pasteable install plan.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">available</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">backend_id</span><span class="si">}</span><span class="s2">&#39; is already installed and usable. ✓&quot;</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;To use the &#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">backend_id</span><span class="si">}</span><span class="s2">&#39; backend:&quot;</span><span class="p">]</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="p">:</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">. System dependency:&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">cmd</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">system</span><span class="p">:</span>
+                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;       </span><span class="si">{</span><span class="n">cmd</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">system_note</span><span class="p">:</span>
+                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;     (</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">system_note</span><span class="si">}</span><span class="s2">)&quot;</span><span class="p">)</span>
+            <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">. </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">pip_command</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">gpu</span><span class="p">:</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;       GPU: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">gpu</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">credentials</span><span class="p">:</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">. Set credential(s):&quot;</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">credentials</span><span class="p">:</span>
+                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;       </span><span class="si">{</span><span class="n">c</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">:</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  • </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">heavy</span><span class="p">:</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;  • Note: large download (deep-learning framework + weights).&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">alternative</span><span class="p">:</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  • Lighter alternative: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">alternative</span><span class="si">}</span><span class="s2">.&quot;</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">note</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">notes</span><span class="p">:</span>
+            <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;  • </span><span class="si">{</span><span class="n">note</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Verify:   python -c </span><span class="se">\&quot;</span><span class="s2">import ocracy; print(ocracy.check(&#39;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">backend_id</span><span class="si">}</span><span class="s2">&#39;))</span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">instructions</span><span class="p">()</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_credential_lines</span><span class="p">(</span><span class="n">env_var_field</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">provider</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">env_var_field</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">[]</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.credentials</span><span class="w"> </span><span class="kn">import</span> <span class="n">CREDENTIAL_GUIDANCE</span>
+
+    <span class="n">g</span> <span class="o">=</span> <span class="n">CREDENTIAL_GUIDANCE</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">provider</span><span class="p">)</span>
+    <span class="n">link</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;  (get a key: </span><span class="si">{</span><span class="n">g</span><span class="p">[</span><span class="s1">&#39;get_key_url&#39;</span><span class="p">]</span><span class="si">}</span><span class="s2">)&quot;</span> <span class="k">if</span> <span class="n">g</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">[</span><span class="sa">f</span><span class="s2">&quot;export </span><span class="si">{</span><span class="n">env_var_field</span><span class="si">}{</span><span class="n">link</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="requirements">
+<a class="viewcode-back" href="../../module_docs/ocracy/install.html#ocracy.requirements">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">requirements</span><span class="p">(</span><span class="n">backend_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">gpu</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Requirements</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return structured install :class:`Requirements` for ``backend_id``.</span>
+
+<span class="sd">    Works for both implemented backends (uses the ``ocracy[extra]`` install and</span>
+<span class="sd">    the recipe) and ledger-only backends (falls back to the ledger&#39;s</span>
+<span class="sd">    ``python_install`` string). Pass ``gpu=True`` to surface GPU wheel guidance.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">ocracy</span><span class="w"> </span><span class="kn">import</span> <span class="n">registry</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.catalog</span><span class="w"> </span><span class="kn">import</span> <span class="n">catalog</span>
+
+    <span class="n">implemented</span> <span class="o">=</span> <span class="n">backend_id</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="n">registry</span><span class="o">.</span><span class="n">list_backends</span><span class="p">())</span>
+    <span class="n">recipe</span> <span class="o">=</span> <span class="n">_RECIPES</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">backend_id</span><span class="p">,</span> <span class="p">{})</span>
+    <span class="n">record</span> <span class="o">=</span> <span class="n">catalog</span><span class="p">[</span><span class="n">backend_id</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span> <span class="k">if</span> <span class="n">backend_id</span> <span class="ow">in</span> <span class="n">catalog</span> <span class="k">else</span> <span class="p">{}</span>
+    <span class="n">cfg</span> <span class="o">=</span> <span class="n">registry</span><span class="o">.</span><span class="n">get_config</span><span class="p">(</span><span class="n">backend_id</span><span class="p">)</span> <span class="k">if</span> <span class="n">implemented</span> <span class="k">else</span> <span class="p">{}</span>
+
+    <span class="n">is_local</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;is_local&quot;</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;is_local&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)))</span>
+    <span class="n">is_remote</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;is_remote&quot;</span><span class="p">,</span> <span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;is_remote&quot;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)))</span>
+    <span class="n">available</span> <span class="o">=</span> <span class="n">check</span><span class="p">(</span><span class="n">backend_id</span><span class="p">)</span> <span class="k">if</span> <span class="n">implemented</span> <span class="k">else</span> <span class="kc">False</span>
+
+    <span class="c1"># pip command: prefer the ocracy extra for implemented backends, else the</span>
+    <span class="c1"># ledger&#39;s python_install string.</span>
+    <span class="n">extra</span> <span class="o">=</span> <span class="n">recipe</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;extra&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">backend_id</span> <span class="k">if</span> <span class="n">implemented</span> <span class="k">else</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">implemented</span> <span class="ow">and</span> <span class="n">extra</span><span class="p">:</span>
+        <span class="n">pip_command</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;pip install &quot;ocracy[</span><span class="si">{</span><span class="n">extra</span><span class="si">}</span><span class="s1">]&quot;&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ledger_pip</span> <span class="o">=</span> <span class="p">(</span><span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;python_install&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="n">pip_command</span> <span class="o">=</span> <span class="n">ledger_pip</span> <span class="ow">or</span> <span class="sa">f</span><span class="s1">&#39;pip install &quot;ocracy[</span><span class="si">{</span><span class="n">backend_id</span><span class="si">}</span><span class="s1">]&quot;&#39;</span>
+
+    <span class="n">system</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">recipe</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;system&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">_platform</span><span class="p">(),</span> <span class="p">[]))</span>
+    <span class="n">api_env</span> <span class="o">=</span> <span class="n">cfg</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;api_env_var&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">record</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;api_env_var&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">credentials</span> <span class="o">=</span> <span class="n">_credential_lines</span><span class="p">(</span><span class="n">api_env</span><span class="p">,</span> <span class="n">backend_id</span><span class="p">)</span> <span class="k">if</span> <span class="n">is_remote</span> <span class="ow">and</span> <span class="n">api_env</span> <span class="k">else</span> <span class="p">[]</span>
+
+    <span class="n">notes</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">recipe</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;notes&quot;</span><span class="p">,</span> <span class="p">[]))</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">implemented</span><span class="p">:</span>
+        <span class="n">notes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">&quot;ocracy does not yet ship a facade for &#39;</span><span class="si">{</span><span class="n">backend_id</span><span class="si">}</span><span class="s2">&#39; — it&#39;s in the ledger &quot;</span>
+            <span class="s2">&quot;only. See the ocracy-add-backend skill to wrap it.&quot;</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">Requirements</span><span class="p">(</span>
+        <span class="n">backend_id</span><span class="o">=</span><span class="n">backend_id</span><span class="p">,</span>
+        <span class="n">implemented</span><span class="o">=</span><span class="n">implemented</span><span class="p">,</span>
+        <span class="n">available</span><span class="o">=</span><span class="n">available</span><span class="p">,</span>
+        <span class="n">is_local</span><span class="o">=</span><span class="n">is_local</span><span class="p">,</span>
+        <span class="n">is_remote</span><span class="o">=</span><span class="n">is_remote</span><span class="p">,</span>
+        <span class="n">pip_command</span><span class="o">=</span><span class="n">pip_command</span><span class="p">,</span>
+        <span class="n">extra</span><span class="o">=</span><span class="n">extra</span><span class="p">,</span>
+        <span class="n">system</span><span class="o">=</span><span class="n">system</span><span class="p">,</span>
+        <span class="n">system_note</span><span class="o">=</span><span class="n">recipe</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;system_note&quot;</span><span class="p">),</span>
+        <span class="n">gpu</span><span class="o">=</span><span class="n">recipe</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;gpu&quot;</span><span class="p">)</span> <span class="k">if</span> <span class="p">(</span><span class="n">gpu</span> <span class="ow">or</span> <span class="n">recipe</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;gpu&quot;</span><span class="p">))</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">weights</span><span class="o">=</span><span class="n">recipe</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;weights&quot;</span><span class="p">),</span>
+        <span class="n">heavy</span><span class="o">=</span><span class="nb">bool</span><span class="p">(</span><span class="n">recipe</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;heavy&quot;</span><span class="p">)),</span>
+        <span class="n">alternative</span><span class="o">=</span><span class="n">recipe</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;alt&quot;</span><span class="p">),</span>
+        <span class="n">credentials</span><span class="o">=</span><span class="n">credentials</span><span class="p">,</span>
+        <span class="n">notes</span><span class="o">=</span><span class="n">notes</span><span class="p">,</span>
+    <span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="check">
+<a class="viewcode-back" href="../../module_docs/ocracy/install.html#ocracy.check">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">check</span><span class="p">(</span><span class="n">backend_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Is ``backend_id`` importable / usable right now? (no install, no network).&quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">ocracy</span><span class="w"> </span><span class="kn">import</span> <span class="n">registry</span>
+
+    <span class="k">return</span> <span class="n">registry</span><span class="o">.</span><span class="n">_is_available</span><span class="p">(</span><span class="n">backend_id</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="available_backends">
+<a class="viewcode-back" href="../../module_docs/ocracy/install.html#ocracy.available_backends">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">available_backends</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Implemented backends whose dependency is importable right now.&quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">ocracy</span><span class="w"> </span><span class="kn">import</span> <span class="n">registry</span>
+
+    <span class="k">return</span> <span class="p">[</span><span class="n">b</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">registry</span><span class="o">.</span><span class="n">list_backends</span><span class="p">()</span> <span class="k">if</span> <span class="n">registry</span><span class="o">.</span><span class="n">_is_available</span><span class="p">(</span><span class="n">b</span><span class="p">)]</span></div>
+
+
+
+<div class="viewcode-block" id="doctor">
+<a class="viewcode-back" href="../../module_docs/ocracy/install.html#ocracy.doctor">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">doctor</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Report which implemented backends are usable now and what the rest need.</span>
+
+<span class="sd">    Returns ``{&quot;available&quot;: [...], &quot;missing&quot;: {id: one-line install hint}}``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">ocracy</span><span class="w"> </span><span class="kn">import</span> <span class="n">registry</span>
+
+    <span class="n">available</span><span class="p">,</span> <span class="n">missing</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">bid</span> <span class="ow">in</span> <span class="n">registry</span><span class="o">.</span><span class="n">list_backends</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">registry</span><span class="o">.</span><span class="n">_is_available</span><span class="p">(</span><span class="n">bid</span><span class="p">):</span>
+            <span class="n">available</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bid</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">req</span> <span class="o">=</span> <span class="n">requirements</span><span class="p">(</span><span class="n">bid</span><span class="p">)</span>
+            <span class="n">hint</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">pip_command</span>
+            <span class="k">if</span> <span class="n">req</span><span class="o">.</span><span class="n">system</span><span class="p">:</span>
+                <span class="n">hint</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">req</span><span class="o">.</span><span class="n">system</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2"> ; </span><span class="si">{</span><span class="n">hint</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="n">missing</span><span class="p">[</span><span class="n">bid</span><span class="p">]</span> <span class="o">=</span> <span class="n">hint</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;available&quot;</span><span class="p">:</span> <span class="n">available</span><span class="p">,</span> <span class="s2">&quot;missing&quot;</span><span class="p">:</span> <span class="n">missing</span><span class="p">}</span></div>
+
+
+
+<div class="viewcode-block" id="install">
+<a class="viewcode-back" href="../../module_docs/ocracy/install.html#ocracy.install">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">install</span><span class="p">(</span>
+    <span class="n">backend_id</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">yes</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">gpu</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="n">verify</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span>
+    <span class="n">upgrade</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Plan (and optionally run) the pip install for a backend.</span>
+
+<span class="sd">    With ``yes=False`` (default) this is a **dry run**: it returns the plan</span>
+<span class="sd">    without changing anything — call ``result[&#39;requirements&#39;].instructions()`` to</span>
+<span class="sd">    show it. With ``yes=True`` it runs ``pip install`` for the backend&#39;s extra in</span>
+<span class="sd">    the current interpreter, then (if ``verify``) checks importability.</span>
+
+<span class="sd">    System dependencies and GPU wheels are *surfaced*, never run automatically</span>
+<span class="sd">    (they need sudo/brew or an environment-specific CUDA choice) — run those</span>
+<span class="sd">    yourself from ``result[&#39;requirements&#39;].system`` / ``.gpu``.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">req</span> <span class="o">=</span> <span class="n">requirements</span><span class="p">(</span><span class="n">backend_id</span><span class="p">,</span> <span class="n">gpu</span><span class="o">=</span><span class="n">gpu</span><span class="p">)</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;backend&quot;</span><span class="p">:</span> <span class="n">backend_id</span><span class="p">,</span>
+        <span class="s2">&quot;requirements&quot;</span><span class="p">:</span> <span class="n">req</span><span class="p">,</span>
+        <span class="s2">&quot;ran&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="s2">&quot;available_before&quot;</span><span class="p">:</span> <span class="n">req</span><span class="o">.</span><span class="n">available</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="n">req</span><span class="o">.</span><span class="n">available</span><span class="p">:</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;&#39;</span><span class="si">{</span><span class="n">backend_id</span><span class="si">}</span><span class="s2">&#39; is already available — nothing to do.&quot;</span>
+        <span class="k">return</span> <span class="n">result</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">req</span><span class="o">.</span><span class="n">implemented</span><span class="p">:</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">instructions</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">result</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">yes</span><span class="p">:</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;message&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;Dry run — pass yes=True to run the pip install.</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">req</span><span class="o">.</span><span class="n">instructions</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">result</span>
+
+    <span class="kn">import</span><span class="w"> </span><span class="nn">subprocess</span>
+
+    <span class="n">target</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;ocracy[</span><span class="si">{</span><span class="n">req</span><span class="o">.</span><span class="n">extra</span><span class="si">}</span><span class="s2">]&quot;</span> <span class="k">if</span> <span class="n">req</span><span class="o">.</span><span class="n">extra</span> <span class="k">else</span> <span class="n">backend_id</span>
+    <span class="n">cmd</span> <span class="o">=</span> <span class="p">[</span><span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">,</span> <span class="s2">&quot;-m&quot;</span><span class="p">,</span> <span class="s2">&quot;pip&quot;</span><span class="p">,</span> <span class="s2">&quot;install&quot;</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">upgrade</span><span class="p">:</span>
+        <span class="n">cmd</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s2">&quot;--upgrade&quot;</span><span class="p">)</span>
+    <span class="n">cmd</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+    <span class="n">proc</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">cmd</span><span class="p">,</span> <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">result</span><span class="p">[</span><span class="s2">&quot;ran&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">result</span><span class="p">[</span><span class="s2">&quot;pip_argv&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cmd</span>
+    <span class="n">result</span><span class="p">[</span><span class="s2">&quot;returncode&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">returncode</span>
+    <span class="n">result</span><span class="p">[</span><span class="s2">&quot;stdout_tail&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">stdout</span><span class="p">[</span><span class="o">-</span><span class="mi">2000</span><span class="p">:]</span>
+    <span class="n">result</span><span class="p">[</span><span class="s2">&quot;stderr_tail&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">proc</span><span class="o">.</span><span class="n">stderr</span><span class="p">[</span><span class="o">-</span><span class="mi">2000</span><span class="p">:]</span>
+    <span class="k">if</span> <span class="n">verify</span> <span class="ow">and</span> <span class="n">proc</span><span class="o">.</span><span class="n">returncode</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="c1"># Importability is module-cached; probe in a fresh interpreter.</span>
+        <span class="n">probe</span> <span class="o">=</span> <span class="n">subprocess</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+            <span class="p">[</span><span class="n">sys</span><span class="o">.</span><span class="n">executable</span><span class="p">,</span> <span class="s2">&quot;-c&quot;</span><span class="p">,</span> <span class="sa">f</span><span class="s2">&quot;import ocracy; print(ocracy.check(&#39;</span><span class="si">{</span><span class="n">backend_id</span><span class="si">}</span><span class="s2">&#39;))&quot;</span><span class="p">],</span>
+            <span class="n">capture_output</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+            <span class="n">text</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;available_after&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">probe</span><span class="o">.</span><span class="n">stdout</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;True&quot;</span>
+    <span class="k">if</span> <span class="n">req</span><span class="o">.</span><span class="n">system</span><span class="p">:</span>
+        <span class="n">result</span><span class="p">[</span><span class="s2">&quot;system_todo&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">req</span><span class="o">.</span><span class="n">system</span>
+    <span class="k">return</span> <span class="n">result</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p></p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

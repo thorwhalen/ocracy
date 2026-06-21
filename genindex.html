@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Index &mdash; ocracy 0.1.1 documentation</title>
+  <title>Index &mdash; ocracy 0.1.2 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=a58bc63e"></script>
+      <script src="_static/documentation_options.js?v=92734c54"></script>
       <script src="_static/doctools.js?v=fd6eb6e6"></script>
       <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -100,6 +100,7 @@
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/base.html">ocracy.base</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/catalog.html">ocracy.catalog</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/credentials.html">ocracy.credentials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/install.html">ocracy.install</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/make_backend.html">ocracy.make_backend</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/registry.html">ocracy.registry</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/services.html">ocracy.services</a></li>
@@ -138,6 +139,7 @@
  <a href="#A"><strong>A</strong></a>
  | <a href="#B"><strong>B</strong></a>
  | <a href="#C"><strong>C</strong></a>
+ | <a href="#D"><strong>D</strong></a>
  | <a href="#E"><strong>E</strong></a>
  | <a href="#F"><strong>F</strong></a>
  | <a href="#G"><strong>G</strong></a>
@@ -207,6 +209,12 @@
         <li><a href="module_docs/ocracy.html#ocracy.OcrResult.at_level">(ocracy.OcrResult method)</a>
 </li>
       </ul></li>
+      <li><a href="module_docs/ocracy.html#ocracy.available_backends">available_backends() (in module ocracy)</a>
+
+      <ul>
+        <li><a href="module_docs/ocracy/install.html#ocracy.install.available_backends">(in module ocracy.install)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -259,14 +267,20 @@
         <li><a href="module_docs/ocracy/catalog.html#ocracy.catalog.Catalog">(class in ocracy.catalog)</a>
 </li>
       </ul></li>
+      <li><a href="module_docs/ocracy.html#ocracy.check">check() (in module ocracy)</a>
+
+      <ul>
+        <li><a href="module_docs/ocracy/install.html#ocracy.install.check">(in module ocracy.install)</a>
+</li>
+      </ul></li>
       <li><a href="module_docs/ocracy/util.html#ocracy.util.check_import">check_import() (in module ocracy.util)</a>
 </li>
       <li><a href="module_docs/ocracy/util.html#ocracy.util.classify_input">classify_input() (in module ocracy.util)</a>
 </li>
-      <li><a href="module_docs/ocracy/util.html#ocracy.util.cleanup_temp">cleanup_temp() (in module ocracy.util)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/ocracy/util.html#ocracy.util.cleanup_temp">cleanup_temp() (in module ocracy.util)</a>
+</li>
       <li><a href="module_docs/ocracy/registry.html#ocracy.registry.clear_registry">clear_registry() (in module ocracy.registry)</a>
 </li>
       <li><a href="module_docs/ocracy.html#ocracy.Catalog.compare">compare() (ocracy.Catalog method)</a>
@@ -285,6 +299,20 @@
 </li>
       <li><a href="module_docs/ocracy/credentials.html#ocracy.credentials.credential_help">credential_help() (in module ocracy.credentials)</a>
 </li>
+  </ul></td>
+</tr></table>
+
+<h2 id="D">D</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/ocracy.html#ocracy.doctor">doctor() (in module ocracy)</a>
+
+      <ul>
+        <li><a href="module_docs/ocracy/install.html#ocracy.install.doctor">(in module ocracy.install)</a>
+</li>
+        <li><a href="module_docs/ocracy/tools.html#ocracy.tools.doctor">(in module ocracy.tools)</a>
+</li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -369,10 +397,24 @@
 </li>
       <li><a href="module_docs/ocracy/services.html#ocracy.services.ServiceHandle.info">info (ocracy.services.ServiceHandle property)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/ocracy/tools.html#ocracy.tools.info">info() (in module ocracy.tools)</a>
 </li>
+      <li><a href="module_docs/ocracy.html#ocracy.install">install() (in module ocracy)</a>
+
+      <ul>
+        <li><a href="module_docs/ocracy/install.html#ocracy.install.install">(in module ocracy.install)</a>
+</li>
+        <li><a href="module_docs/ocracy/tools.html#ocracy.tools.install">(in module ocracy.tools)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/ocracy/install.html#ocracy.install.Requirements.instructions">instructions() (ocracy.install.Requirements method)</a>
+
+      <ul>
+        <li><a href="module_docs/ocracy.html#ocracy.Requirements.instructions">(ocracy.Requirements method)</a>
+</li>
+      </ul></li>
       <li><a href="module_docs/ocracy/util.html#ocracy.util.is_url">is_url() (in module ocracy.util)</a>
 </li>
   </ul></td>
@@ -550,6 +592,8 @@
         <li><a href="module_docs/ocracy/catalog.html#module-ocracy.catalog">ocracy.catalog</a>
 </li>
         <li><a href="module_docs/ocracy/credentials.html#module-ocracy.credentials">ocracy.credentials</a>
+</li>
+        <li><a href="module_docs/ocracy/install.html#module-ocracy.install">ocracy.install</a>
 </li>
         <li><a href="module_docs/ocracy/make_backend.html#module-ocracy.make_backend">ocracy.make_backend</a>
 </li>
@@ -790,8 +834,6 @@
         <li><a href="module_docs/ocracy/backends/mistral_ocr/config.html#module-ocracy.backends.mistral_ocr.config">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     ocracy.backends.ocr_space
 
@@ -799,6 +841,8 @@
         <li><a href="module_docs/ocracy/backends/ocr_space.html#module-ocracy.backends.ocr_space">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     ocracy.backends.ocr_space.adapter
 
@@ -961,6 +1005,13 @@
 </li>
       </ul></li>
       <li>
+    ocracy.install
+
+      <ul>
+        <li><a href="module_docs/ocracy/install.html#module-ocracy.install">module</a>
+</li>
+      </ul></li>
+      <li>
     ocracy.make_backend
 
       <ul>
@@ -1034,12 +1085,26 @@
       </ul></li>
       <li><a href="module_docs/ocracy.html#ocracy.read_text">read_text() (in module ocracy)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/ocracy.html#ocracy.register_backend">register_backend() (in module ocracy)</a>
 
       <ul>
         <li><a href="module_docs/ocracy/registry.html#ocracy.registry.register_backend">(in module ocracy.registry)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/ocracy.html#ocracy.Requirements">Requirements (class in ocracy)</a>
+
+      <ul>
+        <li><a href="module_docs/ocracy/install.html#ocracy.install.Requirements">(class in ocracy.install)</a>
+</li>
+      </ul></li>
+      <li><a href="module_docs/ocracy.html#ocracy.requirements">requirements() (in module ocracy)</a>
+
+      <ul>
+        <li><a href="module_docs/ocracy/install.html#ocracy.install.requirements">(in module ocracy.install)</a>
+</li>
+        <li><a href="module_docs/ocracy/tools.html#ocracy.tools.requirements">(in module ocracy.tools)</a>
 </li>
       </ul></li>
       <li><a href="module_docs/ocracy/credentials.html#ocracy.credentials.resolve_credential">resolve_credential() (in module ocracy.credentials)</a>

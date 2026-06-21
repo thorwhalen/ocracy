@@ -1,0 +1,4 @@
+ocracy.install
+==============
+.. automodule:: ocracy.install
+   :members:
