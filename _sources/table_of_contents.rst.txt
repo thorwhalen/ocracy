@@ -60,6 +60,7 @@
    module_docs/ocracy/make_backend
    module_docs/ocracy/registry
    module_docs/ocracy/services
+   module_docs/ocracy/status
    module_docs/ocracy/tools
    module_docs/ocracy/translation
    module_docs/ocracy/util

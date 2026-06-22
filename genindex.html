@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Index &mdash; ocracy 0.1.3 documentation</title>
+  <title>Index &mdash; ocracy 0.1.4 documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=360bc84d"></script>
+      <script src="_static/documentation_options.js?v=fd825880"></script>
       <script src="_static/doctools.js?v=fd6eb6e6"></script>
       <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -104,6 +104,7 @@
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/make_backend.html">ocracy.make_backend</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/registry.html">ocracy.registry</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/services.html">ocracy.services</a></li>
+<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/status.html">ocracy.status</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/tools.html">ocracy.tools</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/translation.html">ocracy.translation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/util.html">ocracy.util</a></li>
@@ -221,12 +222,26 @@
 <h2 id="B">B</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/ocracy.html#ocracy.backend_ids">backend_ids() (in module ocracy)</a>
+
+      <ul>
+        <li><a href="module_docs/ocracy/status.html#ocracy.status.backend_ids">(in module ocracy.status)</a>
+</li>
+      </ul></li>
+      <li><a href="module_docs/ocracy.html#ocracy.backend_info">backend_info() (in module ocracy)</a>
+
+      <ul>
+        <li><a href="module_docs/ocracy/status.html#ocracy.status.backend_info">(in module ocracy.status)</a>
+</li>
+      </ul></li>
       <li><a href="module_docs/ocracy.html#ocracy.BackendInfo">BackendInfo (class in ocracy)</a>
 
       <ul>
         <li><a href="module_docs/ocracy/catalog.html#ocracy.catalog.BackendInfo">(class in ocracy.catalog)</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/ocracy/tools.html#ocracy.tools.backends">backends() (in module ocracy.tools)</a>
 </li>
       <li><a href="module_docs/ocracy.html#ocracy.BaseOcrAdapter">BaseOcrAdapter (class in ocracy)</a>
@@ -235,8 +250,6 @@
         <li><a href="module_docs/ocracy/make_backend.html#ocracy.make_backend.BaseOcrAdapter">(class in ocracy.make_backend)</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/ocracy.html#ocracy.BBox">BBox (class in ocracy)</a>
 
       <ul>
@@ -413,6 +426,18 @@
 
       <ul>
         <li><a href="module_docs/ocracy.html#ocracy.Requirements.instructions">(ocracy.Requirements method)</a>
+</li>
+      </ul></li>
+      <li><a href="module_docs/ocracy.html#ocracy.is_set_up">is_set_up() (in module ocracy)</a>
+
+      <ul>
+        <li><a href="module_docs/ocracy/status.html#ocracy.status.is_set_up">(in module ocracy.status)</a>
+</li>
+      </ul></li>
+      <li><a href="module_docs/ocracy.html#ocracy.is_tested">is_tested() (in module ocracy)</a>
+
+      <ul>
+        <li><a href="module_docs/ocracy/status.html#ocracy.status.is_tested">(in module ocracy.status)</a>
 </li>
       </ul></li>
       <li><a href="module_docs/ocracy/util.html#ocracy.util.is_url">is_url() (in module ocracy.util)</a>
@@ -601,6 +626,8 @@
 </li>
         <li><a href="module_docs/ocracy/services.html#module-ocracy.services">ocracy.services</a>
 </li>
+        <li><a href="module_docs/ocracy/status.html#module-ocracy.status">ocracy.status</a>
+</li>
         <li><a href="module_docs/ocracy/tools.html#module-ocracy.tools">ocracy.tools</a>
 </li>
         <li><a href="module_docs/ocracy/translation.html#module-ocracy.translation">ocracy.translation</a>
@@ -613,6 +640,14 @@
 
 <h2 id="N">N</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="module_docs/ocracy.html#ocracy.names_with_sites">names_with_sites() (in module ocracy)</a>
+
+      <ul>
+        <li><a href="module_docs/ocracy/status.html#ocracy.status.names_with_sites">(in module ocracy.status)</a>
+</li>
+      </ul></li>
+  </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="module_docs/ocracy/make_backend.html#ocracy.make_backend.normalize_confidence">normalize_confidence() (in module ocracy.make_backend)</a>
 </li>
@@ -1033,6 +1068,13 @@
 </li>
       </ul></li>
       <li>
+    ocracy.status
+
+      <ul>
+        <li><a href="module_docs/ocracy/status.html#module-ocracy.status">module</a>
+</li>
+      </ul></li>
+      <li>
     ocracy.tools
 
       <ul>
@@ -1135,6 +1177,12 @@
 </li>
       <li><a href="module_docs/ocracy.html#ocracy.services">services (in module ocracy)</a>
 </li>
+      <li><a href="module_docs/ocracy.html#ocracy.status_table">status_table() (in module ocracy)</a>
+
+      <ul>
+        <li><a href="module_docs/ocracy/status.html#ocracy.status.status_table">(in module ocracy.status)</a>
+</li>
+      </ul></li>
       <li><a href="module_docs/ocracy.html#ocracy.Catalog.supports_language">supports_language() (ocracy.Catalog method)</a>
 
       <ul>
