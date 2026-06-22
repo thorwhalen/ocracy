@@ -63,6 +63,15 @@ from ocracy.install import (
     install,
     requirements,
 )
+from ocracy.status import (
+    LEVELS,
+    backend_ids,
+    backend_info,
+    is_set_up,
+    is_tested,
+    names_with_sites,
+    status_table,
+)
 
 __all__ = [
     "ocr",
@@ -92,6 +101,13 @@ __all__ = [
     "install",
     "available_backends",
     "Requirements",
+    "backend_ids",
+    "backend_info",
+    "status_table",
+    "names_with_sites",
+    "is_set_up",
+    "is_tested",
+    "LEVELS",
     "__version__",
 ]
 
