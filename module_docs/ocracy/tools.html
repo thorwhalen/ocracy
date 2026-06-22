@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ocracy.tools &mdash; ocracy 0.1.4 documentation</title>
+  <title>ocracy.tools &mdash; ocracy 0.1.5 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=fd825880"></script>
+      <script src="../../_static/documentation_options.js?v=59fadc99"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -117,6 +117,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#ocracy.tools.read"><code class="docutils literal notranslate"><span class="pre">read()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ocracy.tools.requirements"><code class="docutils literal notranslate"><span class="pre">requirements()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ocracy.tools.scaffold"><code class="docutils literal notranslate"><span class="pre">scaffold()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#ocracy.tools.status"><code class="docutils literal notranslate"><span class="pre">status()</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ocracy.tools.validate"><code class="docutils literal notranslate"><span class="pre">validate()</span></code></a></li>
 </ul>
 </li>
@@ -259,6 +260,22 @@ wheels are surfaced, not run automatically.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>backend_id</strong> – The ledger id to scaffold (e.g. <code class="docutils literal notranslate"><span class="pre">surya</span></code>).</p></li>
 <li><p><strong>dest</strong> – Optional destination directory.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ocracy.tools.status">
+<span class="sig-prename descclassname"><span class="pre">ocracy.tools.</span></span><span class="sig-name descname"><span class="pre">status</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'all'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">run_tests</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ocracy/tools.html#status"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.tools.status" title="Link to this definition"></a></dt>
+<dd><p>Print an OCR-backend readiness table (levels: all ⊇ implemented ⊇ set_up ⊇ tested).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>level</strong> – Restrict rows to a level: <code class="docutils literal notranslate"><span class="pre">all</span></code> | <code class="docutils literal notranslate"><span class="pre">implemented</span></code> | <code class="docutils literal notranslate"><span class="pre">set_up</span></code> | <code class="docutils literal notranslate"><span class="pre">tested</span></code>.</p></li>
+<li><p><strong>run_tests</strong> – Actually OCR-test the set-up backends — makes real API calls for
+set-up remotes (off by default, so a plain <code class="docutils literal notranslate"><span class="pre">ocracy</span> <span class="pre">status</span></code> never bills you).</p></li>
+<li><p><strong>names</strong> – Also print, per level, a comma-separated <code class="docutils literal notranslate"><span class="pre">Name</span> <span class="pre">(website)</span></code> list.</p></li>
 </ul>
 </dd>
 </dl>

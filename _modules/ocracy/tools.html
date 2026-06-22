@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ocracy.tools &mdash; ocracy 0.1.4 documentation</title>
+  <title>ocracy.tools &mdash; ocracy 0.1.5 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=fd825880"></script>
+      <script src="../../_static/documentation_options.js?v=59fadc99"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -160,6 +160,7 @@
     <span class="s2">&quot;requirements&quot;</span><span class="p">,</span>
     <span class="s2">&quot;doctor&quot;</span><span class="p">,</span>
     <span class="s2">&quot;install&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;status&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 
 
@@ -389,6 +390,29 @@
 
 
 
+<div class="viewcode-block" id="status">
+<a class="viewcode-back" href="../../module_docs/ocracy/tools.html#ocracy.tools.status">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">status</span><span class="p">(</span><span class="o">*</span><span class="p">,</span> <span class="n">level</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;all&quot;</span><span class="p">,</span> <span class="n">run_tests</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">names</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Print an OCR-backend readiness table (levels: all ⊇ implemented ⊇ set_up ⊇ tested).</span>
+
+<span class="sd">    :param level: Restrict rows to a level: ``all`` | ``implemented`` | ``set_up`` | ``tested``.</span>
+<span class="sd">    :param run_tests: Actually OCR-test the set-up backends — makes real API calls for</span>
+<span class="sd">        set-up remotes (off by default, so a plain ``ocracy status`` never bills you).</span>
+<span class="sd">    :param names: Also print, per level, a comma-separated ``Name (website)`` list.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">info</span> <span class="o">=</span> <span class="n">ocracy</span><span class="o">.</span><span class="n">backend_info</span><span class="p">(</span><span class="n">run_tests</span><span class="o">=</span><span class="n">run_tests</span><span class="p">)</span>
+    <span class="n">ids</span> <span class="o">=</span> <span class="kc">None</span> <span class="k">if</span> <span class="n">level</span> <span class="o">==</span> <span class="s2">&quot;all&quot;</span> <span class="k">else</span> <span class="n">ocracy</span><span class="o">.</span><span class="n">backend_ids</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">info</span><span class="o">=</span><span class="n">info</span><span class="p">)</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="p">[</span><span class="n">ocracy</span><span class="o">.</span><span class="n">status_table</span><span class="p">(</span><span class="n">ids</span><span class="p">,</span> <span class="n">info</span><span class="o">=</span><span class="n">info</span><span class="p">)]</span>
+    <span class="k">if</span> <span class="n">names</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">lv</span> <span class="ow">in</span> <span class="n">ocracy</span><span class="o">.</span><span class="n">LEVELS</span><span class="p">:</span>
+            <span class="n">lids</span> <span class="o">=</span> <span class="n">ocracy</span><span class="o">.</span><span class="n">backend_ids</span><span class="p">(</span><span class="n">lv</span><span class="p">,</span> <span class="n">info</span><span class="o">=</span><span class="n">info</span><span class="p">)</span>
+            <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">lv</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">lids</span><span class="p">)</span><span class="si">}</span><span class="s2">): &quot;</span> <span class="o">+</span> <span class="n">ocracy</span><span class="o">.</span><span class="n">names_with_sites</span><span class="p">(</span><span class="n">lids</span><span class="p">,</span> <span class="n">info</span><span class="o">=</span><span class="n">info</span><span class="p">)</span>
+            <span class="p">)</span>
+    <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">out</span><span class="p">)</span></div>
+
+
+
 <span class="c1"># SSOT list of CLI-dispatchable functions.</span>
 <span class="n">_dispatch_funcs</span> <span class="o">=</span> <span class="p">[</span>
     <span class="n">read</span><span class="p">,</span>
@@ -400,6 +424,7 @@
     <span class="n">requirements</span><span class="p">,</span>
     <span class="n">doctor</span><span class="p">,</span>
     <span class="n">install</span><span class="p">,</span>
+    <span class="n">status</span><span class="p">,</span>
 <span class="p">]</span>
 </pre></div>
 
