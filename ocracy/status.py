@@ -178,7 +178,9 @@ def backend_ids(
     if info is not None:
         if level == "all":
             return sorted(info)
-        key = {"implemented": "implemented", "set_up": "set_up", "tested": "tested"}[level]
+        key = {"implemented": "implemented", "set_up": "set_up", "tested": "tested"}[
+            level
+        ]
         return sorted(i for i, d in info.items() if d.get(key) is True)
 
     from ocracy import registry
@@ -241,9 +243,13 @@ _COLUMNS = [
 def _md_table(headers: List[str], rows: List[List[str]]) -> str:
     cols = list(zip(*([headers] + rows))) if rows else [(h,) for h in headers]
     widths = [max(len(str(c)) for c in col) for col in cols]
-    line = lambda cells: "| " + " | ".join(  # noqa: E731
-        str(c).ljust(w) for c, w in zip(cells, widths)
-    ) + " |"
+    line = lambda cells: (
+        "| "
+        + " | ".join(  # noqa: E731
+            str(c).ljust(w) for c, w in zip(cells, widths)
+        )
+        + " |"
+    )
     sep = "| " + " | ".join("-" * w for w in widths) + " |"
     return "\n".join([line(headers), sep, *[line(r) for r in rows]])
 
