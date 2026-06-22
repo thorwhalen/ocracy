@@ -20,6 +20,14 @@ class Adapter(BaseOcrAdapter):
 
     def _load(self, model_name):
         if self._loaded != model_name:
+            import os
+
+            # TrOCR is a PyTorch model. Force transformers to its torch backend so
+            # it doesn't import an (often stale, NumPy-1.x-compiled) TensorFlow/Flax
+            # just for backend detection — a common cause of import-time failures.
+            os.environ.setdefault("USE_TF", "0")
+            os.environ.setdefault("USE_FLAX", "0")
+
             from transformers import TrOCRProcessor, VisionEncoderDecoderModel
 
             self._processor = TrOCRProcessor.from_pretrained(model_name)

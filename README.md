@@ -93,6 +93,9 @@ ocracy read scan.png --backend easyocr --languages en,fr
 ocracy read scan.png --output json            # text + blocks (boxes, confidence)
 ocracy backends                               # backends you can run now
 ocracy backends --capability math
+ocracy status                                 # readiness table: all / implemented / set-up / tested
+ocracy status --level set_up --names          # one level + the "Name (website)" lists
+ocracy status --run-tests                     # also OCR-test set-up backends (real calls for remotes)
 ocracy find --local --free --handwriting      # browse/filter the ledger
 ocracy info google-vision                     # a backend's full record
 ocracy scaffold surya                          # start a new façade from the ledger

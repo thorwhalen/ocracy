@@ -264,6 +264,9 @@ def status_table(
     """
     if info is None:
         info = backend_info(ids, run_tests=run_tests, test_image=test_image)
+    elif ids is not None:
+        keep = set(ids)
+        info = {i: d for i, d in info.items() if i in keep}
     columns = columns or _COLUMNS
     order = sorted(
         info,

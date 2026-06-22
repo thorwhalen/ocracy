@@ -22,6 +22,7 @@ __all__ = [
     "requirements",
     "doctor",
     "install",
+    "status",
 ]
 
 
@@ -224,6 +225,26 @@ def install(backend_id: str, *, gpu: bool = False, yes: bool = False):
     return res.get("message") or res["requirements"].instructions()
 
 
+def status(*, level: str = "all", run_tests: bool = False, names: bool = False):
+    """Print an OCR-backend readiness table (levels: all ⊇ implemented ⊇ set_up ⊇ tested).
+
+    :param level: Restrict rows to a level: ``all`` | ``implemented`` | ``set_up`` | ``tested``.
+    :param run_tests: Actually OCR-test the set-up backends — makes real API calls for
+        set-up remotes (off by default, so a plain ``ocracy status`` never bills you).
+    :param names: Also print, per level, a comma-separated ``Name (website)`` list.
+    """
+    info = ocracy.backend_info(run_tests=run_tests)
+    ids = None if level == "all" else ocracy.backend_ids(level, info=info)
+    out = [ocracy.status_table(ids, info=info)]
+    if names:
+        for lv in ocracy.LEVELS:
+            lids = ocracy.backend_ids(lv, info=info)
+            out.append(
+                f"\n{lv} ({len(lids)}): " + ocracy.names_with_sites(lids, info=info)
+            )
+    return "\n".join(out)
+
+
 # SSOT list of CLI-dispatchable functions.
 _dispatch_funcs = [
     read,
@@ -235,4 +256,5 @@ _dispatch_funcs = [
     requirements,
     doctor,
     install,
+    status,
 ]
