@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ocracy.backends.pix2tex_latex_ocr.adapter &mdash; ocracy 0.1.5 documentation</title>
+  <title>ocracy.backends.pix2tex_latex_ocr.adapter &mdash; ocracy 0.1.6 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../../_static/documentation_options.js?v=59fadc99"></script>
+      <script src="../../../../_static/documentation_options.js?v=6e0256f3"></script>
       <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -136,12 +136,12 @@
            <div itemprop="articleBody">
              
   <h1>Source code for ocracy.backends.pix2tex_latex_ocr.adapter</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Adapter for pix2tex — image of an equation -&gt; LaTeX, locally.</span>
+<span></span><span class="sd">"""Adapter for pix2tex — image of an equation -&gt; LaTeX, locally.</span>
 
 <span class="sd">Math OCR is text-oriented: the LaTeX string is ``result.text``, also surfaced as</span>
-<span class="sd">``result.markdown`` (``$$…$$``) and ``result.meta[&#39;latex&#39;]``. The model is heavy to</span>
+<span class="sd">``result.markdown`` (``$$…$$``) and ``result.meta['latex']``. The model is heavy to</span>
 <span class="sd">construct, so it is built once and cached.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">OcrResult</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.make_backend</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseOcrAdapter</span>
@@ -150,7 +150,7 @@
 <div class="viewcode-block" id="Adapter">
 <a class="viewcode-back" href="../../../../module_docs/ocracy/backends/pix2tex_latex_ocr/adapter.html#ocracy.backends.pix2tex_latex_ocr.adapter.Adapter">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Adapter</span><span class="p">(</span><span class="n">BaseOcrAdapter</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;pix2tex (LaTeX-OCR) adapter (caches the model).&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""pix2tex (LaTeX-OCR) adapter (caches the model)."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
@@ -166,13 +166,13 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">_read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="o">**</span><span class="n">extra</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OcrResult</span><span class="p">:</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_pil</span>
 
-        <span class="n">pil</span> <span class="o">=</span> <span class="n">to_pil</span><span class="p">(</span><span class="n">image</span><span class="p">)</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">&quot;RGB&quot;</span><span class="p">)</span>
+        <span class="n">pil</span> <span class="o">=</span> <span class="n">to_pil</span><span class="p">(</span><span class="n">image</span><span class="p">)</span><span class="o">.</span><span class="n">convert</span><span class="p">(</span><span class="s2">"RGB"</span><span class="p">)</span>
         <span class="n">latex</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_model</span><span class="p">()(</span><span class="n">pil</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">OcrResult</span><span class="o">.</span><span class="n">from_text</span><span class="p">(</span>
             <span class="n">latex</span><span class="p">,</span>
             <span class="n">backend</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">backend_id</span><span class="p">,</span>
             <span class="n">raw</span><span class="o">=</span><span class="n">latex</span><span class="p">,</span>
-            <span class="n">markdown</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;$$</span><span class="se">\n</span><span class="si">{</span><span class="n">latex</span><span class="si">}</span><span class="se">\n</span><span class="s2">$$&quot;</span><span class="p">,</span>
+            <span class="n">markdown</span><span class="o">=</span><span class="sa">f</span><span class="s2">"$$</span><span class="se">\n</span><span class="si">{</span><span class="n">latex</span><span class="si">}</span><span class="se">\n</span><span class="s2">$$"</span><span class="p">,</span>
             <span class="n">latex</span><span class="o">=</span><span class="n">latex</span><span class="p">,</span>
         <span class="p">)</span></div>
 

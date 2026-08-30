@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ocracy.services &mdash; ocracy 0.1.5 documentation</title>
+  <title>ocracy.services &mdash; ocracy 0.1.6 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=59fadc99"></script>
+      <script src="../../_static/documentation_options.js?v=6e0256f3"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -156,7 +156,7 @@ also reachable by attribute (<code class="docutils literal notranslate"><span cl
 </ul>
 <p>This gives three escalating levels of control:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ocracy</span><span class="o">.</span><span class="n">ocr</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>                          <span class="c1"># 1. simple facade (default backend)</span>
-<span class="n">ocracy</span><span class="o">.</span><span class="n">services</span><span class="o">.</span><span class="n">tesseract</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">lang</span><span class="o">=</span><span class="s2">&quot;fra&quot;</span><span class="p">)</span>   <span class="c1"># 2. pick a backend explicitly</span>
+<span class="n">ocracy</span><span class="o">.</span><span class="n">services</span><span class="o">.</span><span class="n">tesseract</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">lang</span><span class="o">=</span><span class="s2">"fra"</span><span class="p">)</span>   <span class="c1"># 2. pick a backend explicitly</span>
 <span class="n">ocracy</span><span class="o">.</span><span class="n">services</span><span class="o">.</span><span class="n">tesseract</span><span class="o">.</span><span class="n">adapter</span>        <span class="c1"># 3. raw engine adapter, full control</span>
 </pre></div>
 </div>

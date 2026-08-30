@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ocracy.util &mdash; ocracy 0.1.5 documentation</title>
+  <title>ocracy.util &mdash; ocracy 0.1.6 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=59fadc99"></script>
+      <script src="../../_static/documentation_options.js?v=6e0256f3"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -136,7 +136,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for ocracy.util</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Image-input normalization and small shared helpers.</span>
+<span></span><span class="sd">"""Image-input normalization and small shared helpers.</span>
 
 <span class="sd">Different OCR backends want their input in different forms: a filesystem path</span>
 <span class="sd">(Tesseract, PaddleOCR), raw ``bytes`` (most cloud REST APIs), a PIL image, or a</span>
@@ -153,7 +153,7 @@
 <span class="sd">  in-memory inputs); pair with :func:`cleanup_temp` or use :func:`image_path`.</span>
 <span class="sd">- :func:`image_path` — a context manager yielding a path and cleaning up.</span>
 <span class="sd">- :func:`to_pil` / :func:`to_numpy` — anything -&gt; a PIL image / numpy array.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
@@ -166,34 +166,34 @@
 <span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">ImageInput</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;classify_input&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;is_url&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;load_image_bytes&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;ensure_file_path&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;cleanup_temp&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;image_path&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;to_pil&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;to_numpy&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;check_import&quot;</span><span class="p">,</span>
+    <span class="s2">"classify_input"</span><span class="p">,</span>
+    <span class="s2">"is_url"</span><span class="p">,</span>
+    <span class="s2">"load_image_bytes"</span><span class="p">,</span>
+    <span class="s2">"ensure_file_path"</span><span class="p">,</span>
+    <span class="s2">"cleanup_temp"</span><span class="p">,</span>
+    <span class="s2">"image_path"</span><span class="p">,</span>
+    <span class="s2">"to_pil"</span><span class="p">,</span>
+    <span class="s2">"to_numpy"</span><span class="p">,</span>
+    <span class="s2">"check_import"</span><span class="p">,</span>
 <span class="p">]</span>
 
 
 <div class="viewcode-block" id="check_import">
 <a class="viewcode-back" href="../../module_docs/ocracy/util.html#ocracy.util.check_import">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">check_import</span><span class="p">(</span><span class="n">module_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">install_hint</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">feature</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;this&quot;</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Import ``module_name`` or raise a friendly, actionable ImportError.</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">check_import</span><span class="p">(</span><span class="n">module_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">install_hint</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">feature</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"this"</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Import ``module_name`` or raise a friendly, actionable ImportError.</span>
 
-<span class="sd">    Centralizes the &quot;you need to ``pip install X``&quot; guidance so adapters and</span>
-<span class="sd">    converters don&#39;t each hand-roll it.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    Centralizes the "you need to ``pip install X``" guidance so adapters and</span>
+<span class="sd">    converters don't each hand-roll it.</span>
+<span class="sd">    """</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="kn">import</span><span class="w"> </span><span class="nn">importlib</span>
 
         <span class="k">return</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">module_name</span><span class="p">)</span>
     <span class="k">except</span> <span class="ne">ImportError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>  <span class="c1"># pragma: no cover - exercised via adapters</span>
         <span class="k">raise</span> <span class="ne">ImportError</span><span class="p">(</span>
-            <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">feature</span><span class="si">}</span><span class="s2"> requires </span><span class="si">{</span><span class="n">module_name</span><span class="si">!r}</span><span class="s2">. Install it with: &quot;</span>
-            <span class="sa">f</span><span class="s2">&quot;pip install </span><span class="si">{</span><span class="n">install_hint</span><span class="si">}</span><span class="se">\n</span><span class="s2">Original error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">feature</span><span class="si">}</span><span class="s2"> requires </span><span class="si">{</span><span class="n">module_name</span><span class="si">!r}</span><span class="s2">. Install it with: "</span>
+            <span class="sa">f</span><span class="s2">"pip install </span><span class="si">{</span><span class="n">install_hint</span><span class="si">}</span><span class="se">\n</span><span class="s2">Original error: </span><span class="si">{</span><span class="n">e</span><span class="si">}</span><span class="s2">"</span>
         <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span></div>
 
 
@@ -201,33 +201,33 @@
 <div class="viewcode-block" id="is_url">
 <a class="viewcode-back" href="../../module_docs/ocracy/util.html#ocracy.util.is_url">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">is_url</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;True if ``x`` is a string that looks like an http(s) URL.&quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">x</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">((</span><span class="s2">&quot;http://&quot;</span><span class="p">,</span> <span class="s2">&quot;https://&quot;</span><span class="p">))</span></div>
+<span class="w">    </span><span class="sd">"""True if ``x`` is a string that looks like an http(s) URL."""</span>
+    <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">x</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">startswith</span><span class="p">((</span><span class="s2">"http://"</span><span class="p">,</span> <span class="s2">"https://"</span><span class="p">))</span></div>
 
 
 
 <div class="viewcode-block" id="classify_input">
 <a class="viewcode-back" href="../../module_docs/ocracy/util.html#ocracy.util.classify_input">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">classify_input</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageInput</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Classify an image input as ``url``/``path``/``bytes``/``pil``/``numpy``.</span>
+<span class="w">    </span><span class="sd">"""Classify an image input as ``url``/``path``/``bytes``/``pil``/``numpy``.</span>
 
 <span class="sd">    Decided structurally (and via duck typing for PIL/numpy) so we never import</span>
 <span class="sd">    Pillow or numpy just to look at the input.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="p">(</span><span class="nb">bytes</span><span class="p">,</span> <span class="nb">bytearray</span><span class="p">)):</span>
-        <span class="k">return</span> <span class="s2">&quot;bytes&quot;</span>
+        <span class="k">return</span> <span class="s2">"bytes"</span>
     <span class="k">if</span> <span class="n">is_url</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;url&quot;</span>
+        <span class="k">return</span> <span class="s2">"url"</span>
     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">)):</span>
-        <span class="k">return</span> <span class="s2">&quot;path&quot;</span>
+        <span class="k">return</span> <span class="s2">"path"</span>
     <span class="c1"># Duck-type without importing the libs.</span>
-    <span class="k">if</span> <span class="n">image</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__module__</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;PIL&quot;</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;pil&quot;</span>
-    <span class="k">if</span> <span class="n">image</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__module__</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">&quot;numpy&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="s2">&quot;__array__&quot;</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;numpy&quot;</span>
+    <span class="k">if</span> <span class="n">image</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__module__</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"PIL"</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">"pil"</span>
+    <span class="k">if</span> <span class="n">image</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__module__</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s2">"numpy"</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="s2">"__array__"</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s2">"numpy"</span>
     <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
-        <span class="sa">f</span><span class="s2">&quot;Unsupported image input of type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">image</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">. Expected a path, &quot;</span>
-        <span class="s2">&quot;URL, bytes, PIL.Image, or numpy.ndarray.&quot;</span>
+        <span class="sa">f</span><span class="s2">"Unsupported image input of type </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">image</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">. Expected a path, "</span>
+        <span class="s2">"URL, bytes, PIL.Image, or numpy.ndarray."</span>
     <span class="p">)</span></div>
 
 
@@ -242,21 +242,21 @@
 <div class="viewcode-block" id="to_pil">
 <a class="viewcode-back" href="../../module_docs/ocracy/util.html#ocracy.util.to_pil">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">to_pil</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageInput</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert any supported input into a PIL ``Image`` (lazy import).&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Convert any supported input into a PIL ``Image`` (lazy import)."""</span>
     <span class="c1"># ``PIL.Image`` is the module exposing ``open`` / ``fromarray``.</span>
     <span class="n">pil_image</span> <span class="o">=</span> <span class="n">check_import</span><span class="p">(</span>
-        <span class="s2">&quot;PIL.Image&quot;</span><span class="p">,</span> <span class="n">install_hint</span><span class="o">=</span><span class="s2">&quot;Pillow&quot;</span><span class="p">,</span> <span class="n">feature</span><span class="o">=</span><span class="s2">&quot;image decoding&quot;</span>
+        <span class="s2">"PIL.Image"</span><span class="p">,</span> <span class="n">install_hint</span><span class="o">=</span><span class="s2">"Pillow"</span><span class="p">,</span> <span class="n">feature</span><span class="o">=</span><span class="s2">"image decoding"</span>
     <span class="p">)</span>
     <span class="n">kind</span> <span class="o">=</span> <span class="n">classify_input</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;pil&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">"pil"</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">image</span>
-    <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;numpy&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">"numpy"</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">pil_image</span><span class="o">.</span><span class="n">fromarray</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;bytes&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">"bytes"</span><span class="p">:</span>
         <span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
 
         <span class="k">return</span> <span class="n">pil_image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="nb">bytes</span><span class="p">(</span><span class="n">image</span><span class="p">)))</span>
-    <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;url&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">"url"</span><span class="p">:</span>
         <span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
 
         <span class="k">return</span> <span class="n">pil_image</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="n">io</span><span class="o">.</span><span class="n">BytesIO</span><span class="p">(</span><span class="n">_fetch_url</span><span class="p">(</span><span class="n">image</span><span class="p">)))</span>
@@ -268,10 +268,10 @@
 <div class="viewcode-block" id="to_numpy">
 <a class="viewcode-back" href="../../module_docs/ocracy/util.html#ocracy.util.to_numpy">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">to_numpy</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageInput</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert any supported input into a numpy array (lazy import).&quot;&quot;&quot;</span>
-    <span class="n">np</span> <span class="o">=</span> <span class="n">check_import</span><span class="p">(</span><span class="s2">&quot;numpy&quot;</span><span class="p">,</span> <span class="n">install_hint</span><span class="o">=</span><span class="s2">&quot;numpy&quot;</span><span class="p">,</span> <span class="n">feature</span><span class="o">=</span><span class="s2">&quot;array conversion&quot;</span><span class="p">)</span>
+<span class="w">    </span><span class="sd">"""Convert any supported input into a numpy array (lazy import)."""</span>
+    <span class="n">np</span> <span class="o">=</span> <span class="n">check_import</span><span class="p">(</span><span class="s2">"numpy"</span><span class="p">,</span> <span class="n">install_hint</span><span class="o">=</span><span class="s2">"numpy"</span><span class="p">,</span> <span class="n">feature</span><span class="o">=</span><span class="s2">"array conversion"</span><span class="p">)</span>
     <span class="n">kind</span> <span class="o">=</span> <span class="n">classify_input</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;numpy&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">"numpy"</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">image</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">to_pil</span><span class="p">(</span><span class="n">image</span><span class="p">))</span></div>
 
@@ -279,18 +279,18 @@
 
 <div class="viewcode-block" id="load_image_bytes">
 <a class="viewcode-back" href="../../module_docs/ocracy/util.html#ocracy.util.load_image_bytes">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">load_image_bytes</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageInput</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">fmt</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;PNG&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return encoded image ``bytes`` for any supported input.</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">load_image_bytes</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageInput</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">fmt</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"PNG"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Return encoded image ``bytes`` for any supported input.</span>
 
 <span class="sd">    Pass-through for ``bytes``; reads files; fetches URLs; encodes PIL/numpy</span>
 <span class="sd">    inputs as ``fmt`` (PNG by default — lossless and universally accepted).</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">kind</span> <span class="o">=</span> <span class="n">classify_input</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;bytes&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">"bytes"</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">bytes</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;path&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">"path"</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">Path</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">fspath</span><span class="p">(</span><span class="n">image</span><span class="p">))</span><span class="o">.</span><span class="n">read_bytes</span><span class="p">()</span>
-    <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;url&quot;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">"url"</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">_fetch_url</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
     <span class="c1"># pil / numpy -&gt; encode in-memory</span>
     <span class="kn">import</span><span class="w"> </span><span class="nn">io</span>
@@ -304,21 +304,21 @@
 
 <div class="viewcode-block" id="ensure_file_path">
 <a class="viewcode-back" href="../../module_docs/ocracy/util.html#ocracy.util.ensure_file_path">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">ensure_file_path</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageInput</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">suffix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;.png&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Return ``(path, is_temp)`` for any supported input.</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ensure_file_path</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageInput</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">suffix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">".png"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bool</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Return ``(path, is_temp)`` for any supported input.</span>
 
 <span class="sd">    Existing on-disk paths are returned untouched (``is_temp=False``). In-memory</span>
 <span class="sd">    inputs (bytes/URL/PIL/numpy) are written to a temp file (``is_temp=True``);</span>
 <span class="sd">    the caller is responsible for cleanup (use :func:`cleanup_temp`, or prefer</span>
 <span class="sd">    the :func:`image_path` context manager).</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">classify_input</span><span class="p">(</span><span class="n">image</span><span class="p">)</span> <span class="o">==</span> <span class="s2">&quot;path&quot;</span><span class="p">:</span>
+<span class="sd">    """</span>
+    <span class="k">if</span> <span class="n">classify_input</span><span class="p">(</span><span class="n">image</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"path"</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">os</span><span class="o">.</span><span class="n">fspath</span><span class="p">(</span><span class="n">image</span><span class="p">),</span> <span class="kc">False</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">load_image_bytes</span><span class="p">(</span>
-        <span class="n">image</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">suffix</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;JPG&quot;</span><span class="p">,</span> <span class="s2">&quot;JPEG&quot;</span><span class="p">)</span>
+        <span class="n">image</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="n">suffix</span><span class="o">.</span><span class="n">lstrip</span><span class="p">(</span><span class="s2">"."</span><span class="p">)</span><span class="o">.</span><span class="n">upper</span><span class="p">()</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">"JPG"</span><span class="p">,</span> <span class="s2">"JPEG"</span><span class="p">)</span>
     <span class="p">)</span>
-    <span class="n">fd</span><span class="p">,</span> <span class="n">path</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkstemp</span><span class="p">(</span><span class="n">suffix</span><span class="o">=</span><span class="n">suffix</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">&quot;ocracy_&quot;</span><span class="p">)</span>
-    <span class="k">with</span> <span class="n">os</span><span class="o">.</span><span class="n">fdopen</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="s2">&quot;wb&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+    <span class="n">fd</span><span class="p">,</span> <span class="n">path</span> <span class="o">=</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">mkstemp</span><span class="p">(</span><span class="n">suffix</span><span class="o">=</span><span class="n">suffix</span><span class="p">,</span> <span class="n">prefix</span><span class="o">=</span><span class="s2">"ocracy_"</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">os</span><span class="o">.</span><span class="n">fdopen</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="s2">"wb"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">path</span><span class="p">,</span> <span class="kc">True</span></div>
 
@@ -327,7 +327,7 @@
 <div class="viewcode-block" id="cleanup_temp">
 <a class="viewcode-back" href="../../module_docs/ocracy/util.html#ocracy.util.cleanup_temp">[docs]</a>
 <span class="k">def</span><span class="w"> </span><span class="nf">cleanup_temp</span><span class="p">(</span><span class="n">path</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">is_temp</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Delete ``path`` iff ``is_temp`` (the flag returned by :func:`ensure_file_path`).&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Delete ``path`` iff ``is_temp`` (the flag returned by :func:`ensure_file_path`)."""</span>
     <span class="k">if</span> <span class="n">is_temp</span><span class="p">:</span>
         <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">suppress</span><span class="p">(</span><span class="ne">OSError</span><span class="p">):</span>
             <span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">path</span><span class="p">)</span></div>
@@ -337,14 +337,14 @@
 <div class="viewcode-block" id="image_path">
 <a class="viewcode-back" href="../../module_docs/ocracy/util.html#ocracy.util.image_path">[docs]</a>
 <span class="nd">@contextlib</span><span class="o">.</span><span class="n">contextmanager</span>
-<span class="k">def</span><span class="w"> </span><span class="nf">image_path</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageInput</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">suffix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;.png&quot;</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Context manager yielding a filesystem path for ``image``, cleaning up temps.</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">image_path</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageInput</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">suffix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">".png"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Context manager yielding a filesystem path for ``image``, cleaning up temps.</span>
 
 <span class="sd">    Example::</span>
 
 <span class="sd">        with image_path(pil_image) as p:</span>
 <span class="sd">            text = pytesseract.image_to_string(p)</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
     <span class="n">path</span><span class="p">,</span> <span class="n">is_temp</span> <span class="o">=</span> <span class="n">ensure_file_path</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">suffix</span><span class="o">=</span><span class="n">suffix</span><span class="p">)</span>
     <span class="k">try</span><span class="p">:</span>
         <span class="k">yield</span> <span class="n">path</span>

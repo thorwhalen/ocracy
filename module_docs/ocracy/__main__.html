@@ -6,7 +6,7 @@
   <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ocracy.__main__ &mdash; ocracy 0.1.5 documentation</title>
+  <title>ocracy.__main__ &mdash; ocracy 0.1.6 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -15,7 +15,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=59fadc99"></script>
+      <script src="../../_static/documentation_options.js?v=6e0256f3"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -140,7 +140,7 @@
   <section id="module-ocracy.__main__">
 <span id="ocracy-main"></span><h1>ocracy.__main__<a class="headerlink" href="#module-ocracy.__main__" title="Link to this heading"></a></h1>
 <p>ocracy command-line interface.</p>
-<p>Exposes the tools in <a class="reference internal" href="tools.html#module-ocracy.tools" title="ocracy.tools"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ocracy.tools</span></code></a> as subcommands via <code class="docutils literal notranslate"><span class="pre">argh</span></code>:</p>
+<p>Exposes the tools in <a class="reference internal" href="tools.html#module-ocracy.tools" title="ocracy.tools"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ocracy.tools</span></code></a> as subcommands via <code class="docutils literal notranslate"><span class="pre">cw</span></code>:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">ocracy</span> <span class="n">read</span> <span class="n">scan</span><span class="o">.</span><span class="n">png</span> <span class="o">--</span><span class="n">backend</span> <span class="n">tesseract</span> <span class="o">--</span><span class="n">languages</span> <span class="n">en</span><span class="p">,</span><span class="n">fr</span>
 <span class="n">ocracy</span> <span class="n">backends</span> <span class="o">--</span><span class="n">capability</span> <span class="n">math</span>
 <span class="n">ocracy</span> <span class="n">find</span> <span class="o">--</span><span class="n">local</span> <span class="o">--</span><span class="n">free</span> <span class="o">--</span><span class="n">handwriting</span>
@@ -149,8 +149,11 @@
 <span class="n">ocracy</span> <span class="n">validate</span> <span class="n">tesseract</span>
 </pre></div>
 </div>
-<p>The CLI dependency (<code class="docutils literal notranslate"><span class="pre">argh</span></code>) is optional — <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">ocracy</span></code> stays dependency-free.
+<p>The CLI dependency (<code class="docutils literal notranslate"><span class="pre">cw</span></code>) is optional — <code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">ocracy</span></code> stays dependency-free.
 Install it with <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">'ocracy[cli]'</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">cw.mk_parser</span></code> returns a plain <code class="xref py py-class docutils literal notranslate"><span class="pre">argparse.ArgumentParser</span></code>, and <code class="docutils literal notranslate"><span class="pre">cw.run</span></code>
+offers it to <code class="docutils literal notranslate"><span class="pre">argcomplete</span></code> before parsing, so the <code class="docutils literal notranslate"><span class="pre">PYTHON_ARGCOMPLETE_OK</span></code> marker
+above keeps working with no adapter.</p>
 </section>
 
 

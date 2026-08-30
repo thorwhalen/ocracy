@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ocracy.backends.aws_textract.adapter &mdash; ocracy 0.1.5 documentation</title>
+  <title>ocracy.backends.aws_textract.adapter &mdash; ocracy 0.1.6 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../../_static/documentation_options.js?v=59fadc99"></script>
+      <script src="../../../../_static/documentation_options.js?v=6e0256f3"></script>
       <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -136,12 +136,12 @@
            <div itemprop="articleBody">
              
   <h1>Source code for ocracy.backends.aws_textract.adapter</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Adapter for AWS Textract — image -&gt; text + word boxes via detect_document_text.</span>
+<span></span><span class="sd">"""Adapter for AWS Textract — image -&gt; text + word boxes via detect_document_text.</span>
 
 <span class="sd">Textract reports geometry as fractions of the page (0..1), so this adapter scales</span>
 <span class="sd">boxes to pixels using the decoded image size. LINE blocks build the reading-order</span>
 <span class="sd">text; WORD blocks carry boxes + confidence (rescaled 0..100 -&gt; 0..1).</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">OcrResult</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.make_backend</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseOcrAdapter</span><span class="p">,</span> <span class="n">make_block</span>
@@ -150,7 +150,7 @@
 <div class="viewcode-block" id="Adapter">
 <a class="viewcode-back" href="../../../../module_docs/ocracy/backends/aws_textract/adapter.html#ocracy.backends.aws_textract.adapter.Adapter">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Adapter</span><span class="p">(</span><span class="n">BaseOcrAdapter</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;AWS Textract adapter.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""AWS Textract adapter."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">extra</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OcrResult</span><span class="p">:</span>
         <span class="kn">import</span><span class="w"> </span><span class="nn">boto3</span>
@@ -161,38 +161,38 @@
 
         <span class="n">data</span> <span class="o">=</span> <span class="n">load_image_bytes</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">client</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="s2">&quot;textract&quot;</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="n">region_name</span><span class="p">)</span>
-            <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">detect_document_text</span><span class="p">(</span><span class="n">Document</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;Bytes&quot;</span><span class="p">:</span> <span class="n">data</span><span class="p">})</span>
+            <span class="n">client</span> <span class="o">=</span> <span class="n">boto3</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="s2">"textract"</span><span class="p">,</span> <span class="n">region_name</span><span class="o">=</span><span class="n">region_name</span><span class="p">)</span>
+            <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">detect_document_text</span><span class="p">(</span><span class="n">Document</span><span class="o">=</span><span class="p">{</span><span class="s2">"Bytes"</span><span class="p">:</span> <span class="n">data</span><span class="p">})</span>
         <span class="k">except</span> <span class="p">(</span><span class="n">NoCredentialsError</span><span class="p">,</span> <span class="n">PartialCredentialsError</span><span class="p">)</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">MissingCredentialError</span><span class="p">(</span>
-                <span class="s2">&quot;AWS credentials not found.</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">credential_help</span><span class="p">(</span><span class="s2">&quot;aws-textract&quot;</span><span class="p">)</span>
+                <span class="s2">"AWS credentials not found.</span><span class="se">\n</span><span class="s2">"</span> <span class="o">+</span> <span class="n">credential_help</span><span class="p">(</span><span class="s2">"aws-textract"</span><span class="p">)</span>
             <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">e</span>
 
         <span class="n">width</span><span class="p">,</span> <span class="n">height</span> <span class="o">=</span> <span class="n">to_pil</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">size</span>  <span class="c1"># reuse decoded bytes (no refetch)</span>
 
         <span class="n">lines</span><span class="p">,</span> <span class="n">blocks</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Blocks&quot;</span><span class="p">,</span> <span class="p">[]):</span>
-            <span class="n">kind</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;BlockType&quot;</span><span class="p">)</span>
-            <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;LINE&quot;</span><span class="p">:</span>
-                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Text&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">))</span>
-            <span class="k">elif</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">&quot;WORD&quot;</span><span class="p">:</span>
-                <span class="n">bb</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Geometry&quot;</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;BoundingBox&quot;</span><span class="p">,</span> <span class="p">{})</span>
-                <span class="n">x0</span> <span class="o">=</span> <span class="n">bb</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Left&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="n">width</span>
-                <span class="n">y0</span> <span class="o">=</span> <span class="n">bb</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Top&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="n">height</span>
-                <span class="n">x1</span> <span class="o">=</span> <span class="n">x0</span> <span class="o">+</span> <span class="n">bb</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Width&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="n">width</span>
-                <span class="n">y1</span> <span class="o">=</span> <span class="n">y0</span> <span class="o">+</span> <span class="n">bb</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Height&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="n">height</span>
+        <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"Blocks"</span><span class="p">,</span> <span class="p">[]):</span>
+            <span class="n">kind</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"BlockType"</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">"LINE"</span><span class="p">:</span>
+                <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"Text"</span><span class="p">,</span> <span class="s2">""</span><span class="p">))</span>
+            <span class="k">elif</span> <span class="n">kind</span> <span class="o">==</span> <span class="s2">"WORD"</span><span class="p">:</span>
+                <span class="n">bb</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"Geometry"</span><span class="p">,</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"BoundingBox"</span><span class="p">,</span> <span class="p">{})</span>
+                <span class="n">x0</span> <span class="o">=</span> <span class="n">bb</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"Left"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="n">width</span>
+                <span class="n">y0</span> <span class="o">=</span> <span class="n">bb</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"Top"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="n">height</span>
+                <span class="n">x1</span> <span class="o">=</span> <span class="n">x0</span> <span class="o">+</span> <span class="n">bb</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"Width"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="n">width</span>
+                <span class="n">y1</span> <span class="o">=</span> <span class="n">y0</span> <span class="o">+</span> <span class="n">bb</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"Height"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="o">*</span> <span class="n">height</span>
                 <span class="n">blocks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                     <span class="n">make_block</span><span class="p">(</span>
-                        <span class="n">b</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Text&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+                        <span class="n">b</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"Text"</span><span class="p">,</span> <span class="s2">""</span><span class="p">),</span>
                         <span class="n">bbox</span><span class="o">=</span><span class="p">(</span><span class="n">x0</span><span class="p">,</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">y1</span><span class="p">),</span>
-                        <span class="n">confidence</span><span class="o">=</span><span class="n">b</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Confidence&quot;</span><span class="p">),</span>
+                        <span class="n">confidence</span><span class="o">=</span><span class="n">b</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"Confidence"</span><span class="p">),</span>
                         <span class="n">conf_scale</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
-                        <span class="n">level</span><span class="o">=</span><span class="s2">&quot;word&quot;</span><span class="p">,</span>
+                        <span class="n">level</span><span class="o">=</span><span class="s2">"word"</span><span class="p">,</span>
                     <span class="p">)</span>
                 <span class="p">)</span>
 
         <span class="k">return</span> <span class="n">OcrResult</span><span class="o">.</span><span class="n">from_blocks</span><span class="p">(</span>
-            <span class="n">blocks</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">backend_id</span><span class="p">,</span> <span class="n">raw</span><span class="o">=</span><span class="n">response</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
+            <span class="n">blocks</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">backend_id</span><span class="p">,</span> <span class="n">raw</span><span class="o">=</span><span class="n">response</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
         <span class="p">)</span></div>
 
 </pre></div>

@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ocracy.backends.ocr_space.adapter &mdash; ocracy 0.1.5 documentation</title>
+  <title>ocracy.backends.ocr_space.adapter &mdash; ocracy 0.1.6 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../../_static/documentation_options.js?v=59fadc99"></script>
+      <script src="../../../../_static/documentation_options.js?v=6e0256f3"></script>
       <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -136,30 +136,30 @@
            <div itemprop="articleBody">
              
   <h1>Source code for ocracy.backends.ocr_space.adapter</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Adapter for OCR.space — image -&gt; text + word boxes via its REST API.&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""Adapter for OCR.space — image -&gt; text + word boxes via its REST API."""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">OcrResult</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.make_backend</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseOcrAdapter</span><span class="p">,</span> <span class="n">make_block</span>
 
-<span class="n">_ENDPOINT</span> <span class="o">=</span> <span class="s2">&quot;https://api.ocr.space/parse/image&quot;</span>
+<span class="n">_ENDPOINT</span> <span class="o">=</span> <span class="s2">"https://api.ocr.space/parse/image"</span>
 
 
 <div class="viewcode-block" id="Adapter">
 <a class="viewcode-back" href="../../../../module_docs/ocracy/backends/ocr_space/adapter.html#ocracy.backends.ocr_space.adapter.Adapter">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Adapter</span><span class="p">(</span><span class="n">BaseOcrAdapter</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;OCR.space REST adapter.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""OCR.space REST adapter."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_read</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="s2">&quot;eng&quot;</span><span class="p">,</span> <span class="n">isOverlayRequired</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">extra</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">language</span><span class="o">=</span><span class="s2">"eng"</span><span class="p">,</span> <span class="n">isOverlayRequired</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">extra</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OcrResult</span><span class="p">:</span>
         <span class="c1"># Resolve credentials first (cheap, dependency-free) so a missing key fails</span>
         <span class="c1"># fast with guidance before we import/network.</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.credentials</span><span class="w"> </span><span class="kn">import</span> <span class="n">resolve_credential</span>
 
         <span class="n">api_key</span> <span class="o">=</span> <span class="n">resolve_credential</span><span class="p">(</span>
-            <span class="s2">&quot;ocr-space&quot;</span><span class="p">,</span>
-            <span class="n">api_key</span><span class="o">=</span><span class="n">extra</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;api_key&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
-            <span class="n">env_var</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;api_env_var&quot;</span><span class="p">),</span>
+            <span class="s2">"ocr-space"</span><span class="p">,</span>
+            <span class="n">api_key</span><span class="o">=</span><span class="n">extra</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"api_key"</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+            <span class="n">env_var</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"api_env_var"</span><span class="p">),</span>
         <span class="p">)</span>
 
         <span class="kn">import</span><span class="w"> </span><span class="nn">requests</span>
@@ -167,41 +167,41 @@
         <span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">is_url</span><span class="p">,</span> <span class="n">load_image_bytes</span>
 
         <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
-            <span class="s2">&quot;apikey&quot;</span><span class="p">:</span> <span class="n">api_key</span><span class="p">,</span>
-            <span class="s2">&quot;language&quot;</span><span class="p">:</span> <span class="n">language</span><span class="p">,</span>
-            <span class="s2">&quot;isOverlayRequired&quot;</span><span class="p">:</span> <span class="n">isOverlayRequired</span><span class="p">,</span>
+            <span class="s2">"apikey"</span><span class="p">:</span> <span class="n">api_key</span><span class="p">,</span>
+            <span class="s2">"language"</span><span class="p">:</span> <span class="n">language</span><span class="p">,</span>
+            <span class="s2">"isOverlayRequired"</span><span class="p">:</span> <span class="n">isOverlayRequired</span><span class="p">,</span>
         <span class="p">}</span>
         <span class="n">payload</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="n">k</span><span class="p">:</span> <span class="n">v</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">extra</span><span class="o">.</span><span class="n">items</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">})</span>
 
         <span class="k">if</span> <span class="n">is_url</span><span class="p">(</span><span class="n">image</span><span class="p">):</span>
-            <span class="n">payload</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">image</span>
+            <span class="n">payload</span><span class="p">[</span><span class="s2">"url"</span><span class="p">]</span> <span class="o">=</span> <span class="n">image</span>
             <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">_ENDPOINT</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">payload</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">data</span> <span class="o">=</span> <span class="n">load_image_bytes</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
             <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
-                <span class="n">_ENDPOINT</span><span class="p">,</span> <span class="n">files</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;file&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;image.png&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)},</span> <span class="n">data</span><span class="o">=</span><span class="n">payload</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">60</span>
+                <span class="n">_ENDPOINT</span><span class="p">,</span> <span class="n">files</span><span class="o">=</span><span class="p">{</span><span class="s2">"file"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"image.png"</span><span class="p">,</span> <span class="n">data</span><span class="p">)},</span> <span class="n">data</span><span class="o">=</span><span class="n">payload</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">60</span>
             <span class="p">)</span>
         <span class="n">result</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
 
-        <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;IsErroredOnProcessing&quot;</span><span class="p">):</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ErrorMessage&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ErrorDetails&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="n">result</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;OCR.space error: </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"IsErroredOnProcessing"</span><span class="p">):</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"ErrorMessage"</span><span class="p">)</span> <span class="ow">or</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"ErrorDetails"</span><span class="p">)</span> <span class="ow">or</span> <span class="n">result</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"OCR.space error: </span><span class="si">{</span><span class="n">msg</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
-        <span class="n">parsed</span> <span class="o">=</span> <span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ParsedResults&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[{}])[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="n">text</span> <span class="o">=</span> <span class="n">parsed</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;ParsedText&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">parsed</span> <span class="o">=</span> <span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"ParsedResults"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[{}])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">parsed</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"ParsedText"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span>
 
         <span class="n">blocks</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="p">(</span><span class="n">parsed</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;TextOverlay&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Lines&quot;</span><span class="p">,</span> <span class="p">[]):</span>
-            <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Words&quot;</span><span class="p">,</span> <span class="p">[]):</span>
-                <span class="n">x</span> <span class="o">=</span> <span class="n">word</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Left&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-                <span class="n">y</span> <span class="o">=</span> <span class="n">word</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Top&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-                <span class="n">w</span> <span class="o">=</span> <span class="n">word</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Width&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-                <span class="n">h</span> <span class="o">=</span> <span class="n">word</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;Height&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="p">(</span><span class="n">parsed</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"TextOverlay"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">{})</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"Lines"</span><span class="p">,</span> <span class="p">[]):</span>
+            <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">line</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"Words"</span><span class="p">,</span> <span class="p">[]):</span>
+                <span class="n">x</span> <span class="o">=</span> <span class="n">word</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"Left"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="n">y</span> <span class="o">=</span> <span class="n">word</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"Top"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="n">w</span> <span class="o">=</span> <span class="n">word</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"Width"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+                <span class="n">h</span> <span class="o">=</span> <span class="n">word</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"Height"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
                 <span class="n">blocks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                     <span class="n">make_block</span><span class="p">(</span>
-                        <span class="n">word</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;WordText&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">),</span>
+                        <span class="n">word</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"WordText"</span><span class="p">,</span> <span class="s2">""</span><span class="p">),</span>
                         <span class="n">bbox</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span> <span class="o">+</span> <span class="n">w</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">h</span><span class="p">),</span>
-                        <span class="n">level</span><span class="o">=</span><span class="s2">&quot;word&quot;</span><span class="p">,</span>
+                        <span class="n">level</span><span class="o">=</span><span class="s2">"word"</span><span class="p">,</span>
                     <span class="p">)</span>
                 <span class="p">)</span>
 

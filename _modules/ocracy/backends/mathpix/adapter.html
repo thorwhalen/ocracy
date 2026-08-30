@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ocracy.backends.mathpix.adapter &mdash; ocracy 0.1.5 documentation</title>
+  <title>ocracy.backends.mathpix.adapter &mdash; ocracy 0.1.6 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../../_static/documentation_options.js?v=59fadc99"></script>
+      <script src="../../../../_static/documentation_options.js?v=6e0256f3"></script>
       <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -136,26 +136,26 @@
            <div itemprop="articleBody">
              
   <h1>Source code for ocracy.backends.mathpix.adapter</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Adapter for Mathpix — image -&gt; Mathpix-Markdown / LaTeX via the Convert API.</span>
+<span></span><span class="sd">"""Adapter for Mathpix — image -&gt; Mathpix-Markdown / LaTeX via the Convert API.</span>
 
 <span class="sd">Mathpix is a text-oriented (not box-oriented) engine: the primary payload is a</span>
 <span class="sd">Markdown/LaTeX string, surfaced as ``result.text`` and ``result.markdown``; the</span>
 <span class="sd">LaTeX form and confidence are kept in ``result.meta`` and the raw JSON in</span>
 <span class="sd">``result.raw``.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">import</span><span class="w"> </span><span class="nn">os</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">OcrResult</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.make_backend</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseOcrAdapter</span>
 
-<span class="n">_ENDPOINT</span> <span class="o">=</span> <span class="s2">&quot;https://api.mathpix.com/v3/text&quot;</span>
+<span class="n">_ENDPOINT</span> <span class="o">=</span> <span class="s2">"https://api.mathpix.com/v3/text"</span>
 
 
 <div class="viewcode-block" id="Adapter">
 <a class="viewcode-back" href="../../../../module_docs/ocracy/backends/mathpix/adapter.html#ocracy.backends.mathpix.adapter.Adapter">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Adapter</span><span class="p">(</span><span class="n">BaseOcrAdapter</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Mathpix Convert API adapter.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Mathpix Convert API adapter."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">formats</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">extra</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OcrResult</span><span class="p">:</span>
         <span class="c1"># Resolve credentials first (cheap, dependency-free) so a missing key fails</span>
@@ -167,14 +167,14 @@
         <span class="p">)</span>
 
         <span class="n">app_key</span> <span class="o">=</span> <span class="n">resolve_credential</span><span class="p">(</span>
-            <span class="s2">&quot;mathpix&quot;</span><span class="p">,</span>
-            <span class="n">api_key</span><span class="o">=</span><span class="n">extra</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;app_key&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
-            <span class="n">env_var</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;api_env_var&quot;</span><span class="p">),</span>
+            <span class="s2">"mathpix"</span><span class="p">,</span>
+            <span class="n">api_key</span><span class="o">=</span><span class="n">extra</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"app_key"</span><span class="p">,</span> <span class="kc">None</span><span class="p">),</span>
+            <span class="n">env_var</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">config</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"api_env_var"</span><span class="p">),</span>
         <span class="p">)</span>
-        <span class="n">app_id</span> <span class="o">=</span> <span class="n">extra</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">&quot;app_id&quot;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;MATHPIX_APP_ID&quot;</span><span class="p">)</span>
+        <span class="n">app_id</span> <span class="o">=</span> <span class="n">extra</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"app_id"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"MATHPIX_APP_ID"</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">app_id</span><span class="p">:</span>
             <span class="k">raise</span> <span class="n">MissingCredentialError</span><span class="p">(</span>
-                <span class="s2">&quot;Mathpix also needs MATHPIX_APP_ID.</span><span class="se">\n</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">credential_help</span><span class="p">(</span><span class="s2">&quot;mathpix&quot;</span><span class="p">)</span>
+                <span class="s2">"Mathpix also needs MATHPIX_APP_ID.</span><span class="se">\n</span><span class="s2">"</span> <span class="o">+</span> <span class="n">credential_help</span><span class="p">(</span><span class="s2">"mathpix"</span><span class="p">)</span>
             <span class="p">)</span>
 
         <span class="kn">import</span><span class="w"> </span><span class="nn">json</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">_json</span>
@@ -183,27 +183,27 @@
 
         <span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">load_image_bytes</span>
 
-        <span class="n">formats</span> <span class="o">=</span> <span class="n">formats</span> <span class="ow">or</span> <span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;latex_styled&quot;</span><span class="p">]</span>
-        <span class="n">options</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;formats&quot;</span><span class="p">:</span> <span class="n">formats</span><span class="p">,</span> <span class="s2">&quot;math_inline_delimiters&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;$&quot;</span><span class="p">,</span> <span class="s2">&quot;$&quot;</span><span class="p">]}</span>
+        <span class="n">formats</span> <span class="o">=</span> <span class="n">formats</span> <span class="ow">or</span> <span class="p">[</span><span class="s2">"text"</span><span class="p">,</span> <span class="s2">"latex_styled"</span><span class="p">]</span>
+        <span class="n">options</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"formats"</span><span class="p">:</span> <span class="n">formats</span><span class="p">,</span> <span class="s2">"math_inline_delimiters"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"$"</span><span class="p">,</span> <span class="s2">"$"</span><span class="p">]}</span>
         <span class="n">data</span> <span class="o">=</span> <span class="n">load_image_bytes</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
 
         <span class="n">resp</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span>
             <span class="n">_ENDPOINT</span><span class="p">,</span>
-            <span class="n">files</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;file&quot;</span><span class="p">:</span> <span class="p">(</span><span class="s2">&quot;image.png&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">)},</span>
-            <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;options_json&quot;</span><span class="p">:</span> <span class="n">_json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">options</span><span class="p">)},</span>
-            <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;app_id&quot;</span><span class="p">:</span> <span class="n">app_id</span><span class="p">,</span> <span class="s2">&quot;app_key&quot;</span><span class="p">:</span> <span class="n">app_key</span><span class="p">},</span>
+            <span class="n">files</span><span class="o">=</span><span class="p">{</span><span class="s2">"file"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"image.png"</span><span class="p">,</span> <span class="n">data</span><span class="p">)},</span>
+            <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s2">"options_json"</span><span class="p">:</span> <span class="n">_json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">options</span><span class="p">)},</span>
+            <span class="n">headers</span><span class="o">=</span><span class="p">{</span><span class="s2">"app_id"</span><span class="p">:</span> <span class="n">app_id</span><span class="p">,</span> <span class="s2">"app_key"</span><span class="p">:</span> <span class="n">app_key</span><span class="p">},</span>
             <span class="n">timeout</span><span class="o">=</span><span class="mi">60</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">result</span> <span class="o">=</span> <span class="n">resp</span><span class="o">.</span><span class="n">json</span><span class="p">()</span>
-        <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;error&quot;</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Mathpix error: </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;error&#39;</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"error"</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Mathpix error: </span><span class="si">{</span><span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">'error'</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
 
-        <span class="n">text</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;text&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">&quot;&quot;</span>
-        <span class="n">meta</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;markdown&quot;</span><span class="p">:</span> <span class="n">text</span><span class="p">}</span>
-        <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;latex_styled&quot;</span><span class="p">):</span>
-            <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;latex&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;latex_styled&quot;</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;confidence&quot;</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">meta</span><span class="p">[</span><span class="s2">&quot;confidence&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">&quot;confidence&quot;</span><span class="p">]</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"text"</span><span class="p">,</span> <span class="s2">""</span><span class="p">)</span> <span class="ow">or</span> <span class="s2">""</span>
+        <span class="n">meta</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"markdown"</span><span class="p">:</span> <span class="n">text</span><span class="p">}</span>
+        <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"latex_styled"</span><span class="p">):</span>
+            <span class="n">meta</span><span class="p">[</span><span class="s2">"latex"</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">"latex_styled"</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">result</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"confidence"</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">meta</span><span class="p">[</span><span class="s2">"confidence"</span><span class="p">]</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s2">"confidence"</span><span class="p">]</span>
 
         <span class="k">return</span> <span class="n">OcrResult</span><span class="o">.</span><span class="n">from_text</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">backend_id</span><span class="p">,</span> <span class="n">raw</span><span class="o">=</span><span class="n">result</span><span class="p">,</span> <span class="o">**</span><span class="n">meta</span><span class="p">)</span></div>
 

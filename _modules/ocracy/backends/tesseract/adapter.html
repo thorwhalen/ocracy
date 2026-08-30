@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ocracy.backends.tesseract.adapter &mdash; ocracy 0.1.5 documentation</title>
+  <title>ocracy.backends.tesseract.adapter &mdash; ocracy 0.1.6 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../../_static/documentation_options.js?v=59fadc99"></script>
+      <script src="../../../../_static/documentation_options.js?v=6e0256f3"></script>
       <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -136,43 +136,43 @@
            <div itemprop="articleBody">
              
   <h1>Source code for ocracy.backends.tesseract.adapter</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Adapter for Tesseract — image -&gt; text+word-boxes via pytesseract.</span>
+<span></span><span class="sd">"""Adapter for Tesseract — image -&gt; text+word-boxes via pytesseract.</span>
 
 <span class="sd">A worked example of the adapter contract:</span>
 
 <span class="sd">1. Normalize the input to a PIL image (``ocracy.util.to_pil``).</span>
 <span class="sd">2. Call the engine *inside* ``_read`` (lazy import of ``pytesseract``).</span>
-<span class="sd">3. Map Tesseract&#39;s TSV-style word rows into normalized ``TextBlock``s (boxes +</span>
+<span class="sd">3. Map Tesseract's TSV-style word rows into normalized ``TextBlock``s (boxes +</span>
 <span class="sd">   confidence rescaled 0..100 -&gt; 0..1) and assemble reading-order text, keeping</span>
 <span class="sd">   the raw dict in ``raw=``.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">OcrResult</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.make_backend</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseOcrAdapter</span><span class="p">,</span> <span class="n">make_block</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="nf">_assemble_text</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Join Tesseract word rows into reading-order text (words by space, lines by \\n).&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Join Tesseract word rows into reading-order text (words by space, lines by \\n)."""</span>
     <span class="n">lines</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="n">order</span><span class="p">:</span> <span class="nb">list</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">txt</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">]):</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">txt</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">"text"</span><span class="p">]):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">txt</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">txt</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
             <span class="k">continue</span>
-        <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;block_num&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;par_num&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;line_num&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">])</span>
+        <span class="n">key</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">"block_num"</span><span class="p">][</span><span class="n">i</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s2">"par_num"</span><span class="p">][</span><span class="n">i</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s2">"line_num"</span><span class="p">][</span><span class="n">i</span><span class="p">])</span>
         <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">lines</span><span class="p">:</span>
             <span class="n">lines</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="n">order</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
         <span class="n">lines</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">txt</span><span class="p">)</span>
-    <span class="k">return</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">order</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">[</span><span class="n">k</span><span class="p">])</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">order</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="Adapter">
 <a class="viewcode-back" href="../../../../module_docs/ocracy/backends/tesseract/adapter.html#ocracy.backends.tesseract.adapter.Adapter">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Adapter</span><span class="p">(</span><span class="n">BaseOcrAdapter</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Tesseract adapter.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""Tesseract adapter."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_read</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">lang</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">psm</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">oem</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="o">**</span><span class="n">extra</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">lang</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">psm</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">oem</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">config</span><span class="o">=</span><span class="s2">""</span><span class="p">,</span> <span class="o">**</span><span class="n">extra</span>
     <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OcrResult</span><span class="p">:</span>
         <span class="kn">import</span><span class="w"> </span><span class="nn">pytesseract</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">pytesseract</span><span class="w"> </span><span class="kn">import</span> <span class="n">Output</span>
@@ -181,42 +181,42 @@
 
         <span class="n">cfg_parts</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">if</span> <span class="n">psm</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">cfg_parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;--psm </span><span class="si">{</span><span class="n">psm</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">cfg_parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"--psm </span><span class="si">{</span><span class="n">psm</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">oem</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">cfg_parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;--oem </span><span class="si">{</span><span class="n">oem</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">cfg_parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="sa">f</span><span class="s2">"--oem </span><span class="si">{</span><span class="n">oem</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">config</span><span class="p">:</span>
             <span class="n">cfg_parts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
-        <span class="n">cfg</span> <span class="o">=</span> <span class="s2">&quot; &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cfg_parts</span><span class="p">)</span>
+        <span class="n">cfg</span> <span class="o">=</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cfg_parts</span><span class="p">)</span>
 
         <span class="n">pil</span> <span class="o">=</span> <span class="n">to_pil</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
-        <span class="n">call_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;config&quot;</span><span class="p">:</span> <span class="n">cfg</span><span class="p">}</span>
+        <span class="n">call_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"config"</span><span class="p">:</span> <span class="n">cfg</span><span class="p">}</span>
         <span class="k">if</span> <span class="n">lang</span><span class="p">:</span>
-            <span class="n">call_kwargs</span><span class="p">[</span><span class="s2">&quot;lang&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lang</span>
+            <span class="n">call_kwargs</span><span class="p">[</span><span class="s2">"lang"</span><span class="p">]</span> <span class="o">=</span> <span class="n">lang</span>
 
         <span class="n">data</span> <span class="o">=</span> <span class="n">pytesseract</span><span class="o">.</span><span class="n">image_to_data</span><span class="p">(</span><span class="n">pil</span><span class="p">,</span> <span class="n">output_type</span><span class="o">=</span><span class="n">Output</span><span class="o">.</span><span class="n">DICT</span><span class="p">,</span> <span class="o">**</span><span class="n">call_kwargs</span><span class="p">)</span>
 
         <span class="n">blocks</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">txt</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;text&quot;</span><span class="p">]):</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">txt</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">"text"</span><span class="p">]):</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="n">txt</span> <span class="ow">or</span> <span class="ow">not</span> <span class="n">txt</span><span class="o">.</span><span class="n">strip</span><span class="p">():</span>
                 <span class="k">continue</span>
             <span class="k">try</span><span class="p">:</span>
-                <span class="n">conf</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;conf&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">])</span>
+                <span class="n">conf</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s2">"conf"</span><span class="p">][</span><span class="n">i</span><span class="p">])</span>
             <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
                 <span class="n">conf</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span>
             <span class="k">if</span> <span class="n">conf</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>  <span class="c1"># -1 marks non-text rows</span>
                 <span class="k">continue</span>
-            <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;left&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;top&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
-            <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;width&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;height&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">"left"</span><span class="p">][</span><span class="n">i</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s2">"top"</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
+            <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s2">"width"</span><span class="p">][</span><span class="n">i</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s2">"height"</span><span class="p">][</span><span class="n">i</span><span class="p">]</span>
             <span class="n">blocks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                 <span class="n">make_block</span><span class="p">(</span>
                     <span class="n">txt</span><span class="p">,</span>
                     <span class="n">bbox</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span> <span class="o">+</span> <span class="n">w</span><span class="p">,</span> <span class="n">y</span> <span class="o">+</span> <span class="n">h</span><span class="p">),</span>
                     <span class="n">confidence</span><span class="o">=</span><span class="n">conf</span><span class="p">,</span>
                     <span class="n">conf_scale</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
-                    <span class="n">level</span><span class="o">=</span><span class="s2">&quot;word&quot;</span><span class="p">,</span>
-                    <span class="n">block</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;block_num&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">],</span>
-                    <span class="n">paragraph</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;par_num&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">],</span>
-                    <span class="n">line</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">&quot;line_num&quot;</span><span class="p">][</span><span class="n">i</span><span class="p">],</span>
+                    <span class="n">level</span><span class="o">=</span><span class="s2">"word"</span><span class="p">,</span>
+                    <span class="n">block</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">"block_num"</span><span class="p">][</span><span class="n">i</span><span class="p">],</span>
+                    <span class="n">paragraph</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">"par_num"</span><span class="p">][</span><span class="n">i</span><span class="p">],</span>
+                    <span class="n">line</span><span class="o">=</span><span class="n">data</span><span class="p">[</span><span class="s2">"line_num"</span><span class="p">][</span><span class="n">i</span><span class="p">],</span>
                 <span class="p">)</span>
             <span class="p">)</span>
 
@@ -225,7 +225,7 @@
             <span class="n">backend</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">backend_id</span><span class="p">,</span>
             <span class="n">raw</span><span class="o">=</span><span class="n">data</span><span class="p">,</span>
             <span class="n">text</span><span class="o">=</span><span class="n">_assemble_text</span><span class="p">(</span><span class="n">data</span><span class="p">),</span>
-            <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;tesseract&quot;</span><span class="p">,</span>
+            <span class="n">engine</span><span class="o">=</span><span class="s2">"tesseract"</span><span class="p">,</span>
         <span class="p">)</span></div>
 
 </pre></div>

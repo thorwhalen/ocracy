@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ocracy.base &mdash; ocracy 0.1.5 documentation</title>
+  <title>ocracy.base &mdash; ocracy 0.1.6 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../_static/documentation_options.js?v=59fadc99"></script>
+      <script src="../../_static/documentation_options.js?v=6e0256f3"></script>
       <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -136,7 +136,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for ocracy.base</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Core types and normalized result objects for ocracy.</span>
+<span></span><span class="sd">"""Core types and normalized result objects for ocracy.</span>
 
 <span class="sd">OCR engines disagree wildly on what they return: Tesseract emits TSV rows of</span>
 <span class="sd">words with pixel boxes and confidences; cloud APIs return nested JSON of</span>
@@ -161,7 +161,7 @@
 <span class="sd">The design goal is *progressive disclosure*: ``str(result)`` gives you the text,</span>
 <span class="sd">``result.text`` is the same string, iterating the result yields its lines, and</span>
 <span class="sd">``result.blocks`` / ``result.raw`` are there when you need structure.</span>
-<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">"""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
@@ -178,11 +178,11 @@
 <span class="c1"># filesystem path and an ``http(s)://`` URL; ``bytes`` is raw encoded image</span>
 <span class="c1"># data; the PIL/numpy forms are quoted because they are decoded lazily in</span>
 <span class="c1"># ``ocracy.util`` and must never be imported at module load time.</span>
-<span class="n">ImageInput</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">,</span> <span class="s2">&quot;PILImage&quot;</span><span class="p">,</span> <span class="s2">&quot;NDArray&quot;</span><span class="p">]</span>  <span class="c1"># noqa: F821</span>
+<span class="n">ImageInput</span> <span class="o">=</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">,</span> <span class="s2">"PILImage"</span><span class="p">,</span> <span class="s2">"NDArray"</span><span class="p">]</span>  <span class="c1"># noqa: F821</span>
 
 <span class="c1"># Recognition granularity levels, coarse -&gt; fine is the other way round; this is</span>
 <span class="c1"># the canonical ordering used for sorting and filtering blocks.</span>
-<span class="n">LEVELS</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;page&quot;</span><span class="p">,</span> <span class="s2">&quot;block&quot;</span><span class="p">,</span> <span class="s2">&quot;paragraph&quot;</span><span class="p">,</span> <span class="s2">&quot;line&quot;</span><span class="p">,</span> <span class="s2">&quot;word&quot;</span><span class="p">,</span> <span class="s2">&quot;char&quot;</span><span class="p">)</span>
+<span class="n">LEVELS</span><span class="p">:</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="o">...</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s2">"page"</span><span class="p">,</span> <span class="s2">"block"</span><span class="p">,</span> <span class="s2">"paragraph"</span><span class="p">,</span> <span class="s2">"line"</span><span class="p">,</span> <span class="s2">"word"</span><span class="p">,</span> <span class="s2">"char"</span><span class="p">)</span>
 
 
 <span class="c1"># ---------------------------------------------------------------------------</span>
@@ -194,12 +194,12 @@
 <a class="viewcode-back" href="../../module_docs/ocracy/base.html#ocracy.BBox">[docs]</a>
 <span class="nd">@dataclass</span><span class="p">(</span><span class="n">frozen</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">BBox</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;An axis-aligned bounding box in pixel coordinates (origin = top-left).</span>
+<span class="w">    </span><span class="sd">"""An axis-aligned bounding box in pixel coordinates (origin = top-left).</span>
 
 <span class="sd">    ``polygon`` optionally carries the original (possibly rotated) vertices as a</span>
 <span class="sd">    sequence of ``(x, y)`` points; the axis-aligned ``x0/y0/x1/y1`` are always</span>
 <span class="sd">    populated (derived from the polygon if a backend only gives one).</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">x0</span><span class="p">:</span> <span class="nb">float</span>
     <span class="n">y0</span><span class="p">:</span> <span class="nb">float</span>
@@ -221,30 +221,30 @@
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">xywh</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;``(x, y, width, height)`` — the convention many drawing libs expect.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""``(x, y, width, height)`` — the convention many drawing libs expect."""</span>
         <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">width</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">height</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">as_tuple</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Tuple</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="nb">float</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;``(x0, y0, x1, y1)`` — the convention PIL&#39;s ``crop`` expects.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""``(x0, y0, x1, y1)`` — the convention PIL's ``crop`` expects."""</span>
         <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y1</span><span class="p">)</span>
 
     <span class="nd">@classmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">from_xywh</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">w</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">h</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;BBox&quot;</span><span class="p">:</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_xywh</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">w</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">h</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"BBox"</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">x0</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y0</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">x1</span><span class="o">=</span><span class="n">x</span> <span class="o">+</span> <span class="n">w</span><span class="p">,</span> <span class="n">y1</span><span class="o">=</span><span class="n">y</span> <span class="o">+</span> <span class="n">h</span><span class="p">)</span>
 
 <div class="viewcode-block" id="BBox.from_polygon">
 <a class="viewcode-back" href="../../module_docs/ocracy/base.html#ocracy.BBox.from_polygon">[docs]</a>
     <span class="nd">@classmethod</span>
-    <span class="k">def</span><span class="w"> </span><span class="nf">from_polygon</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">points</span><span class="p">:</span> <span class="n">_SequenceABC</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;BBox&quot;</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Build a box from polygon vertices ``[(x, y), ...]``.</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">from_polygon</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">points</span><span class="p">:</span> <span class="n">_SequenceABC</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"BBox"</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Build a box from polygon vertices ``[(x, y), ...]``.</span>
 
 <span class="sd">        The axis-aligned extent is computed from the vertices and the original</span>
 <span class="sd">        polygon is preserved for callers that care about rotation.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">pts</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">((</span><span class="nb">float</span><span class="p">(</span><span class="n">px</span><span class="p">),</span> <span class="nb">float</span><span class="p">(</span><span class="n">py</span><span class="p">))</span> <span class="k">for</span> <span class="n">px</span><span class="p">,</span> <span class="n">py</span> <span class="ow">in</span> <span class="n">points</span><span class="p">)</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">pts</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;from_polygon requires at least one point&quot;</span><span class="p">)</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"from_polygon requires at least one point"</span><span class="p">)</span>
         <span class="n">xs</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">pts</span><span class="p">]</span>
         <span class="n">ys</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">pts</span><span class="p">]</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">x0</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="n">xs</span><span class="p">),</span> <span class="n">y0</span><span class="o">=</span><span class="nb">min</span><span class="p">(</span><span class="n">ys</span><span class="p">),</span> <span class="n">x1</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">xs</span><span class="p">),</span> <span class="n">y1</span><span class="o">=</span><span class="nb">max</span><span class="p">(</span><span class="n">ys</span><span class="p">),</span> <span class="n">polygon</span><span class="o">=</span><span class="n">pts</span><span class="p">)</span></div>
@@ -261,22 +261,22 @@
 <a class="viewcode-back" href="../../module_docs/ocracy/base.html#ocracy.TextBlock">[docs]</a>
 <span class="nd">@dataclass</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">TextBlock</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;One recognized unit of text.</span>
+<span class="w">    </span><span class="sd">"""One recognized unit of text.</span>
 
 <span class="sd">    Attributes:</span>
 <span class="sd">        text: The recognized string for this unit.</span>
 <span class="sd">        bbox: Where it was found (pixel coordinates), if the backend reports it.</span>
 <span class="sd">        confidence: Recognition confidence in ``[0, 1]`` (normalized by ocracy</span>
 <span class="sd">            from whatever scale the backend used), if available.</span>
-<span class="sd">        level: Granularity — one of :data:`LEVELS` (&quot;word&quot;, &quot;line&quot;, ...).</span>
+<span class="sd">        level: Granularity — one of :data:`LEVELS` ("word", "line", ...).</span>
 <span class="sd">        language: Detected/declared language code for this unit, if any.</span>
 <span class="sd">        meta: Backend-specific extras (font size, style, page index, ...).</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">text</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">bbox</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">BBox</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">confidence</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">level</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;line&quot;</span>
+    <span class="n">level</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"line"</span>
     <span class="n">language</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">meta</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
 
@@ -294,7 +294,7 @@
 <a class="viewcode-back" href="../../module_docs/ocracy/base.html#ocracy.OcrResult">[docs]</a>
 <span class="nd">@dataclass</span>
 <span class="k">class</span><span class="w"> </span><span class="nc">OcrResult</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;The normalized result of reading an image with any backend.</span>
+<span class="w">    </span><span class="sd">"""The normalized result of reading an image with any backend.</span>
 
 <span class="sd">    ``text`` is the headline payload: the full recognized text in reading order.</span>
 <span class="sd">    ``blocks`` carries the structured units (with boxes/confidences) when the</span>
@@ -304,7 +304,7 @@
 
 <span class="sd">    Progressive disclosure::</span>
 
-<span class="sd">        result = ocracy.ocr(&quot;scan.png&quot;)</span>
+<span class="sd">        result = ocracy.ocr("scan.png")</span>
 <span class="sd">        print(result)              # -&gt; the text</span>
 <span class="sd">        result.text                # -&gt; the same string</span>
 <span class="sd">        for line in result:        # -&gt; iterate TextBlocks (lines by default)</span>
@@ -312,11 +312,11 @@
 <span class="sd">        result.words               # -&gt; only word-level blocks</span>
 <span class="sd">        result.mean_confidence     # -&gt; average confidence, if available</span>
 <span class="sd">        result.raw                 # -&gt; engine-specific structure</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="sd">    """</span>
 
     <span class="n">text</span><span class="p">:</span> <span class="nb">str</span>
     <span class="n">blocks</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">TextBlock</span><span class="p">]</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">list</span><span class="p">)</span>
-    <span class="n">backend</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="n">backend</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span>
     <span class="n">raw</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">meta</span><span class="p">:</span> <span class="nb">dict</span> <span class="o">=</span> <span class="n">field</span><span class="p">(</span><span class="n">default_factory</span><span class="o">=</span><span class="nb">dict</span><span class="p">)</span>
 
@@ -337,48 +337,48 @@
 <div class="viewcode-block" id="OcrResult.at_level">
 <a class="viewcode-back" href="../../module_docs/ocracy/base.html#ocracy.OcrResult.at_level">[docs]</a>
     <span class="k">def</span><span class="w"> </span><span class="nf">at_level</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">level</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">TextBlock</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Blocks at a given granularity (``&quot;word&quot;``, ``&quot;line&quot;``, ...).&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Blocks at a given granularity (``"word"``, ``"line"``, ...)."""</span>
         <span class="k">return</span> <span class="p">[</span><span class="n">b</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">blocks</span> <span class="k">if</span> <span class="n">b</span><span class="o">.</span><span class="n">level</span> <span class="o">==</span> <span class="n">level</span><span class="p">]</span></div>
 
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">words</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">TextBlock</span><span class="p">]:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">at_level</span><span class="p">(</span><span class="s2">&quot;word&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">at_level</span><span class="p">(</span><span class="s2">"word"</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">lines</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">TextBlock</span><span class="p">]:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">at_level</span><span class="p">(</span><span class="s2">&quot;line&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">at_level</span><span class="p">(</span><span class="s2">"line"</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">paragraphs</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">List</span><span class="p">[</span><span class="n">TextBlock</span><span class="p">]:</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">at_level</span><span class="p">(</span><span class="s2">&quot;paragraph&quot;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">at_level</span><span class="p">(</span><span class="s2">"paragraph"</span><span class="p">)</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">mean_confidence</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Mean confidence over blocks that report one, or ``None``.&quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">"""Mean confidence over blocks that report one, or ``None``."""</span>
         <span class="n">confs</span> <span class="o">=</span> <span class="p">[</span><span class="n">b</span><span class="o">.</span><span class="n">confidence</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">blocks</span> <span class="k">if</span> <span class="n">b</span><span class="o">.</span><span class="n">confidence</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">]</span>
         <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">confs</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">confs</span><span class="p">)</span> <span class="k">if</span> <span class="n">confs</span> <span class="k">else</span> <span class="kc">None</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">markdown</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Markdown rendering if the backend produced one (else ``None``).&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;markdown&quot;</span><span class="p">)</span>
+<span class="w">        </span><span class="sd">"""Markdown rendering if the backend produced one (else ``None``)."""</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"markdown"</span><span class="p">)</span>
 
 <div class="viewcode-block" id="OcrResult.filter_confidence">
 <a class="viewcode-back" href="../../module_docs/ocracy/base.html#ocracy.OcrResult.filter_confidence">[docs]</a>
-    <span class="k">def</span><span class="w"> </span><span class="nf">filter_confidence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">min_confidence</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;OcrResult&quot;</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Return a copy keeping only blocks at or above ``min_confidence``.</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">filter_confidence</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">min_confidence</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"OcrResult"</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Return a copy keeping only blocks at or above ``min_confidence``.</span>
 
 <span class="sd">        Blocks without a confidence are dropped. ``text`` is rebuilt from the</span>
 <span class="sd">        surviving blocks (joined by newline).</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="n">kept</span> <span class="o">=</span> <span class="p">[</span>
             <span class="n">b</span>
             <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">blocks</span>
             <span class="k">if</span> <span class="n">b</span><span class="o">.</span><span class="n">confidence</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">b</span><span class="o">.</span><span class="n">confidence</span> <span class="o">&gt;=</span> <span class="n">min_confidence</span>
         <span class="p">]</span>
         <span class="k">return</span> <span class="n">OcrResult</span><span class="p">(</span>
-            <span class="n">text</span><span class="o">=</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">kept</span><span class="p">),</span>
+            <span class="n">text</span><span class="o">=</span><span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">kept</span><span class="p">),</span>
             <span class="n">blocks</span><span class="o">=</span><span class="n">kept</span><span class="p">,</span>
             <span class="n">backend</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">backend</span><span class="p">,</span>
             <span class="n">raw</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">raw</span><span class="p">,</span>
@@ -391,9 +391,9 @@
 <a class="viewcode-back" href="../../module_docs/ocracy/base.html#ocracy.OcrResult.from_text">[docs]</a>
     <span class="nd">@classmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">from_text</span><span class="p">(</span>
-        <span class="bp">cls</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">backend</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">raw</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">meta</span><span class="p">:</span> <span class="n">Any</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;OcrResult&quot;</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Build a minimal result from just a text string (no geometry).&quot;&quot;&quot;</span>
+        <span class="bp">cls</span><span class="p">,</span> <span class="n">text</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">backend</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">,</span> <span class="n">raw</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">meta</span><span class="p">:</span> <span class="n">Any</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"OcrResult"</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Build a minimal result from just a text string (no geometry)."""</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="n">backend</span><span class="p">,</span> <span class="n">raw</span><span class="o">=</span><span class="n">raw</span><span class="p">,</span> <span class="n">meta</span><span class="o">=</span><span class="n">meta</span><span class="p">)</span></div>
 
 
@@ -404,18 +404,18 @@
         <span class="bp">cls</span><span class="p">,</span>
         <span class="n">blocks</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">TextBlock</span><span class="p">],</span>
         <span class="o">*</span><span class="p">,</span>
-        <span class="n">backend</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="p">,</span>
+        <span class="n">backend</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">""</span><span class="p">,</span>
         <span class="n">raw</span><span class="p">:</span> <span class="n">Any</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
         <span class="n">text</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">str</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-        <span class="n">joiner</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">,</span>
+        <span class="n">joiner</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"</span><span class="se">\n</span><span class="s2">"</span><span class="p">,</span>
         <span class="o">**</span><span class="n">meta</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
-    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">&quot;OcrResult&quot;</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Build a result from structured blocks.</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"OcrResult"</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Build a result from structured blocks.</span>
 
-<span class="sd">        If ``text`` is not given it is synthesized by joining the blocks&#39; text in</span>
+<span class="sd">        If ``text`` is not given it is synthesized by joining the blocks' text in</span>
 <span class="sd">        their given order with ``joiner`` (callers should pass blocks already in</span>
 <span class="sd">        reading order, or pre-join and pass ``text`` explicitly).</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="sd">        """</span>
         <span class="k">if</span> <span class="n">text</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">text</span> <span class="o">=</span> <span class="n">joiner</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">text</span> <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">blocks</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">cls</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span> <span class="n">blocks</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">blocks</span><span class="p">),</span> <span class="n">backend</span><span class="o">=</span><span class="n">backend</span><span class="p">,</span> <span class="n">raw</span><span class="o">=</span><span class="n">raw</span><span class="p">,</span> <span class="n">meta</span><span class="o">=</span><span class="n">meta</span><span class="p">)</span></div>

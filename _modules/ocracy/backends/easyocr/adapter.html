@@ -5,7 +5,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ocracy.backends.easyocr.adapter &mdash; ocracy 0.1.5 documentation</title>
+  <title>ocracy.backends.easyocr.adapter &mdash; ocracy 0.1.6 documentation</title>
       <link rel="stylesheet" type="text/css" href="../../../../_static/pygments.css?v=b86133f3" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/css/theme.css?v=9edc463e" />
       <link rel="stylesheet" type="text/css" href="../../../../_static/copybutton.css?v=76b2166b" />
@@ -14,7 +14,7 @@
   
       <script src="../../../../_static/jquery.js?v=5d32c60e"></script>
       <script src="../../../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="../../../../_static/documentation_options.js?v=59fadc99"></script>
+      <script src="../../../../_static/documentation_options.js?v=6e0256f3"></script>
       <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
       <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
       <script src="../../../../_static/toggleprompt.js?v=d7ede5d2"></script>
@@ -136,7 +136,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for ocracy.backends.easyocr.adapter</h1><div class="highlight"><pre>
-<span></span><span class="sd">&quot;&quot;&quot;Adapter for EasyOCR — image -&gt; text + polygon boxes via easyocr.Reader.&quot;&quot;&quot;</span>
+<span></span><span class="sd">"""Adapter for EasyOCR — image -&gt; text + polygon boxes via easyocr.Reader."""</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">OcrResult</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.make_backend</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseOcrAdapter</span><span class="p">,</span> <span class="n">make_block</span>
@@ -145,7 +145,7 @@
 <div class="viewcode-block" id="Adapter">
 <a class="viewcode-back" href="../../../../module_docs/ocracy/backends/easyocr/adapter.html#ocracy.backends.easyocr.adapter.Adapter">[docs]</a>
 <span class="k">class</span><span class="w"> </span><span class="nc">Adapter</span><span class="p">(</span><span class="n">BaseOcrAdapter</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;EasyOCR adapter (caches one Reader per language-set + gpu flag).&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">"""EasyOCR adapter (caches one Reader per language-set + gpu flag)."""</span>
 
     <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">config</span><span class="p">:</span> <span class="nb">dict</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">config</span><span class="p">)</span>
@@ -162,13 +162,13 @@
     <span class="k">def</span><span class="w"> </span><span class="nf">_read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">lang_list</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">gpu</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">extra</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OcrResult</span><span class="p">:</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_numpy</span>
 
-        <span class="n">langs</span> <span class="o">=</span> <span class="n">lang_list</span> <span class="ow">or</span> <span class="p">[</span><span class="s2">&quot;en&quot;</span><span class="p">]</span>
+        <span class="n">langs</span> <span class="o">=</span> <span class="n">lang_list</span> <span class="ow">or</span> <span class="p">[</span><span class="s2">"en"</span><span class="p">]</span>
         <span class="n">reader</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reader</span><span class="p">(</span><span class="n">langs</span><span class="p">,</span> <span class="n">gpu</span><span class="p">)</span>
         <span class="n">arr</span> <span class="o">=</span> <span class="n">to_numpy</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
         <span class="c1"># readtext -&gt; list of (polygon[[x,y]*4], text, confidence)</span>
         <span class="n">results</span> <span class="o">=</span> <span class="n">reader</span><span class="o">.</span><span class="n">readtext</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="o">**</span><span class="n">extra</span><span class="p">)</span>
         <span class="n">blocks</span> <span class="o">=</span> <span class="p">[</span>
-            <span class="n">make_block</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">bbox</span><span class="o">=</span><span class="n">poly</span><span class="p">,</span> <span class="n">confidence</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">conf</span><span class="p">),</span> <span class="n">level</span><span class="o">=</span><span class="s2">&quot;line&quot;</span><span class="p">)</span>
+            <span class="n">make_block</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">bbox</span><span class="o">=</span><span class="n">poly</span><span class="p">,</span> <span class="n">confidence</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">conf</span><span class="p">),</span> <span class="n">level</span><span class="o">=</span><span class="s2">"line"</span><span class="p">)</span>
             <span class="k">for</span> <span class="n">poly</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">conf</span> <span class="ow">in</span> <span class="n">results</span>
         <span class="p">]</span>
         <span class="k">return</span> <span class="n">OcrResult</span><span class="o">.</span><span class="n">from_blocks</span><span class="p">(</span><span class="n">blocks</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">backend_id</span><span class="p">,</span> <span class="n">raw</span><span class="o">=</span><span class="n">results</span><span class="p">)</span></div>
