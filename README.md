@@ -102,9 +102,9 @@ ocracy scaffold surya                          # start a new façade from the le
 ocracy validate tesseract                      # smoke-test a backend
 ```
 
-Everything is also reachable as `python -m ocracy <command>`. `argh` builds the
-parser from the function signatures in `ocracy/tools.py`; `argcomplete` gives tab
-completion when activated.
+Everything is also reachable as `python -m ocracy <command>`. [`cw`](https://github.com/thorwhalen/cw)
+builds the parser from the function signatures in `ocracy/tools.py`; `argcomplete` gives
+tab completion when activated.
 
 ## The ledger — choose a backend with eyes open
 
@@ -200,7 +200,7 @@ symlink bridge; they also travel with `pip install ocracy` under
   `make_block`, `scaffold_backend`, `validate_adapter`).
 - `ocracy/backends/<id>/` — one subpackage per engine (`config.py` + `adapter.py`).
 - `ocracy/credentials.py` — credential resolution for remote backends.
-- `ocracy/tools.py` + `ocracy/__main__.py` — the `ocracy` CLI (argh).
+- `ocracy/tools.py` + `ocracy/__main__.py` — the `ocracy` CLI (cw).
 
 The architecture mirrors the sibling façade packages
 [`denote`](https://github.com/thorwhalen/denote) (audio→symbol) and

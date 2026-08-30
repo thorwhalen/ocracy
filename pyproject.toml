@@ -55,7 +55,7 @@ ocr-space = ["requests>=2.28"]
 pix2tex = ["pix2tex>=0.1", "Pillow>=9"]
 trocr = ["transformers>=4.40", "torch>=2", "Pillow>=9"]
 # --- feature extras ---
-cli = ["argh>=0.30", "argcomplete>=3"]  # the `ocracy` command
+cli = ["cw>=0.1.0", "argcomplete>=3"]  # the `ocracy` command
 image = ["Pillow>=9", "numpy>=1.23"]   # input normalization helpers
 table = ["pandas>=1.5"]                # catalog.to_dataframe()
 # --- dev/docs ---
