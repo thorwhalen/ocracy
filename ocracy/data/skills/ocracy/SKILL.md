@@ -25,9 +25,9 @@ switch engines.
 ```python
 import ocracy
 
-text = ocracy.read_text("scan.png")          # -> str, default (first installed) backend
-result = ocracy.ocr("scan.png")              # -> OcrResult (text + structure)
-print(result)                                 # str(result) is the text
+text = ocracy.read_text("scan.png")  # -> str, default (first installed) backend
+result = ocracy.ocr("scan.png")  # -> OcrResult (text + structure)
+print(result)  # str(result) is the text
 ```
 
 `image` can be a **path, an http(s) URL, raw bytes, a PIL image, or a numpy array**.
@@ -50,7 +50,7 @@ print(result)                                 # str(result) is the text
 
 ```python
 result = ocracy.ocr("photo.jpg", backend="easyocr", languages=["en", "fr"])
-ocracy.list_backends()          # what's installed/implemented right now
+ocracy.list_backends()  # what's installed/implemented right now
 ```
 
 If the chosen backend's dependency is missing, ocracy raises a clear
@@ -68,14 +68,14 @@ or the **ocracy-install-backend** skill.
 Every backend returns the same `OcrResult`:
 
 ```python
-result.text                 # full text, reading order
-for line in result:         # iterate TextBlocks (lines by default)
+result.text  # full text, reading order
+for line in result:  # iterate TextBlocks (lines by default)
     print(line.text, line.bbox.as_tuple if line.bbox else None, line.confidence)
-result.words                # word-level blocks (when the engine provides them)
-result.mean_confidence      # average confidence in 0..1, or None
-result.markdown             # Markdown rendering (VLM/Mathpix/Mistral), else None
-result.raw                  # the untouched engine output, for power users
-result.filter_confidence(0.5)   # drop low-confidence blocks
+result.words  # word-level blocks (when the engine provides them)
+result.mean_confidence  # average confidence in 0..1, or None
+result.markdown  # Markdown rendering (VLM/Mathpix/Mistral), else None
+result.raw  # the untouched engine output, for power users
+result.filter_confidence(0.5)  # drop low-confidence blocks
 ```
 
 Note: VLM and math backends (`claude-vision`, `gpt-4o-vision`, `mathpix`,
@@ -87,8 +87,12 @@ return no bounding boxes or confidences. Use `result.text` / `result.markdown`.
 Pass ISO-639-1 codes; ocracy translates them to each engine's convention:
 
 ```python
-ocracy.read_text("doc.png", backend="tesseract", languages=["en", "fr"])  # -> Tesseract "eng+fra"
-ocracy.read_text("doc.png", backend="easyocr", languages=["en", "zh"])    # -> EasyOCR ["en", "ch_sim"]
+ocracy.read_text(
+    "doc.png", backend="tesseract", languages=["en", "fr"]
+)  # -> Tesseract "eng+fra"
+ocracy.read_text(
+    "doc.png", backend="easyocr", languages=["en", "zh"]
+)  # -> EasyOCR ["en", "ch_sim"]
 ```
 
 ## Remote backends need a key
@@ -106,9 +110,9 @@ env var(s) and signup link.
 ## Three tiers of control
 
 ```python
-ocracy.ocr(img)                                  # 1. facade, default backend
-ocracy.services.tesseract.read(img, psm=6)       # 2. pick a backend, pass native-ish opts
-ocracy.services.tesseract.adapter                # 3. the raw engine adapter
+ocracy.ocr(img)  # 1. facade, default backend
+ocracy.services.tesseract.read(img, psm=6)  # 2. pick a backend, pass native-ish opts
+ocracy.services.tesseract.adapter  # 3. the raw engine adapter
 ```
 
 ## From the shell

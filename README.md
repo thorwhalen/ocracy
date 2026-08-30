@@ -11,9 +11,9 @@ tools to wrap any of them.
 ```python
 import ocracy
 
-text = ocracy.read_text("scan.png")          # just the text, default backend
-result = ocracy.ocr("scan.png")              # full result: text + word boxes + confidence
-print(result)                                # -> the recognized text
+text = ocracy.read_text("scan.png")  # just the text, default backend
+result = ocracy.ocr("scan.png")  # full result: text + word boxes + confidence
+print(result)  # -> the recognized text
 for word in result.words:
     print(word.text, word.bbox.as_tuple, word.confidence)
 ```
@@ -55,10 +55,14 @@ framework, GPU wheels, first-run model weights, or an API key). ocracy turns tha
 into structured, OS-aware guidance — handy for humans and AI agents alike:
 
 ```python
-ocracy.doctor()                       # what's usable now vs what each missing one needs
-ocracy.check("paddleocr")             # -> True/False (usable right now?)
-print(ocracy.requirements("paddleocr").instructions())   # exact plan: pip + system deps + GPU + weights
-ocracy.install("rapidocr", yes=True)  # run the pip install + verify (yes=False = dry run)
+ocracy.doctor()  # what's usable now vs what each missing one needs
+ocracy.check("paddleocr")  # -> True/False (usable right now?)
+print(
+    ocracy.requirements("paddleocr").instructions()
+)  # exact plan: pip + system deps + GPU + weights
+ocracy.install(
+    "rapidocr", yes=True
+)  # run the pip install + verify (yes=False = dry run)
 ```
 ```bash
 ocracy doctor · ocracy requirements paddleocr --gpu · ocracy install rapidocr --yes
@@ -71,10 +75,10 @@ PaddleOCR → RapidOCR). The `ocracy-install-backend` skill drives all of this.
 From simplest to most powerful — reach for the next tier only when you need it:
 
 ```python
-ocracy.ocr(img)                                    # 1. facade, default (installed) backend
+ocracy.ocr(img)  # 1. facade, default (installed) backend
 ocracy.ocr(img, backend="easyocr", languages=["en", "fr"])
-ocracy.services.tesseract.read(img, psm=6)         # 2. pick a backend explicitly
-ocracy.services.tesseract.adapter                  # 3. the raw engine adapter, full control
+ocracy.services.tesseract.read(img, psm=6)  # 2. pick a backend explicitly
+ocracy.services.tesseract.adapter  # 3. the raw engine adapter, full control
 ```
 
 Every backend returns the same `OcrResult`, so your code doesn't change when you
@@ -114,14 +118,14 @@ matter (local vs remote, price, accuracy, languages, handwriting, math, tables,
 privacy). The data lives in `ocracy/data/backends.json`, separate from code.
 
 ```python
-ocracy.catalog                                       # <Catalog … backends … implemented …>
-ocracy.catalog["google-vision"]                      # one backend's full record
-ocracy.find(is_local=True, open_source=True)         # filter the ledger
+ocracy.catalog  # <Catalog … backends … implemented …>
+ocracy.catalog["google-vision"]  # one backend's full record
+ocracy.find(is_local=True, open_source=True)  # filter the ledger
 ocracy.find(handwriting="yes", is_remote=True)
-ocracy.catalog.can("math")                           # engines that read formulas
+ocracy.catalog.can("math")  # engines that read formulas
 ocracy.catalog.supports_language("Arabic")
-ocracy.find(implemented=True)                         # only what ocracy can run today
-ocracy.catalog.to_dataframe()                         # browse as a pandas table
+ocracy.find(implemented=True)  # only what ocracy can run today
+ocracy.catalog.to_dataframe()  # browse as a pandas table
 ocracy.catalog.compare(["tesseract", "google-vision", "mathpix"])
 ```
 
@@ -164,9 +168,11 @@ entry, fill in the adapter, and validate it:
 ```python
 from ocracy.make_backend import scaffold_backend, validate_adapter
 
-scaffold_backend("mathpix")     # creates ocracy/backends/mathpix/ prefilled from the ledger
+scaffold_backend(
+    "mathpix"
+)  # creates ocracy/backends/mathpix/ prefilled from the ledger
 # ... implement adapter.py's _read (call the engine, return an OcrResult) ...
-validate_adapter("mathpix")     # smoke-test it end to end
+validate_adapter("mathpix")  # smoke-test it end to end
 ```
 
 The full, step-by-step process — including the adapter contract, input/output

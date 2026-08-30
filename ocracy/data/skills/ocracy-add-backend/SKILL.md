@@ -43,8 +43,9 @@ named with a leading `_` (like `_template`) is ignored.
 ### 1. Pick the backend and read its ledger entry
 ```python
 import ocracy
-ocracy.find(is_local=True, open_source=True)      # explore options
-info = ocracy.catalog["easyocr"]                  # the record you'll implement
+
+ocracy.find(is_local=True, open_source=True)  # explore options
+info = ocracy.catalog["easyocr"]  # the record you'll implement
 info.python_install, info.languages_note, info.api_env_var
 ```
 Decide the **id** (kebab-case, matches the ledger id, e.g. `google-vision`).
@@ -52,7 +53,8 @@ Decide the **id** (kebab-case, matches the ledger id, e.g. `google-vision`).
 ### 2. Scaffold from the ledger
 ```python
 from ocracy.make_backend import scaffold_backend
-scaffold_backend("easyocr")     # -> ocracy/backends/easyocr/ (config prefilled)
+
+scaffold_backend("easyocr")  # -> ocracy/backends/easyocr/ (config prefilled)
 ```
 The on-disk module uses underscores (`google_vision`), the config `id` keeps the
 hyphen (`google-vision`). Pass `dest=` to scaffold elsewhere, `overwrite=True` to
@@ -82,16 +84,19 @@ Three jobs, in order:
 from ocracy.base import OcrResult
 from ocracy.make_backend import BaseOcrAdapter, make_block
 
+
 class Adapter(BaseOcrAdapter):
     def _read(self, image, **native_kwargs) -> OcrResult:
-        import the_engine                       # 1. LAZY import (never at module top)
+        import the_engine  # 1. LAZY import (never at module top)
         from ocracy.util import to_pil, ensure_file_path, cleanup_temp, load_image_bytes
 
-        pil = to_pil(image)                      # 2. normalize input to what the engine wants
+        pil = to_pil(image)  # 2. normalize input to what the engine wants
         native = the_engine.run(pil, **native_kwargs)
 
-        blocks = [                               # 3. normalize output
-            make_block(w.text, bbox=w.box, confidence=w.score, conf_scale=1.0, level="word")
+        blocks = [  # 3. normalize output
+            make_block(
+                w.text, bbox=w.box, confidence=w.score, conf_scale=1.0, level="word"
+            )
             for w in native.words
         ]
         return OcrResult.from_blocks(blocks, backend=self.backend_id, raw=native)
@@ -111,8 +116,12 @@ engine returns one.
 ### 5. Credentials (remote backends only)
 ```python
 from ocracy.credentials import resolve_credential
-key = resolve_credential(self.backend_id, api_key=native_kwargs.pop("api_key", None),
-                         env_var=self.config.get("api_env_var"))
+
+key = resolve_credential(
+    self.backend_id,
+    api_key=native_kwargs.pop("api_key", None),
+    env_var=self.config.get("api_env_var"),
+)
 ```
 Never hardcode keys; let the env var / `.env` resolve them.
 
@@ -130,7 +139,10 @@ If the id isn't in `ocracy/data/backends.json`, add a record (see
 ### 8. Validate + test
 ```python
 from ocracy.make_backend import validate_adapter
-validate_adapter("easyocr")          # {available, ran, ok, returns_ocrresult, text, n_blocks, ...}
+
+validate_adapter(
+    "easyocr"
+)  # {available, ran, ok, returns_ocrresult, text, n_blocks, ...}
 ```
 Add a dependency-gated test under `tests/` (skip if the engine/SDK or creds are
 missing) modeled on `tests/test_make_backend.py`.

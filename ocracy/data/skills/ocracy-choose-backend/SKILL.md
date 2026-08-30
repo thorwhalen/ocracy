@@ -23,24 +23,24 @@ open instead of guessing.
 ```python
 import ocracy
 
-ocracy.catalog                                   # <Catalog 64 backends | … implemented …>
-ocracy.find(is_local=True, open_source=True)     # local, free engines
-ocracy.find(is_remote=True)                       # hosted APIs
-ocracy.find(implemented=True)                     # only what ocracy can run today
-ocracy.catalog.can("math")                        # engines that read formulas
-ocracy.catalog.can("tables")                      # ... tables
-ocracy.catalog.can("handwriting")                 # ... handwriting
-ocracy.catalog.supports_language("Arabic")        # languages_note mentions Arabic
-ocracy.find(is_local=True).can("handwriting")     # filters compose (AND)
+ocracy.catalog  # <Catalog 64 backends | … implemented …>
+ocracy.find(is_local=True, open_source=True)  # local, free engines
+ocracy.find(is_remote=True)  # hosted APIs
+ocracy.find(implemented=True)  # only what ocracy can run today
+ocracy.catalog.can("math")  # engines that read formulas
+ocracy.catalog.can("tables")  # ... tables
+ocracy.catalog.can("handwriting")  # ... handwriting
+ocracy.catalog.supports_language("Arabic")  # languages_note mentions Arabic
+ocracy.find(is_local=True).can("handwriting")  # filters compose (AND)
 ```
 
 Inspect and compare:
 
 ```python
-ocracy.catalog["google-vision"]                  # one backend's full record
-ocracy.catalog["google-vision"].to_dict()        # raw fields (price, accuracy, langs, ...)
+ocracy.catalog["google-vision"]  # one backend's full record
+ocracy.catalog["google-vision"].to_dict()  # raw fields (price, accuracy, langs, ...)
 ocracy.catalog.compare(["tesseract", "google-vision", "mathpix"])  # side-by-side
-ocracy.catalog.to_dataframe()                     # browse as a pandas table (pip install "ocracy[table]")
+ocracy.catalog.to_dataframe()  # browse as a pandas table (pip install "ocracy[table]")
 ```
 
 From the shell: `ocracy find --local --free --handwriting`, `ocracy info <id>`.

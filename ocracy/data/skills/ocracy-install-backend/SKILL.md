@@ -23,22 +23,23 @@ credential). ocracy turns those into structured, OS-aware steps you can act on.
 
 ```python
 import ocracy
-ocracy.check("paddleocr")     # -> True/False: usable right now? (no network)
-ocracy.doctor()               # -> {"available": [...], "missing": {id: hint}}
+
+ocracy.check("paddleocr")  # -> True/False: usable right now? (no network)
+ocracy.doctor()  # -> {"available": [...], "missing": {id: hint}}
 ```
 Shell: `ocracy doctor`.
 
 ## 2. Get the exact requirements for a backend
 
 ```python
-req = ocracy.requirements("paddleocr")     # or ocracy.requirements("easyocr", gpu=True)
-print(req.instructions())                   # copy-pasteable plan
-req.pip_command      # 'pip install "ocracy[paddleocr]"'
-req.system           # OS-specific system-dep commands for THIS machine (e.g. tesseract)
-req.gpu              # GPU-wheel guidance, if any
-req.weights          # first-run model-download note, if any
-req.alternative      # a lighter backend with comparable results, if any
-req.credentials      # for remote backends: env var(s) + where to get a key
+req = ocracy.requirements("paddleocr")  # or ocracy.requirements("easyocr", gpu=True)
+print(req.instructions())  # copy-pasteable plan
+req.pip_command  # 'pip install "ocracy[paddleocr]"'
+req.system  # OS-specific system-dep commands for THIS machine (e.g. tesseract)
+req.gpu  # GPU-wheel guidance, if any
+req.weights  # first-run model-download note, if any
+req.alternative  # a lighter backend with comparable results, if any
+req.credentials  # for remote backends: env var(s) + where to get a key
 ```
 Shell: `ocracy requirements paddleocr` (add `--gpu`).
 
@@ -47,7 +48,9 @@ Shell: `ocracy requirements paddleocr` (add `--gpu`).
 **Run the pip step.** Either let ocracy do it, or run the printed command yourself:
 
 ```python
-ocracy.install("rapidocr", yes=True)        # runs pip in the current interpreter, then verifies
+ocracy.install(
+    "rapidocr", yes=True
+)  # runs pip in the current interpreter, then verifies
 # yes=False (default) is a dry run: returns the plan, changes nothing
 ```
 Shell: `ocracy install rapidocr --yes` (omit `--yes` for a dry run).
@@ -69,8 +72,8 @@ the user's OK):
 ## 4. Verify
 
 ```python
-ocracy.check("rapidocr")                    # True once installed
-ocracy.validate_adapter("rapidocr")         # end-to-end smoke test on a generated image
+ocracy.check("rapidocr")  # True once installed
+ocracy.validate_adapter("rapidocr")  # end-to-end smoke test on a generated image
 ```
 
 ## Tips for tricky ones
