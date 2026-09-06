@@ -43,7 +43,9 @@ from typing import Any, Iterator, List, Optional, Tuple, Union
 ImageInput = Union[str, Path, bytes, "PILImage", "NDArray"]  # noqa: F821
 
 # Recognition granularity levels, coarse -> fine is the other way round; this is
-# the canonical ordering used for sorting and filtering blocks.
+# the canonical ordering used for sorting and filtering blocks. Re-exported from
+# the package root as ``ocracy.GRANULARITY_LEVELS`` — the bare name ``ocracy.LEVELS``
+# is the unrelated backend-readiness tuple from ``ocracy.status``.
 LEVELS: Tuple[str, ...] = ("page", "block", "paragraph", "line", "word", "char")
 
 
@@ -122,7 +124,7 @@ class TextBlock:
         bbox: Where it was found (pixel coordinates), if the backend reports it.
         confidence: Recognition confidence in ``[0, 1]`` (normalized by ocracy
             from whatever scale the backend used), if available.
-        level: Granularity — one of :data:`LEVELS` ("word", "line", ...).
+        level: Granularity — one of :data:`ocracy.base.LEVELS` ("word", "line", ...).
         language: Detected/declared language code for this unit, if any.
         meta: Backend-specific extras (font size, style, page index, ...).
     """
