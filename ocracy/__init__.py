@@ -40,7 +40,19 @@ Three tiers of access, from simplest to most powerful::
     ocracy.services.tesseract.adapter              # raw engine adapter
 """
 
-from ocracy.base import BBox, ImageInput, LEVELS, OcrResult, TextBlock
+# Two unrelated tuples are called ``LEVELS`` inside ocracy: OCR granularity
+# (``ocracy.base``) and backend readiness (``ocracy.status``). At the package root
+# the readiness one owns the bare name ``ocracy.LEVELS`` — that is what it has
+# meant since the status module landed, and what ``ocracy status`` reads. Each
+# also gets an unambiguous alias below (``GRANULARITY_LEVELS`` / ``STATUS_LEVELS``)
+# so neither is shadowed and no reader has to guess which tuple they are holding.
+from ocracy.base import (
+    BBox,
+    ImageInput,
+    LEVELS as GRANULARITY_LEVELS,
+    OcrResult,
+    TextBlock,
+)
 from ocracy.catalog import BackendInfo, Catalog, catalog
 from ocracy.registry import (
     get_config,
@@ -65,6 +77,7 @@ from ocracy.install import (
 )
 from ocracy.status import (
     LEVELS,
+    LEVELS as STATUS_LEVELS,
     backend_ids,
     backend_info,
     is_set_up,
@@ -87,7 +100,7 @@ __all__ = [
     "TextBlock",
     "BBox",
     "ImageInput",
-    "LEVELS",
+    "GRANULARITY_LEVELS",
     "BackendInfo",
     "Catalog",
     "ServiceCollection",
@@ -108,6 +121,7 @@ __all__ = [
     "is_set_up",
     "is_tested",
     "LEVELS",
+    "STATUS_LEVELS",
     "__version__",
 ]
 
