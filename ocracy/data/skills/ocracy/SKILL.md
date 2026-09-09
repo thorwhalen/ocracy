@@ -69,18 +69,55 @@ Every backend returns the same `OcrResult`:
 
 ```python
 result.text  # full text, reading order
-for line in result:  # iterate TextBlocks (lines by default)
-    print(line.text, line.bbox.as_tuple if line.bbox else None, line.confidence)
-result.words  # word-level blocks (when the engine provides them)
+for block in result:  # iterate TextBlocks — at whatever level this engine reports
+    print(block.text, block.bbox.as_tuple if block.bbox else None, block.confidence)
+result.words  # word-level blocks   — see the granularity warning below
+result.lines  # line-level blocks   — see the granularity warning below
 result.mean_confidence  # average confidence in 0..1, or None
 result.markdown  # Markdown rendering (VLM/Mathpix/Mistral), else None
 result.raw  # the untouched engine output, for power users
-result.filter_confidence(0.5)  # drop low-confidence blocks
+result.filter_confidence(0.5)  # drop low-confidence blocks (also drops conf=None)
 ```
 
-Note: VLM and math backends (`claude-vision`, `gpt-4o-vision`, `mathpix`,
-`mistral-ocr`, `pix2tex-latex-ocr`) are text/Markdown-oriented — they typically
-return no bounding boxes or confidences. Use `result.text` / `result.markdown`.
+### Granularity — the most common way to get an empty result
+
+**Every backend emits exactly ONE granularity level.** Nothing promotes words into
+lines or splits lines into words; `result.words` and `result.lines` are just
+filters over one flat `blocks` list. So **asking a backend for the level it does
+not produce returns `[]` — silently, with no error and no warning.**
+
+| What the backend fills | Backends |
+|---|---|
+| `.words` (and `.lines` is **empty**) | `tesseract`, `google-vision`, `aws-textract`, `azure-document-intelligence`, `ocr-space` |
+| `.lines` (and `.words` is **empty**) | `easyocr`, `rapidocr`, `paddleocr`, `ocrmac` |
+| neither — `blocks == []`, text only | `claude-vision`, `gpt-4o-vision`, `mathpix`, `mistral-ocr`, `pix2tex-latex-ocr`, `trocr-handwritten` |
+
+```python
+ocracy.ocr(img, backend="rapidocr").words  # [] — rapidocr reports LINES
+ocracy.ocr(img, backend="tesseract").lines  # [] — tesseract reports WORDS
+```
+
+So: **if you need word boxes, pick from the word row** (`tesseract` locally,
+`google-vision` / `aws-textract` / `azure-document-intelligence` / `ocr-space` in
+the cloud) — swapping `tesseract` for `rapidocr` "because it installs more easily"
+will empty your `.words` loop without failing. If you need whole lines, pick from
+the line row, or group word blocks yourself using their `.bbox` y-coordinates.
+When the backend is a caller's choice, assert rather than assume:
+
+```python
+result = ocracy.ocr(img, backend=chosen)
+if not result.words:
+    raise ValueError(f"{chosen} does not report word-level boxes")
+```
+
+The last row — VLM and math backends — is text/Markdown-oriented: no boxes, no
+confidences, `mean_confidence is None`. Use `result.text` / `result.markdown`.
+
+**Careful with the ledger here.** `bounding_boxes` in `backends.json` describes
+what the *engine's API* can do, not what ocracy's façade returns:
+`claude-vision`, `mathpix` and `mistral-ocr` are `bounding_boxes: true` yet
+ocracy returns text only for all three. `ocracy.find(bounding_boxes=True)` is
+"engines worth wrapping for geometry", not a promise about `ocracy.ocr()`.
 
 ## Languages
 
@@ -134,7 +171,14 @@ images. Concatenate `result.text` across pages.
 
 ## Gotchas
 - `import ocracy` never needs an engine — installs are per-backend extras.
+- **`result.words` / `result.lines` return `[]` rather than raising** when the
+  backend reports the other level. Check the granularity table above before
+  switching backends — a swap that "just works" can silently empty your boxes.
+- **`ocracy.LEVELS` is the readiness ladder** (`all`, `implemented`, `set_up`,
+  `tested`), not the granularity levels. The granularity tuple (`page`, `block`,
+  `paragraph`, `line`, `word`, `char`) is `ocracy.base.LEVELS`.
 - The default backend is the first *installed* implemented one; pass `backend=`
-  to be explicit.
+  to be explicit. With no local engine installed it can resolve to a **paid
+  remote** one — be explicit in anything that spends.
 - Low accuracy on a noisy scan? Preprocess (deskew, increase DPI/contrast) or
   switch to a stronger backend (`paddleocr`, a cloud API, or a VLM).
