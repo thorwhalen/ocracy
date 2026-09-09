@@ -31,22 +31,71 @@ pip install "ocracy[table]"         # pandas, for catalog.to_dataframe()
 
 ## Backends that ship today
 
-| Backend | `backend=` id | Local / Remote | Cost | Install | Notable |
-|---|---|---|---|---|---|
-| Tesseract | `tesseract` | local | free | `ocracy[tesseract]` (+ system `tesseract`) | 100+ language baseline |
-| EasyOCR | `easyocr` | local | free | `ocracy[easyocr]` | 80+ languages, scene text |
-| RapidOCR | `rapidocr` | local | free | `ocracy[rapidocr]` | same PP-OCR models as Paddle, light CPU/ONNX — **recommended default for local plain text** |
-| PaddleOCR | `paddleocr` | local | free | `ocracy[paddleocr]` | the platform: server models, GPU, on-ramp to tables/layout (PP-Structure) & VL — heavier install |
-| ocrmac (Apple Vision) | `ocrmac` | local (macOS) | free | `ocracy[ocrmac]` | on-device, handwriting |
-| OCR.space | `ocr-space` | remote | free tier | `ocracy[ocr-space]` | zero-install REST |
-| Google Cloud Vision | `google-vision` | remote | paid (+free tier) | `ocracy[google-vision]` | high accuracy, handwriting, structure |
-| AWS Textract | `aws-textract` | remote | paid (+free tier) | `ocracy[aws-textract]` | business docs, handwriting (forms/tables in analyze mode) |
-| Azure Document Intelligence | `azure-document-intelligence` | remote | paid (+free tier) | `ocracy[azure]` | layout/tables/handwriting, on-prem container option |
-| Mistral OCR | `mistral-ocr` | remote | paid (pay-as-you-go) | `ocracy[mistral]` | cheap VLM → clean Markdown + math/tables |
-| Mathpix | `mathpix` | remote | paid (+free tier) | `ocracy[mathpix]` | math/handwriting → LaTeX & Markdown |
+The **Blocks** column is the one people get caught by: each backend reports exactly
+one granularity, so `result.words` is empty on a line-level backend and
+`result.lines` is empty on a word-level one — an empty list, not an error. See
+*Granularity* just below.
 
-…plus **53 more** engines/services catalogued in the ledger that you can turn into
+| Backend | `backend=` id | Local / Remote | Cost | Install | Blocks | Notable |
+|---|---|---|---|---|---|---|
+| Tesseract | `tesseract` | local | free | `ocracy[tesseract]` (+ system `tesseract`) | **word** | 100+ language baseline |
+| EasyOCR | `easyocr` | local | free | `ocracy[easyocr]` | **line** | 80+ languages, scene text |
+| RapidOCR | `rapidocr` | local | free | `ocracy[rapidocr]` | **line** | same PP-OCR models as Paddle, light CPU/ONNX — **recommended default for local plain text** |
+| PaddleOCR | `paddleocr` | local | free | `ocracy[paddleocr]` | **line** | the platform: server models, GPU, on-ramp to tables/layout (PP-Structure) & VL — heavier install |
+| ocrmac (Apple Vision) | `ocrmac` | local (macOS) | free | `ocracy[ocrmac]` | **line** | on-device, handwriting |
+| pix2tex (LaTeX-OCR) | `pix2tex-latex-ocr` | local | free | `ocracy[pix2tex]` | *text only* | one printed equation → LaTeX, offline |
+| TrOCR (handwritten) | `trocr-handwritten` | local | free | `ocracy[trocr]` | *text only* | one pre-segmented handwritten line, MIT weights |
+| OCR.space | `ocr-space` | remote | free tier | `ocracy[ocr-space]` | **word** | zero-install REST |
+| Google Cloud Vision | `google-vision` | remote | paid (+free tier) | `ocracy[google-vision]` | **word** | high accuracy, handwriting, structure |
+| AWS Textract | `aws-textract` | remote | paid (+free tier) | `ocracy[aws-textract]` | **word** | business docs, handwriting (forms/tables in analyze mode) |
+| Azure Document Intelligence | `azure-document-intelligence` | remote | paid (+free tier) | `ocracy[azure]` | **word** | layout/tables/handwriting, on-prem container option |
+| Mistral OCR | `mistral-ocr` | remote | paid (pay-as-you-go) | `ocracy[mistral]` | *text only* | cheap VLM → clean Markdown + math/tables |
+| Mathpix | `mathpix` | remote | paid (+free tier) | `ocracy[mathpix]` | *text only* | math/handwriting → LaTeX & Markdown |
+| Claude Vision | `claude-vision` | remote | paid | `ocracy[anthropic]` | *text only* | prompt-driven "read + reason" over messy/mixed documents |
+| GPT-4o Vision | `gpt-4o-vision` | remote | paid | `ocracy[openai]` | *text only* | same, via OpenAI; schema-constrained JSON output |
+
+…plus **49 more** engines/services catalogued in the ledger that you can turn into
 a working façade with one command (see *Add a backend* below).
+
+### Granularity: which backends fill `.words`, which fill `.lines`
+
+Every backend emits **exactly one** granularity level. Nothing promotes words into
+lines or splits lines into words, and `result.words` / `result.lines` are just
+filters over the one flat `blocks` list — so **asking for the level a backend does
+not produce returns `[]`, silently**:
+
+```python
+r = ocracy.ocr("scan.png", backend="rapidocr")
+r.lines  # populated
+r.words  # [] — rapidocr reports lines, and nothing raises
+
+r = ocracy.ocr("scan.png", backend="tesseract")
+r.words  # populated
+r.lines  # [] — tesseract reports words
+```
+
+- **word-level** (`.words` populated, `.lines` empty): `tesseract`, `google-vision`,
+  `aws-textract`, `azure-document-intelligence`, `ocr-space`.
+- **line-level** (`.lines` populated, `.words` empty): `easyocr`, `rapidocr`,
+  `paddleocr`, `ocrmac`.
+- **text only** (`blocks == []`, so *both* are empty and `mean_confidence` is `None`):
+  `claude-vision`, `gpt-4o-vision`, `mathpix`, `mistral-ocr`, `pix2tex-latex-ocr`,
+  `trocr-handwritten`. Use `result.text` / `result.markdown`.
+
+Iterating a result (`for block in result:`) yields whatever units that engine gave
+you, at its own level — it is not "lines by default".
+
+**The ledger's `bounding_boxes` flag describes the engine, not ocracy's adapter.**
+`claude-vision`, `mathpix` and `mistral-ocr` are all `bounding_boxes: true` (their
+APIs can return geometry) while ocracy's façades for them return text only. Treat
+`ocracy.find(bounding_boxes=True)` as "engines worth wrapping for geometry", and
+the list above as what you get today. If your code needs a level, assert it:
+
+```python
+result = ocracy.ocr(img, backend=chosen)
+if not result.words:
+    raise ValueError(f"{chosen} does not report word-level boxes")
+```
 
 ### Getting a backend running
 
@@ -86,6 +135,11 @@ switch engines: `result.text`, `result.words` / `result.lines`, each block's
 `.bbox` and `.confidence` (normalized to 0..1), `result.mean_confidence`,
 `result.markdown` (when a backend produces it), and `result.raw` (the untouched
 engine output).
+
+The *shape* is uniform; the *granularity* is not. Each engine fills either
+`.words` or `.lines` (or neither), and the other is an empty list rather than an
+error — see [Granularity](#granularity-which-backends-fill-words-which-fill-lines)
+before writing code that depends on one.
 
 ## Command line
 
@@ -182,7 +236,7 @@ agent **skill** at `ocracy/data/skills/ocracy-add-backend/SKILL.md`. The
 
 ## Agent skills (Claude Code & other AI agents)
 
-ocracy ships three Anthropic-style **skills** (under `ocracy/data/skills/`,
+ocracy ships four Anthropic-style **skills** (under `ocracy/data/skills/`,
 installed with the package) so AI coding agents can both *use* and *extend* it:
 
 | Skill | Audience | What it helps with |

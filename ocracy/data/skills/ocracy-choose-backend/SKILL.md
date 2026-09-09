@@ -59,6 +59,13 @@ From the shell: `ocracy find --local --free --handwriting`, `ocracy info <id>`.
   and the `beyond_text` list (barcodes, music, key_value, charts, ...).
 - **Output** — `output_formats`, `bounding_boxes`, `confidence_scores`. Note:
   VLM/math backends usually give text/Markdown but no boxes/confidence.
+  **`bounding_boxes` describes the engine's API, not ocracy's façade.**
+  `claude-vision`, `mathpix` and `mistral-ocr` are `bounding_boxes: true` while
+  ocracy returns text only for all three, so `find(bounding_boxes=True)` is a
+  list of engines *worth wrapping* for geometry, not a promise about what
+  `ocracy.ocr()` hands back. What each implemented backend actually fills —
+  `.words` vs `.lines` vs neither — is the granularity table in the **ocracy**
+  skill; check it before recommending a backend to someone who needs boxes.
 - **Privacy / GPU / maturity** — `privacy_note`, `gpu_recommended`, `maturity_note`.
 
 ## Quick recommendations
