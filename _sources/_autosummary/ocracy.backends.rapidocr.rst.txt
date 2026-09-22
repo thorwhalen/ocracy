@@ -1,0 +1,14 @@
+ocracy.backends.rapidocr
+========================
+
+.. automodule:: ocracy.backends.rapidocr
+
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   adapter
+   config

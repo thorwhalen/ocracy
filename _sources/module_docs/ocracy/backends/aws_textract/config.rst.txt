@@ -1,4 +1,0 @@
-ocracy.backends.aws_textract.config
-===================================
-.. automodule:: ocracy.backends.aws_textract.config
-   :members:

@@ -1,0 +1,14 @@
+ocracy.backends.aws\_textract
+=============================
+
+.. automodule:: ocracy.backends.aws_textract
+
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   adapter
+   config

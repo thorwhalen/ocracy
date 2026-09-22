@@ -1,4 +1,0 @@
-ocracy.make_backend
-===================
-.. automodule:: ocracy.make_backend
-   :members:

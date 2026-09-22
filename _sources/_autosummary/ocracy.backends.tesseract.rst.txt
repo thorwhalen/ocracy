@@ -1,0 +1,14 @@
+ocracy.backends.tesseract
+=========================
+
+.. automodule:: ocracy.backends.tesseract
+
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   adapter
+   config

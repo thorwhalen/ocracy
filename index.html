@@ -1,411 +1,852 @@
 
-
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="./">
-<head>
-  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Welcome to ocracy’s documentation! &mdash; ocracy 0.1.8 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
-      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
 
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<link rel="alternate" type="text/markdown" href="index.html.md">
+<link rel="describedby" href="llms.txt" type="text/markdown">
+<link rel="alternate" type="text/markdown" href="index.html.md">
+<link rel="describedby" href="llms.txt">
+    <title>ocracy &#8212; ocracy</title>
   
-      <script src="_static/jquery.js?v=5d32c60e"></script>
-      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=22607128"></script>
-      <script src="_static/doctools.js?v=fd6eb6e6"></script>
-      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
-      <script src="_static/toggleprompt.js?v=d7ede5d2"></script>
-      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
-      <script src="_static/copybutton.js?v=f281be69"></script>
-    <script src="_static/js/theme.js"></script>
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d75fae25" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/epythet.css?v=8b94de43" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=cb8930eaaf36d9849b67"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
+
+    <script src="_static/documentation_options.js?v=8618f531"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=fd10adb8"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'index';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="ocracy" href="module_docs/ocracy.html" /> 
-</head>
+    <link rel="next" title="API reference" href="api.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.1.9" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
 
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
 
-          
-          
-          <a href="#" class="icon icon-home">
-            ocracy
-          </a>
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
 </div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy.html">ocracy</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/__main__.html">ocracy.__main__</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends.html">ocracy.backends</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/_template.html">ocracy.backends._template</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/_template/adapter.html">ocracy.backends._template.adapter</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/_template/config.html">ocracy.backends._template.config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/aws_textract.html">ocracy.backends.aws_textract</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/aws_textract/adapter.html">ocracy.backends.aws_textract.adapter</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/aws_textract/config.html">ocracy.backends.aws_textract.config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/azure_document_intelligence.html">ocracy.backends.azure_document_intelligence</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/azure_document_intelligence/adapter.html">ocracy.backends.azure_document_intelligence.adapter</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/azure_document_intelligence/config.html">ocracy.backends.azure_document_intelligence.config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/claude_vision.html">ocracy.backends.claude_vision</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/claude_vision/adapter.html">ocracy.backends.claude_vision.adapter</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/claude_vision/config.html">ocracy.backends.claude_vision.config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/easyocr.html">ocracy.backends.easyocr</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/easyocr/adapter.html">ocracy.backends.easyocr.adapter</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/easyocr/config.html">ocracy.backends.easyocr.config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/google_vision.html">ocracy.backends.google_vision</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/google_vision/adapter.html">ocracy.backends.google_vision.adapter</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/google_vision/config.html">ocracy.backends.google_vision.config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/gpt_4o_vision.html">ocracy.backends.gpt_4o_vision</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/gpt_4o_vision/adapter.html">ocracy.backends.gpt_4o_vision.adapter</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/gpt_4o_vision/config.html">ocracy.backends.gpt_4o_vision.config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/mathpix.html">ocracy.backends.mathpix</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/mathpix/adapter.html">ocracy.backends.mathpix.adapter</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/mathpix/config.html">ocracy.backends.mathpix.config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/mistral_ocr.html">ocracy.backends.mistral_ocr</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/mistral_ocr/adapter.html">ocracy.backends.mistral_ocr.adapter</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/mistral_ocr/config.html">ocracy.backends.mistral_ocr.config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/ocr_space.html">ocracy.backends.ocr_space</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/ocr_space/adapter.html">ocracy.backends.ocr_space.adapter</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/ocr_space/config.html">ocracy.backends.ocr_space.config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/ocrmac.html">ocracy.backends.ocrmac</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/ocrmac/adapter.html">ocracy.backends.ocrmac.adapter</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/ocrmac/config.html">ocracy.backends.ocrmac.config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/paddleocr.html">ocracy.backends.paddleocr</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/paddleocr/adapter.html">ocracy.backends.paddleocr.adapter</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/paddleocr/config.html">ocracy.backends.paddleocr.config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/pix2tex_latex_ocr.html">ocracy.backends.pix2tex_latex_ocr</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/pix2tex_latex_ocr/adapter.html">ocracy.backends.pix2tex_latex_ocr.adapter</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/pix2tex_latex_ocr/config.html">ocracy.backends.pix2tex_latex_ocr.config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/rapidocr.html">ocracy.backends.rapidocr</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/rapidocr/adapter.html">ocracy.backends.rapidocr.adapter</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/rapidocr/config.html">ocracy.backends.rapidocr.config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/tesseract.html">ocracy.backends.tesseract</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/tesseract/adapter.html">ocracy.backends.tesseract.adapter</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/tesseract/config.html">ocracy.backends.tesseract.config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/trocr_handwritten.html">ocracy.backends.trocr_handwritten</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/trocr_handwritten/adapter.html">ocracy.backends.trocr_handwritten.adapter</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/trocr_handwritten/config.html">ocracy.backends.trocr_handwritten.config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/base.html">ocracy.base</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/catalog.html">ocracy.catalog</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/credentials.html">ocracy.credentials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/install.html">ocracy.install</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/make_backend.html">ocracy.make_backend</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/registry.html">ocracy.registry</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/services.html">ocracy.services</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/status.html">ocracy.status</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/tools.html">ocracy.tools</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/translation.html">ocracy.translation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/util.html">ocracy.util</a></li>
-</ul>
 
-        </div>
-      </div>
-    </nav>
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="#">ocracy</a>
-      </nav>
+  
+    
+  
 
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Welcome to ocracy’s documentation!</li>
-      <li class="wy-breadcrumbs-aside">
-            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
-      </li>
+<a class="navbar-brand logo" href="#">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">ocracy</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="api.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="ai-agents.html">
+    For AI agents
+  </a>
+</li>
+
   </ul>
-  <hr/>
-</div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
-  <section id="welcome-to-ocracy-s-documentation">
-<h1>Welcome to ocracy’s documentation!<a class="headerlink" href="#welcome-to-ocracy-s-documentation" title="Link to this heading"></a></h1>
-<div class="toctree-wrapper compound">
-<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy.html">ocracy</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy.html#ocracy.BBox"><code class="docutils literal notranslate"><span class="pre">BBox</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy.html#ocracy.BackendInfo"><code class="docutils literal notranslate"><span class="pre">BackendInfo</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy.html#ocracy.BaseOcrAdapter"><code class="docutils literal notranslate"><span class="pre">BaseOcrAdapter</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy.html#ocracy.Catalog"><code class="docutils literal notranslate"><span class="pre">Catalog</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy.html#ocracy.OcrResult"><code class="docutils literal notranslate"><span class="pre">OcrResult</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy.html#ocracy.Requirements"><code class="docutils literal notranslate"><span class="pre">Requirements</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy.html#ocracy.ServiceCollection"><code class="docutils literal notranslate"><span class="pre">ServiceCollection</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy.html#ocracy.TextBlock"><code class="docutils literal notranslate"><span class="pre">TextBlock</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy.html#ocracy.available_backends"><code class="docutils literal notranslate"><span class="pre">available_backends()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy.html#ocracy.backend_ids"><code class="docutils literal notranslate"><span class="pre">backend_ids()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy.html#ocracy.backend_info"><code class="docutils literal notranslate"><span class="pre">backend_info()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy.html#ocracy.check"><code class="docutils literal notranslate"><span class="pre">check()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy.html#ocracy.doctor"><code class="docutils literal notranslate"><span class="pre">doctor()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy.html#ocracy.find"><code class="docutils literal notranslate"><span class="pre">find()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy.html#ocracy.get_config"><code class="docutils literal notranslate"><span class="pre">get_config()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy.html#ocracy.get_default_backend"><code class="docutils literal notranslate"><span class="pre">get_default_backend()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy.html#ocracy.install"><code class="docutils literal notranslate"><span class="pre">install()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy.html#ocracy.is_set_up"><code class="docutils literal notranslate"><span class="pre">is_set_up()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy.html#ocracy.is_tested"><code class="docutils literal notranslate"><span class="pre">is_tested()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy.html#ocracy.list_backends"><code class="docutils literal notranslate"><span class="pre">list_backends()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy.html#ocracy.make_block"><code class="docutils literal notranslate"><span class="pre">make_block()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy.html#ocracy.names_with_sites"><code class="docutils literal notranslate"><span class="pre">names_with_sites()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy.html#ocracy.ocr"><code class="docutils literal notranslate"><span class="pre">ocr()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy.html#ocracy.read_text"><code class="docutils literal notranslate"><span class="pre">read_text()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy.html#ocracy.register_backend"><code class="docutils literal notranslate"><span class="pre">register_backend()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy.html#ocracy.requirements"><code class="docutils literal notranslate"><span class="pre">requirements()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy.html#ocracy.scaffold_backend"><code class="docutils literal notranslate"><span class="pre">scaffold_backend()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy.html#ocracy.services"><code class="docutils literal notranslate"><span class="pre">services</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy.html#ocracy.status_table"><code class="docutils literal notranslate"><span class="pre">status_table()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy.html#ocracy.validate_adapter"><code class="docutils literal notranslate"><span class="pre">validate_adapter()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/__main__.html">ocracy.__main__</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends.html">ocracy.backends</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/_template.html">ocracy.backends._template</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/_template/adapter.html">ocracy.backends._template.adapter</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/backends/_template/adapter.html#ocracy.backends._template.adapter.Adapter"><code class="docutils literal notranslate"><span class="pre">Adapter</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/_template/config.html">ocracy.backends._template.config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/aws_textract.html">ocracy.backends.aws_textract</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/aws_textract/adapter.html">ocracy.backends.aws_textract.adapter</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/backends/aws_textract/adapter.html#ocracy.backends.aws_textract.adapter.Adapter"><code class="docutils literal notranslate"><span class="pre">Adapter</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/aws_textract/config.html">ocracy.backends.aws_textract.config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/azure_document_intelligence.html">ocracy.backends.azure_document_intelligence</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/azure_document_intelligence/adapter.html">ocracy.backends.azure_document_intelligence.adapter</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/backends/azure_document_intelligence/adapter.html#ocracy.backends.azure_document_intelligence.adapter.Adapter"><code class="docutils literal notranslate"><span class="pre">Adapter</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/azure_document_intelligence/config.html">ocracy.backends.azure_document_intelligence.config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/claude_vision.html">ocracy.backends.claude_vision</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/claude_vision/adapter.html">ocracy.backends.claude_vision.adapter</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/backends/claude_vision/adapter.html#ocracy.backends.claude_vision.adapter.Adapter"><code class="docutils literal notranslate"><span class="pre">Adapter</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/claude_vision/config.html">ocracy.backends.claude_vision.config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/easyocr.html">ocracy.backends.easyocr</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/easyocr/adapter.html">ocracy.backends.easyocr.adapter</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/backends/easyocr/adapter.html#ocracy.backends.easyocr.adapter.Adapter"><code class="docutils literal notranslate"><span class="pre">Adapter</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/easyocr/config.html">ocracy.backends.easyocr.config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/google_vision.html">ocracy.backends.google_vision</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/google_vision/adapter.html">ocracy.backends.google_vision.adapter</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/backends/google_vision/adapter.html#ocracy.backends.google_vision.adapter.Adapter"><code class="docutils literal notranslate"><span class="pre">Adapter</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/google_vision/config.html">ocracy.backends.google_vision.config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/gpt_4o_vision.html">ocracy.backends.gpt_4o_vision</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/gpt_4o_vision/adapter.html">ocracy.backends.gpt_4o_vision.adapter</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/backends/gpt_4o_vision/adapter.html#ocracy.backends.gpt_4o_vision.adapter.Adapter"><code class="docutils literal notranslate"><span class="pre">Adapter</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/gpt_4o_vision/config.html">ocracy.backends.gpt_4o_vision.config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/mathpix.html">ocracy.backends.mathpix</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/mathpix/adapter.html">ocracy.backends.mathpix.adapter</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/backends/mathpix/adapter.html#ocracy.backends.mathpix.adapter.Adapter"><code class="docutils literal notranslate"><span class="pre">Adapter</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/mathpix/config.html">ocracy.backends.mathpix.config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/mistral_ocr.html">ocracy.backends.mistral_ocr</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/mistral_ocr/adapter.html">ocracy.backends.mistral_ocr.adapter</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/backends/mistral_ocr/adapter.html#ocracy.backends.mistral_ocr.adapter.Adapter"><code class="docutils literal notranslate"><span class="pre">Adapter</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/mistral_ocr/config.html">ocracy.backends.mistral_ocr.config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/ocr_space.html">ocracy.backends.ocr_space</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/ocr_space/adapter.html">ocracy.backends.ocr_space.adapter</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/backends/ocr_space/adapter.html#ocracy.backends.ocr_space.adapter.Adapter"><code class="docutils literal notranslate"><span class="pre">Adapter</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/ocr_space/config.html">ocracy.backends.ocr_space.config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/ocrmac.html">ocracy.backends.ocrmac</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/ocrmac/adapter.html">ocracy.backends.ocrmac.adapter</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/backends/ocrmac/adapter.html#ocracy.backends.ocrmac.adapter.Adapter"><code class="docutils literal notranslate"><span class="pre">Adapter</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/ocrmac/config.html">ocracy.backends.ocrmac.config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/paddleocr.html">ocracy.backends.paddleocr</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/paddleocr/adapter.html">ocracy.backends.paddleocr.adapter</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/backends/paddleocr/adapter.html#ocracy.backends.paddleocr.adapter.Adapter"><code class="docutils literal notranslate"><span class="pre">Adapter</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/paddleocr/config.html">ocracy.backends.paddleocr.config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/pix2tex_latex_ocr.html">ocracy.backends.pix2tex_latex_ocr</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/pix2tex_latex_ocr/adapter.html">ocracy.backends.pix2tex_latex_ocr.adapter</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/backends/pix2tex_latex_ocr/adapter.html#ocracy.backends.pix2tex_latex_ocr.adapter.Adapter"><code class="docutils literal notranslate"><span class="pre">Adapter</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/pix2tex_latex_ocr/config.html">ocracy.backends.pix2tex_latex_ocr.config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/rapidocr.html">ocracy.backends.rapidocr</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/rapidocr/adapter.html">ocracy.backends.rapidocr.adapter</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/backends/rapidocr/adapter.html#ocracy.backends.rapidocr.adapter.Adapter"><code class="docutils literal notranslate"><span class="pre">Adapter</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/rapidocr/config.html">ocracy.backends.rapidocr.config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/tesseract.html">ocracy.backends.tesseract</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/tesseract/adapter.html">ocracy.backends.tesseract.adapter</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/backends/tesseract/adapter.html#ocracy.backends.tesseract.adapter.Adapter"><code class="docutils literal notranslate"><span class="pre">Adapter</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/tesseract/config.html">ocracy.backends.tesseract.config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/trocr_handwritten.html">ocracy.backends.trocr_handwritten</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/trocr_handwritten/adapter.html">ocracy.backends.trocr_handwritten.adapter</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/backends/trocr_handwritten/adapter.html#ocracy.backends.trocr_handwritten.adapter.Adapter"><code class="docutils literal notranslate"><span class="pre">Adapter</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/trocr_handwritten/config.html">ocracy.backends.trocr_handwritten.config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/base.html">ocracy.base</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/base.html#ocracy.base.BBox"><code class="docutils literal notranslate"><span class="pre">BBox</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/base.html#ocracy.base.OcrResult"><code class="docutils literal notranslate"><span class="pre">OcrResult</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/base.html#ocracy.base.TextBlock"><code class="docutils literal notranslate"><span class="pre">TextBlock</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/catalog.html">ocracy.catalog</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/catalog.html#ocracy.catalog.BackendInfo"><code class="docutils literal notranslate"><span class="pre">BackendInfo</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/catalog.html#ocracy.catalog.Catalog"><code class="docutils literal notranslate"><span class="pre">Catalog</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/credentials.html">ocracy.credentials</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/credentials.html#ocracy.credentials.CREDENTIAL_GUIDANCE"><code class="docutils literal notranslate"><span class="pre">CREDENTIAL_GUIDANCE</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/credentials.html#ocracy.credentials.MissingCredentialError"><code class="docutils literal notranslate"><span class="pre">MissingCredentialError</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/credentials.html#ocracy.credentials.PROVIDER_ENV_VARS"><code class="docutils literal notranslate"><span class="pre">PROVIDER_ENV_VARS</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/credentials.html#ocracy.credentials.credential_help"><code class="docutils literal notranslate"><span class="pre">credential_help()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/credentials.html#ocracy.credentials.resolve_credential"><code class="docutils literal notranslate"><span class="pre">resolve_credential()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/install.html">ocracy.install</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/install.html#ocracy.install.Requirements"><code class="docutils literal notranslate"><span class="pre">Requirements</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/install.html#ocracy.install.available_backends"><code class="docutils literal notranslate"><span class="pre">available_backends()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/install.html#ocracy.install.check"><code class="docutils literal notranslate"><span class="pre">check()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/install.html#ocracy.install.doctor"><code class="docutils literal notranslate"><span class="pre">doctor()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/install.html#ocracy.install.install"><code class="docutils literal notranslate"><span class="pre">install()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/install.html#ocracy.install.requirements"><code class="docutils literal notranslate"><span class="pre">requirements()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/make_backend.html">ocracy.make_backend</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/make_backend.html#ocracy.make_backend.BaseOcrAdapter"><code class="docutils literal notranslate"><span class="pre">BaseOcrAdapter</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/make_backend.html#ocracy.make_backend.as_bbox"><code class="docutils literal notranslate"><span class="pre">as_bbox()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/make_backend.html#ocracy.make_backend.make_block"><code class="docutils literal notranslate"><span class="pre">make_block()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/make_backend.html#ocracy.make_backend.make_test_image"><code class="docutils literal notranslate"><span class="pre">make_test_image()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/make_backend.html#ocracy.make_backend.normalize_confidence"><code class="docutils literal notranslate"><span class="pre">normalize_confidence()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/make_backend.html#ocracy.make_backend.scaffold_backend"><code class="docutils literal notranslate"><span class="pre">scaffold_backend()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/make_backend.html#ocracy.make_backend.validate_adapter"><code class="docutils literal notranslate"><span class="pre">validate_adapter()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/registry.html">ocracy.registry</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/registry.html#ocracy.registry.PRIMARY_CAPABILITY"><code class="docutils literal notranslate"><span class="pre">PRIMARY_CAPABILITY</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/registry.html#ocracy.registry.clear_registry"><code class="docutils literal notranslate"><span class="pre">clear_registry()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/registry.html#ocracy.registry.get_backend"><code class="docutils literal notranslate"><span class="pre">get_backend()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/registry.html#ocracy.registry.get_config"><code class="docutils literal notranslate"><span class="pre">get_config()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/registry.html#ocracy.registry.get_default_backend"><code class="docutils literal notranslate"><span class="pre">get_default_backend()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/registry.html#ocracy.registry.list_backends"><code class="docutils literal notranslate"><span class="pre">list_backends()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/registry.html#ocracy.registry.register_backend"><code class="docutils literal notranslate"><span class="pre">register_backend()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/services.html">ocracy.services</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/services.html#ocracy.services.ServiceCollection"><code class="docutils literal notranslate"><span class="pre">ServiceCollection</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/services.html#ocracy.services.ServiceHandle"><code class="docutils literal notranslate"><span class="pre">ServiceHandle</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/status.html">ocracy.status</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/status.html#ocracy.status.backend_ids"><code class="docutils literal notranslate"><span class="pre">backend_ids()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/status.html#ocracy.status.backend_info"><code class="docutils literal notranslate"><span class="pre">backend_info()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/status.html#ocracy.status.is_set_up"><code class="docutils literal notranslate"><span class="pre">is_set_up()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/status.html#ocracy.status.is_tested"><code class="docutils literal notranslate"><span class="pre">is_tested()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/status.html#ocracy.status.names_with_sites"><code class="docutils literal notranslate"><span class="pre">names_with_sites()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/status.html#ocracy.status.status_table"><code class="docutils literal notranslate"><span class="pre">status_table()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/tools.html">ocracy.tools</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/tools.html#ocracy.tools.backends"><code class="docutils literal notranslate"><span class="pre">backends()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/tools.html#ocracy.tools.doctor"><code class="docutils literal notranslate"><span class="pre">doctor()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/tools.html#ocracy.tools.find"><code class="docutils literal notranslate"><span class="pre">find()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/tools.html#ocracy.tools.info"><code class="docutils literal notranslate"><span class="pre">info()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/tools.html#ocracy.tools.install"><code class="docutils literal notranslate"><span class="pre">install()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/tools.html#ocracy.tools.read"><code class="docutils literal notranslate"><span class="pre">read()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/tools.html#ocracy.tools.requirements"><code class="docutils literal notranslate"><span class="pre">requirements()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/tools.html#ocracy.tools.scaffold"><code class="docutils literal notranslate"><span class="pre">scaffold()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/tools.html#ocracy.tools.status"><code class="docutils literal notranslate"><span class="pre">status()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/tools.html#ocracy.tools.validate"><code class="docutils literal notranslate"><span class="pre">validate()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/translation.html">ocracy.translation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/translation.html#ocracy.translation.make_kwargs_translator"><code class="docutils literal notranslate"><span class="pre">make_kwargs_translator()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/translation.html#ocracy.translation.validate_param"><code class="docutils literal notranslate"><span class="pre">validate_param()</span></code></a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/util.html">ocracy.util</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/util.html#ocracy.util.check_import"><code class="docutils literal notranslate"><span class="pre">check_import()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/util.html#ocracy.util.classify_input"><code class="docutils literal notranslate"><span class="pre">classify_input()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/util.html#ocracy.util.cleanup_temp"><code class="docutils literal notranslate"><span class="pre">cleanup_temp()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/util.html#ocracy.util.ensure_file_path"><code class="docutils literal notranslate"><span class="pre">ensure_file_path()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/util.html#ocracy.util.image_path"><code class="docutils literal notranslate"><span class="pre">image_path()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/util.html#ocracy.util.is_url"><code class="docutils literal notranslate"><span class="pre">is_url()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/util.html#ocracy.util.load_image_bytes"><code class="docutils literal notranslate"><span class="pre">load_image_bytes()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/util.html#ocracy.util.to_numpy"><code class="docutils literal notranslate"><span class="pre">to_numpy()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="module_docs/ocracy/util.html#ocracy.util.to_pil"><code class="docutils literal notranslate"><span class="pre">to_pil()</span></code></a></li>
-</ul>
-</li>
-</ul>
-</div>
-</section>
-<section id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Link to this heading"></a></h1>
-<ul class="simple">
-<li><p><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></p></li>
-<li><p><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></p></li>
-<li><p><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></p></li>
-</ul>
-<p>Release: 0.1.8</p>
-<p>Last change: Sep 09, 2026</p>
-</section>
-
-
-           </div>
-          </div>
-          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="module_docs/ocracy.html" class="btn btn-neutral float-right" title="ocracy" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+</nav></div>
+      
     </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
 
-  <hr/>
-
-  <div role="contentinfo">
-    <p></p>
-  </div>
-
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
-
-</footer>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
         </div>
-      </div>
-    </section>
-  </div>
-  <script>
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script> 
+      
+      
+        <div class="navbar-item">
 
-</body>
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/thorwhalen/ocracy" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="api.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="ai-agents.html">
+    For AI agents
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/thorwhalen/ocracy" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none"></div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <!-- generated by epythet -->
+<section id="ocracy">
+<h1>ocracy<a class="headerlink" href="#ocracy" title="Link to this heading">#</a></h1>
+<p>One façade over many OCR engines — plus a <strong>ledger</strong> to help you choose between them.</p>
+<p>OCR (“read the text in this image”) is solved a dozen ways: local engines
+(Tesseract, EasyOCR, PaddleOCR), cloud APIs (Google Vision, AWS Textract, Azure),
+and VLM readers — each with its own install, API, pricing, and language coverage.
+<code class="docutils literal notranslate"><span class="pre">ocracy</span></code> gives you a uniform call, a browsable catalog of every option, and the
+tools to wrap any of them.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">ocracy</span>
+
+<span class="n">text</span> <span class="o">=</span> <span class="n">ocracy</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="s2">"scan.png"</span><span class="p">)</span>  <span class="c1"># just the text, default backend</span>
+<span class="n">result</span> <span class="o">=</span> <span class="n">ocracy</span><span class="o">.</span><span class="n">ocr</span><span class="p">(</span><span class="s2">"scan.png"</span><span class="p">)</span>  <span class="c1"># full result: text + word boxes + confidence</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>  <span class="c1"># -&gt; the recognized text</span>
+<span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">result</span><span class="o">.</span><span class="n">words</span><span class="p">:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">word</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">word</span><span class="o">.</span><span class="n">bbox</span><span class="o">.</span><span class="n">as_tuple</span><span class="p">,</span> <span class="n">word</span><span class="o">.</span><span class="n">confidence</span><span class="p">)</span>
+</pre></div>
+</div>
+<section id="install">
+<h2>Install<a class="headerlink" href="#install" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">import</span> <span class="pre">ocracy</span></code> is dependency-free. Install only the backends you use, via extras:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"ocracy[tesseract]"</span><span class="w">     </span><span class="c1"># local, free (also needs the system `tesseract` binary)</span>
+pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"ocracy[easyocr]"</span><span class="w">       </span><span class="c1"># local, pip-only</span>
+pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"ocracy[google-vision]"</span><span class="w"> </span><span class="c1"># cloud API</span>
+pip<span class="w"> </span>install<span class="w"> </span><span class="s2">"ocracy[table]"</span><span class="w">         </span><span class="c1"># pandas, for catalog.to_dataframe()</span>
+</pre></div>
+</div>
+</section>
+<section id="backends-that-ship-today">
+<h2>Backends that ship today<a class="headerlink" href="#backends-that-ship-today" title="Link to this heading">#</a></h2>
+<p>The <strong>Blocks</strong> column is the one people get caught by: each backend reports exactly
+one granularity, so <code class="docutils literal notranslate"><span class="pre">result.words</span></code> is empty on a line-level backend and
+<code class="docutils literal notranslate"><span class="pre">result.lines</span></code> is empty on a word-level one — an empty list, not an error. See
+<em>Granularity</em> just below.</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Backend</p></th>
+<th class="head"><p><code class="docutils literal notranslate"><span class="pre">backend=</span></code> id</p></th>
+<th class="head"><p>Local / Remote</p></th>
+<th class="head"><p>Cost</p></th>
+<th class="head"><p>Install</p></th>
+<th class="head"><p>Blocks</p></th>
+<th class="head"><p>Notable</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Tesseract</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">tesseract</span></code></p></td>
+<td><p>local</p></td>
+<td><p>free</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ocracy[tesseract]</span></code> (+ system <code class="docutils literal notranslate"><span class="pre">tesseract</span></code>)</p></td>
+<td><p><strong>word</strong></p></td>
+<td><p>100+ language baseline</p></td>
+</tr>
+<tr class="row-odd"><td><p>EasyOCR</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">easyocr</span></code></p></td>
+<td><p>local</p></td>
+<td><p>free</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ocracy[easyocr]</span></code></p></td>
+<td><p><strong>line</strong></p></td>
+<td><p>80+ languages, scene text</p></td>
+</tr>
+<tr class="row-even"><td><p>RapidOCR</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">rapidocr</span></code></p></td>
+<td><p>local</p></td>
+<td><p>free</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ocracy[rapidocr]</span></code></p></td>
+<td><p><strong>line</strong></p></td>
+<td><p>same PP-OCR models as Paddle, light CPU/ONNX — <strong>recommended default for local plain text</strong></p></td>
+</tr>
+<tr class="row-odd"><td><p>PaddleOCR</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">paddleocr</span></code></p></td>
+<td><p>local</p></td>
+<td><p>free</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ocracy[paddleocr]</span></code></p></td>
+<td><p><strong>line</strong></p></td>
+<td><p>the platform: server models, GPU, on-ramp to tables/layout (PP-Structure) &amp; VL — heavier install</p></td>
+</tr>
+<tr class="row-even"><td><p>ocrmac (Apple Vision)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ocrmac</span></code></p></td>
+<td><p>local (macOS)</p></td>
+<td><p>free</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ocracy[ocrmac]</span></code></p></td>
+<td><p><strong>line</strong></p></td>
+<td><p>on-device, handwriting</p></td>
+</tr>
+<tr class="row-odd"><td><p>pix2tex (LaTeX-OCR)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">pix2tex-latex-ocr</span></code></p></td>
+<td><p>local</p></td>
+<td><p>free</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ocracy[pix2tex]</span></code></p></td>
+<td><p><em>text only</em></p></td>
+<td><p>one printed equation → LaTeX, offline</p></td>
+</tr>
+<tr class="row-even"><td><p>TrOCR (handwritten)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">trocr-handwritten</span></code></p></td>
+<td><p>local</p></td>
+<td><p>free</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ocracy[trocr]</span></code></p></td>
+<td><p><em>text only</em></p></td>
+<td><p>one pre-segmented handwritten line, MIT weights</p></td>
+</tr>
+<tr class="row-odd"><td><p>OCR.space</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ocr-space</span></code></p></td>
+<td><p>remote</p></td>
+<td><p>free tier</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ocracy[ocr-space]</span></code></p></td>
+<td><p><strong>word</strong></p></td>
+<td><p>zero-install REST</p></td>
+</tr>
+<tr class="row-even"><td><p>Google Cloud Vision</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">google-vision</span></code></p></td>
+<td><p>remote</p></td>
+<td><p>paid (+free tier)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ocracy[google-vision]</span></code></p></td>
+<td><p><strong>word</strong></p></td>
+<td><p>high accuracy, handwriting, structure</p></td>
+</tr>
+<tr class="row-odd"><td><p>AWS Textract</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">aws-textract</span></code></p></td>
+<td><p>remote</p></td>
+<td><p>paid (+free tier)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ocracy[aws-textract]</span></code></p></td>
+<td><p><strong>word</strong></p></td>
+<td><p>business docs, handwriting (forms/tables in analyze mode)</p></td>
+</tr>
+<tr class="row-even"><td><p>Azure Document Intelligence</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">azure-document-intelligence</span></code></p></td>
+<td><p>remote</p></td>
+<td><p>paid (+free tier)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ocracy[azure]</span></code></p></td>
+<td><p><strong>word</strong></p></td>
+<td><p>layout/tables/handwriting, on-prem container option</p></td>
+</tr>
+<tr class="row-odd"><td><p>Mistral OCR</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">mistral-ocr</span></code></p></td>
+<td><p>remote</p></td>
+<td><p>paid (pay-as-you-go)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ocracy[mistral]</span></code></p></td>
+<td><p><em>text only</em></p></td>
+<td><p>cheap VLM → clean Markdown + math/tables</p></td>
+</tr>
+<tr class="row-even"><td><p>Mathpix</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">mathpix</span></code></p></td>
+<td><p>remote</p></td>
+<td><p>paid (+free tier)</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ocracy[mathpix]</span></code></p></td>
+<td><p><em>text only</em></p></td>
+<td><p>math/handwriting → LaTeX &amp; Markdown</p></td>
+</tr>
+<tr class="row-odd"><td><p>Claude Vision</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">claude-vision</span></code></p></td>
+<td><p>remote</p></td>
+<td><p>paid</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ocracy[anthropic]</span></code></p></td>
+<td><p><em>text only</em></p></td>
+<td><p>prompt-driven “read + reason” over messy/mixed documents</p></td>
+</tr>
+<tr class="row-even"><td><p>GPT-4o Vision</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">gpt-4o-vision</span></code></p></td>
+<td><p>remote</p></td>
+<td><p>paid</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ocracy[openai]</span></code></p></td>
+<td><p><em>text only</em></p></td>
+<td><p>same, via OpenAI; schema-constrained JSON output</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>…plus <strong>49 more</strong> engines/services catalogued in the ledger that you can turn into
+a working façade with one command (see <em>Add a backend</em> below).</p>
+<section id="granularity-which-backends-fill-words-which-fill-lines">
+<h3>Granularity: which backends fill <code class="docutils literal notranslate"><span class="pre">.words</span></code>, which fill <code class="docutils literal notranslate"><span class="pre">.lines</span></code><a class="headerlink" href="#granularity-which-backends-fill-words-which-fill-lines" title="Link to this heading">#</a></h3>
+<p>Every backend emits <strong>exactly one</strong> granularity level. Nothing promotes words into
+lines or splits lines into words, and <code class="docutils literal notranslate"><span class="pre">result.words</span></code> / <code class="docutils literal notranslate"><span class="pre">result.lines</span></code> are just
+filters over the one flat <code class="docutils literal notranslate"><span class="pre">blocks</span></code> list — so <strong>asking for the level a backend does
+not produce returns <code class="docutils literal notranslate"><span class="pre">[]</span></code>, silently</strong>:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="n">ocracy</span><span class="o">.</span><span class="n">ocr</span><span class="p">(</span><span class="s2">"scan.png"</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="s2">"rapidocr"</span><span class="p">)</span>
+<span class="n">r</span><span class="o">.</span><span class="n">lines</span>  <span class="c1"># populated</span>
+<span class="n">r</span><span class="o">.</span><span class="n">words</span>  <span class="c1"># [] — rapidocr reports lines, and nothing raises</span>
+
+<span class="n">r</span> <span class="o">=</span> <span class="n">ocracy</span><span class="o">.</span><span class="n">ocr</span><span class="p">(</span><span class="s2">"scan.png"</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="s2">"tesseract"</span><span class="p">)</span>
+<span class="n">r</span><span class="o">.</span><span class="n">words</span>  <span class="c1"># populated</span>
+<span class="n">r</span><span class="o">.</span><span class="n">lines</span>  <span class="c1"># [] — tesseract reports words</span>
+</pre></div>
+</div>
+<ul class="simple">
+<li><p><strong>word-level</strong> (<code class="docutils literal notranslate"><span class="pre">.words</span></code> populated, <code class="docutils literal notranslate"><span class="pre">.lines</span></code> empty): <code class="docutils literal notranslate"><span class="pre">tesseract</span></code>, <code class="docutils literal notranslate"><span class="pre">google-vision</span></code>,
+<code class="docutils literal notranslate"><span class="pre">aws-textract</span></code>, <code class="docutils literal notranslate"><span class="pre">azure-document-intelligence</span></code>, <code class="docutils literal notranslate"><span class="pre">ocr-space</span></code>.</p></li>
+<li><p><strong>line-level</strong> (<code class="docutils literal notranslate"><span class="pre">.lines</span></code> populated, <code class="docutils literal notranslate"><span class="pre">.words</span></code> empty): <code class="docutils literal notranslate"><span class="pre">easyocr</span></code>, <code class="docutils literal notranslate"><span class="pre">rapidocr</span></code>,
+<code class="docutils literal notranslate"><span class="pre">paddleocr</span></code>, <code class="docutils literal notranslate"><span class="pre">ocrmac</span></code>.</p></li>
+<li><p><strong>text only</strong> (<code class="docutils literal notranslate"><span class="pre">blocks</span> <span class="pre">==</span> <span class="pre">[]</span></code>, so <em>both</em> are empty and <code class="docutils literal notranslate"><span class="pre">mean_confidence</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code>):
+<code class="docutils literal notranslate"><span class="pre">claude-vision</span></code>, <code class="docutils literal notranslate"><span class="pre">gpt-4o-vision</span></code>, <code class="docutils literal notranslate"><span class="pre">mathpix</span></code>, <code class="docutils literal notranslate"><span class="pre">mistral-ocr</span></code>, <code class="docutils literal notranslate"><span class="pre">pix2tex-latex-ocr</span></code>,
+<code class="docutils literal notranslate"><span class="pre">trocr-handwritten</span></code>. Use <code class="docutils literal notranslate"><span class="pre">result.text</span></code> / <code class="docutils literal notranslate"><span class="pre">result.markdown</span></code>.</p></li>
+</ul>
+<p>Iterating a result (<code class="docutils literal notranslate"><span class="pre">for</span> <span class="pre">block</span> <span class="pre">in</span> <span class="pre">result:</span></code>) yields whatever units that engine gave
+you, at its own level — it is not “lines by default”.</p>
+<p><strong>The ledger’s <code class="docutils literal notranslate"><span class="pre">bounding_boxes</span></code> flag describes the engine, not ocracy’s adapter.</strong>
+<code class="docutils literal notranslate"><span class="pre">claude-vision</span></code>, <code class="docutils literal notranslate"><span class="pre">mathpix</span></code> and <code class="docutils literal notranslate"><span class="pre">mistral-ocr</span></code> are all <code class="docutils literal notranslate"><span class="pre">bounding_boxes:</span> <span class="pre">true</span></code> (their
+APIs can return geometry) while ocracy’s façades for them return text only. Treat
+<code class="docutils literal notranslate"><span class="pre">ocracy.find(bounding_boxes=True)</span></code> as “engines worth wrapping for geometry”, and
+the list above as what you get today. If your code needs a level, assert it:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">ocracy</span><span class="o">.</span><span class="n">ocr</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="n">chosen</span><span class="p">)</span>
+<span class="k">if</span> <span class="ow">not</span> <span class="n">result</span><span class="o">.</span><span class="n">words</span><span class="p">:</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">chosen</span><span class="si">}</span><span class="s2"> does not report word-level boxes"</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="getting-a-backend-running">
+<h3>Getting a backend running<a class="headerlink" href="#getting-a-backend-running" title="Link to this heading">#</a></h3>
+<p>Some backends need more than <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span></code> (Tesseract’s <em>system</em> binary, Paddle’s
+framework, GPU wheels, first-run model weights, or an API key). ocracy turns that
+into structured, OS-aware guidance — handy for humans and AI agents alike:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ocracy</span><span class="o">.</span><span class="n">doctor</span><span class="p">()</span>  <span class="c1"># what's usable now vs what each missing one needs</span>
+<span class="n">ocracy</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="s2">"paddleocr"</span><span class="p">)</span>  <span class="c1"># -&gt; True/False (usable right now?)</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="n">ocracy</span><span class="o">.</span><span class="n">requirements</span><span class="p">(</span><span class="s2">"paddleocr"</span><span class="p">)</span><span class="o">.</span><span class="n">instructions</span><span class="p">()</span>
+<span class="p">)</span>  <span class="c1"># exact plan: pip + system deps + GPU + weights</span>
+<span class="n">ocracy</span><span class="o">.</span><span class="n">install</span><span class="p">(</span>
+    <span class="s2">"rapidocr"</span><span class="p">,</span> <span class="n">yes</span><span class="o">=</span><span class="kc">True</span>
+<span class="p">)</span>  <span class="c1"># run the pip install + verify (yes=False = dry run)</span>
+</pre></div>
+</div>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ocracy<span class="w"> </span>doctor<span class="w"> </span>·<span class="w"> </span>ocracy<span class="w"> </span>requirements<span class="w"> </span>paddleocr<span class="w"> </span>--gpu<span class="w"> </span>·<span class="w"> </span>ocracy<span class="w"> </span>install<span class="w"> </span>rapidocr<span class="w"> </span>--yes
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">requirements()</span></code> even suggests a <em>lighter alternative</em> when one exists (e.g.
+PaddleOCR → RapidOCR). The <code class="docutils literal notranslate"><span class="pre">ocracy-install-backend</span></code> skill drives all of this.</p>
+</section>
+</section>
+<section id="three-tiers-of-access">
+<h2>Three tiers of access<a class="headerlink" href="#three-tiers-of-access" title="Link to this heading">#</a></h2>
+<p>From simplest to most powerful — reach for the next tier only when you need it:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ocracy</span><span class="o">.</span><span class="n">ocr</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>  <span class="c1"># 1. facade, default (installed) backend</span>
+<span class="n">ocracy</span><span class="o">.</span><span class="n">ocr</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="s2">"easyocr"</span><span class="p">,</span> <span class="n">languages</span><span class="o">=</span><span class="p">[</span><span class="s2">"en"</span><span class="p">,</span> <span class="s2">"fr"</span><span class="p">])</span>
+<span class="n">ocracy</span><span class="o">.</span><span class="n">services</span><span class="o">.</span><span class="n">tesseract</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">psm</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>  <span class="c1"># 2. pick a backend explicitly</span>
+<span class="n">ocracy</span><span class="o">.</span><span class="n">services</span><span class="o">.</span><span class="n">tesseract</span><span class="o">.</span><span class="n">adapter</span>  <span class="c1"># 3. the raw engine adapter, full control</span>
+</pre></div>
+</div>
+<p>Every backend returns the same <code class="docutils literal notranslate"><span class="pre">OcrResult</span></code>, so your code doesn’t change when you
+switch engines: <code class="docutils literal notranslate"><span class="pre">result.text</span></code>, <code class="docutils literal notranslate"><span class="pre">result.words</span></code> / <code class="docutils literal notranslate"><span class="pre">result.lines</span></code>, each block’s
+<code class="docutils literal notranslate"><span class="pre">.bbox</span></code> and <code class="docutils literal notranslate"><span class="pre">.confidence</span></code> (normalized to 0..1), <code class="docutils literal notranslate"><span class="pre">result.mean_confidence</span></code>,
+<code class="docutils literal notranslate"><span class="pre">result.markdown</span></code> (when a backend produces it), and <code class="docutils literal notranslate"><span class="pre">result.raw</span></code> (the untouched
+engine output).</p>
+<p>The <em>shape</em> is uniform; the <em>granularity</em> is not. Each engine fills either
+<code class="docutils literal notranslate"><span class="pre">.words</span></code> or <code class="docutils literal notranslate"><span class="pre">.lines</span></code> (or neither), and the other is an empty list rather than an
+error — see <a class="reference internal" href="#granularity-which-backends-fill-words-which-fill-lines">Granularity</a>
+before writing code that depends on one.</p>
+</section>
+<section id="command-line">
+<h2>Command line<a class="headerlink" href="#command-line" title="Link to this heading">#</a></h2>
+<p>Install the CLI extra (<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">&quot;ocracy[cli]&quot;</span></code>) for an <code class="docutils literal notranslate"><span class="pre">ocracy</span></code> command:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>ocracy<span class="w"> </span><span class="nb">read</span><span class="w"> </span>scan.png<span class="w">                          </span><span class="c1"># print recognized text</span>
+ocracy<span class="w"> </span><span class="nb">read</span><span class="w"> </span>scan.png<span class="w"> </span>--backend<span class="w"> </span>easyocr<span class="w"> </span>--languages<span class="w"> </span>en,fr
+ocracy<span class="w"> </span><span class="nb">read</span><span class="w"> </span>scan.png<span class="w"> </span>--output<span class="w"> </span>json<span class="w">            </span><span class="c1"># text + blocks (boxes, confidence)</span>
+ocracy<span class="w"> </span>backends<span class="w">                               </span><span class="c1"># backends you can run now</span>
+ocracy<span class="w"> </span>backends<span class="w"> </span>--capability<span class="w"> </span>math
+ocracy<span class="w"> </span>status<span class="w">                                 </span><span class="c1"># readiness table: all / implemented / set-up / tested</span>
+ocracy<span class="w"> </span>status<span class="w"> </span>--level<span class="w"> </span>set_up<span class="w"> </span>--names<span class="w">          </span><span class="c1"># one level + the "Name (website)" lists</span>
+ocracy<span class="w"> </span>status<span class="w"> </span>--run-tests<span class="w">                     </span><span class="c1"># also OCR-test set-up backends (real calls for remotes)</span>
+ocracy<span class="w"> </span>find<span class="w"> </span>--local<span class="w"> </span>--free<span class="w"> </span>--handwriting<span class="w">      </span><span class="c1"># browse/filter the ledger</span>
+ocracy<span class="w"> </span>info<span class="w"> </span>google-vision<span class="w">                     </span><span class="c1"># a backend's full record</span>
+ocracy<span class="w"> </span>scaffold<span class="w"> </span>surya<span class="w">                          </span><span class="c1"># start a new façade from the ledger</span>
+ocracy<span class="w"> </span>validate<span class="w"> </span>tesseract<span class="w">                      </span><span class="c1"># smoke-test a backend</span>
+</pre></div>
+</div>
+<p>Everything is also reachable as <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-m</span> <span class="pre">ocracy</span> <span class="pre">&lt;command&gt;</span></code>. <a class="reference external" href="https://github.com/thorwhalen/cw"><code class="docutils literal notranslate"><span class="pre">cw</span></code></a>
+builds the parser from the function signatures in <code class="docutils literal notranslate"><span class="pre">ocracy/tools.py</span></code>; <code class="docutils literal notranslate"><span class="pre">argcomplete</span></code> gives
+tab completion when activated.</p>
+</section>
+<section id="the-ledger-choose-a-backend-with-eyes-open">
+<h2>The ledger — choose a backend with eyes open<a class="headerlink" href="#the-ledger-choose-a-backend-with-eyes-open" title="Link to this heading">#</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">ocracy</span></code> ships a curated, data-driven catalog of <strong>every</strong> engine we researched —
+not only the ones with a working façade — so you can compare on the axes that
+matter (local vs remote, price, accuracy, languages, handwriting, math, tables,
+privacy). The data lives in <code class="docutils literal notranslate"><span class="pre">ocracy/data/backends.json</span></code>, separate from code.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ocracy</span><span class="o">.</span><span class="n">catalog</span>  <span class="c1"># &lt;Catalog … backends … implemented …&gt;</span>
+<span class="n">ocracy</span><span class="o">.</span><span class="n">catalog</span><span class="p">[</span><span class="s2">"google-vision"</span><span class="p">]</span>  <span class="c1"># one backend's full record</span>
+<span class="n">ocracy</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">is_local</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">open_source</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># filter the ledger</span>
+<span class="n">ocracy</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">handwriting</span><span class="o">=</span><span class="s2">"yes"</span><span class="p">,</span> <span class="n">is_remote</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">ocracy</span><span class="o">.</span><span class="n">catalog</span><span class="o">.</span><span class="n">can</span><span class="p">(</span><span class="s2">"math"</span><span class="p">)</span>  <span class="c1"># engines that read formulas</span>
+<span class="n">ocracy</span><span class="o">.</span><span class="n">catalog</span><span class="o">.</span><span class="n">supports_language</span><span class="p">(</span><span class="s2">"Arabic"</span><span class="p">)</span>
+<span class="n">ocracy</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">implemented</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># only what ocracy can run today</span>
+<span class="n">ocracy</span><span class="o">.</span><span class="n">catalog</span><span class="o">.</span><span class="n">to_dataframe</span><span class="p">()</span>  <span class="c1"># browse as a pandas table</span>
+<span class="n">ocracy</span><span class="o">.</span><span class="n">catalog</span><span class="o">.</span><span class="n">compare</span><span class="p">([</span><span class="s2">"tesseract"</span><span class="p">,</span> <span class="s2">"google-vision"</span><span class="p">,</span> <span class="s2">"mathpix"</span><span class="p">])</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">implemented</span></code> is computed live from the code, so the ledger never lies about what
+actually runs. See <code class="docutils literal notranslate"><span class="pre">ocracy/data/SCHEMA.md</span></code> for every field. The full cited research
+report behind the ledger is in <a class="reference internal" href="#misc/docs/ocr_landscape_research.md"><span class="xref myst"><code class="docutils literal notranslate"><span class="pre">misc/docs/ocr_landscape_research.md</span></code></span></a>.</p>
+</section>
+<section id="getting-api-keys-remote-backends">
+<h2>Getting API keys (remote backends)<a class="headerlink" href="#getting-api-keys-remote-backends" title="Link to this heading">#</a></h2>
+<p>Remote backends need a credential in an environment variable. ocracy tells you
+exactly which one — <strong>with a link to get it</strong> — the moment it’s missing:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ocracy</span><span class="o">.</span><span class="n">ocr</span><span class="p">(</span><span class="s2">"receipt.png"</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="s2">"ocr-space"</span><span class="p">)</span>
+<span class="go">MissingCredentialError: No credential found for ocr-space (set one of: OCR_SPACE_API_KEY).</span>
+<span class="go">How to get a credential for ocr-space: Register a free API key by email; free tier</span>
+<span class="go">allows 25,000 requests/month. Get a key: https://ocr.space/ocrapi/freekey</span>
+</pre></div>
+</div>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Backend</p></th>
+<th class="head"><p>Environment variable(s)</p></th>
+<th class="head"><p>Where to get a key</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ocr-space</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">OCR_SPACE_API_KEY</span></code></p></td>
+<td><p><a class="reference external" href="https://ocr.space/ocrapi/freekey">https://ocr.space/ocrapi/freekey</a> (free, 25k/month)</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">google-vision</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">GOOGLE_APPLICATION_CREDENTIALS</span></code> (service-account JSON path)</p></td>
+<td><p><a class="reference external" href="https://cloud.google.com/vision/docs/setup">https://cloud.google.com/vision/docs/setup</a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">aws-textract</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">AWS_ACCESS_KEY_ID</span></code> + <code class="docutils literal notranslate"><span class="pre">AWS_SECRET_ACCESS_KEY</span></code> + <code class="docutils literal notranslate"><span class="pre">AWS_DEFAULT_REGION</span></code></p></td>
+<td><p><a class="reference external" href="https://docs.aws.amazon.com/textract/latest/dg/getting-started.html">https://docs.aws.amazon.com/textract/latest/dg/getting-started.html</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">azure-document-intelligence</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">AZURE_DOCUMENT_INTELLIGENCE_KEY</span></code> + <code class="docutils literal notranslate"><span class="pre">AZURE_DOCUMENT_INTELLIGENCE_ENDPOINT</span></code></p></td>
+<td><p><a class="reference external" href="https://learn.microsoft.com/azure/ai-services/document-intelligence/create-document-intelligence-resource">https://learn.microsoft.com/azure/ai-services/document-intelligence/create-document-intelligence-resource</a></p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">mistral-ocr</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">MISTRAL_API_KEY</span></code></p></td>
+<td><p><a class="reference external" href="https://console.mistral.ai/api-keys">https://console.mistral.ai/api-keys</a></p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">mathpix</span></code></p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">MATHPIX_APP_ID</span></code> + <code class="docutils literal notranslate"><span class="pre">MATHPIX_APP_KEY</span></code></p></td>
+<td><p><a class="reference external" href="https://mathpix.com/ocr-api">https://mathpix.com/ocr-api</a></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>The same guidance (and links for AWS, Azure, Mistral, OpenAI, Anthropic, Gemini)
+lives in <code class="docutils literal notranslate"><span class="pre">ocracy.credentials.CREDENTIAL_GUIDANCE</span></code>, and powers the dynamic errors.
+Tip: drop the variables in a <code class="docutils literal notranslate"><span class="pre">.env</span></code> file — ocracy soft-loads it via <code class="docutils literal notranslate"><span class="pre">python-dotenv</span></code>
+if that package is installed.</p>
+</section>
+<section id="add-a-backend-wrap-any-engine-in-minutes">
+<h2>Add a backend (wrap any engine in minutes)<a class="headerlink" href="#add-a-backend-wrap-any-engine-in-minutes" title="Link to this heading">#</a></h2>
+<p>The catalog is large; <code class="docutils literal notranslate"><span class="pre">ocracy</span></code> ships façades for a curated subset and gives you
+the machinery to add any other one. Scaffold a backend straight from its ledger
+entry, fill in the adapter, and validate it:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.make_backend</span><span class="w"> </span><span class="kn">import</span> <span class="n">scaffold_backend</span><span class="p">,</span> <span class="n">validate_adapter</span>
+
+<span class="n">scaffold_backend</span><span class="p">(</span>
+    <span class="s2">"mathpix"</span>
+<span class="p">)</span>  <span class="c1"># creates ocracy/backends/mathpix/ prefilled from the ledger</span>
+<span class="c1"># ... implement adapter.py's _read (call the engine, return an OcrResult) ...</span>
+<span class="n">validate_adapter</span><span class="p">(</span><span class="s2">"mathpix"</span><span class="p">)</span>  <span class="c1"># smoke-test it end to end</span>
+</pre></div>
+</div>
+<p>The full, step-by-step process — including the adapter contract, input/output
+normalization helpers, credential handling, and packaging — is captured as an
+agent <strong>skill</strong> at <code class="docutils literal notranslate"><span class="pre">ocracy/data/skills/ocracy-add-backend/SKILL.md</span></code>. The
+<code class="docutils literal notranslate"><span class="pre">ocracy/backends/tesseract/</span></code> package is a complete worked example.</p>
+</section>
+<section id="agent-skills-claude-code-other-ai-agents">
+<h2>Agent skills (Claude Code &amp; other AI agents)<a class="headerlink" href="#agent-skills-claude-code-other-ai-agents" title="Link to this heading">#</a></h2>
+<p>ocracy ships four Anthropic-style <strong>skills</strong> (under <code class="docutils literal notranslate"><span class="pre">ocracy/data/skills/</span></code>,
+installed with the package) so AI coding agents can both <em>use</em> and <em>extend</em> it:</p>
+<div class="pst-scrollable-table-container"><table class="table">
+<thead>
+<tr class="row-odd"><th class="head"><p>Skill</p></th>
+<th class="head"><p>Audience</p></th>
+<th class="head"><p>What it helps with</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ocracy</span></code></p></td>
+<td><p>users</p></td>
+<td><p>OCR an image/PDF, choose &amp; install a backend, read the result</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ocracy-choose-backend</span></code></p></td>
+<td><p>users</p></td>
+<td><p>filter &amp; compare the 64-backend ledger to pick the right engine</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="docutils literal notranslate"><span class="pre">ocracy-install-backend</span></code></p></td>
+<td><p>users / agents</p></td>
+<td><p>get a backend running — heavy installs, system deps, GPU, weights, keys</p></td>
+</tr>
+<tr class="row-odd"><td><p><code class="docutils literal notranslate"><span class="pre">ocracy-add-backend</span></code></p></td>
+<td><p>developers</p></td>
+<td><p>wrap a new engine behind ocracy’s interface (scaffold → adapter → validate)</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>In a repo using Claude Code they’re discoverable via the <code class="docutils literal notranslate"><span class="pre">.claude/skills/</span></code>
+symlink bridge; they also travel with <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">ocracy</span></code> under
+<code class="docutils literal notranslate"><span class="pre">ocracy/data/skills/</span></code>.</p>
+</section>
+<section id="how-it-works">
+<h2>How it works<a class="headerlink" href="#how-it-works" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ocracy/base.py</span></code> — the normalized types (<code class="docutils literal notranslate"><span class="pre">OcrResult</span></code>, <code class="docutils literal notranslate"><span class="pre">TextBlock</span></code>, <code class="docutils literal notranslate"><span class="pre">BBox</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ocracy/catalog.py</span></code> — the ledger reader/filter (<code class="docutils literal notranslate"><span class="pre">ocracy/data/backends.json</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ocracy/registry.py</span></code> — lazy backend discovery + default selection.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ocracy/services.py</span></code> — the three-tier service layer.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ocracy/make_backend.py</span></code> — the façade-building toolkit (<code class="docutils literal notranslate"><span class="pre">BaseOcrAdapter</span></code>,
+<code class="docutils literal notranslate"><span class="pre">make_block</span></code>, <code class="docutils literal notranslate"><span class="pre">scaffold_backend</span></code>, <code class="docutils literal notranslate"><span class="pre">validate_adapter</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ocracy/backends/&lt;id&gt;/</span></code> — one subpackage per engine (<code class="docutils literal notranslate"><span class="pre">config.py</span></code> + <code class="docutils literal notranslate"><span class="pre">adapter.py</span></code>).</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ocracy/credentials.py</span></code> — credential resolution for remote backends.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">ocracy/tools.py</span></code> + <code class="docutils literal notranslate"><span class="pre">ocracy/__main__.py</span></code> — the <code class="docutils literal notranslate"><span class="pre">ocracy</span></code> CLI (cw).</p></li>
+</ul>
+<p>The architecture mirrors the sibling façade packages
+<a class="reference external" href="https://github.com/thorwhalen/denote"><code class="docutils literal notranslate"><span class="pre">denote</span></code></a> (audio→symbol) and
+<a class="reference external" href="https://github.com/thorwhalen/aix"><code class="docutils literal notranslate"><span class="pre">aix</span></code></a> (LLM providers).</p>
+<p class="epythet-aggregates">This documentation as a single file: <a href="ocracy.md">ocracy.md</a> (Markdown, for agents).</p>
+<div class="toctree-wrapper compound">
+</div>
+</section>
+</section>
+
+<p class="epythet-provenance" style="font-size:.8em;opacity:.65;margin-top:2.5em;text-align:right">built 2026-09-22 12:55 UTC from <a href="https://github.com/thorwhalen/ocracy/commit/f1f01f727d33a26635ed0ff7ffbeae2758fbb630">f1f01f7</a> (main) · ocracy 0.1.9 · <a href="about-this-build.html">about this build</a></p>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="right-next"
+       href="api.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">API reference</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="pst-show_toc_level nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#install">Install</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#backends-that-ship-today">Backends that ship today</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#granularity-which-backends-fill-words-which-fill-lines">Granularity: which backends fill <code class="docutils literal notranslate"><span class="pre">.words</span></code>, which fill <code class="docutils literal notranslate"><span class="pre">.lines</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-a-backend-running">Getting a backend running</a></li>
+</ul>
+</li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#three-tiers-of-access">Three tiers of access</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#command-line">Command line</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#the-ledger-choose-a-backend-with-eyes-open">The ledger — choose a backend with eyes open</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#getting-api-keys-remote-backends">Getting API keys (remote backends)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#add-a-backend-wrap-any-engine-in-minutes">Add a backend (wrap any engine in minutes)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#agent-skills-claude-code-other-ai-agents">Agent skills (Claude Code &amp; other AI agents)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#how-it-works">How it works</a></li>
+</ul>
+  </nav></div>
+
+  <div class="sidebar-secondary-item">
+
+  <div class="tocsection sourcelink">
+    <a href="_sources/index.md.txt">
+      <i class="fa-solid fa-file-lines"></i> Show Source
+    </a>
+  </div>
+</div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.21.0.
+</p></div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
 </html>

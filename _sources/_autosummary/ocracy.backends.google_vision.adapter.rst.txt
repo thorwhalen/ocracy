@@ -1,0 +1,12 @@
+ocracy.backends.google\_vision.adapter
+======================================
+
+.. automodule:: ocracy.backends.google_vision.adapter
+
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Adapter
+   

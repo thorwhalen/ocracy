@@ -1,0 +1,6 @@
+ocracy.backends.mistral\_ocr.config
+===================================
+
+.. automodule:: ocracy.backends.mistral_ocr.config
+
+   

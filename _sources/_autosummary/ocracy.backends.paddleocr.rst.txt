@@ -1,0 +1,14 @@
+ocracy.backends.paddleocr
+=========================
+
+.. automodule:: ocracy.backends.paddleocr
+
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   adapter
+   config

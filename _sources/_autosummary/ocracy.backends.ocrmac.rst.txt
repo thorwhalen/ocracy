@@ -1,0 +1,14 @@
+ocracy.backends.ocrmac
+======================
+
+.. automodule:: ocracy.backends.ocrmac
+
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   adapter
+   config

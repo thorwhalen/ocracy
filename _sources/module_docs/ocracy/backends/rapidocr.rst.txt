@@ -1,4 +1,0 @@
-ocracy.backends.rapidocr
-========================
-.. automodule:: ocracy.backends.rapidocr
-   :members:

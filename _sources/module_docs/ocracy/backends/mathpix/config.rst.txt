@@ -1,4 +1,0 @@
-ocracy.backends.mathpix.config
-==============================
-.. automodule:: ocracy.backends.mathpix.config
-   :members:

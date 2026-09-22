@@ -1,0 +1,14 @@
+ocracy.backends.mathpix
+=======================
+
+.. automodule:: ocracy.backends.mathpix
+
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   adapter
+   config

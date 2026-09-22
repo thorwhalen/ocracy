@@ -1,0 +1,6 @@
+ocracy.backends.ocr\_space.config
+=================================
+
+.. automodule:: ocracy.backends.ocr_space.config
+
+   

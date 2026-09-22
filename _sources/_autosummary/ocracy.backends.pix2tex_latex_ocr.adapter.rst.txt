@@ -1,0 +1,12 @@
+ocracy.backends.pix2tex\_latex\_ocr.adapter
+===========================================
+
+.. automodule:: ocracy.backends.pix2tex_latex_ocr.adapter
+
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Adapter
+   

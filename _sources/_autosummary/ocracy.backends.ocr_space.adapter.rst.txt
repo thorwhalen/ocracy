@@ -1,0 +1,12 @@
+ocracy.backends.ocr\_space.adapter
+==================================
+
+.. automodule:: ocracy.backends.ocr_space.adapter
+
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Adapter
+   

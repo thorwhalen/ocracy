@@ -1,0 +1,14 @@
+ocracy.backends.trocr\_handwritten
+==================================
+
+.. automodule:: ocracy.backends.trocr_handwritten
+
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   adapter
+   config

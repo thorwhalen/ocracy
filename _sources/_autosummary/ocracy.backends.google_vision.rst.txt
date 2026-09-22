@@ -1,0 +1,14 @@
+ocracy.backends.google\_vision
+==============================
+
+.. automodule:: ocracy.backends.google_vision
+
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   adapter
+   config

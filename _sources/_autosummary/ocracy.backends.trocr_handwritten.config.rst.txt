@@ -1,0 +1,6 @@
+ocracy.backends.trocr\_handwritten.config
+=========================================
+
+.. automodule:: ocracy.backends.trocr_handwritten.config
+
+   

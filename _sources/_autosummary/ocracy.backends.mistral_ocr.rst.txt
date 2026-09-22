@@ -1,0 +1,14 @@
+ocracy.backends.mistral\_ocr
+============================
+
+.. automodule:: ocracy.backends.mistral_ocr
+
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   adapter
+   config

@@ -1,0 +1,13 @@
+ocracy.translation
+==================
+
+.. automodule:: ocracy.translation
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      make_kwargs_translator
+      validate_param
+   

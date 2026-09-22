@@ -1,0 +1,14 @@
+ocracy.base
+===========
+
+.. automodule:: ocracy.base
+
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      BBox
+      OcrResult
+      TextBlock
+   

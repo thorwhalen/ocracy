@@ -1,0 +1,14 @@
+ocracy.backends.easyocr
+=======================
+
+.. automodule:: ocracy.backends.easyocr
+
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   adapter
+   config

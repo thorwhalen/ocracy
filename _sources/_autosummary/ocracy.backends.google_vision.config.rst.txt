@@ -1,0 +1,6 @@
+ocracy.backends.google\_vision.config
+=====================================
+
+.. automodule:: ocracy.backends.google_vision.config
+
+   

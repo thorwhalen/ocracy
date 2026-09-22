@@ -1,0 +1,12 @@
+ocracy.backends.paddleocr.adapter
+=================================
+
+.. automodule:: ocracy.backends.paddleocr.adapter
+
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Adapter
+   

@@ -1,0 +1,14 @@
+ocracy.backends.claude\_vision
+==============================
+
+.. automodule:: ocracy.backends.claude_vision
+
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   adapter
+   config

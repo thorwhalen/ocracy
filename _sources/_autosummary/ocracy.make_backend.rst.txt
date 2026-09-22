@@ -1,0 +1,23 @@
+ocracy.make\_backend
+====================
+
+.. automodule:: ocracy.make_backend
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      make_block
+      as_bbox
+      normalize_confidence
+      scaffold_backend
+      make_test_image
+      validate_adapter
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      BaseOcrAdapter
+   

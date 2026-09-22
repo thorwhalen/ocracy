@@ -1,4 +1,0 @@
-ocracy.backends.ocr_space.config
-================================
-.. automodule:: ocracy.backends.ocr_space.config
-   :members:

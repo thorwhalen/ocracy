@@ -1,0 +1,12 @@
+ocracy.backends.azure\_document\_intelligence.adapter
+=====================================================
+
+.. automodule:: ocracy.backends.azure_document_intelligence.adapter
+
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Adapter
+   

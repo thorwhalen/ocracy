@@ -1,0 +1,12 @@
+ocracy.backends.rapidocr.adapter
+================================
+
+.. automodule:: ocracy.backends.rapidocr.adapter
+
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Adapter
+   

@@ -1,4 +1,0 @@
-ocracy.tools
-============
-.. automodule:: ocracy.tools
-   :members:

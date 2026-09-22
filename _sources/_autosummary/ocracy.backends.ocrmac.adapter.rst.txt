@@ -1,0 +1,12 @@
+ocracy.backends.ocrmac.adapter
+==============================
+
+.. automodule:: ocracy.backends.ocrmac.adapter
+
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Adapter
+   

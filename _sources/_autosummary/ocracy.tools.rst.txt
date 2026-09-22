@@ -1,0 +1,21 @@
+ocracy.tools
+============
+
+.. automodule:: ocracy.tools
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      read
+      backends
+      info
+      find
+      scaffold
+      validate
+      requirements
+      doctor
+      install
+      status
+   

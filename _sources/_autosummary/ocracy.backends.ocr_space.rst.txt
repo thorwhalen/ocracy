@@ -1,0 +1,14 @@
+ocracy.backends.ocr\_space
+==========================
+
+.. automodule:: ocracy.backends.ocr_space
+
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   adapter
+   config

@@ -1,4 +1,0 @@
-ocracy.base
-===========
-.. automodule:: ocracy.base
-   :members:

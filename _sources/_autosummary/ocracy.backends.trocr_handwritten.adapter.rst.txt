@@ -1,0 +1,12 @@
+ocracy.backends.trocr\_handwritten.adapter
+==========================================
+
+.. automodule:: ocracy.backends.trocr_handwritten.adapter
+
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Adapter
+   

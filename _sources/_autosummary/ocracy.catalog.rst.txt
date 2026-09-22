@@ -1,0 +1,6 @@
+ocracy.catalog
+==============
+
+.. currentmodule:: ocracy
+
+.. autodata:: catalog

@@ -1,0 +1,6 @@
+ocracy.backends.azure\_document\_intelligence.config
+====================================================
+
+.. automodule:: ocracy.backends.azure_document_intelligence.config
+
+   

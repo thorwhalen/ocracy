@@ -1,0 +1,6 @@
+ocracy.backends.gpt\_4o\_vision.config
+======================================
+
+.. automodule:: ocracy.backends.gpt_4o_vision.config
+
+   

@@ -1,0 +1,6 @@
+ocracy.backends.ocrmac.config
+=============================
+
+.. automodule:: ocracy.backends.ocrmac.config
+
+   

@@ -1,0 +1,14 @@
+ocracy.backends.gpt\_4o\_vision
+===============================
+
+.. automodule:: ocracy.backends.gpt_4o_vision
+
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   adapter
+   config

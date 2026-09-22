@@ -1,0 +1,12 @@
+ocracy.backends.gpt\_4o\_vision.adapter
+=======================================
+
+.. automodule:: ocracy.backends.gpt_4o_vision.adapter
+
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Adapter
+   

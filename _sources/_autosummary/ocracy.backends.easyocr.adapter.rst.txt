@@ -1,0 +1,12 @@
+ocracy.backends.easyocr.adapter
+===============================
+
+.. automodule:: ocracy.backends.easyocr.adapter
+
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Adapter
+   

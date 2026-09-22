@@ -1,0 +1,6 @@
+ocracy.backends.paddleocr.config
+================================
+
+.. automodule:: ocracy.backends.paddleocr.config
+
+   

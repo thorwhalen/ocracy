@@ -1,4 +1,0 @@
-ocracy.backends.ocrmac.adapter
-==============================
-.. automodule:: ocracy.backends.ocrmac.adapter
-   :members:

@@ -1,0 +1,27 @@
+ocracy.backends
+===============
+
+.. automodule:: ocracy.backends
+
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   aws_textract
+   azure_document_intelligence
+   claude_vision
+   easyocr
+   google_vision
+   gpt_4o_vision
+   mathpix
+   mistral_ocr
+   ocr_space
+   ocrmac
+   paddleocr
+   pix2tex_latex_ocr
+   rapidocr
+   tesseract
+   trocr_handwritten

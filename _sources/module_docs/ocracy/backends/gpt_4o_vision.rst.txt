@@ -1,4 +1,0 @@
-ocracy.backends.gpt_4o_vision
-=============================
-.. automodule:: ocracy.backends.gpt_4o_vision
-   :members:

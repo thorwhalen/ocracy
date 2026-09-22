@@ -1,0 +1,12 @@
+ocracy.backends.mistral\_ocr.adapter
+====================================
+
+.. automodule:: ocracy.backends.mistral_ocr.adapter
+
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Adapter
+   

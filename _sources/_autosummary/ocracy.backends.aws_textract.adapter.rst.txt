@@ -1,0 +1,12 @@
+ocracy.backends.aws\_textract.adapter
+=====================================
+
+.. automodule:: ocracy.backends.aws_textract.adapter
+
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Adapter
+   

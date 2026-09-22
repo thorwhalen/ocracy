@@ -1,4 +1,0 @@
-ocracy.translation
-==================
-.. automodule:: ocracy.translation
-   :members:

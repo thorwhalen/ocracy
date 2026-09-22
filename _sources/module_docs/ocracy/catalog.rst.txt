@@ -1,4 +1,0 @@
-ocracy.catalog
-==============
-.. automodule:: ocracy.catalog
-   :members:

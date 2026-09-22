@@ -1,0 +1,67 @@
+# ocracy
+
+> Facade to many implementations of (OCR) image-to-text-characters engines
+
+
+## Pages in this subsection
+
+- [ocracy](ocracy.html.md): ocracy — one facade over many OCR engines, plus a ledger to choose between them.
+- [ocracy.backends](ocracy.backends.html.md): Implemented OCR backends.
+- [ocracy.backends.aws_textract](ocracy.backends.aws_textract.html.md): AWS Textract backend for ocracy (cloud OCR + forms/tables).
+- [ocracy.backends.aws_textract.adapter](ocracy.backends.aws_textract.adapter.html.md): Adapter for AWS Textract — image -&gt; text + word boxes via detect_document_text.
+- [ocracy.backends.aws_textract.config](ocracy.backends.aws_textract.config.html.md): Configuration for the AWS Textract backend.
+- [ocracy.backends.azure_document_intelligence](ocracy.backends.azure_document_intelligence.html.md): Azure AI Document Intelligence backend for ocracy (cloud read/layout).
+- [ocracy.backends.azure_document_intelligence.adapter](ocracy.backends.azure_document_intelligence.adapter.html.md): Adapter for Azure AI Document Intelligence — image -&gt; text + word polygons.
+- [ocracy.backends.azure_document_intelligence.config](ocracy.backends.azure_document_intelligence.config.html.md): Configuration for the Azure AI Document Intelligence backend.
+- [ocracy.backends.claude_vision](ocracy.backends.claude_vision.html.md): Claude (Anthropic) vision backend for ocracy — VLM ‘read + reason’ OCR.
+- [ocracy.backends.claude_vision.adapter](ocracy.backends.claude_vision.adapter.html.md): Adapter for Claude vision — image -&gt; transcribed text via the Anthropic SDK.
+- [ocracy.backends.claude_vision.config](ocracy.backends.claude_vision.config.html.md): Configuration for the Claude (Anthropic) vision backend.
+- [ocracy.backends.easyocr](ocracy.backends.easyocr.html.md): EasyOCR backend for ocracy.
+- [ocracy.backends.easyocr.adapter](ocracy.backends.easyocr.adapter.html.md): Adapter for EasyOCR — image -&gt; text + polygon boxes via easyocr.Reader.
+- [ocracy.backends.easyocr.config](ocracy.backends.easyocr.config.html.md): Configuration for the EasyOCR backend.
+- [ocracy.backends.google_vision](ocracy.backends.google_vision.html.md): Google Cloud Vision API (TEXT_DETECTION &amp; DOCUMENT_TEXT_DETECTION) backend for ocracy.
+- [ocracy.backends.google_vision.adapter](ocracy.backends.google_vision.adapter.html.md): Adapter for Google Cloud Vision — image -&gt; text + word boxes + confidence.
+- [ocracy.backends.google_vision.config](ocracy.backends.google_vision.config.html.md): Configuration for the Google Cloud Vision backend.
+- [ocracy.backends.gpt_4o_vision](ocracy.backends.gpt_4o_vision.html.md): OpenAI GPT-4o vision backend for ocracy — VLM ‘read + reason’ OCR.
+- [ocracy.backends.gpt_4o_vision.adapter](ocracy.backends.gpt_4o_vision.adapter.html.md): Adapter for OpenAI GPT-4o vision — image -&gt; transcribed text via the openai SDK.
+- [ocracy.backends.gpt_4o_vision.config](ocracy.backends.gpt_4o_vision.config.html.md): Configuration for the OpenAI GPT-4o vision backend.
+- [ocracy.backends.mathpix](ocracy.backends.mathpix.html.md): Mathpix (Snip + Convert API) backend for ocracy.
+- [ocracy.backends.mathpix.adapter](ocracy.backends.mathpix.adapter.html.md): Adapter for Mathpix — image -&gt; Mathpix-Markdown / LaTeX via the Convert API.
+- [ocracy.backends.mathpix.config](ocracy.backends.mathpix.config.html.md): Configuration for the Mathpix backend (Convert API).
+- [ocracy.backends.mistral_ocr](ocracy.backends.mistral_ocr.html.md): Mistral OCR backend for ocracy (VLM document OCR via the Mistral API).
+- [ocracy.backends.mistral_ocr.adapter](ocracy.backends.mistral_ocr.adapter.html.md): Adapter for Mistral OCR — image -&gt; Markdown via the Mistral OCR API.
+- [ocracy.backends.mistral_ocr.config](ocracy.backends.mistral_ocr.config.html.md): Configuration for the Mistral OCR backend (cloud VLM document OCR).
+- [ocracy.backends.ocr_space](ocracy.backends.ocr_space.html.md): OCR.space OCR API backend for ocracy.
+- [ocracy.backends.ocr_space.adapter](ocracy.backends.ocr_space.adapter.html.md): Adapter for OCR.space — image -&gt; text + word boxes via its REST API.
+- [ocracy.backends.ocr_space.config](ocracy.backends.ocr_space.config.html.md): Configuration for the OCR.space backend (REST API).
+- [ocracy.backends.ocrmac](ocracy.backends.ocrmac.html.md): ocrmac (Apple Vision) backend for ocracy.
+- [ocracy.backends.ocrmac.adapter](ocracy.backends.ocrmac.adapter.html.md): Adapter for ocrmac — image -&gt; text via the macOS Vision framework.
+- [ocracy.backends.ocrmac.config](ocracy.backends.ocrmac.config.html.md): Configuration for the ocrmac backend (Apple Vision, macOS-only).
+- [ocracy.backends.paddleocr](ocracy.backends.paddleocr.html.md): PaddleOCR backend for ocracy (PP-OCR text recognition).
+- [ocracy.backends.paddleocr.adapter](ocracy.backends.paddleocr.adapter.html.md): Adapter for PaddleOCR — image -&gt; text + quad boxes via PP-OCR.
+- [ocracy.backends.paddleocr.config](ocracy.backends.paddleocr.config.html.md): Configuration for the PaddleOCR backend.
+- [ocracy.backends.pix2tex_latex_ocr](ocracy.backends.pix2tex_latex_ocr.html.md): pix2tex (LaTeX-OCR) backend for ocracy — local math image -&gt; LaTeX.
+- [ocracy.backends.pix2tex_latex_ocr.adapter](ocracy.backends.pix2tex_latex_ocr.adapter.html.md): Adapter for pix2tex — image of an equation -&gt; LaTeX, locally.
+- [ocracy.backends.pix2tex_latex_ocr.config](ocracy.backends.pix2tex_latex_ocr.config.html.md): Configuration for the pix2tex (LaTeX-OCR) backend.
+- [ocracy.backends.rapidocr](ocracy.backends.rapidocr.html.md): RapidOCR backend for ocracy.
+- [ocracy.backends.rapidocr.adapter](ocracy.backends.rapidocr.adapter.html.md): Adapter for RapidOCR — image -&gt; text + quad boxes via ONNXRuntime PP-OCR.
+- [ocracy.backends.rapidocr.config](ocracy.backends.rapidocr.config.html.md): Configuration for the RapidOCR backend (ONNXRuntime).
+- [ocracy.backends.tesseract](ocracy.backends.tesseract.html.md): Tesseract backend for ocracy (via pytesseract).
+- [ocracy.backends.tesseract.adapter](ocracy.backends.tesseract.adapter.html.md): Adapter for Tesseract — image -&gt; text+word-boxes via pytesseract.
+- [ocracy.backends.tesseract.config](ocracy.backends.tesseract.config.html.md): Configuration for the Tesseract backend.
+- [ocracy.backends.trocr_handwritten](ocracy.backends.trocr_handwritten.html.md): TrOCR (handwritten) backend for ocracy — local handwriting recognition.
+- [ocracy.backends.trocr_handwritten.adapter](ocracy.backends.trocr_handwritten.adapter.html.md): Adapter for TrOCR (handwritten) — image of a text line -&gt; text, locally.
+- [ocracy.backends.trocr_handwritten.config](ocracy.backends.trocr_handwritten.config.html.md): Configuration for the TrOCR (handwritten) backend.
+- [ocracy.base](ocracy.base.html.md): Core types and normalized result objects for ocracy.
+- [ocracy.catalog](ocracy.catalog.html.md): A filterable, dict-like collection of &#96;BackendInfo&#96;, keyed by id.
+- [ocracy.credentials](ocracy.credentials.html.md): Credential resolution for remote OCR backends.
+- [ocracy.make_backend](ocracy.make_backend.html.md): Abstraction tools for &#42;building&#42; OCR facades.
+- [ocracy.registry](ocracy.registry.html.md): Backend discovery, registration, and lazy loading.
+- [ocracy.status](ocracy.status.html.md): Backend readiness status — four nested levels, info dicts, and a Markdown table.
+- [ocracy.tools](ocracy.tools.html.md): Command-line tools for ocracy (dispatched via &#96;cw&#96; in &#96;&#95;&#95;main&#95;&#95;&#96;).
+- [ocracy.translation](ocracy.translation.html.md): Parameter translation between ocracy’s normalized kwargs and native engines.
+- [ocracy.util](ocracy.util.html.md): Image-input normalization and small shared helpers.
+
+## Optional
+
+- [Top-level llms.txt](../llms.txt): Complete documentation index.

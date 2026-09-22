@@ -1,138 +1,688 @@
 
-
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" data-content_root="./">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Index &mdash; ocracy 0.1.8 documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
-      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-      <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="alternate" type="text/markdown" href="genindex.html.md">
+<link rel="describedby" href="llms.txt" type="text/markdown">
+    <title>Index &#8212; ocracy</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=cb8930eaaf36d9849b67" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=d75fae25" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+    <link rel="stylesheet" type="text/css" href="_static/epythet.css?v=8b94de43" />
+  
+  <!-- So that users can add custom icons -->
+  <script defer src="_static/scripts/fontawesome.js?digest=cb8930eaaf36d9849b67"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67" />
+
+    <script src="_static/documentation_options.js?v=8618f531"></script>
+    <script src="_static/doctools.js?v=fd6eb6e6"></script>
+    <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
+    <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+    <script src="_static/copybutton.js?v=fd10adb8"></script>
+    <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@11.12.1/dist/mermaid.esm.min.mjs";
+
+
+
+
+
+const initStyles = () => {
+    const defaultStyle = document.createElement('style');
+    defaultStyle.textContent = "pre.mermaid {\n    /* Same as .mermaid-container > pre */\n    display: block;\n    width: 100%;\n}\n\npre.mermaid > svg {\n    /* Same as .mermaid-container > pre > svg */\n    height: 500px;\n    width: 100%;\n    max-width: 100% !important;\n}";
+    document.head.appendChild(defaultStyle);
+
+    const fullscreenStyle = document.createElement('style');
+    fullscreenStyle.textContent = ".mermaid-container {\n    position: relative;\n    display: flex;\n    flex-direction: row;\n    width: 100%;\n}\n\n.mermaid-container > pre {\n    display: block;\n    width: 100%;\n}\n\n.mermaid-container > pre > svg {\n    height: 500px;\n    width: 100%;\n    max-width: 100% !important;\n}\n\n.mermaid-fullscreen-btn {\n    position: absolute;\n    width: 28px;\n    height: 28px;\n    background: rgba(255, 255, 255, 0.95);\n    border: 1px solid rgba(0, 0, 0, 0.3);\n    border-radius: 4px;\n    cursor: pointer;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    transition: all 0.2s;\n    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);\n    font-size: 14px;\n    line-height: 1;\n    padding: 0;\n    color: #333;\n}\n\n.mermaid-fullscreen-btn:hover {\n    opacity: 100% !important;\n    background: rgba(255, 255, 255, 1);\n    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);\n    transform: scale(1.1);\n}\n\n.mermaid-fullscreen-btn.dark-theme {\n    background: rgba(50, 50, 50, 0.95);\n    border: 1px solid rgba(255, 255, 255, 0.3);\n    color: #e0e0e0;\n}\n\n.mermaid-fullscreen-btn.dark-theme:hover {\n    background: rgba(60, 60, 60, 1);\n    box-shadow: 0 3px 10px rgba(255, 255, 255, 0.2);\n}\n\n.mermaid-fullscreen-modal {\n    display: none;\n    position: fixed !important;\n    top: 0 !important;\n    left: 0 !important;\n    width: 95vw;\n    height: 100vh;\n    background: rgba(255, 255, 255, 0.98);\n    z-index: 9999;\n    padding: 20px;\n    overflow: auto;\n}\n\n.mermaid-fullscreen-modal.dark-theme {\n    background: rgba(0, 0, 0, 0.98);\n}\n\n.mermaid-fullscreen-modal.active {\n    display: flex;\n    align-items: center;\n    justify-content: center;\n}\n\n.mermaid-container-fullscreen {\n    position: relative;\n    width: 95vw;\n    height: 90vh;\n    max-width: 95vw;\n    max-height: 90vh;\n    background: white;\n    border-radius: 8px;\n    padding: 20px;\n    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);\n    overflow: auto;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n}\n\n.mermaid-container-fullscreen.dark-theme {\n    background: #1a1a1a;\n    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);\n}\n\n.mermaid-container-fullscreen pre.mermaid {\n    width: 100%;\n    height: 100%;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n}\n\n.mermaid-container-fullscreen .mermaid svg {\n    height: 100% !important;\n    width: 100% !important;\n    cursor: grab;\n}\n\n.mermaid-fullscreen-close {\n    position: fixed !important;\n    top: 20px !important;\n    right: 20px !important;\n    width: 40px;\n    height: 40px;\n    background: rgba(255, 255, 255, 0.95);\n    border: 1px solid rgba(0, 0, 0, 0.2);\n    border-radius: 50%;\n    cursor: pointer;\n    z-index: 10000;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);\n    transition: all 0.2s;\n    font-size: 24px;\n    line-height: 1;\n    color: #333;\n}\n\n.mermaid-fullscreen-close:hover {\n    background: white;\n    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);\n    transform: scale(1.1);\n}\n\n.mermaid-fullscreen-close.dark-theme {\n    background: rgba(50, 50, 50, 0.95);\n    border: 1px solid rgba(255, 255, 255, 0.2);\n    color: #e0e0e0;\n}\n\n.mermaid-fullscreen-close.dark-theme:hover {\n    background: rgba(60, 60, 60, 1);\n    box-shadow: 0 6px 16px rgba(255, 255, 255, 0.2);\n}\n\n.mermaid-fullscreen-modal .mermaid-fullscreen-btn {\n    display: none !important;\n}";
+    document.head.appendChild(fullscreenStyle);
+}
+
+// Detect if page has dark background
+const isDarkTheme = () => {
+    // We use a set of heuristics:
+    // 1. Check for common dark mode classes or attributes
+    // 2. Check computed background color brightness
+    if (document.documentElement.classList.contains('dark') ||
+        document.documentElement.getAttribute('data-theme') === 'dark' ||
+        document.body.classList.contains('dark') ||
+        document.body.getAttribute('data-theme') === 'dark') {
+        // console.log("Dark theme detected via class/attribute");
+        return true;
+    }
+    if (document.documentElement.classList.contains('light') ||
+        document.documentElement.getAttribute('data-theme') === 'light' ||
+        document.body.classList.contains('light') ||
+        document.body.getAttribute('data-theme') === 'light') {
+        // console.log("Light theme detected via class/attribute");
+        return false;
+    }
+    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        // console.log("Dark theme detected via prefers-color-scheme");
+        return true;
+    }
+    const bgColor = window.getComputedStyle(document.body).backgroundColor;
+    const match = bgColor.match(/rgb\((\d+),\s*(\d+),\s*(\d+)/);
+    if (match) {
+        const r = parseInt(match[1]);
+        const g = parseInt(match[2]);
+        const b = parseInt(match[3]);
+        const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+        // console.log("Background color brightness:", brightness);
+        return brightness < 128;
+    }
+    // console.log("No dark or light theme detected, defaulting to light theme");
+    return false;
+};
+
+let darkTheme = isDarkTheme();
+let modal = null;
+let modalContent = null;
+let previousScrollOffset = [window.scrollX, window.scrollY];
+let _lazyObserver = null;
+let _renderQueue = Promise.resolve();
+let closeModal = () => {};
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal?.classList.contains('active')) {
+        closeModal();
+    }
+});
+
+// Apply d3 zoom to each SVG. Idempotent: an SVG already wrapped is skipped,
+// so this is safe to call both for the initial batch and for diagrams that
+// render lazily once they become visible.
+const addZoomToSvgs = (svgs) => {
+    svgs.each(function() {
+        if (this.getAttribute('data-zoom-applied') === 'true') return;
+        var svg = d3.select(this);
+        svg.html("<g class='wrapper'>" + svg.html() + "</g>");
+        var inner = svg.select("g");
+        var zoom = d3.zoom().on("zoom", function(event) {
+            inner.attr("transform", event.transform);
+        });
+        svg.call(zoom);
+        this.setAttribute('data-zoom-applied', 'true');
+    });
+};
+
+const runMermaid = async (rerun) => {
+    console.log("Running mermaid diagrams, rerun =", rerun);
+    // clear all existing mermaid charts
+    let all_mermaids = document.querySelectorAll(".mermaid");
+
+    if (rerun) {
+        // Disconnect any previous lazy rendering observer
+        if (_lazyObserver) {
+            _lazyObserver.disconnect();
+            _lazyObserver = null;
+        }
+
+        all_mermaids.forEach((el) => {
+            el.removeAttribute('data-mermaid-deferred');
+            el.removeAttribute('data-mermaid-render-failed');
+            if(!el.hasAttribute("data-original-code")) {
+                // store original code
+                // console.log(`Storing original code for first run: `, el.innerHTML);
+                el.setAttribute('data-original-code', el.innerHTML);
+            }
+            if(el.getAttribute("data-processed") === "true") {
+                // remove and restore original
+                el.removeAttribute("data-processed");
+                // console.log(`Restoring original code for re-run: `, el.getAttribute('data-original-code'));
+                el.innerHTML = el.getAttribute('data-original-code');
+            } else {
+                // store original code
+                // console.log(`Storing original code for re-run: `, el.innerHTML);
+                el.setAttribute('data-original-code', el.innerHTML);
+            }
+        });
+
+        // Separate visible and hidden elements. Mermaid's layout engine measures
+        // text dimensions via the DOM, which fails for elements hidden by a parent
+        // (e.g., Reveal.js non-active slides, sphinx-design unopened tabs),
+        // producing broken SVGs. Render visible elements now, defer hidden ones.
+        const visible = [];
+        const hidden = [];
+        all_mermaids.forEach((el) => {
+            // offsetParent is null for display:none ancestors.
+            // getClientRects().length > 0 catches position:fixed elements
+            // (which also have null offsetParent but are still visible).
+            if (el.offsetParent !== null || el.getClientRects().length > 0) {
+                visible.push(el);
+            } else {
+                hidden.push(el);
+                el.setAttribute('data-mermaid-deferred', 'true');
+            }
+        });
+
+        if (visible.length > 0) {
+            try {
+                await mermaid.run({ nodes: visible });
+            } catch (e) {
+                console.error("Mermaid rendering failed:", e);
+            }
+        }
+
+        // Lazily render hidden elements when they become visible.
+        // Uses a promise chain (_renderQueue) to serialize rendering,
+        // since IntersectionObserver may report multiple entries at once
+        // and mermaid.run() is not safe to call concurrently.
+        if (hidden.length > 0) {
+            if (typeof IntersectionObserver === 'undefined') {
+                console.warn("IntersectionObserver not available; hidden mermaid diagrams will not render.");
+            } else {
+                _renderQueue = Promise.resolve();
+                _lazyObserver = new IntersectionObserver((entries) => {
+                    for (const entry of entries) {
+                        if (entry.isIntersecting && entry.target.getAttribute("data-processed") !== "true") {
+                            _lazyObserver.unobserve(entry.target);
+                            const el = entry.target;
+                            _renderQueue = _renderQueue.then(async () => {
+                                try {
+                                    await mermaid.run({ nodes: [el] });
+                                    el.removeAttribute('data-mermaid-deferred');
+                                    // Apply zoom to the now-rendered diagram, matching
+                                    // the decoration visible diagrams receive.
+                                    if (false) {
+                                        addZoomToSvgs(d3.selectAll("").select(function() {
+                                            return this.querySelector("svg");
+                                        }));
+                                    }
+                                } catch (e) {
+                                    console.error("Mermaid deferred rendering failed:", e);
+                                    el.removeAttribute('data-mermaid-deferred');
+                                    el.setAttribute('data-mermaid-render-failed', 'true');
+                                }
+                            });
+                        }
+                    }
+                });
+                hidden.forEach((el) => _lazyObserver.observe(el));
+            }
+        }
+    }
+
+    all_mermaids = document.querySelectorAll(".mermaid");
+    // Exclude deferred (hidden) and render-failed elements from completion checks
+    const mermaids_active = document.querySelectorAll(".mermaid:not([data-mermaid-deferred]):not([data-mermaid-render-failed])");
+    const mermaids_processed = document.querySelectorAll(".mermaid:not([data-mermaid-deferred]):not([data-mermaid-render-failed])[data-processed='true']");
+
+    if (false) {
+        const mermaids_to_add_zoom = 0 === -1 ? mermaids_active.length : 0;
+        if(mermaids_to_add_zoom > 0) {
+            var svgs = d3.selectAll("").select(function() {
+                return this.querySelector("svg");
+            });
+            // Wait until every active (visible) diagram has rendered. Deferred
+            // diagrams are excluded, so a fixed d3_node_count that counts a
+            // hidden diagram no longer loops forever waiting for its SVG.
+            if(mermaids_active.length !== mermaids_processed.length) {
+                setTimeout(() => runMermaid(false), 200);
+                return;
+            }
+            addZoomToSvgs(svgs);
+        }
+    } else if(mermaids_active.length !== mermaids_processed.length) {
+        // Wait for mermaid to process all diagrams
+        setTimeout(() => runMermaid(false), 200);
+        return;
+    }
+
+    // Stop here if not adding fullscreen capability
+    if (!true) return;
+
+    if (modal !== null ) {
+        // Destroy existing modal
+        modal.remove();
+        modal = null;
+        modalContent = null;
+    }
+
+    modal = document.createElement('div');
+    modal.className = 'mermaid-fullscreen-modal' + (darkTheme ? ' dark-theme' : '');
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-label', 'Fullscreen diagram viewer');
+    modal.innerHTML = `
+        <button class="mermaid-fullscreen-close${darkTheme ? ' dark-theme' : ''}" aria-label="Close fullscreen">✕</button>
+        <div class="mermaid-container-fullscreen${darkTheme ? ' dark-theme' : ''}"></div>
+    `;
+    document.body.appendChild(modal);
+
+    modalContent = modal.querySelector('.mermaid-container-fullscreen');
+    const closeBtn = modal.querySelector('.mermaid-fullscreen-close');
+
+    closeModal = () => {
+        modal.classList.remove('active');
+        modalContent.innerHTML = '';
+        document.body.style.overflow = ''
+        window.scrollTo({left: previousScrollOffset[0], top: previousScrollOffset[1], behavior: 'instant'});
+    };
+
+    closeBtn.addEventListener('click', closeModal);
+    modal.addEventListener('click', (e) => {
+        if (e.target === modal) closeModal();
+    });
+    document.querySelectorAll('.mermaid').forEach((mermaidDiv) => {
+        if (mermaidDiv.parentNode.classList.contains('mermaid-container') ||
+            mermaidDiv.closest('.mermaid-fullscreen-modal')) {
+            // Already processed, adjust button class if needed
+            const existingBtn = mermaidDiv.parentNode.querySelector('.mermaid-fullscreen-btn');
+            if (existingBtn) {
+                existingBtn.className = 'mermaid-fullscreen-btn' + (darkTheme ? ' dark-theme' : '');
+            }
+            return;
+        }
+
+        const container = document.createElement('div');
+        container.className = 'mermaid-container';
+        mermaidDiv.parentNode.insertBefore(container, mermaidDiv);
+        container.appendChild(mermaidDiv);
+
+        const fullscreenBtn = document.createElement('button');
+        fullscreenBtn.className = 'mermaid-fullscreen-btn' + (darkTheme ? ' dark-theme' : '');
+        fullscreenBtn.setAttribute('aria-label', 'View diagram in fullscreen');
+        fullscreenBtn.textContent = "\u26f6";
+        fullscreenBtn.style.opacity = "50%";
+
+        // Calculate dynamic position based on diagram's margin and padding
+        const diagramStyle = window.getComputedStyle(mermaidDiv);
+        const marginTop = parseFloat(diagramStyle.marginTop) || 0;
+        const marginRight = parseFloat(diagramStyle.marginRight) || 0;
+        const paddingTop = parseFloat(diagramStyle.paddingTop) || 0;
+        const paddingRight = parseFloat(diagramStyle.paddingRight) || 0;
+        fullscreenBtn.style.top = `${marginTop + paddingTop + 4}px`;
+        fullscreenBtn.style.right = `${marginRight + paddingRight + 4}px`;
+
+        fullscreenBtn.addEventListener('click', () => {
+            previousScrollOffset = [window.scrollX, window.scrollY];
+            const clone = mermaidDiv.cloneNode(true);
+            modalContent.innerHTML = '';
+            modalContent.appendChild(clone);
+
+            const svg = clone.querySelector('svg');
+            if (svg) {
+                svg.removeAttribute('width');
+                svg.removeAttribute('height');
+                svg.style.width = '100%';
+                svg.style.height = 'auto';
+                svg.style.maxWidth = '100%';
+                svg.style.display = 'block';
+
+                if (false) {
+                    setTimeout(() => {
+                        const g = svg.querySelector('g');
+                        if (g) {
+                            var svgD3 = d3.select(svg);
+                            svgD3.html("<g class='wrapper'>" + svgD3.html() + "</g>");
+                            var inner = svgD3.select("g");
+                            var zoom = d3.zoom().on("zoom", function(event) {
+                                inner.attr("transform", event.transform);
+                            });
+                            svgD3.call(zoom);
+                        }
+                    }, 100);
+                }
+            }
+
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        });
+        container.appendChild(fullscreenBtn);
+    });
+};
+
+
+
+const load = async () => {
+    initStyles();
+
+
+    await runMermaid(true);
+
+    const reRunIfThemeChanges = async () => {
+        const newDarkTheme = isDarkTheme();
+        if (newDarkTheme !== darkTheme) {
+            darkTheme = newDarkTheme;
+            console.log("Theme change detected, re-running mermaid with", darkTheme ? "dark" : "default", "theme");
+            await mermaid.initialize(
+                {...{"startOnLoad": false},
+                ...{ darkMode: darkTheme, theme: darkTheme ? "dark" : "default" },
+                }
+            );
+            await runMermaid(true);
+        }
+    };
+
+    // Update theme classes when theme changes
+    const themeObserver = new MutationObserver(reRunIfThemeChanges);
+    themeObserver.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-theme']
+    });
+    themeObserver.observe(document.body, {
+        attributes: true,
+        attributeFilter: ['class', 'style', 'data-theme']
+    });
+};
+
+
+
+
+
+console.log("Initializing mermaid with", darkTheme ? "dark" : "default", "theme");
+mermaid.initialize(
+    {...{"startOnLoad": false},
+    ...{ darkMode: darkTheme, theme: darkTheme ? "dark" : "default" },
+    }
+);
+
+window.addEventListener("load", load);
+window.runMermaid = runMermaid;</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'genindex';</script>
+    <script>DOCUMENTATION_OPTIONS.search_as_you_type = false;</script>
+    <link rel="index" title="Index" href="#" />
+    <link rel="search" title="Search" href="search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="0.1.9" />
+  
+    
+    <script src="_static/searchtools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script src="searchindex.js"></script>
+  
+  </head>
+  <body data-default-mode="">
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
 
   
-      <script src="_static/jquery.js?v=5d32c60e"></script>
-      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-      <script src="_static/documentation_options.js?v=22607128"></script>
-      <script src="_static/doctools.js?v=fd6eb6e6"></script>
-      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
-      <script src="_static/toggleprompt.js?v=d7ede5d2"></script>
-      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
-      <script src="_static/copybutton.js?v=f281be69"></script>
-    <script src="_static/js/theme.js"></script>
-    <link rel="index" title="Index" href="#" />
-    <link rel="search" title="Search" href="search.html" /> 
-</head>
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+  
+  
+  
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
 
-<body class="wy-body-for-nav"> 
-  <div class="wy-grid-for-nav">
-    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
-      <div class="wy-side-scroll">
-        <div class="wy-side-nav-search" >
-
-          
-          
-          <a href="index.html" class="icon icon-home">
-            ocracy
-          </a>
-<div role="search">
-  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
-    <input type="hidden" name="check_keywords" value="yes" />
-    <input type="hidden" name="area" value="default" />
-  </form>
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
 </div>
-        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy.html">ocracy</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/__main__.html">ocracy.__main__</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends.html">ocracy.backends</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/_template.html">ocracy.backends._template</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/_template/adapter.html">ocracy.backends._template.adapter</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/_template/config.html">ocracy.backends._template.config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/aws_textract.html">ocracy.backends.aws_textract</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/aws_textract/adapter.html">ocracy.backends.aws_textract.adapter</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/aws_textract/config.html">ocracy.backends.aws_textract.config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/azure_document_intelligence.html">ocracy.backends.azure_document_intelligence</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/azure_document_intelligence/adapter.html">ocracy.backends.azure_document_intelligence.adapter</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/azure_document_intelligence/config.html">ocracy.backends.azure_document_intelligence.config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/claude_vision.html">ocracy.backends.claude_vision</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/claude_vision/adapter.html">ocracy.backends.claude_vision.adapter</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/claude_vision/config.html">ocracy.backends.claude_vision.config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/easyocr.html">ocracy.backends.easyocr</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/easyocr/adapter.html">ocracy.backends.easyocr.adapter</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/easyocr/config.html">ocracy.backends.easyocr.config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/google_vision.html">ocracy.backends.google_vision</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/google_vision/adapter.html">ocracy.backends.google_vision.adapter</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/google_vision/config.html">ocracy.backends.google_vision.config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/gpt_4o_vision.html">ocracy.backends.gpt_4o_vision</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/gpt_4o_vision/adapter.html">ocracy.backends.gpt_4o_vision.adapter</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/gpt_4o_vision/config.html">ocracy.backends.gpt_4o_vision.config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/mathpix.html">ocracy.backends.mathpix</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/mathpix/adapter.html">ocracy.backends.mathpix.adapter</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/mathpix/config.html">ocracy.backends.mathpix.config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/mistral_ocr.html">ocracy.backends.mistral_ocr</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/mistral_ocr/adapter.html">ocracy.backends.mistral_ocr.adapter</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/mistral_ocr/config.html">ocracy.backends.mistral_ocr.config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/ocr_space.html">ocracy.backends.ocr_space</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/ocr_space/adapter.html">ocracy.backends.ocr_space.adapter</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/ocr_space/config.html">ocracy.backends.ocr_space.config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/ocrmac.html">ocracy.backends.ocrmac</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/ocrmac/adapter.html">ocracy.backends.ocrmac.adapter</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/ocrmac/config.html">ocracy.backends.ocrmac.config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/paddleocr.html">ocracy.backends.paddleocr</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/paddleocr/adapter.html">ocracy.backends.paddleocr.adapter</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/paddleocr/config.html">ocracy.backends.paddleocr.config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/pix2tex_latex_ocr.html">ocracy.backends.pix2tex_latex_ocr</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/pix2tex_latex_ocr/adapter.html">ocracy.backends.pix2tex_latex_ocr.adapter</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/pix2tex_latex_ocr/config.html">ocracy.backends.pix2tex_latex_ocr.config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/rapidocr.html">ocracy.backends.rapidocr</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/rapidocr/adapter.html">ocracy.backends.rapidocr.adapter</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/rapidocr/config.html">ocracy.backends.rapidocr.config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/tesseract.html">ocracy.backends.tesseract</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/tesseract/adapter.html">ocracy.backends.tesseract.adapter</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/tesseract/config.html">ocracy.backends.tesseract.config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/trocr_handwritten.html">ocracy.backends.trocr_handwritten</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/trocr_handwritten/adapter.html">ocracy.backends.trocr_handwritten.adapter</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/backends/trocr_handwritten/config.html">ocracy.backends.trocr_handwritten.config</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/base.html">ocracy.base</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/catalog.html">ocracy.catalog</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/credentials.html">ocracy.credentials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/install.html">ocracy.install</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/make_backend.html">ocracy.make_backend</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/registry.html">ocracy.registry</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/services.html">ocracy.services</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/status.html">ocracy.status</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/tools.html">ocracy.tools</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/translation.html">ocracy.translation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="module_docs/ocracy/util.html">ocracy.util</a></li>
-</ul>
 
-        </div>
-      </div>
-    </nav>
+  
+    <header id="pst-header" class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
 
-    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
-          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="index.html">ocracy</a>
-      </nav>
+  
+    
+  
 
-      <div class="wy-nav-content">
-        <div class="rst-content">
-          <div role="navigation" aria-label="Page navigation">
-  <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Index</li>
-      <li class="wy-breadcrumbs-aside">
-      </li>
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+  
+    <p class="title logo__title">ocracy</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="api.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="ai-agents.html">
+    For AI agents
+  </a>
+</li>
+
   </ul>
-  <hr/>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+      
+        <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/thorwhalen/ocracy" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
 </div>
-          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
-           <div itemprop="articleBody">
-             
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="api.html">
+    API reference
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="ai-agents.html">
+    For AI agents
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<div class="theme-switch-container dropdown pst-js-only" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Color mode">
+  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button dropdown-toggle" aria-label="Color mode" data-bs-toggle="dropdown">
+    <i class="theme-switch fa-solid fa-sun fa-lg fa-fw" data-mode="light" title="Light"></i>
+    <i class="theme-switch fa-solid fa-moon fa-lg fa-fw" data-mode="dark" title="Dark"></i>
+    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg fa-fw" data-mode="auto" title="System Settings"></i>
+  </button>
+  <ul class="dropdown-menu dropdown-menu-end">
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="auto"><i class="fa-solid fa-circle-half-stroke fa-lg fa-fw me-1"></i>System Settings</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="light"><i class="fa-solid fa-sun fa-lg fa-fw me-1"></i>Light</button></li>
+    <li><button class="dropdown-item d-flex align-items-center theme-change-button" data-mode="dark"><i class="fa-solid fa-moon fa-lg fa-fw me-1"></i>Dark</button></li>
+  </ul>
+</div></div>
+        
+          <div class="navbar-item"><ul class="navbar-icon-links"
+    aria-label="Icon Links">
+        <li class="nav-item">
+          
+          
+          
+          
+          
+          
+          
+          
+          <a href="https://github.com/thorwhalen/ocracy" title="GitHub" class="nav-link pst-navbar-icon" rel="noopener" target="_blank" data-bs-toggle="tooltip" data-bs-placement="bottom"><i class="fa-brands fa-square-github fa-lg" aria-hidden="true"></i><span class="visually-hidden">GitHub</span></a>
+        </li>
+</ul></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none"></div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
 
 <h1 id="index">Index</h1>
 
@@ -160,106 +710,96 @@
 <h2 id="A">A</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ocracy/backends/_template/adapter.html#ocracy.backends._template.adapter.Adapter">Adapter (class in ocracy.backends._template.adapter)</a>
+      <li><a href="_autosummary/ocracy.backends.aws_textract.adapter.html#ocracy.backends.aws_textract.adapter.Adapter">Adapter (class in ocracy.backends.aws_textract.adapter)</a>
 
       <ul>
-        <li><a href="module_docs/ocracy/backends/aws_textract/adapter.html#ocracy.backends.aws_textract.adapter.Adapter">(class in ocracy.backends.aws_textract.adapter)</a>
+        <li><a href="_autosummary/ocracy.backends.azure_document_intelligence.adapter.html#ocracy.backends.azure_document_intelligence.adapter.Adapter">(class in ocracy.backends.azure_document_intelligence.adapter)</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/azure_document_intelligence/adapter.html#ocracy.backends.azure_document_intelligence.adapter.Adapter">(class in ocracy.backends.azure_document_intelligence.adapter)</a>
+        <li><a href="_autosummary/ocracy.backends.claude_vision.adapter.html#ocracy.backends.claude_vision.adapter.Adapter">(class in ocracy.backends.claude_vision.adapter)</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/claude_vision/adapter.html#ocracy.backends.claude_vision.adapter.Adapter">(class in ocracy.backends.claude_vision.adapter)</a>
+        <li><a href="_autosummary/ocracy.backends.easyocr.adapter.html#ocracy.backends.easyocr.adapter.Adapter">(class in ocracy.backends.easyocr.adapter)</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/easyocr/adapter.html#ocracy.backends.easyocr.adapter.Adapter">(class in ocracy.backends.easyocr.adapter)</a>
+        <li><a href="_autosummary/ocracy.backends.google_vision.adapter.html#ocracy.backends.google_vision.adapter.Adapter">(class in ocracy.backends.google_vision.adapter)</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/google_vision/adapter.html#ocracy.backends.google_vision.adapter.Adapter">(class in ocracy.backends.google_vision.adapter)</a>
+        <li><a href="_autosummary/ocracy.backends.gpt_4o_vision.adapter.html#ocracy.backends.gpt_4o_vision.adapter.Adapter">(class in ocracy.backends.gpt_4o_vision.adapter)</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/gpt_4o_vision/adapter.html#ocracy.backends.gpt_4o_vision.adapter.Adapter">(class in ocracy.backends.gpt_4o_vision.adapter)</a>
+        <li><a href="_autosummary/ocracy.backends.mathpix.adapter.html#ocracy.backends.mathpix.adapter.Adapter">(class in ocracy.backends.mathpix.adapter)</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/mathpix/adapter.html#ocracy.backends.mathpix.adapter.Adapter">(class in ocracy.backends.mathpix.adapter)</a>
+        <li><a href="_autosummary/ocracy.backends.mistral_ocr.adapter.html#ocracy.backends.mistral_ocr.adapter.Adapter">(class in ocracy.backends.mistral_ocr.adapter)</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/mistral_ocr/adapter.html#ocracy.backends.mistral_ocr.adapter.Adapter">(class in ocracy.backends.mistral_ocr.adapter)</a>
+        <li><a href="_autosummary/ocracy.backends.ocr_space.adapter.html#ocracy.backends.ocr_space.adapter.Adapter">(class in ocracy.backends.ocr_space.adapter)</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/ocr_space/adapter.html#ocracy.backends.ocr_space.adapter.Adapter">(class in ocracy.backends.ocr_space.adapter)</a>
+        <li><a href="_autosummary/ocracy.backends.ocrmac.adapter.html#ocracy.backends.ocrmac.adapter.Adapter">(class in ocracy.backends.ocrmac.adapter)</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/ocrmac/adapter.html#ocracy.backends.ocrmac.adapter.Adapter">(class in ocracy.backends.ocrmac.adapter)</a>
+        <li><a href="_autosummary/ocracy.backends.paddleocr.adapter.html#ocracy.backends.paddleocr.adapter.Adapter">(class in ocracy.backends.paddleocr.adapter)</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/paddleocr/adapter.html#ocracy.backends.paddleocr.adapter.Adapter">(class in ocracy.backends.paddleocr.adapter)</a>
+        <li><a href="_autosummary/ocracy.backends.pix2tex_latex_ocr.adapter.html#ocracy.backends.pix2tex_latex_ocr.adapter.Adapter">(class in ocracy.backends.pix2tex_latex_ocr.adapter)</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/pix2tex_latex_ocr/adapter.html#ocracy.backends.pix2tex_latex_ocr.adapter.Adapter">(class in ocracy.backends.pix2tex_latex_ocr.adapter)</a>
+        <li><a href="_autosummary/ocracy.backends.rapidocr.adapter.html#ocracy.backends.rapidocr.adapter.Adapter">(class in ocracy.backends.rapidocr.adapter)</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/rapidocr/adapter.html#ocracy.backends.rapidocr.adapter.Adapter">(class in ocracy.backends.rapidocr.adapter)</a>
+        <li><a href="_autosummary/ocracy.backends.tesseract.adapter.html#ocracy.backends.tesseract.adapter.Adapter">(class in ocracy.backends.tesseract.adapter)</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/tesseract/adapter.html#ocracy.backends.tesseract.adapter.Adapter">(class in ocracy.backends.tesseract.adapter)</a>
-</li>
-        <li><a href="module_docs/ocracy/backends/trocr_handwritten/adapter.html#ocracy.backends.trocr_handwritten.adapter.Adapter">(class in ocracy.backends.trocr_handwritten.adapter)</a>
+        <li><a href="_autosummary/ocracy.backends.trocr_handwritten.adapter.html#ocracy.backends.trocr_handwritten.adapter.Adapter">(class in ocracy.backends.trocr_handwritten.adapter)</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ocracy/make_backend.html#ocracy.make_backend.as_bbox">as_bbox() (in module ocracy.make_backend)</a>
+      <li><a href="_autosummary/ocracy.make_backend.html#ocracy.make_backend.as_bbox">as_bbox() (in module ocracy.make_backend)</a>
 </li>
-      <li><a href="module_docs/ocracy/base.html#ocracy.base.BBox.as_tuple">as_tuple (ocracy.base.BBox property)</a>
+      <li><a href="_autosummary/ocracy.base.html#ocracy.base.BBox.as_tuple">as_tuple (ocracy.base.BBox property)</a>
 
       <ul>
-        <li><a href="module_docs/ocracy.html#ocracy.BBox.as_tuple">(ocracy.BBox property)</a>
+        <li><a href="_autosummary/ocracy.html#ocracy.BBox.as_tuple">(ocracy.BBox property)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ocracy/base.html#ocracy.base.OcrResult.at_level">at_level() (ocracy.base.OcrResult method)</a>
+      <li><a href="_autosummary/ocracy.base.html#ocracy.base.OcrResult.at_level">at_level() (ocracy.base.OcrResult method)</a>
 
       <ul>
-        <li><a href="module_docs/ocracy.html#ocracy.OcrResult.at_level">(ocracy.OcrResult method)</a>
+        <li><a href="_autosummary/ocracy.html#ocracy.OcrResult.at_level">(ocracy.OcrResult method)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ocracy.html#ocracy.available_backends">available_backends() (in module ocracy)</a>
-
-      <ul>
-        <li><a href="module_docs/ocracy/install.html#ocracy.install.available_backends">(in module ocracy.install)</a>
+      <li><a href="_autosummary/ocracy.html#ocracy.available_backends">available_backends() (in module ocracy)</a>
 </li>
-      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="B">B</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ocracy.html#ocracy.backend_ids">backend_ids() (in module ocracy)</a>
+      <li><a href="_autosummary/ocracy.html#ocracy.backend_ids">backend_ids() (in module ocracy)</a>
 
       <ul>
-        <li><a href="module_docs/ocracy/status.html#ocracy.status.backend_ids">(in module ocracy.status)</a>
+        <li><a href="_autosummary/ocracy.status.html#ocracy.status.backend_ids">(in module ocracy.status)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ocracy.html#ocracy.backend_info">backend_info() (in module ocracy)</a>
+      <li><a href="_autosummary/ocracy.html#ocracy.backend_info">backend_info() (in module ocracy)</a>
 
       <ul>
-        <li><a href="module_docs/ocracy/status.html#ocracy.status.backend_info">(in module ocracy.status)</a>
+        <li><a href="_autosummary/ocracy.status.html#ocracy.status.backend_info">(in module ocracy.status)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ocracy.html#ocracy.BackendInfo">BackendInfo (class in ocracy)</a>
-
-      <ul>
-        <li><a href="module_docs/ocracy/catalog.html#ocracy.catalog.BackendInfo">(class in ocracy.catalog)</a>
+      <li><a href="_autosummary/ocracy.html#ocracy.BackendInfo">BackendInfo (class in ocracy)</a>
 </li>
-      </ul></li>
+      <li><a href="_autosummary/ocracy.tools.html#ocracy.tools.backends">backends() (in module ocracy.tools)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ocracy/tools.html#ocracy.tools.backends">backends() (in module ocracy.tools)</a>
-</li>
-      <li><a href="module_docs/ocracy.html#ocracy.BaseOcrAdapter">BaseOcrAdapter (class in ocracy)</a>
+      <li><a href="_autosummary/ocracy.html#ocracy.BaseOcrAdapter">BaseOcrAdapter (class in ocracy)</a>
 
       <ul>
-        <li><a href="module_docs/ocracy/make_backend.html#ocracy.make_backend.BaseOcrAdapter">(class in ocracy.make_backend)</a>
+        <li><a href="_autosummary/ocracy.make_backend.html#ocracy.make_backend.BaseOcrAdapter">(class in ocracy.make_backend)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ocracy.html#ocracy.BBox">BBox (class in ocracy)</a>
+      <li><a href="_autosummary/ocracy.html#ocracy.BBox">BBox (class in ocracy)</a>
 
       <ul>
-        <li><a href="module_docs/ocracy/base.html#ocracy.base.BBox">(class in ocracy.base)</a>
+        <li><a href="_autosummary/ocracy.base.html#ocracy.base.BBox">(class in ocracy.base)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ocracy/base.html#ocracy.base.TextBlock.bbox">bbox (ocracy.base.TextBlock attribute)</a>
+      <li><a href="_autosummary/ocracy.base.html#ocracy.base.TextBlock.bbox">bbox (ocracy.base.TextBlock attribute)</a>
 
       <ul>
-        <li><a href="module_docs/ocracy.html#ocracy.TextBlock.bbox">(ocracy.TextBlock attribute)</a>
+        <li><a href="_autosummary/ocracy.html#ocracy.TextBlock.bbox">(ocracy.TextBlock attribute)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -268,49 +808,35 @@
 <h2 id="C">C</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ocracy.html#ocracy.Catalog.can">can() (ocracy.Catalog method)</a>
-
-      <ul>
-        <li><a href="module_docs/ocracy/catalog.html#ocracy.catalog.Catalog.can">(ocracy.catalog.Catalog method)</a>
+      <li><a href="_autosummary/ocracy.html#ocracy.Catalog.can">can() (ocracy.Catalog method)</a>
 </li>
-      </ul></li>
-      <li><a href="module_docs/ocracy.html#ocracy.Catalog">Catalog (class in ocracy)</a>
-
-      <ul>
-        <li><a href="module_docs/ocracy/catalog.html#ocracy.catalog.Catalog">(class in ocracy.catalog)</a>
+      <li><a href="_autosummary/ocracy.html#ocracy.Catalog">Catalog (class in ocracy)</a>
 </li>
-      </ul></li>
-      <li><a href="module_docs/ocracy.html#ocracy.check">check() (in module ocracy)</a>
-
-      <ul>
-        <li><a href="module_docs/ocracy/install.html#ocracy.install.check">(in module ocracy.install)</a>
+      <li><a href="_autosummary/ocracy.catalog.html#ocracy.catalog">catalog (in module ocracy)</a>
 </li>
-      </ul></li>
-      <li><a href="module_docs/ocracy/util.html#ocracy.util.check_import">check_import() (in module ocracy.util)</a>
+      <li><a href="_autosummary/ocracy.html#ocracy.check">check() (in module ocracy)</a>
 </li>
-      <li><a href="module_docs/ocracy/util.html#ocracy.util.classify_input">classify_input() (in module ocracy.util)</a>
+      <li><a href="_autosummary/ocracy.util.html#ocracy.util.check_import">check_import() (in module ocracy.util)</a>
+</li>
+      <li><a href="_autosummary/ocracy.util.html#ocracy.util.classify_input">classify_input() (in module ocracy.util)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ocracy/util.html#ocracy.util.cleanup_temp">cleanup_temp() (in module ocracy.util)</a>
+      <li><a href="_autosummary/ocracy.util.html#ocracy.util.cleanup_temp">cleanup_temp() (in module ocracy.util)</a>
 </li>
-      <li><a href="module_docs/ocracy/registry.html#ocracy.registry.clear_registry">clear_registry() (in module ocracy.registry)</a>
+      <li><a href="_autosummary/ocracy.registry.html#ocracy.registry.clear_registry">clear_registry() (in module ocracy.registry)</a>
 </li>
-      <li><a href="module_docs/ocracy.html#ocracy.Catalog.compare">compare() (ocracy.Catalog method)</a>
+      <li><a href="_autosummary/ocracy.html#ocracy.Catalog.compare">compare() (ocracy.Catalog method)</a>
+</li>
+      <li><a href="_autosummary/ocracy.base.html#ocracy.base.TextBlock.confidence">confidence (ocracy.base.TextBlock attribute)</a>
 
       <ul>
-        <li><a href="module_docs/ocracy/catalog.html#ocracy.catalog.Catalog.compare">(ocracy.catalog.Catalog method)</a>
+        <li><a href="_autosummary/ocracy.html#ocracy.TextBlock.confidence">(ocracy.TextBlock attribute)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ocracy/base.html#ocracy.base.TextBlock.confidence">confidence (ocracy.base.TextBlock attribute)</a>
-
-      <ul>
-        <li><a href="module_docs/ocracy.html#ocracy.TextBlock.confidence">(ocracy.TextBlock attribute)</a>
+      <li><a href="_autosummary/ocracy.credentials.html#ocracy.credentials.CREDENTIAL_GUIDANCE">CREDENTIAL_GUIDANCE (in module ocracy.credentials)</a>
 </li>
-      </ul></li>
-      <li><a href="module_docs/ocracy/credentials.html#ocracy.credentials.CREDENTIAL_GUIDANCE">CREDENTIAL_GUIDANCE (in module ocracy.credentials)</a>
-</li>
-      <li><a href="module_docs/ocracy/credentials.html#ocracy.credentials.credential_help">credential_help() (in module ocracy.credentials)</a>
+      <li><a href="_autosummary/ocracy.credentials.html#ocracy.credentials.credential_help">credential_help() (in module ocracy.credentials)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -318,12 +844,10 @@
 <h2 id="D">D</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ocracy.html#ocracy.doctor">doctor() (in module ocracy)</a>
+      <li><a href="_autosummary/ocracy.html#ocracy.doctor">doctor() (in module ocracy)</a>
 
       <ul>
-        <li><a href="module_docs/ocracy/install.html#ocracy.install.doctor">(in module ocracy.install)</a>
-</li>
-        <li><a href="module_docs/ocracy/tools.html#ocracy.tools.doctor">(in module ocracy.tools)</a>
+        <li><a href="_autosummary/ocracy.tools.html#ocracy.tools.doctor">(in module ocracy.tools)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -332,7 +856,7 @@
 <h2 id="E">E</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ocracy/util.html#ocracy.util.ensure_file_path">ensure_file_path() (in module ocracy.util)</a>
+      <li><a href="_autosummary/ocracy.util.html#ocracy.util.ensure_file_path">ensure_file_path() (in module ocracy.util)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -340,42 +864,38 @@
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ocracy.html#ocracy.Catalog.filter">filter() (ocracy.Catalog method)</a>
+      <li><a href="_autosummary/ocracy.html#ocracy.Catalog.filter">filter() (ocracy.Catalog method)</a>
+</li>
+      <li><a href="_autosummary/ocracy.base.html#ocracy.base.OcrResult.filter_confidence">filter_confidence() (ocracy.base.OcrResult method)</a>
 
       <ul>
-        <li><a href="module_docs/ocracy/catalog.html#ocracy.catalog.Catalog.filter">(ocracy.catalog.Catalog method)</a>
+        <li><a href="_autosummary/ocracy.html#ocracy.OcrResult.filter_confidence">(ocracy.OcrResult method)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ocracy/base.html#ocracy.base.OcrResult.filter_confidence">filter_confidence() (ocracy.base.OcrResult method)</a>
+      <li><a href="_autosummary/ocracy.html#ocracy.find">find() (in module ocracy)</a>
 
       <ul>
-        <li><a href="module_docs/ocracy.html#ocracy.OcrResult.filter_confidence">(ocracy.OcrResult method)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ocracy.html#ocracy.find">find() (in module ocracy)</a>
-
-      <ul>
-        <li><a href="module_docs/ocracy/tools.html#ocracy.tools.find">(in module ocracy.tools)</a>
+        <li><a href="_autosummary/ocracy.tools.html#ocracy.tools.find">(in module ocracy.tools)</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ocracy/base.html#ocracy.base.OcrResult.from_blocks">from_blocks() (ocracy.base.OcrResult class method)</a>
+      <li><a href="_autosummary/ocracy.base.html#ocracy.base.OcrResult.from_blocks">from_blocks() (ocracy.base.OcrResult class method)</a>
 
       <ul>
-        <li><a href="module_docs/ocracy.html#ocracy.OcrResult.from_blocks">(ocracy.OcrResult class method)</a>
+        <li><a href="_autosummary/ocracy.html#ocracy.OcrResult.from_blocks">(ocracy.OcrResult class method)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ocracy/base.html#ocracy.base.BBox.from_polygon">from_polygon() (ocracy.base.BBox class method)</a>
+      <li><a href="_autosummary/ocracy.base.html#ocracy.base.BBox.from_polygon">from_polygon() (ocracy.base.BBox class method)</a>
 
       <ul>
-        <li><a href="module_docs/ocracy.html#ocracy.BBox.from_polygon">(ocracy.BBox class method)</a>
+        <li><a href="_autosummary/ocracy.html#ocracy.BBox.from_polygon">(ocracy.BBox class method)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ocracy/base.html#ocracy.base.OcrResult.from_text">from_text() (ocracy.base.OcrResult class method)</a>
+      <li><a href="_autosummary/ocracy.base.html#ocracy.base.OcrResult.from_text">from_text() (ocracy.base.OcrResult class method)</a>
 
       <ul>
-        <li><a href="module_docs/ocracy.html#ocracy.OcrResult.from_text">(ocracy.OcrResult class method)</a>
+        <li><a href="_autosummary/ocracy.html#ocracy.OcrResult.from_text">(ocracy.OcrResult class method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -384,20 +904,20 @@
 <h2 id="G">G</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ocracy/registry.html#ocracy.registry.get_backend">get_backend() (in module ocracy.registry)</a>
+      <li><a href="_autosummary/ocracy.registry.html#ocracy.registry.get_backend">get_backend() (in module ocracy.registry)</a>
 </li>
-      <li><a href="module_docs/ocracy.html#ocracy.get_config">get_config() (in module ocracy)</a>
+      <li><a href="_autosummary/ocracy.html#ocracy.get_config">get_config() (in module ocracy)</a>
 
       <ul>
-        <li><a href="module_docs/ocracy/registry.html#ocracy.registry.get_config">(in module ocracy.registry)</a>
+        <li><a href="_autosummary/ocracy.registry.html#ocracy.registry.get_config">(in module ocracy.registry)</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ocracy.html#ocracy.get_default_backend">get_default_backend() (in module ocracy)</a>
+      <li><a href="_autosummary/ocracy.html#ocracy.get_default_backend">get_default_backend() (in module ocracy)</a>
 
       <ul>
-        <li><a href="module_docs/ocracy/registry.html#ocracy.registry.get_default_backend">(in module ocracy.registry)</a>
+        <li><a href="_autosummary/ocracy.registry.html#ocracy.registry.get_default_backend">(in module ocracy.registry)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -406,41 +926,33 @@
 <h2 id="I">I</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ocracy/util.html#ocracy.util.image_path">image_path() (in module ocracy.util)</a>
+      <li><a href="_autosummary/ocracy.util.html#ocracy.util.image_path">image_path() (in module ocracy.util)</a>
 </li>
-      <li><a href="module_docs/ocracy/services.html#ocracy.services.ServiceHandle.info">info (ocracy.services.ServiceHandle property)</a>
+      <li><a href="_autosummary/ocracy.tools.html#ocracy.tools.info">info() (in module ocracy.tools)</a>
 </li>
-      <li><a href="module_docs/ocracy/tools.html#ocracy.tools.info">info() (in module ocracy.tools)</a>
-</li>
-      <li><a href="module_docs/ocracy.html#ocracy.install">install() (in module ocracy)</a>
+      <li><a href="_autosummary/ocracy.html#ocracy.install">install() (in module ocracy)</a>
 
       <ul>
-        <li><a href="module_docs/ocracy/install.html#ocracy.install.install">(in module ocracy.install)</a>
-</li>
-        <li><a href="module_docs/ocracy/tools.html#ocracy.tools.install">(in module ocracy.tools)</a>
+        <li><a href="_autosummary/ocracy.tools.html#ocracy.tools.install">(in module ocracy.tools)</a>
 </li>
       </ul></li>
+      <li><a href="_autosummary/ocracy.html#ocracy.Requirements.instructions">instructions() (ocracy.Requirements method)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ocracy/install.html#ocracy.install.Requirements.instructions">instructions() (ocracy.install.Requirements method)</a>
+      <li><a href="_autosummary/ocracy.html#ocracy.is_set_up">is_set_up() (in module ocracy)</a>
 
       <ul>
-        <li><a href="module_docs/ocracy.html#ocracy.Requirements.instructions">(ocracy.Requirements method)</a>
+        <li><a href="_autosummary/ocracy.status.html#ocracy.status.is_set_up">(in module ocracy.status)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ocracy.html#ocracy.is_set_up">is_set_up() (in module ocracy)</a>
+      <li><a href="_autosummary/ocracy.html#ocracy.is_tested">is_tested() (in module ocracy)</a>
 
       <ul>
-        <li><a href="module_docs/ocracy/status.html#ocracy.status.is_set_up">(in module ocracy.status)</a>
+        <li><a href="_autosummary/ocracy.status.html#ocracy.status.is_tested">(in module ocracy.status)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ocracy.html#ocracy.is_tested">is_tested() (in module ocracy)</a>
-
-      <ul>
-        <li><a href="module_docs/ocracy/status.html#ocracy.status.is_tested">(in module ocracy.status)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ocracy/util.html#ocracy.util.is_url">is_url() (in module ocracy.util)</a>
+      <li><a href="_autosummary/ocracy.util.html#ocracy.util.is_url">is_url() (in module ocracy.util)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -448,27 +960,27 @@
 <h2 id="L">L</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ocracy/base.html#ocracy.base.TextBlock.language">language (ocracy.base.TextBlock attribute)</a>
+      <li><a href="_autosummary/ocracy.base.html#ocracy.base.TextBlock.language">language (ocracy.base.TextBlock attribute)</a>
 
       <ul>
-        <li><a href="module_docs/ocracy.html#ocracy.TextBlock.language">(ocracy.TextBlock attribute)</a>
+        <li><a href="_autosummary/ocracy.html#ocracy.TextBlock.language">(ocracy.TextBlock attribute)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ocracy/base.html#ocracy.base.TextBlock.level">level (ocracy.base.TextBlock attribute)</a>
+      <li><a href="_autosummary/ocracy.base.html#ocracy.base.TextBlock.level">level (ocracy.base.TextBlock attribute)</a>
 
       <ul>
-        <li><a href="module_docs/ocracy.html#ocracy.TextBlock.level">(ocracy.TextBlock attribute)</a>
+        <li><a href="_autosummary/ocracy.html#ocracy.TextBlock.level">(ocracy.TextBlock attribute)</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ocracy.html#ocracy.list_backends">list_backends() (in module ocracy)</a>
+      <li><a href="_autosummary/ocracy.html#ocracy.list_backends">list_backends() (in module ocracy)</a>
 
       <ul>
-        <li><a href="module_docs/ocracy/registry.html#ocracy.registry.list_backends">(in module ocracy.registry)</a>
+        <li><a href="_autosummary/ocracy.registry.html#ocracy.registry.list_backends">(in module ocracy.registry)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ocracy/util.html#ocracy.util.load_image_bytes">load_image_bytes() (in module ocracy.util)</a>
+      <li><a href="_autosummary/ocracy.util.html#ocracy.util.load_image_bytes">load_image_bytes() (in module ocracy.util)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -476,163 +988,149 @@
 <h2 id="M">M</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ocracy.html#ocracy.make_block">make_block() (in module ocracy)</a>
+      <li><a href="_autosummary/ocracy.html#ocracy.make_block">make_block() (in module ocracy)</a>
 
       <ul>
-        <li><a href="module_docs/ocracy/make_backend.html#ocracy.make_backend.make_block">(in module ocracy.make_backend)</a>
+        <li><a href="_autosummary/ocracy.make_backend.html#ocracy.make_backend.make_block">(in module ocracy.make_backend)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ocracy/translation.html#ocracy.translation.make_kwargs_translator">make_kwargs_translator() (in module ocracy.translation)</a>
+      <li><a href="_autosummary/ocracy.translation.html#ocracy.translation.make_kwargs_translator">make_kwargs_translator() (in module ocracy.translation)</a>
 </li>
-      <li><a href="module_docs/ocracy/make_backend.html#ocracy.make_backend.make_test_image">make_test_image() (in module ocracy.make_backend)</a>
+      <li><a href="_autosummary/ocracy.make_backend.html#ocracy.make_backend.make_test_image">make_test_image() (in module ocracy.make_backend)</a>
 </li>
-      <li><a href="module_docs/ocracy/base.html#ocracy.base.OcrResult.markdown">markdown (ocracy.base.OcrResult property)</a>
+      <li><a href="_autosummary/ocracy.base.html#ocracy.base.OcrResult.markdown">markdown (ocracy.base.OcrResult property)</a>
 
       <ul>
-        <li><a href="module_docs/ocracy.html#ocracy.OcrResult.markdown">(ocracy.OcrResult property)</a>
+        <li><a href="_autosummary/ocracy.html#ocracy.OcrResult.markdown">(ocracy.OcrResult property)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ocracy/base.html#ocracy.base.OcrResult.mean_confidence">mean_confidence (ocracy.base.OcrResult property)</a>
+      <li><a href="_autosummary/ocracy.base.html#ocracy.base.OcrResult.mean_confidence">mean_confidence (ocracy.base.OcrResult property)</a>
 
       <ul>
-        <li><a href="module_docs/ocracy.html#ocracy.OcrResult.mean_confidence">(ocracy.OcrResult property)</a>
+        <li><a href="_autosummary/ocracy.html#ocracy.OcrResult.mean_confidence">(ocracy.OcrResult property)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ocracy/base.html#ocracy.base.TextBlock.meta">meta (ocracy.base.TextBlock attribute)</a>
+      <li><a href="_autosummary/ocracy.base.html#ocracy.base.TextBlock.meta">meta (ocracy.base.TextBlock attribute)</a>
 
       <ul>
-        <li><a href="module_docs/ocracy.html#ocracy.TextBlock.meta">(ocracy.TextBlock attribute)</a>
+        <li><a href="_autosummary/ocracy.html#ocracy.TextBlock.meta">(ocracy.TextBlock attribute)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ocracy/credentials.html#ocracy.credentials.MissingCredentialError">MissingCredentialError</a>
+      <li><a href="_autosummary/ocracy.credentials.html#ocracy.credentials.MissingCredentialError">MissingCredentialError</a>
 </li>
       <li>
     module
 
       <ul>
-        <li><a href="module_docs/ocracy.html#module-ocracy">ocracy</a>
+        <li><a href="_autosummary/ocracy.html#module-ocracy">ocracy</a>
 </li>
-        <li><a href="module_docs/ocracy/__main__.html#module-ocracy.__main__">ocracy.__main__</a>
+        <li><a href="_autosummary/ocracy.backends.html#module-ocracy.backends">ocracy.backends</a>
 </li>
-        <li><a href="module_docs/ocracy/backends.html#module-ocracy.backends">ocracy.backends</a>
+        <li><a href="_autosummary/ocracy.backends.aws_textract.html#module-ocracy.backends.aws_textract">ocracy.backends.aws_textract</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/_template.html#module-ocracy.backends._template">ocracy.backends._template</a>
+        <li><a href="_autosummary/ocracy.backends.aws_textract.adapter.html#module-ocracy.backends.aws_textract.adapter">ocracy.backends.aws_textract.adapter</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/_template/adapter.html#module-ocracy.backends._template.adapter">ocracy.backends._template.adapter</a>
+        <li><a href="_autosummary/ocracy.backends.aws_textract.config.html#module-ocracy.backends.aws_textract.config">ocracy.backends.aws_textract.config</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/_template/config.html#module-ocracy.backends._template.config">ocracy.backends._template.config</a>
+        <li><a href="_autosummary/ocracy.backends.azure_document_intelligence.html#module-ocracy.backends.azure_document_intelligence">ocracy.backends.azure_document_intelligence</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/aws_textract.html#module-ocracy.backends.aws_textract">ocracy.backends.aws_textract</a>
+        <li><a href="_autosummary/ocracy.backends.azure_document_intelligence.adapter.html#module-ocracy.backends.azure_document_intelligence.adapter">ocracy.backends.azure_document_intelligence.adapter</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/aws_textract/adapter.html#module-ocracy.backends.aws_textract.adapter">ocracy.backends.aws_textract.adapter</a>
+        <li><a href="_autosummary/ocracy.backends.azure_document_intelligence.config.html#module-ocracy.backends.azure_document_intelligence.config">ocracy.backends.azure_document_intelligence.config</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/aws_textract/config.html#module-ocracy.backends.aws_textract.config">ocracy.backends.aws_textract.config</a>
+        <li><a href="_autosummary/ocracy.backends.claude_vision.html#module-ocracy.backends.claude_vision">ocracy.backends.claude_vision</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/azure_document_intelligence.html#module-ocracy.backends.azure_document_intelligence">ocracy.backends.azure_document_intelligence</a>
+        <li><a href="_autosummary/ocracy.backends.claude_vision.adapter.html#module-ocracy.backends.claude_vision.adapter">ocracy.backends.claude_vision.adapter</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/azure_document_intelligence/adapter.html#module-ocracy.backends.azure_document_intelligence.adapter">ocracy.backends.azure_document_intelligence.adapter</a>
+        <li><a href="_autosummary/ocracy.backends.claude_vision.config.html#module-ocracy.backends.claude_vision.config">ocracy.backends.claude_vision.config</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/azure_document_intelligence/config.html#module-ocracy.backends.azure_document_intelligence.config">ocracy.backends.azure_document_intelligence.config</a>
+        <li><a href="_autosummary/ocracy.backends.easyocr.html#module-ocracy.backends.easyocr">ocracy.backends.easyocr</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/claude_vision.html#module-ocracy.backends.claude_vision">ocracy.backends.claude_vision</a>
+        <li><a href="_autosummary/ocracy.backends.easyocr.adapter.html#module-ocracy.backends.easyocr.adapter">ocracy.backends.easyocr.adapter</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/claude_vision/adapter.html#module-ocracy.backends.claude_vision.adapter">ocracy.backends.claude_vision.adapter</a>
+        <li><a href="_autosummary/ocracy.backends.easyocr.config.html#module-ocracy.backends.easyocr.config">ocracy.backends.easyocr.config</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/claude_vision/config.html#module-ocracy.backends.claude_vision.config">ocracy.backends.claude_vision.config</a>
+        <li><a href="_autosummary/ocracy.backends.google_vision.html#module-ocracy.backends.google_vision">ocracy.backends.google_vision</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/easyocr.html#module-ocracy.backends.easyocr">ocracy.backends.easyocr</a>
+        <li><a href="_autosummary/ocracy.backends.google_vision.adapter.html#module-ocracy.backends.google_vision.adapter">ocracy.backends.google_vision.adapter</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/easyocr/adapter.html#module-ocracy.backends.easyocr.adapter">ocracy.backends.easyocr.adapter</a>
+        <li><a href="_autosummary/ocracy.backends.google_vision.config.html#module-ocracy.backends.google_vision.config">ocracy.backends.google_vision.config</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/easyocr/config.html#module-ocracy.backends.easyocr.config">ocracy.backends.easyocr.config</a>
+        <li><a href="_autosummary/ocracy.backends.gpt_4o_vision.html#module-ocracy.backends.gpt_4o_vision">ocracy.backends.gpt_4o_vision</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/google_vision.html#module-ocracy.backends.google_vision">ocracy.backends.google_vision</a>
+        <li><a href="_autosummary/ocracy.backends.gpt_4o_vision.adapter.html#module-ocracy.backends.gpt_4o_vision.adapter">ocracy.backends.gpt_4o_vision.adapter</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/google_vision/adapter.html#module-ocracy.backends.google_vision.adapter">ocracy.backends.google_vision.adapter</a>
+        <li><a href="_autosummary/ocracy.backends.gpt_4o_vision.config.html#module-ocracy.backends.gpt_4o_vision.config">ocracy.backends.gpt_4o_vision.config</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/google_vision/config.html#module-ocracy.backends.google_vision.config">ocracy.backends.google_vision.config</a>
+        <li><a href="_autosummary/ocracy.backends.mathpix.html#module-ocracy.backends.mathpix">ocracy.backends.mathpix</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/gpt_4o_vision.html#module-ocracy.backends.gpt_4o_vision">ocracy.backends.gpt_4o_vision</a>
+        <li><a href="_autosummary/ocracy.backends.mathpix.adapter.html#module-ocracy.backends.mathpix.adapter">ocracy.backends.mathpix.adapter</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/gpt_4o_vision/adapter.html#module-ocracy.backends.gpt_4o_vision.adapter">ocracy.backends.gpt_4o_vision.adapter</a>
+        <li><a href="_autosummary/ocracy.backends.mathpix.config.html#module-ocracy.backends.mathpix.config">ocracy.backends.mathpix.config</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/gpt_4o_vision/config.html#module-ocracy.backends.gpt_4o_vision.config">ocracy.backends.gpt_4o_vision.config</a>
+        <li><a href="_autosummary/ocracy.backends.mistral_ocr.html#module-ocracy.backends.mistral_ocr">ocracy.backends.mistral_ocr</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/mathpix.html#module-ocracy.backends.mathpix">ocracy.backends.mathpix</a>
+        <li><a href="_autosummary/ocracy.backends.mistral_ocr.adapter.html#module-ocracy.backends.mistral_ocr.adapter">ocracy.backends.mistral_ocr.adapter</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/mathpix/adapter.html#module-ocracy.backends.mathpix.adapter">ocracy.backends.mathpix.adapter</a>
+        <li><a href="_autosummary/ocracy.backends.mistral_ocr.config.html#module-ocracy.backends.mistral_ocr.config">ocracy.backends.mistral_ocr.config</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/mathpix/config.html#module-ocracy.backends.mathpix.config">ocracy.backends.mathpix.config</a>
+        <li><a href="_autosummary/ocracy.backends.ocr_space.html#module-ocracy.backends.ocr_space">ocracy.backends.ocr_space</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/mistral_ocr.html#module-ocracy.backends.mistral_ocr">ocracy.backends.mistral_ocr</a>
+        <li><a href="_autosummary/ocracy.backends.ocr_space.adapter.html#module-ocracy.backends.ocr_space.adapter">ocracy.backends.ocr_space.adapter</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/mistral_ocr/adapter.html#module-ocracy.backends.mistral_ocr.adapter">ocracy.backends.mistral_ocr.adapter</a>
+        <li><a href="_autosummary/ocracy.backends.ocr_space.config.html#module-ocracy.backends.ocr_space.config">ocracy.backends.ocr_space.config</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/mistral_ocr/config.html#module-ocracy.backends.mistral_ocr.config">ocracy.backends.mistral_ocr.config</a>
+        <li><a href="_autosummary/ocracy.backends.ocrmac.html#module-ocracy.backends.ocrmac">ocracy.backends.ocrmac</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/ocr_space.html#module-ocracy.backends.ocr_space">ocracy.backends.ocr_space</a>
+        <li><a href="_autosummary/ocracy.backends.ocrmac.adapter.html#module-ocracy.backends.ocrmac.adapter">ocracy.backends.ocrmac.adapter</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/ocr_space/adapter.html#module-ocracy.backends.ocr_space.adapter">ocracy.backends.ocr_space.adapter</a>
+        <li><a href="_autosummary/ocracy.backends.ocrmac.config.html#module-ocracy.backends.ocrmac.config">ocracy.backends.ocrmac.config</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/ocr_space/config.html#module-ocracy.backends.ocr_space.config">ocracy.backends.ocr_space.config</a>
+        <li><a href="_autosummary/ocracy.backends.paddleocr.html#module-ocracy.backends.paddleocr">ocracy.backends.paddleocr</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/ocrmac.html#module-ocracy.backends.ocrmac">ocracy.backends.ocrmac</a>
+        <li><a href="_autosummary/ocracy.backends.paddleocr.adapter.html#module-ocracy.backends.paddleocr.adapter">ocracy.backends.paddleocr.adapter</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/ocrmac/adapter.html#module-ocracy.backends.ocrmac.adapter">ocracy.backends.ocrmac.adapter</a>
+        <li><a href="_autosummary/ocracy.backends.paddleocr.config.html#module-ocracy.backends.paddleocr.config">ocracy.backends.paddleocr.config</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/ocrmac/config.html#module-ocracy.backends.ocrmac.config">ocracy.backends.ocrmac.config</a>
+        <li><a href="_autosummary/ocracy.backends.pix2tex_latex_ocr.html#module-ocracy.backends.pix2tex_latex_ocr">ocracy.backends.pix2tex_latex_ocr</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/paddleocr.html#module-ocracy.backends.paddleocr">ocracy.backends.paddleocr</a>
+        <li><a href="_autosummary/ocracy.backends.pix2tex_latex_ocr.adapter.html#module-ocracy.backends.pix2tex_latex_ocr.adapter">ocracy.backends.pix2tex_latex_ocr.adapter</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/paddleocr/adapter.html#module-ocracy.backends.paddleocr.adapter">ocracy.backends.paddleocr.adapter</a>
+        <li><a href="_autosummary/ocracy.backends.pix2tex_latex_ocr.config.html#module-ocracy.backends.pix2tex_latex_ocr.config">ocracy.backends.pix2tex_latex_ocr.config</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/paddleocr/config.html#module-ocracy.backends.paddleocr.config">ocracy.backends.paddleocr.config</a>
+        <li><a href="_autosummary/ocracy.backends.rapidocr.html#module-ocracy.backends.rapidocr">ocracy.backends.rapidocr</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/pix2tex_latex_ocr.html#module-ocracy.backends.pix2tex_latex_ocr">ocracy.backends.pix2tex_latex_ocr</a>
+        <li><a href="_autosummary/ocracy.backends.rapidocr.adapter.html#module-ocracy.backends.rapidocr.adapter">ocracy.backends.rapidocr.adapter</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/pix2tex_latex_ocr/adapter.html#module-ocracy.backends.pix2tex_latex_ocr.adapter">ocracy.backends.pix2tex_latex_ocr.adapter</a>
+        <li><a href="_autosummary/ocracy.backends.rapidocr.config.html#module-ocracy.backends.rapidocr.config">ocracy.backends.rapidocr.config</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/pix2tex_latex_ocr/config.html#module-ocracy.backends.pix2tex_latex_ocr.config">ocracy.backends.pix2tex_latex_ocr.config</a>
+        <li><a href="_autosummary/ocracy.backends.tesseract.html#module-ocracy.backends.tesseract">ocracy.backends.tesseract</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/rapidocr.html#module-ocracy.backends.rapidocr">ocracy.backends.rapidocr</a>
+        <li><a href="_autosummary/ocracy.backends.tesseract.adapter.html#module-ocracy.backends.tesseract.adapter">ocracy.backends.tesseract.adapter</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/rapidocr/adapter.html#module-ocracy.backends.rapidocr.adapter">ocracy.backends.rapidocr.adapter</a>
+        <li><a href="_autosummary/ocracy.backends.tesseract.config.html#module-ocracy.backends.tesseract.config">ocracy.backends.tesseract.config</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/rapidocr/config.html#module-ocracy.backends.rapidocr.config">ocracy.backends.rapidocr.config</a>
+        <li><a href="_autosummary/ocracy.backends.trocr_handwritten.html#module-ocracy.backends.trocr_handwritten">ocracy.backends.trocr_handwritten</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/tesseract.html#module-ocracy.backends.tesseract">ocracy.backends.tesseract</a>
+        <li><a href="_autosummary/ocracy.backends.trocr_handwritten.adapter.html#module-ocracy.backends.trocr_handwritten.adapter">ocracy.backends.trocr_handwritten.adapter</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/tesseract/adapter.html#module-ocracy.backends.tesseract.adapter">ocracy.backends.tesseract.adapter</a>
+        <li><a href="_autosummary/ocracy.backends.trocr_handwritten.config.html#module-ocracy.backends.trocr_handwritten.config">ocracy.backends.trocr_handwritten.config</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/tesseract/config.html#module-ocracy.backends.tesseract.config">ocracy.backends.tesseract.config</a>
+        <li><a href="_autosummary/ocracy.base.html#module-ocracy.base">ocracy.base</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/trocr_handwritten.html#module-ocracy.backends.trocr_handwritten">ocracy.backends.trocr_handwritten</a>
+        <li><a href="_autosummary/ocracy.credentials.html#module-ocracy.credentials">ocracy.credentials</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/trocr_handwritten/adapter.html#module-ocracy.backends.trocr_handwritten.adapter">ocracy.backends.trocr_handwritten.adapter</a>
+        <li><a href="_autosummary/ocracy.make_backend.html#module-ocracy.make_backend">ocracy.make_backend</a>
 </li>
-        <li><a href="module_docs/ocracy/backends/trocr_handwritten/config.html#module-ocracy.backends.trocr_handwritten.config">ocracy.backends.trocr_handwritten.config</a>
+        <li><a href="_autosummary/ocracy.registry.html#module-ocracy.registry">ocracy.registry</a>
 </li>
-        <li><a href="module_docs/ocracy/base.html#module-ocracy.base">ocracy.base</a>
+        <li><a href="_autosummary/ocracy.status.html#module-ocracy.status">ocracy.status</a>
 </li>
-        <li><a href="module_docs/ocracy/catalog.html#module-ocracy.catalog">ocracy.catalog</a>
+        <li><a href="_autosummary/ocracy.tools.html#module-ocracy.tools">ocracy.tools</a>
 </li>
-        <li><a href="module_docs/ocracy/credentials.html#module-ocracy.credentials">ocracy.credentials</a>
+        <li><a href="_autosummary/ocracy.translation.html#module-ocracy.translation">ocracy.translation</a>
 </li>
-        <li><a href="module_docs/ocracy/install.html#module-ocracy.install">ocracy.install</a>
-</li>
-        <li><a href="module_docs/ocracy/make_backend.html#module-ocracy.make_backend">ocracy.make_backend</a>
-</li>
-        <li><a href="module_docs/ocracy/registry.html#module-ocracy.registry">ocracy.registry</a>
-</li>
-        <li><a href="module_docs/ocracy/services.html#module-ocracy.services">ocracy.services</a>
-</li>
-        <li><a href="module_docs/ocracy/status.html#module-ocracy.status">ocracy.status</a>
-</li>
-        <li><a href="module_docs/ocracy/tools.html#module-ocracy.tools">ocracy.tools</a>
-</li>
-        <li><a href="module_docs/ocracy/translation.html#module-ocracy.translation">ocracy.translation</a>
-</li>
-        <li><a href="module_docs/ocracy/util.html#module-ocracy.util">ocracy.util</a>
+        <li><a href="_autosummary/ocracy.util.html#module-ocracy.util">ocracy.util</a>
 </li>
       </ul></li>
   </ul></td>
@@ -641,15 +1139,15 @@
 <h2 id="N">N</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ocracy.html#ocracy.names_with_sites">names_with_sites() (in module ocracy)</a>
+      <li><a href="_autosummary/ocracy.html#ocracy.names_with_sites">names_with_sites() (in module ocracy)</a>
 
       <ul>
-        <li><a href="module_docs/ocracy/status.html#ocracy.status.names_with_sites">(in module ocracy.status)</a>
+        <li><a href="_autosummary/ocracy.status.html#ocracy.status.names_with_sites">(in module ocracy.status)</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ocracy/make_backend.html#ocracy.make_backend.normalize_confidence">normalize_confidence() (in module ocracy.make_backend)</a>
+      <li><a href="_autosummary/ocracy.make_backend.html#ocracy.make_backend.normalize_confidence">normalize_confidence() (in module ocracy.make_backend)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -657,448 +1155,399 @@
 <h2 id="O">O</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ocracy.html#ocracy.ocr">ocr() (in module ocracy)</a>
+      <li><a href="_autosummary/ocracy.html#ocracy.ocr">ocr() (in module ocracy)</a>
 </li>
       <li>
     ocracy
 
       <ul>
-        <li><a href="module_docs/ocracy.html#module-ocracy">module</a>
-</li>
-      </ul></li>
-      <li>
-    ocracy.__main__
-
-      <ul>
-        <li><a href="module_docs/ocracy/__main__.html#module-ocracy.__main__">module</a>
+        <li><a href="_autosummary/ocracy.html#module-ocracy">module</a>
 </li>
       </ul></li>
       <li>
     ocracy.backends
 
       <ul>
-        <li><a href="module_docs/ocracy/backends.html#module-ocracy.backends">module</a>
-</li>
-      </ul></li>
-      <li>
-    ocracy.backends._template
-
-      <ul>
-        <li><a href="module_docs/ocracy/backends/_template.html#module-ocracy.backends._template">module</a>
-</li>
-      </ul></li>
-      <li>
-    ocracy.backends._template.adapter
-
-      <ul>
-        <li><a href="module_docs/ocracy/backends/_template/adapter.html#module-ocracy.backends._template.adapter">module</a>
-</li>
-      </ul></li>
-      <li>
-    ocracy.backends._template.config
-
-      <ul>
-        <li><a href="module_docs/ocracy/backends/_template/config.html#module-ocracy.backends._template.config">module</a>
+        <li><a href="_autosummary/ocracy.backends.html#module-ocracy.backends">module</a>
 </li>
       </ul></li>
       <li>
     ocracy.backends.aws_textract
 
       <ul>
-        <li><a href="module_docs/ocracy/backends/aws_textract.html#module-ocracy.backends.aws_textract">module</a>
+        <li><a href="_autosummary/ocracy.backends.aws_textract.html#module-ocracy.backends.aws_textract">module</a>
 </li>
       </ul></li>
       <li>
     ocracy.backends.aws_textract.adapter
 
       <ul>
-        <li><a href="module_docs/ocracy/backends/aws_textract/adapter.html#module-ocracy.backends.aws_textract.adapter">module</a>
+        <li><a href="_autosummary/ocracy.backends.aws_textract.adapter.html#module-ocracy.backends.aws_textract.adapter">module</a>
 </li>
       </ul></li>
       <li>
     ocracy.backends.aws_textract.config
 
       <ul>
-        <li><a href="module_docs/ocracy/backends/aws_textract/config.html#module-ocracy.backends.aws_textract.config">module</a>
+        <li><a href="_autosummary/ocracy.backends.aws_textract.config.html#module-ocracy.backends.aws_textract.config">module</a>
 </li>
       </ul></li>
       <li>
     ocracy.backends.azure_document_intelligence
 
       <ul>
-        <li><a href="module_docs/ocracy/backends/azure_document_intelligence.html#module-ocracy.backends.azure_document_intelligence">module</a>
+        <li><a href="_autosummary/ocracy.backends.azure_document_intelligence.html#module-ocracy.backends.azure_document_intelligence">module</a>
 </li>
       </ul></li>
       <li>
     ocracy.backends.azure_document_intelligence.adapter
 
       <ul>
-        <li><a href="module_docs/ocracy/backends/azure_document_intelligence/adapter.html#module-ocracy.backends.azure_document_intelligence.adapter">module</a>
+        <li><a href="_autosummary/ocracy.backends.azure_document_intelligence.adapter.html#module-ocracy.backends.azure_document_intelligence.adapter">module</a>
 </li>
       </ul></li>
       <li>
     ocracy.backends.azure_document_intelligence.config
 
       <ul>
-        <li><a href="module_docs/ocracy/backends/azure_document_intelligence/config.html#module-ocracy.backends.azure_document_intelligence.config">module</a>
+        <li><a href="_autosummary/ocracy.backends.azure_document_intelligence.config.html#module-ocracy.backends.azure_document_intelligence.config">module</a>
 </li>
       </ul></li>
       <li>
     ocracy.backends.claude_vision
 
       <ul>
-        <li><a href="module_docs/ocracy/backends/claude_vision.html#module-ocracy.backends.claude_vision">module</a>
+        <li><a href="_autosummary/ocracy.backends.claude_vision.html#module-ocracy.backends.claude_vision">module</a>
 </li>
       </ul></li>
       <li>
     ocracy.backends.claude_vision.adapter
 
       <ul>
-        <li><a href="module_docs/ocracy/backends/claude_vision/adapter.html#module-ocracy.backends.claude_vision.adapter">module</a>
+        <li><a href="_autosummary/ocracy.backends.claude_vision.adapter.html#module-ocracy.backends.claude_vision.adapter">module</a>
 </li>
       </ul></li>
       <li>
     ocracy.backends.claude_vision.config
 
       <ul>
-        <li><a href="module_docs/ocracy/backends/claude_vision/config.html#module-ocracy.backends.claude_vision.config">module</a>
+        <li><a href="_autosummary/ocracy.backends.claude_vision.config.html#module-ocracy.backends.claude_vision.config">module</a>
 </li>
       </ul></li>
       <li>
     ocracy.backends.easyocr
 
       <ul>
-        <li><a href="module_docs/ocracy/backends/easyocr.html#module-ocracy.backends.easyocr">module</a>
+        <li><a href="_autosummary/ocracy.backends.easyocr.html#module-ocracy.backends.easyocr">module</a>
 </li>
       </ul></li>
       <li>
     ocracy.backends.easyocr.adapter
 
       <ul>
-        <li><a href="module_docs/ocracy/backends/easyocr/adapter.html#module-ocracy.backends.easyocr.adapter">module</a>
+        <li><a href="_autosummary/ocracy.backends.easyocr.adapter.html#module-ocracy.backends.easyocr.adapter">module</a>
 </li>
       </ul></li>
       <li>
     ocracy.backends.easyocr.config
 
       <ul>
-        <li><a href="module_docs/ocracy/backends/easyocr/config.html#module-ocracy.backends.easyocr.config">module</a>
+        <li><a href="_autosummary/ocracy.backends.easyocr.config.html#module-ocracy.backends.easyocr.config">module</a>
 </li>
       </ul></li>
       <li>
     ocracy.backends.google_vision
 
       <ul>
-        <li><a href="module_docs/ocracy/backends/google_vision.html#module-ocracy.backends.google_vision">module</a>
+        <li><a href="_autosummary/ocracy.backends.google_vision.html#module-ocracy.backends.google_vision">module</a>
 </li>
       </ul></li>
       <li>
     ocracy.backends.google_vision.adapter
 
       <ul>
-        <li><a href="module_docs/ocracy/backends/google_vision/adapter.html#module-ocracy.backends.google_vision.adapter">module</a>
+        <li><a href="_autosummary/ocracy.backends.google_vision.adapter.html#module-ocracy.backends.google_vision.adapter">module</a>
 </li>
       </ul></li>
       <li>
     ocracy.backends.google_vision.config
 
       <ul>
-        <li><a href="module_docs/ocracy/backends/google_vision/config.html#module-ocracy.backends.google_vision.config">module</a>
+        <li><a href="_autosummary/ocracy.backends.google_vision.config.html#module-ocracy.backends.google_vision.config">module</a>
 </li>
       </ul></li>
       <li>
     ocracy.backends.gpt_4o_vision
 
       <ul>
-        <li><a href="module_docs/ocracy/backends/gpt_4o_vision.html#module-ocracy.backends.gpt_4o_vision">module</a>
+        <li><a href="_autosummary/ocracy.backends.gpt_4o_vision.html#module-ocracy.backends.gpt_4o_vision">module</a>
 </li>
       </ul></li>
       <li>
     ocracy.backends.gpt_4o_vision.adapter
 
       <ul>
-        <li><a href="module_docs/ocracy/backends/gpt_4o_vision/adapter.html#module-ocracy.backends.gpt_4o_vision.adapter">module</a>
+        <li><a href="_autosummary/ocracy.backends.gpt_4o_vision.adapter.html#module-ocracy.backends.gpt_4o_vision.adapter">module</a>
 </li>
       </ul></li>
       <li>
     ocracy.backends.gpt_4o_vision.config
 
       <ul>
-        <li><a href="module_docs/ocracy/backends/gpt_4o_vision/config.html#module-ocracy.backends.gpt_4o_vision.config">module</a>
+        <li><a href="_autosummary/ocracy.backends.gpt_4o_vision.config.html#module-ocracy.backends.gpt_4o_vision.config">module</a>
 </li>
       </ul></li>
       <li>
     ocracy.backends.mathpix
 
       <ul>
-        <li><a href="module_docs/ocracy/backends/mathpix.html#module-ocracy.backends.mathpix">module</a>
+        <li><a href="_autosummary/ocracy.backends.mathpix.html#module-ocracy.backends.mathpix">module</a>
 </li>
       </ul></li>
       <li>
     ocracy.backends.mathpix.adapter
 
       <ul>
-        <li><a href="module_docs/ocracy/backends/mathpix/adapter.html#module-ocracy.backends.mathpix.adapter">module</a>
+        <li><a href="_autosummary/ocracy.backends.mathpix.adapter.html#module-ocracy.backends.mathpix.adapter">module</a>
 </li>
       </ul></li>
       <li>
     ocracy.backends.mathpix.config
 
       <ul>
-        <li><a href="module_docs/ocracy/backends/mathpix/config.html#module-ocracy.backends.mathpix.config">module</a>
+        <li><a href="_autosummary/ocracy.backends.mathpix.config.html#module-ocracy.backends.mathpix.config">module</a>
 </li>
       </ul></li>
       <li>
     ocracy.backends.mistral_ocr
 
       <ul>
-        <li><a href="module_docs/ocracy/backends/mistral_ocr.html#module-ocracy.backends.mistral_ocr">module</a>
+        <li><a href="_autosummary/ocracy.backends.mistral_ocr.html#module-ocracy.backends.mistral_ocr">module</a>
 </li>
       </ul></li>
       <li>
     ocracy.backends.mistral_ocr.adapter
 
       <ul>
-        <li><a href="module_docs/ocracy/backends/mistral_ocr/adapter.html#module-ocracy.backends.mistral_ocr.adapter">module</a>
+        <li><a href="_autosummary/ocracy.backends.mistral_ocr.adapter.html#module-ocracy.backends.mistral_ocr.adapter">module</a>
 </li>
       </ul></li>
       <li>
     ocracy.backends.mistral_ocr.config
 
       <ul>
-        <li><a href="module_docs/ocracy/backends/mistral_ocr/config.html#module-ocracy.backends.mistral_ocr.config">module</a>
+        <li><a href="_autosummary/ocracy.backends.mistral_ocr.config.html#module-ocracy.backends.mistral_ocr.config">module</a>
 </li>
       </ul></li>
       <li>
     ocracy.backends.ocr_space
 
       <ul>
-        <li><a href="module_docs/ocracy/backends/ocr_space.html#module-ocracy.backends.ocr_space">module</a>
+        <li><a href="_autosummary/ocracy.backends.ocr_space.html#module-ocracy.backends.ocr_space">module</a>
+</li>
+      </ul></li>
+      <li>
+    ocracy.backends.ocr_space.adapter
+
+      <ul>
+        <li><a href="_autosummary/ocracy.backends.ocr_space.adapter.html#module-ocracy.backends.ocr_space.adapter">module</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li>
-    ocracy.backends.ocr_space.adapter
-
-      <ul>
-        <li><a href="module_docs/ocracy/backends/ocr_space/adapter.html#module-ocracy.backends.ocr_space.adapter">module</a>
-</li>
-      </ul></li>
-      <li>
     ocracy.backends.ocr_space.config
 
       <ul>
-        <li><a href="module_docs/ocracy/backends/ocr_space/config.html#module-ocracy.backends.ocr_space.config">module</a>
+        <li><a href="_autosummary/ocracy.backends.ocr_space.config.html#module-ocracy.backends.ocr_space.config">module</a>
 </li>
       </ul></li>
       <li>
     ocracy.backends.ocrmac
 
       <ul>
-        <li><a href="module_docs/ocracy/backends/ocrmac.html#module-ocracy.backends.ocrmac">module</a>
+        <li><a href="_autosummary/ocracy.backends.ocrmac.html#module-ocracy.backends.ocrmac">module</a>
 </li>
       </ul></li>
       <li>
     ocracy.backends.ocrmac.adapter
 
       <ul>
-        <li><a href="module_docs/ocracy/backends/ocrmac/adapter.html#module-ocracy.backends.ocrmac.adapter">module</a>
+        <li><a href="_autosummary/ocracy.backends.ocrmac.adapter.html#module-ocracy.backends.ocrmac.adapter">module</a>
 </li>
       </ul></li>
       <li>
     ocracy.backends.ocrmac.config
 
       <ul>
-        <li><a href="module_docs/ocracy/backends/ocrmac/config.html#module-ocracy.backends.ocrmac.config">module</a>
+        <li><a href="_autosummary/ocracy.backends.ocrmac.config.html#module-ocracy.backends.ocrmac.config">module</a>
 </li>
       </ul></li>
       <li>
     ocracy.backends.paddleocr
 
       <ul>
-        <li><a href="module_docs/ocracy/backends/paddleocr.html#module-ocracy.backends.paddleocr">module</a>
+        <li><a href="_autosummary/ocracy.backends.paddleocr.html#module-ocracy.backends.paddleocr">module</a>
 </li>
       </ul></li>
       <li>
     ocracy.backends.paddleocr.adapter
 
       <ul>
-        <li><a href="module_docs/ocracy/backends/paddleocr/adapter.html#module-ocracy.backends.paddleocr.adapter">module</a>
+        <li><a href="_autosummary/ocracy.backends.paddleocr.adapter.html#module-ocracy.backends.paddleocr.adapter">module</a>
 </li>
       </ul></li>
       <li>
     ocracy.backends.paddleocr.config
 
       <ul>
-        <li><a href="module_docs/ocracy/backends/paddleocr/config.html#module-ocracy.backends.paddleocr.config">module</a>
+        <li><a href="_autosummary/ocracy.backends.paddleocr.config.html#module-ocracy.backends.paddleocr.config">module</a>
 </li>
       </ul></li>
       <li>
     ocracy.backends.pix2tex_latex_ocr
 
       <ul>
-        <li><a href="module_docs/ocracy/backends/pix2tex_latex_ocr.html#module-ocracy.backends.pix2tex_latex_ocr">module</a>
+        <li><a href="_autosummary/ocracy.backends.pix2tex_latex_ocr.html#module-ocracy.backends.pix2tex_latex_ocr">module</a>
 </li>
       </ul></li>
       <li>
     ocracy.backends.pix2tex_latex_ocr.adapter
 
       <ul>
-        <li><a href="module_docs/ocracy/backends/pix2tex_latex_ocr/adapter.html#module-ocracy.backends.pix2tex_latex_ocr.adapter">module</a>
+        <li><a href="_autosummary/ocracy.backends.pix2tex_latex_ocr.adapter.html#module-ocracy.backends.pix2tex_latex_ocr.adapter">module</a>
 </li>
       </ul></li>
       <li>
     ocracy.backends.pix2tex_latex_ocr.config
 
       <ul>
-        <li><a href="module_docs/ocracy/backends/pix2tex_latex_ocr/config.html#module-ocracy.backends.pix2tex_latex_ocr.config">module</a>
+        <li><a href="_autosummary/ocracy.backends.pix2tex_latex_ocr.config.html#module-ocracy.backends.pix2tex_latex_ocr.config">module</a>
 </li>
       </ul></li>
       <li>
     ocracy.backends.rapidocr
 
       <ul>
-        <li><a href="module_docs/ocracy/backends/rapidocr.html#module-ocracy.backends.rapidocr">module</a>
+        <li><a href="_autosummary/ocracy.backends.rapidocr.html#module-ocracy.backends.rapidocr">module</a>
 </li>
       </ul></li>
       <li>
     ocracy.backends.rapidocr.adapter
 
       <ul>
-        <li><a href="module_docs/ocracy/backends/rapidocr/adapter.html#module-ocracy.backends.rapidocr.adapter">module</a>
+        <li><a href="_autosummary/ocracy.backends.rapidocr.adapter.html#module-ocracy.backends.rapidocr.adapter">module</a>
 </li>
       </ul></li>
       <li>
     ocracy.backends.rapidocr.config
 
       <ul>
-        <li><a href="module_docs/ocracy/backends/rapidocr/config.html#module-ocracy.backends.rapidocr.config">module</a>
+        <li><a href="_autosummary/ocracy.backends.rapidocr.config.html#module-ocracy.backends.rapidocr.config">module</a>
 </li>
       </ul></li>
       <li>
     ocracy.backends.tesseract
 
       <ul>
-        <li><a href="module_docs/ocracy/backends/tesseract.html#module-ocracy.backends.tesseract">module</a>
+        <li><a href="_autosummary/ocracy.backends.tesseract.html#module-ocracy.backends.tesseract">module</a>
 </li>
       </ul></li>
       <li>
     ocracy.backends.tesseract.adapter
 
       <ul>
-        <li><a href="module_docs/ocracy/backends/tesseract/adapter.html#module-ocracy.backends.tesseract.adapter">module</a>
+        <li><a href="_autosummary/ocracy.backends.tesseract.adapter.html#module-ocracy.backends.tesseract.adapter">module</a>
 </li>
       </ul></li>
       <li>
     ocracy.backends.tesseract.config
 
       <ul>
-        <li><a href="module_docs/ocracy/backends/tesseract/config.html#module-ocracy.backends.tesseract.config">module</a>
+        <li><a href="_autosummary/ocracy.backends.tesseract.config.html#module-ocracy.backends.tesseract.config">module</a>
 </li>
       </ul></li>
       <li>
     ocracy.backends.trocr_handwritten
 
       <ul>
-        <li><a href="module_docs/ocracy/backends/trocr_handwritten.html#module-ocracy.backends.trocr_handwritten">module</a>
+        <li><a href="_autosummary/ocracy.backends.trocr_handwritten.html#module-ocracy.backends.trocr_handwritten">module</a>
 </li>
       </ul></li>
       <li>
     ocracy.backends.trocr_handwritten.adapter
 
       <ul>
-        <li><a href="module_docs/ocracy/backends/trocr_handwritten/adapter.html#module-ocracy.backends.trocr_handwritten.adapter">module</a>
+        <li><a href="_autosummary/ocracy.backends.trocr_handwritten.adapter.html#module-ocracy.backends.trocr_handwritten.adapter">module</a>
 </li>
       </ul></li>
       <li>
     ocracy.backends.trocr_handwritten.config
 
       <ul>
-        <li><a href="module_docs/ocracy/backends/trocr_handwritten/config.html#module-ocracy.backends.trocr_handwritten.config">module</a>
+        <li><a href="_autosummary/ocracy.backends.trocr_handwritten.config.html#module-ocracy.backends.trocr_handwritten.config">module</a>
 </li>
       </ul></li>
       <li>
     ocracy.base
 
       <ul>
-        <li><a href="module_docs/ocracy/base.html#module-ocracy.base">module</a>
-</li>
-      </ul></li>
-      <li>
-    ocracy.catalog
-
-      <ul>
-        <li><a href="module_docs/ocracy/catalog.html#module-ocracy.catalog">module</a>
+        <li><a href="_autosummary/ocracy.base.html#module-ocracy.base">module</a>
 </li>
       </ul></li>
       <li>
     ocracy.credentials
 
       <ul>
-        <li><a href="module_docs/ocracy/credentials.html#module-ocracy.credentials">module</a>
-</li>
-      </ul></li>
-      <li>
-    ocracy.install
-
-      <ul>
-        <li><a href="module_docs/ocracy/install.html#module-ocracy.install">module</a>
+        <li><a href="_autosummary/ocracy.credentials.html#module-ocracy.credentials">module</a>
 </li>
       </ul></li>
       <li>
     ocracy.make_backend
 
       <ul>
-        <li><a href="module_docs/ocracy/make_backend.html#module-ocracy.make_backend">module</a>
+        <li><a href="_autosummary/ocracy.make_backend.html#module-ocracy.make_backend">module</a>
 </li>
       </ul></li>
       <li>
     ocracy.registry
 
       <ul>
-        <li><a href="module_docs/ocracy/registry.html#module-ocracy.registry">module</a>
-</li>
-      </ul></li>
-      <li>
-    ocracy.services
-
-      <ul>
-        <li><a href="module_docs/ocracy/services.html#module-ocracy.services">module</a>
+        <li><a href="_autosummary/ocracy.registry.html#module-ocracy.registry">module</a>
 </li>
       </ul></li>
       <li>
     ocracy.status
 
       <ul>
-        <li><a href="module_docs/ocracy/status.html#module-ocracy.status">module</a>
+        <li><a href="_autosummary/ocracy.status.html#module-ocracy.status">module</a>
 </li>
       </ul></li>
       <li>
     ocracy.tools
 
       <ul>
-        <li><a href="module_docs/ocracy/tools.html#module-ocracy.tools">module</a>
+        <li><a href="_autosummary/ocracy.tools.html#module-ocracy.tools">module</a>
 </li>
       </ul></li>
       <li>
     ocracy.translation
 
       <ul>
-        <li><a href="module_docs/ocracy/translation.html#module-ocracy.translation">module</a>
+        <li><a href="_autosummary/ocracy.translation.html#module-ocracy.translation">module</a>
 </li>
       </ul></li>
       <li>
     ocracy.util
 
       <ul>
-        <li><a href="module_docs/ocracy/util.html#module-ocracy.util">module</a>
+        <li><a href="_autosummary/ocracy.util.html#module-ocracy.util">module</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ocracy.html#ocracy.OcrResult">OcrResult (class in ocracy)</a>
+      <li><a href="_autosummary/ocracy.html#ocracy.OcrResult">OcrResult (class in ocracy)</a>
 
       <ul>
-        <li><a href="module_docs/ocracy/base.html#ocracy.base.OcrResult">(class in ocracy.base)</a>
+        <li><a href="_autosummary/ocracy.base.html#ocracy.base.OcrResult">(class in ocracy.base)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -1107,11 +1556,11 @@
 <h2 id="P">P</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ocracy/registry.html#ocracy.registry.PRIMARY_CAPABILITY">PRIMARY_CAPABILITY (in module ocracy.registry)</a>
+      <li><a href="_autosummary/ocracy.registry.html#ocracy.registry.PRIMARY_CAPABILITY">PRIMARY_CAPABILITY (in module ocracy.registry)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ocracy/credentials.html#ocracy.credentials.PROVIDER_ENV_VARS">PROVIDER_ENV_VARS (in module ocracy.credentials)</a>
+      <li><a href="_autosummary/ocracy.credentials.html#ocracy.credentials.PROVIDER_ENV_VARS">PROVIDER_ENV_VARS (in module ocracy.credentials)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -1119,37 +1568,27 @@
 <h2 id="R">R</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ocracy/tools.html#ocracy.tools.read">read() (in module ocracy.tools)</a>
+      <li><a href="_autosummary/ocracy.tools.html#ocracy.tools.read">read() (in module ocracy.tools)</a>
+</li>
+      <li><a href="_autosummary/ocracy.html#ocracy.read_text">read_text() (in module ocracy)</a>
+</li>
+      <li><a href="_autosummary/ocracy.html#ocracy.register_backend">register_backend() (in module ocracy)</a>
 
       <ul>
-        <li><a href="module_docs/ocracy/services.html#ocracy.services.ServiceHandle.read">(ocracy.services.ServiceHandle method)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ocracy.html#ocracy.read_text">read_text() (in module ocracy)</a>
-</li>
-      <li><a href="module_docs/ocracy.html#ocracy.register_backend">register_backend() (in module ocracy)</a>
-
-      <ul>
-        <li><a href="module_docs/ocracy/registry.html#ocracy.registry.register_backend">(in module ocracy.registry)</a>
+        <li><a href="_autosummary/ocracy.registry.html#ocracy.registry.register_backend">(in module ocracy.registry)</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ocracy.html#ocracy.Requirements">Requirements (class in ocracy)</a>
+      <li><a href="_autosummary/ocracy.html#ocracy.Requirements">Requirements (class in ocracy)</a>
+</li>
+      <li><a href="_autosummary/ocracy.html#ocracy.requirements">requirements() (in module ocracy)</a>
 
       <ul>
-        <li><a href="module_docs/ocracy/install.html#ocracy.install.Requirements">(class in ocracy.install)</a>
+        <li><a href="_autosummary/ocracy.tools.html#ocracy.tools.requirements">(in module ocracy.tools)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ocracy.html#ocracy.requirements">requirements() (in module ocracy)</a>
-
-      <ul>
-        <li><a href="module_docs/ocracy/install.html#ocracy.install.requirements">(in module ocracy.install)</a>
-</li>
-        <li><a href="module_docs/ocracy/tools.html#ocracy.tools.requirements">(in module ocracy.tools)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ocracy/credentials.html#ocracy.credentials.resolve_credential">resolve_credential() (in module ocracy.credentials)</a>
+      <li><a href="_autosummary/ocracy.credentials.html#ocracy.credentials.resolve_credential">resolve_credential() (in module ocracy.credentials)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -1157,69 +1596,55 @@
 <h2 id="S">S</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ocracy/tools.html#ocracy.tools.scaffold">scaffold() (in module ocracy.tools)</a>
+      <li><a href="_autosummary/ocracy.tools.html#ocracy.tools.scaffold">scaffold() (in module ocracy.tools)</a>
 </li>
-      <li><a href="module_docs/ocracy.html#ocracy.scaffold_backend">scaffold_backend() (in module ocracy)</a>
+      <li><a href="_autosummary/ocracy.html#ocracy.scaffold_backend">scaffold_backend() (in module ocracy)</a>
 
       <ul>
-        <li><a href="module_docs/ocracy/make_backend.html#ocracy.make_backend.scaffold_backend">(in module ocracy.make_backend)</a>
+        <li><a href="_autosummary/ocracy.make_backend.html#ocracy.make_backend.scaffold_backend">(in module ocracy.make_backend)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ocracy.html#ocracy.ServiceCollection">ServiceCollection (class in ocracy)</a>
-
-      <ul>
-        <li><a href="module_docs/ocracy/services.html#ocracy.services.ServiceCollection">(class in ocracy.services)</a>
-</li>
-      </ul></li>
-      <li><a href="module_docs/ocracy/services.html#ocracy.services.ServiceHandle">ServiceHandle (class in ocracy.services)</a>
+      <li><a href="_autosummary/ocracy.html#ocracy.ServiceCollection">ServiceCollection (class in ocracy)</a>
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ocracy.html#ocracy.services">services (in module ocracy)</a>
+      <li><a href="_autosummary/ocracy.html#ocracy.services">services (in module ocracy)</a>
 </li>
-      <li><a href="module_docs/ocracy/tools.html#ocracy.tools.status">status() (in module ocracy.tools)</a>
+      <li><a href="_autosummary/ocracy.tools.html#ocracy.tools.status">status() (in module ocracy.tools)</a>
 </li>
-      <li><a href="module_docs/ocracy.html#ocracy.status_table">status_table() (in module ocracy)</a>
+      <li><a href="_autosummary/ocracy.html#ocracy.status_table">status_table() (in module ocracy)</a>
 
       <ul>
-        <li><a href="module_docs/ocracy/status.html#ocracy.status.status_table">(in module ocracy.status)</a>
+        <li><a href="_autosummary/ocracy.status.html#ocracy.status.status_table">(in module ocracy.status)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ocracy.html#ocracy.Catalog.supports_language">supports_language() (ocracy.Catalog method)</a>
-
-      <ul>
-        <li><a href="module_docs/ocracy/catalog.html#ocracy.catalog.Catalog.supports_language">(ocracy.catalog.Catalog method)</a>
+      <li><a href="_autosummary/ocracy.html#ocracy.Catalog.supports_language">supports_language() (ocracy.Catalog method)</a>
 </li>
-      </ul></li>
   </ul></td>
 </tr></table>
 
 <h2 id="T">T</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ocracy/base.html#ocracy.base.TextBlock.text">text (ocracy.base.TextBlock attribute)</a>
+      <li><a href="_autosummary/ocracy.base.html#ocracy.base.TextBlock.text">text (ocracy.base.TextBlock attribute)</a>
 
       <ul>
-        <li><a href="module_docs/ocracy.html#ocracy.TextBlock.text">(ocracy.TextBlock attribute)</a>
+        <li><a href="_autosummary/ocracy.html#ocracy.TextBlock.text">(ocracy.TextBlock attribute)</a>
 </li>
       </ul></li>
-      <li><a href="module_docs/ocracy.html#ocracy.TextBlock">TextBlock (class in ocracy)</a>
+      <li><a href="_autosummary/ocracy.html#ocracy.TextBlock">TextBlock (class in ocracy)</a>
 
       <ul>
-        <li><a href="module_docs/ocracy/base.html#ocracy.base.TextBlock">(class in ocracy.base)</a>
+        <li><a href="_autosummary/ocracy.base.html#ocracy.base.TextBlock">(class in ocracy.base)</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ocracy.html#ocracy.Catalog.to_dataframe">to_dataframe() (ocracy.Catalog method)</a>
-
-      <ul>
-        <li><a href="module_docs/ocracy/catalog.html#ocracy.catalog.Catalog.to_dataframe">(ocracy.catalog.Catalog method)</a>
+      <li><a href="_autosummary/ocracy.html#ocracy.Catalog.to_dataframe">to_dataframe() (ocracy.Catalog method)</a>
 </li>
-      </ul></li>
-      <li><a href="module_docs/ocracy/util.html#ocracy.util.to_numpy">to_numpy() (in module ocracy.util)</a>
+      <li><a href="_autosummary/ocracy.util.html#ocracy.util.to_numpy">to_numpy() (in module ocracy.util)</a>
 </li>
-      <li><a href="module_docs/ocracy/util.html#ocracy.util.to_pil">to_pil() (in module ocracy.util)</a>
+      <li><a href="_autosummary/ocracy.util.html#ocracy.util.to_pil">to_pil() (in module ocracy.util)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -1227,17 +1652,17 @@
 <h2 id="V">V</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ocracy/tools.html#ocracy.tools.validate">validate() (in module ocracy.tools)</a>
+      <li><a href="_autosummary/ocracy.tools.html#ocracy.tools.validate">validate() (in module ocracy.tools)</a>
 </li>
-      <li><a href="module_docs/ocracy.html#ocracy.validate_adapter">validate_adapter() (in module ocracy)</a>
+      <li><a href="_autosummary/ocracy.html#ocracy.validate_adapter">validate_adapter() (in module ocracy)</a>
 
       <ul>
-        <li><a href="module_docs/ocracy/make_backend.html#ocracy.make_backend.validate_adapter">(in module ocracy.make_backend)</a>
+        <li><a href="_autosummary/ocracy.make_backend.html#ocracy.make_backend.validate_adapter">(in module ocracy.make_backend)</a>
 </li>
       </ul></li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ocracy/translation.html#ocracy.translation.validate_param">validate_param() (in module ocracy.translation)</a>
+      <li><a href="_autosummary/ocracy.translation.html#ocracy.translation.validate_param">validate_param() (in module ocracy.translation)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -1245,10 +1670,10 @@
 <h2 id="X">X</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="module_docs/ocracy/base.html#ocracy.base.BBox.xywh">xywh (ocracy.base.BBox property)</a>
+      <li><a href="_autosummary/ocracy.base.html#ocracy.base.BBox.xywh">xywh (ocracy.base.BBox property)</a>
 
       <ul>
-        <li><a href="module_docs/ocracy.html#ocracy.BBox.xywh">(ocracy.BBox property)</a>
+        <li><a href="_autosummary/ocracy.html#ocracy.BBox.xywh">(ocracy.BBox property)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -1256,31 +1681,53 @@
 
 
 
-           </div>
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
           </div>
-          <footer>
-
-  <hr/>
-
-  <div role="contentinfo">
-    <p></p>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
   </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=cb8930eaaf36d9849b67"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=cb8930eaaf36d9849b67"></script>
 
-  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
-    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
-    provided by <a href="https://readthedocs.org">Read the Docs</a>.
-   
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.21.0.
+</p></div>
+      
+    </div>
+  
+</div>
 
-</footer>
-        </div>
-      </div>
-    </section>
-  </div>
-  <script>
-      jQuery(function () {
-          SphinxRtdTheme.Navigation.enable(true);
-      });
-  </script> 
-
-</body>
+  </footer>
+  </body>
 </html>

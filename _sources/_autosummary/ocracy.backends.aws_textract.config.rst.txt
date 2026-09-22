@@ -1,0 +1,6 @@
+ocracy.backends.aws\_textract.config
+====================================
+
+.. automodule:: ocracy.backends.aws_textract.config
+
+   

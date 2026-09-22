@@ -1,0 +1,12 @@
+ocracy.backends.claude\_vision.adapter
+======================================
+
+.. automodule:: ocracy.backends.claude_vision.adapter
+
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Adapter
+   

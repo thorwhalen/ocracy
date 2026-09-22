@@ -1,4 +1,0 @@
-ocracy.backends.mathpix.adapter
-===============================
-.. automodule:: ocracy.backends.mathpix.adapter
-   :members:
