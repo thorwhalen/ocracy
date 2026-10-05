@@ -274,13 +274,15 @@ from ocracy.kit import make_translator, resolve_credential, using_credentials
 
 translate = make_translator(
     {"languages": {"native_name": "lang", "coerce": "+".join}, "dpi": None},
-    backend="tess", on_unsupported="note", always_raise=("seed",),
+    backend="tess",
+    on_unsupported="note",
+    always_raise=("seed",),
 )
 t = translate({"languages": ["eng", "fra"], "dpi": 300})
 # t.kwargs == {"lang": "eng+fra"}; t.notes == ["dpi=300 is not supported by tess; dropped"]
 
-key = resolve_credential("acme", env_var="ACME_API_KEY")   # explicit -> bound -> env
-with using_credentials(acme=request_key):                  # per-request BYO key
+key = resolve_credential("acme", env_var="ACME_API_KEY")  # explicit -> bound -> env
+with using_credentials(acme=request_key):  # per-request BYO key
     ...
 ```
 
