@@ -9,9 +9,10 @@ the first non-empty value:
    threading a key through every call;
 3. the environment: ``env_var`` first, then the provider's row of
    ``provider_env_vars``, in order, without duplicates (with ``dotenv=True`` a
-   project ``.env``, found from the current directory, is loaded first -- once per
-   directory -- and never overrides a variable that is already set; like any
-   ``.env`` loader it writes to ``os.environ``, so every later reader sees it);
+   project ``.env``, found from the current directory, is loaded on a miss and the
+   environment checked again; it never overrides a variable that is already set,
+   and like any ``.env`` loader it writes to ``os.environ``, so every later reader
+   sees it);
 4. ``store``: any mapping keyed by env-var name (a ``config2py`` store, a dict);
    only a missing key moves on, any other error propagates;
 5. with ``prompt_if_missing=True`` and an interactive terminal, ``getpass``; the
@@ -72,9 +73,6 @@ EnvVars = Union[str, Sequence[str], None]
 _BOUND: "ContextVar[Optional[Mapping[str, str]]]" = ContextVar(
     "ocracy_kit_bound_credentials", default=None
 )
-
-#: The directories a ``.env`` search already ran from (see ``dotenv=``).
-_dotenv_loaded_from: set = set()
 
 
 class MissingCredentialError(RuntimeError):
@@ -197,13 +195,13 @@ def resolve_credential(
         provider_env_vars: The package's provider -> env var(s) table.
         guidance: The package's provider -> ``{note, get_key_url}`` table.
         store: A mapping keyed by env-var name, read after the environment.
-        dotenv: Load a project ``.env`` (searched from the current directory, once
-            per directory), never overriding a variable already set.
+        dotenv: On an environment miss, load a project ``.env`` (searched from the
+            current directory, never overriding) and look again.
         prompt_if_missing: Ask with ``getpass`` when interactive (last resort).
         required: Raise when nothing resolves; else return ``None``.
-        error: The exception to raise, called with the message. A subclass of
-            :class:`MissingCredentialError` also gets ``provider``, ``env_vars`` and
-            ``get_key_url`` as keyword arguments.
+        error: The exception to raise, called with the message. When it builds a
+            :class:`MissingCredentialError` (or subclass), its ``provider``,
+            ``env_vars`` and ``get_key_url`` attributes are filled in.
         hint: An extra sentence for the error message (why this key is needed).
 
     Returns:
@@ -218,12 +216,11 @@ def resolve_credential(
     names = env_var_names(
         provider, env_var=env_var, provider_env_vars=provider_env_vars
     )
-    if dotenv:
-        _load_dotenv_once()
-    for name in names:
-        value = os.environ.get(name)
-        if value:
-            return value
+    value = _first_env(names)
+    if not value and dotenv and _load_dotenv():
+        value = _first_env(names)
+    if value:
+        return value
     if store is not None:
         for name in names:
             value = _store_get(store, name)
@@ -234,12 +231,16 @@ def resolve_credential(
         if value:
             return value
     if required:
-        message = _missing_message(provider, names, guidance, hint)
-        if isinstance(error, type) and issubclass(error, MissingCredentialError):
-            url = ((guidance or {}).get(provider) or {}).get("get_key_url")
-            raise error(message, provider=provider, env_vars=names, get_key_url=url)
-        raise error(message)
+        exc = error(_missing_message(provider, names, guidance, hint))
+        if isinstance(exc, MissingCredentialError):
+            exc.provider, exc.env_vars = provider, tuple(names)
+            exc.get_key_url = ((guidance or {}).get(provider) or {}).get("get_key_url")
+        raise exc
     return None
+
+
+def _first_env(names: list) -> Optional[str]:
+    return next((os.environ[n] for n in names if os.environ.get(n)), None)
 
 
 def _as_list(env_var: EnvVars) -> list:
@@ -256,19 +257,18 @@ def _store_get(store: Mapping[str, str], name: str) -> Optional[str]:
     return value.strip() if isinstance(value, str) else value
 
 
-def _load_dotenv_once() -> None:
-    """Load the ``.env`` found from the cwd, once per cwd, if dotenv is installed."""
-    cwd = os.getcwd()
-    if cwd in _dotenv_loaded_from:
-        return
+def _load_dotenv() -> bool:
+    """Load the ``.env`` found from the cwd, never overriding; ``False`` if none.
+
+    Runs on every environment miss (a miss is rare and about to raise), so a key
+    added to ``.env`` mid-session is found without a restart.
+    """
     try:
         from dotenv import find_dotenv, load_dotenv  # type: ignore
     except ImportError:
-        return
-    _dotenv_loaded_from.add(cwd)
+        return False
     path = find_dotenv(usecwd=True)
-    if path:
-        load_dotenv(path, override=False)
+    return bool(path) and bool(load_dotenv(path, override=False))
 
 
 def _prompt(names: list, provider: Optional[str], store) -> Optional[str]:

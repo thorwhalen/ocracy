@@ -77,6 +77,39 @@ def test_secret_values_never_reach_notes_warnings_or_errors():
     assert "SECRET" not in str(ei.value)
 
 
+def test_secrets_nested_shaped_or_in_range_errors_are_redacted():
+    translate = make_translator({}, on_unsupported="note")
+    t = translate(
+        {
+            "headers": {"Authorization": "Bearer sk-SECRET", "Accept": "json"},
+            "authorization": "Basic SECRET",
+            "options": {"retries": 2, "auth": {"token": "SECRET"}},
+            "bearer_like": "Bearer SECRET",
+        }
+    )
+    joined = " ".join(t.notes)
+    assert "SECRET" not in joined
+    assert "'Accept': 'json'" in joined and "'retries': 2" in joined
+    with pytest.raises(ValueError) as ei:
+        make_translator({"token": {"choices": ["a"]}})({"token": "sk-SECRET"})
+    assert "SECRET" not in str(ei.value)
+    with pytest.raises(ValueError) as ei:
+        check_range("db_password", "pw-SECRET", {"max": "a"})
+    assert "SECRET" not in str(ei.value)
+
+
+def test_only_names_ending_in_a_secret_word_are_redacted():
+    t = make_translator({}, on_unsupported="note")(
+        {"key_frames": 12, "token_budget": 5, "access_token": "tk", "key": "k"}
+    )
+    assert [n.split(" ")[0] for n in t.notes] == [
+        "key_frames=12",
+        "token_budget=5",
+        "access_token=<redacted>",
+        "key=<redacted>",
+    ]
+
+
 def test_long_and_unrepresentable_values_are_shortened():
     class NoRepr:
         def __repr__(self):
@@ -310,11 +343,22 @@ def test_consumer_ocracy_credentials_reach_the_adapter_and_never_a_note():
         def _read(self, image, **native):
             return OcrResult.from_text(native.pop("api_key"), backend="fake")
 
-    a = Adapter({"id": "fake", "param_map": {"languages": {"native_name": "lang"}}})
+    pm = {"languages": {"native_name": "lang"}}
+    remote = Adapter({"id": "fake", "is_remote": True, "param_map": pm})
     with warnings.catch_warnings():
         warnings.simplefilter("error")
-        result = a.read(b"img", api_key="sk-SECRET")
+        result = remote.read(b"img", api_key="sk-SECRET")
     assert result.text == "sk-SECRET" and "notes" not in result.meta
+
+    class Local(BaseOcrAdapter):  # forwards **extra to its engine, like easyocr
+        def _read(self, image, **native):
+            assert "api_key" not in native
+            return OcrResult.from_text("ok", backend="fake")
+
+    local = Local({"id": "fake", "is_local": True, "param_map": pm})
+    with pytest.warns(UserWarning, match="api_key=<redacted>"):
+        result = local.read(b"img", api_key="sk-SECRET")
+    assert "SECRET" not in " ".join(result.meta["notes"])
 
 
 # ---------------------------------------------------------------------------
@@ -488,7 +532,7 @@ def test_consumer_illustration_shapes():
 def no_acme_env(monkeypatch):
     for var in ("ACME_KEY", "ACME_KEY_2"):
         monkeypatch.delenv(var, raising=False)
-    monkeypatch.setattr(kit_credentials, "_load_dotenv_once", lambda: None)  # no .env
+    monkeypatch.setattr(kit_credentials, "_load_dotenv", lambda: False)  # no .env
 
 
 def test_chain_order_explicit_bound_env_store(monkeypatch, no_acme_env):
@@ -571,24 +615,17 @@ def test_prompt_persists_to_a_mutable_store_else_environ(monkeypatch, no_acme_en
     assert os.environ["ACME_KEY"] == "typed"
 
 
-def test_dotenv_is_loaded_from_the_cwd_once_per_directory(monkeypatch, tmp_path):
+def test_dotenv_is_searched_from_the_cwd_on_every_miss(monkeypatch, tmp_path):
     pytest.importorskip("dotenv")
     monkeypatch.delenv("ACME_KEY", raising=False)
-    monkeypatch.setattr(kit_credentials, "_dotenv_loaded_from", set())
-    empty, project = tmp_path / "empty", tmp_path / "project"
-    empty.mkdir()
+    project = tmp_path / "project"
     project.mkdir()
-    (project / ".env").write_text("ACME_KEY=from-dotenv\n")
-    monkeypatch.chdir(empty)  # a miss here must not stop the search elsewhere
-    assert (
-        resolve_credential("acme", env_var="ACME_KEY", dotenv=True, required=False)
-        is None
-    )
     monkeypatch.chdir(project)
+    kw = dict(env_var="ACME_KEY", dotenv=True)
+    assert resolve_credential("acme", required=False, **kw) is None
+    (project / ".env").write_text("ACME_KEY=from-dotenv\n")  # added mid-session
     try:
-        assert (
-            resolve_credential("acme", env_var="ACME_KEY", dotenv=True) == "from-dotenv"
-        )
+        assert resolve_credential("acme", **kw) == "from-dotenv"
     finally:
         os.environ.pop("ACME_KEY", None)
 
@@ -604,6 +641,16 @@ def test_credential_help_and_lines():
     ]
     assert credential_lines("", "acme", guidance=g) == []
     assert credential_lines(["A_KEY", "B_KEY"], "acme") == ["export A_KEY / B_KEY"]
+
+
+def test_a_narrow_error_subclass_still_works(no_acme_env):
+    class Narrow(MissingCredentialError):
+        def __init__(self, msg):
+            super().__init__(msg)
+
+    with pytest.raises(Narrow) as ei:
+        resolve_credential("acme", env_var="ACME_KEY", error=Narrow)
+    assert ei.value.env_vars == ("ACME_KEY",)
 
 
 def test_missing_credential_error_carries_structure(no_acme_env):

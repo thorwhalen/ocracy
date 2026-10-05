@@ -41,10 +41,11 @@ The policy for a parameter the backend cannot honour is one of :data:`POLICIES`:
 ``'note'``: kept for the copies that used it, and still never silent -- the drop is
 always in :attr:`Translation.notes` and :attr:`Translation.dropped`).
 
-Notes and warnings show the dropped value, shortened, so a reader knows what was
-lost -- except for a parameter whose name looks like a secret (``api_key``,
-``token``, ``password``...), whose value is never shown: notes end up in results
-that get stored and logged.
+Notes, warnings and errors show the dropped value, shortened, so a reader knows what
+was lost -- but never a secret: a parameter (or a mapping key, at any depth) named
+like one (``api_key``, ``access_token``, ``Authorization``...) or a string shaped like
+one (``Bearer ...``) is shown as ``<redacted>``, because notes end up in results that
+get stored and logged.
 
 Several choices are declared once, when the translator is made, and each was a real
 divergence between the fleet's copies (see ``docs/adr/0001-facade-kit.md``):
@@ -81,6 +82,7 @@ __all__ = [
     "make_translator",
     "check_range",
     "SECRET_NAME",
+    "SECRET_VALUE",
 ]
 
 #: How a parameter the backend cannot honour is handled.
@@ -89,11 +91,17 @@ POLICIES = ("raise", "warn", "note", "ignore")
 #: How a value outside a spec's ``choices`` / ``min`` / ``max`` is handled.
 OUT_OF_RANGE = ("raise", "clamp", "drop")
 
-#: Parameter names whose values never appear in a note, a warning or an error.
+#: Parameter names whose values never appear in a note, a warning or an error: the
+#: secret word ends the name (``api_key``, ``access_token``, ``Authorization``), so
+#: ``key_frames`` or ``token_budget`` keep their values. Applied to mapping keys at
+#: any depth too (a ``headers`` dict).
 SECRET_NAME = re.compile(
-    r"(^|_)(api_?key|app_?key|key|token|secret|password|passwd|credentials?|auth)($|_)",
+    r"(^|_)(api_?key|app_?key|key|token|secret|password|passwd|credentials?|auth"
+    r"|authorization|cookie)$",
     re.IGNORECASE,
 )
+#: String values that are credentials whatever the parameter is called.
+SECRET_VALUE = re.compile(r"^\s*(bearer|basic|token)\s+\S", re.IGNORECASE)
 
 _DEFAULT_WHERE = "this backend"
 _FRAMES_BELOW_CALLER = 2  # _drop -> translate -> (the code calling translate)
@@ -188,14 +196,38 @@ def _check_policy(policy: Optional[str], *, allow_none: bool = False) -> None:
         raise ValueError(f"on_unsupported must be one of {POLICIES}, got {policy!r}")
 
 
-def _shown(name: str, value: Any) -> str:
-    """``name=<short repr>``, or ``name=<redacted>`` for a secret-looking name."""
-    if SECRET_NAME.search(name):
-        return f"{name}=<redacted>"
+_REDACTED = "<redacted>"
+
+
+def _scrub(name: str, value: Any, depth: int = 0) -> Any:
+    """``value`` with every secret replaced: by name, by mapping key, or by shape."""
+    if SECRET_NAME.search(str(name)):
+        return _REDACTED
+    if isinstance(value, str):
+        return _REDACTED if SECRET_VALUE.match(value) else value
+    if depth > 3:  # deep enough for headers / options dicts; reprlib truncates anyway
+        return value
+    if isinstance(value, Mapping):
+        return {k: _scrub(k, v, depth + 1) for k, v in value.items()}
+    if isinstance(value, (list, tuple)):
+        return type(value)(_scrub("", v, depth + 1) for v in value)
+    return value
+
+
+def _value_text(name: str, value: Any, *, as_str: bool = False) -> str:
+    """A short, secret-free rendering of ``value`` (``str()`` if ``as_str``)."""
+    scrubbed = _scrub(name, value)
+    if scrubbed is _REDACTED:
+        return _REDACTED
     try:
-        return f"{name}={_VALUE_REPR.repr(value)}"
+        return str(scrubbed) if as_str else _VALUE_REPR.repr(scrubbed)
     except Exception:  # noqa: BLE001 - a value whose repr fails is still reportable
-        return f"{name}=<{type(value).__name__}>"
+        return f"<{type(value).__name__}>"
+
+
+def _shown(name: str, value: Any) -> str:
+    """``name=<short repr>``, with secrets replaced by ``<redacted>``."""
+    return f"{name}={_value_text(name, value)}"
 
 
 def check_range(name: str, value: Any, spec: Mapping) -> Any:
@@ -226,16 +258,18 @@ def _range_problem(value: Any, spec: _Spec) -> Optional[str]:
 
 def _raise_if_out_of_range(name: str, value: Any, spec: _Spec) -> None:
     problem = _range_problem(value, spec)
+    if problem is None:
+        return
+    shown = _value_text(name, value, as_str=problem != "choices")
     if problem == "min":
         raise ValueError(
-            f"Parameter {name!r} value {value} is below minimum {spec.min}"
+            f"Parameter {name!r} value {shown} is below minimum {spec.min}"
         )
     if problem == "max":
         raise ValueError(
-            f"Parameter {name!r} value {value} is above maximum {spec.max}"
+            f"Parameter {name!r} value {shown} is above maximum {spec.max}"
         )
-    if problem == "choices":
-        raise ValueError(f"Parameter {name!r} value {value!r} not in {spec.choices}")
+    raise ValueError(f"Parameter {name!r} value {shown} not in {spec.choices}")
 
 
 def make_translator(

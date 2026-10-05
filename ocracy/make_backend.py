@@ -60,9 +60,9 @@ class BaseOcrAdapter:
     removes the boilerplate.
     """
 
-    #: Keyword arguments an adapter reads itself (credentials), passed through
-    #: untranslated: no ``param_map`` declares them, and they must never be dropped
-    #: (or shown in a note).
+    #: Keyword arguments a *remote* adapter reads itself (credentials), passed
+    #: through untranslated: no ``param_map`` declares them, and they must never be
+    #: dropped. On a local backend they are dropped with a (redacted) note.
     ADAPTER_KWARGS = ("api_key", "app_key", "app_id")
 
     def __init__(self, config: dict):
@@ -71,7 +71,11 @@ class BaseOcrAdapter:
         param_map = config.get("param_map")
         self._translator = (
             make_translator(
-                param_map, backend=self.backend_id, passthrough=self.ADAPTER_KWARGS
+                param_map,
+                backend=self.backend_id,
+                # Only a remote adapter reads credentials; a local engine forwarding
+                # **extra to its library would choke on them (easyocr's readtext).
+                passthrough=self.ADAPTER_KWARGS if config.get("is_remote") else (),
             )
             if param_map
             else None
