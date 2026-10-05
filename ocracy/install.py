@@ -22,9 +22,9 @@ The companion ``ocracy-install-backend`` skill walks an agent through using thes
 
 from __future__ import annotations
 
-import sys
-from dataclasses import dataclass, field
-from typing import Dict, List, Optional
+from typing import Dict, List
+
+from ocracy.kit.install import Requirements, build_requirements, run_install
 
 __all__ = [
     "Requirements",
@@ -35,16 +35,7 @@ __all__ = [
     "install",
 ]
 
-
-def _platform() -> str:
-    p = sys.platform
-    if p.startswith("darwin"):
-        return "darwin"
-    if p.startswith("linux"):
-        return "linux"
-    if p.startswith("win"):
-        return "windows"
-    return p
+_PACKAGE = "ocracy"
 
 
 # ---------------------------------------------------------------------------
@@ -136,75 +127,8 @@ _RECIPES: Dict[str, dict] = {
 }
 
 
-@dataclass
-class Requirements:
-    """What a backend needs to run — structured for an agent to act on."""
-
-    backend_id: str
-    implemented: bool
-    available: bool  # importable / usable right now
-    is_local: bool
-    is_remote: bool
-    pip_command: str  # the line to run
-    extra: Optional[str] = None
-    system: List[str] = field(default_factory=list)  # OS-specific shell commands
-    system_note: Optional[str] = None
-    gpu: Optional[str] = None
-    weights: Optional[str] = None
-    heavy: bool = False
-    alternative: Optional[str] = None
-    credentials: List[str] = field(default_factory=list)  # "ENV_VAR — where to get it"
-    notes: List[str] = field(default_factory=list)
-
-    def instructions(self) -> str:
-        """An agent-/human-readable, copy-pasteable install plan."""
-        if self.available:
-            return f"'{self.backend_id}' is already installed and usable. ✓"
-        lines = [f"To use the '{self.backend_id}' backend:"]
-        n = 1
-        if self.system:
-            lines.append(f"  {n}. System dependency:")
-            for cmd in self.system:
-                lines.append(f"       {cmd}")
-            if self.system_note:
-                lines.append(f"     ({self.system_note})")
-            n += 1
-        lines.append(f"  {n}. {self.pip_command}")
-        if self.gpu:
-            lines.append(f"       GPU: {self.gpu}")
-        n += 1
-        if self.credentials:
-            lines.append(f"  {n}. Set credential(s):")
-            for c in self.credentials:
-                lines.append(f"       {c}")
-            n += 1
-        if self.weights:
-            lines.append(f"  • {self.weights}")
-        if self.heavy:
-            lines.append(
-                "  • Note: large download (deep-learning framework + weights)."
-            )
-        if self.alternative:
-            lines.append(f"  • Lighter alternative: {self.alternative}.")
-        for note in self.notes:
-            lines.append(f"  • {note}")
-        lines.append(
-            f"Verify:   python -c \"import ocracy; print(ocracy.check('{self.backend_id}'))\""
-        )
-        return "\n".join(lines)
-
-    def __str__(self) -> str:
-        return self.instructions()
-
-
-def _credential_lines(env_var_field: str, provider: str) -> List[str]:
-    if not env_var_field:
-        return []
-    from ocracy.credentials import CREDENTIAL_GUIDANCE
-
-    g = CREDENTIAL_GUIDANCE.get(provider)
-    link = f"  (get a key: {g['get_key_url']})" if g else ""
-    return [f"export {env_var_field}{link}"]
+def _verify_code(backend_id: str) -> str:
+    return f"import ocracy; print(ocracy.check('{backend_id}'))"
 
 
 def requirements(backend_id: str, *, gpu: bool = False) -> Requirements:
@@ -212,58 +136,41 @@ def requirements(backend_id: str, *, gpu: bool = False) -> Requirements:
 
     Works for both implemented backends (uses the ``ocracy[extra]`` install and
     the recipe) and ledger-only backends (falls back to the ledger's
-    ``python_install`` string). Pass ``gpu=True`` to surface GPU wheel guidance.
+    ``python_install`` string). A recipe's GPU guidance is always included;
+    ``gpu`` is accepted for compatibility and changes nothing.
     """
     from ocracy import registry
     from ocracy.catalog import catalog
+    from ocracy.credentials import CREDENTIAL_GUIDANCE
+    from ocracy.kit.credentials import credential_lines
 
     implemented = backend_id in set(registry.list_backends())
-    recipe = _RECIPES.get(backend_id, {})
     record = catalog[backend_id].to_dict() if backend_id in catalog else {}
     cfg = registry.get_config(backend_id) if implemented else {}
 
     is_local = bool(cfg.get("is_local", record.get("is_local", False)))
     is_remote = bool(cfg.get("is_remote", record.get("is_remote", False)))
-    available = check(backend_id) if implemented else False
-
-    # pip command: prefer the ocracy extra for implemented backends, else the
-    # ledger's python_install string.
-    extra = recipe.get("extra") or (backend_id if implemented else None)
-    if implemented and extra:
-        pip_command = f'pip install "ocracy[{extra}]"'
-    else:
-        ledger_pip = (record.get("python_install") or "").strip()
-        pip_command = ledger_pip or f'pip install "ocracy[{backend_id}]"'
-
-    system = list(recipe.get("system", {}).get(_platform(), []))
     api_env = cfg.get("api_env_var") or record.get("api_env_var") or ""
     credentials = (
-        _credential_lines(api_env, backend_id) if is_remote and api_env else []
+        credential_lines(api_env, backend_id, guidance=CREDENTIAL_GUIDANCE)
+        if is_remote and api_env
+        else []
     )
-
-    notes = list(recipe.get("notes", []))
-    if not implemented:
-        notes.append(
-            f"ocracy does not yet ship a facade for '{backend_id}' — it's in the ledger "
-            "only. See the ocracy-add-backend skill to wrap it."
-        )
-
-    return Requirements(
-        backend_id=backend_id,
+    return build_requirements(
+        backend_id,
+        package=_PACKAGE,
         implemented=implemented,
-        available=available,
+        available=check(backend_id) if implemented else False,
+        recipe=_RECIPES.get(backend_id),
         is_local=is_local,
         is_remote=is_remote,
-        pip_command=pip_command,
-        extra=extra,
-        system=system,
-        system_note=recipe.get("system_note"),
-        gpu=recipe.get("gpu") if (gpu or recipe.get("gpu")) else None,
-        weights=recipe.get("weights"),
-        heavy=bool(recipe.get("heavy")),
-        alternative=recipe.get("alt"),
+        ledger_pip=record.get("python_install") or "",
         credentials=credentials,
-        notes=notes,
+        verify_command=f'python -c "{_verify_code(backend_id)}"',
+        unimplemented_note=(
+            f"ocracy does not yet ship a facade for '{backend_id}' — it's in the ledger "
+            "only. See the ocracy-add-backend skill to wrap it."
+        ),
     )
 
 
@@ -321,49 +228,10 @@ def install(
     yourself from ``result['requirements'].system`` / ``.gpu``.
     """
     req = requirements(backend_id, gpu=gpu)
-    result = {
-        "backend": backend_id,
-        "requirements": req,
-        "ran": False,
-        "available_before": req.available,
-    }
-    if req.available:
-        result["message"] = f"'{backend_id}' is already available — nothing to do."
-        return result
-    if not req.implemented:
-        result["message"] = req.instructions()
-        return result
-    if not yes:
-        result["message"] = (
-            "Dry run — pass yes=True to run the pip install.\n" + req.instructions()
-        )
-        return result
-
-    import subprocess
-
-    target = f"ocracy[{req.extra}]" if req.extra else backend_id
-    cmd = [sys.executable, "-m", "pip", "install"]
-    if upgrade:
-        cmd.append("--upgrade")
-    cmd.append(target)
-    proc = subprocess.run(cmd, capture_output=True, text=True)
-    result["ran"] = True
-    result["pip_argv"] = cmd
-    result["returncode"] = proc.returncode
-    result["stdout_tail"] = proc.stdout[-2000:]
-    result["stderr_tail"] = proc.stderr[-2000:]
-    if verify and proc.returncode == 0:
-        # Importability is module-cached; probe in a fresh interpreter.
-        probe = subprocess.run(
-            [
-                sys.executable,
-                "-c",
-                f"import ocracy; print(ocracy.check('{backend_id}'))",
-            ],
-            capture_output=True,
-            text=True,
-        )
-        result["available_after"] = probe.stdout.strip() == "True"
-    if req.system:
-        result["system_todo"] = req.system
-    return result
+    return run_install(
+        req,
+        package=_PACKAGE,
+        yes=yes,
+        verify_code=_verify_code(backend_id) if verify else None,
+        upgrade=upgrade,
+    )

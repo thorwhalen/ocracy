@@ -68,8 +68,9 @@ if not result.words:
 | Run that plan | `ocracy.install("rapidocr", yes=True)` |
 | Readiness of everything, four levels | `ocracy.status_table()` |
 | Wrap a 16th engine | `scaffold_backend(id)` → adapter → `validate_adapter(id)` |
+| Build *another* facade (translator, key chain, install plans) | `ocracy.kit` — `make_translator`, `resolve_credential`, `using_credentials`, `build_requirements` |
 
-Every name above is a top-level `ocracy` export (`scaffold_backend` / `validate_adapter` also live in `ocracy.make_backend`, which is where new façade-building machinery goes). The CLI mirrors it (`ocracy read|backends|find|info|status|doctor|requirements|install|scaffold|validate`), built by `cw` from the signatures in `ocracy/tools.py` — so a new CLI command is a new function in `_dispatch_funcs`, never an argparse edit.
+Every name above except the last row is a top-level `ocracy` export (`scaffold_backend` / `validate_adapter` also live in `ocracy.make_backend`, which is where new façade-building machinery goes). The CLI mirrors it (`ocracy read|backends|find|info|status|doctor|requirements|install|scaffold|validate`), built by `cw` from the signatures in `ocracy/tools.py` — so a new CLI command is a new function in `_dispatch_funcs`, never an argparse edit.
 
 ## Architecture
 
@@ -77,12 +78,13 @@ Every name above is a top-level `ocracy` export (`scaffold_backend` / `validate_
 Facade          ocracy.ocr / read_text / find            (ocracy/__init__.py)
 Services        services.<id>.read / .adapter            (services.py — three tiers)
 Registry        lazy discovery of ocracy/backends/*      (registry.py)
-Translation     normalized kwargs -> native kwargs       (translation.py, from config's param_map)
+Translation     normalized kwargs -> native kwargs       (translation.py -> kit, from config's param_map)
 Adapters        one subpackage per engine                (backends/<id>/{config,adapter}.py)
 Normalization   OcrResult / TextBlock / BBox             (base.py)
 
 Ledger          64 records, data not code                (data/backends.json, read by catalog.py)
 Readiness       all ⊇ implemented ⊇ set_up ⊇ tested      (status.py, install.py, credentials.py)
+Kit             translator, key chain, install plans      (kit/ — stdlib-only, shared with other facades)
 ```
 
 A backend is discovered structurally — a subpackage of `ocracy.backends` with a `BACKEND_CONFIG` in `config.py` and an `Adapter` in `adapter.py`. There is no registration list to edit; a leading `_` (as in `_template`) excludes a directory. Third parties can add one at runtime with `register_backend`.
@@ -107,11 +109,14 @@ A backend is discovered structurally — a subpackage of `ocracy.backends` with 
 
 ## Tests
 
-`python -m pytest -q` from the repo root — that is also where the current count comes from, so don't pin one here. Three things to know:
+`python -m pytest -q` from the repo root — that is also where the current count comes from, so don't pin one here. Two things to know:
 
 - **The suite is offline and free.** Structural tests (config integrity, param translation, catalog filtering, status levels) run with no engine installed; end-to-end adapter checks skip themselves when a dependency is missing, and no test ever makes a billed API call. `run_tests=True` on `backend_info` / `status_table` (`ocracy status --run-tests`) **does** make real calls for set-up remotes — it is a diagnostic verb, never a test.
-- **No docstring under `ocracy/` is ever executed, even though CI asks for it.** wads' `run-tests-uv` action appends `--doctest-modules`, but it passes no path, so pytest falls back to `testpaths = ["tests"]` and never descends into the package — measured: CI's exact invocation collects 83 items, all from `tests/`. Today nothing is lost (the package's docstrings use `::` literal blocks, and there is not one `>>>` in `ocracy/*.py`), but the day someone writes a doctest here believing it is a test, it will be silently uncollected. This is the `an#61` trap; the fix is adding `"ocracy"` to `testpaths`.
-- **`doctest_optionflags` in `pyproject.toml` lists `NORMALIZE_WHITESPACE`; CI overrides the whole key with `-o doctest_optionflags='ELLIPSIS IGNORE_EXCEPTION_DETAIL'`.** So if doctests are ever enabled, any example relying on whitespace normalization passes locally and fails in CI. Make the ini key match what CI passes, in the same commit.
+- **Doctests under `ocracy/` run in CI.** wads' `run-tests-uv` action appends `--doctest-modules` with no path, so pytest uses `testpaths`, which lists `"ocracy"` as well as `"tests"` (it used to list only `tests`, and the package's examples were silently uncollected: the `an#61` trap). `doctest_optionflags` matches the `-o doctest_optionflags='ELLIPSIS IGNORE_EXCEPTION_DETAIL'` CI passes, so an example behaves the same locally and in CI. Run `python -m pytest --doctest-modules` to see what CI sees.
+
+## The facade kit (`ocracy/kit/`)
+
+`ocracy.kit` is the shared translator, credential chain and install-plan machinery that the fleet's facades (foley, falaw, voxy, scribed, …) import instead of copying. Two rules, both enforced by `tests/test_kit.py`: **kit modules import only the standard library and `ocracy.kit`** (so the kit can become its own distribution with a `git mv`), and **importing it loads nothing heavy** (no engine SDK, Pillow, numpy, `importlib.metadata`, `subprocess`). Every consumer pays for `ocracy/__init__.py` when it imports the kit, so keep the root cheap — that is why `__version__` is computed lazily. A change to kit behaviour is a change to every consumer: check the `Consumer:` sections of the test file, and the ADR (`docs/adr/0001-facade-kit.md`) for why each seam exists.
 
 ## Conventions
 
@@ -119,7 +124,7 @@ A backend is discovered structurally — a subpackage of `ocracy.backends` with 
 - Arguments beyond the third position are keyword-only; most public functions here are keyword-only from the second.
 - No magic numbers outside a named module constant. Per-engine knowledge belongs in `BACKEND_CONFIG` or `install._RECIPES`, never inline in an adapter.
 - Every module needs a top-level docstring — `D100` is the *only* rule `[tool.ruff.lint].select` turns on, so it is the one lint that can fail CI here, and the docstrings are auto-extracted for the published docs.
-- `ocracy/__init__.py` only re-exports and defines the three facade functions — no engine knowledge.
+- `ocracy/__init__.py` only re-exports, defines the three facade functions and the lazy `__version__` — no engine knowledge.
 - `__version__` comes from installed distribution metadata; `pyproject.toml` is the SSOT and the wads release job bumps it. Never hardcode it.
 - **CI: a push to the default branch publishes to PyPI and bumps the version.** Don't re-run a default-branch workflow casually.
 

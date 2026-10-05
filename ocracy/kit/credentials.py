@@ -1,0 +1,254 @@
+"""One credential chain for every facade: explicit -> bound -> env -> store -> prompt.
+
+:func:`resolve_credential` looks for a provider's secret in this order and stops at
+the first non-empty value:
+
+1. ``api_key=`` passed by the caller (an empty string counts as not given);
+2. a key bound for this provider in the current context with
+   :func:`using_credentials` -- the bring-your-own-key seam a server uses without
+   threading a key through every call (a :class:`~contextvars.ContextVar`, so a
+   binding is visible only to the request that made it);
+3. the environment: ``env_var`` first, then the provider's row of
+   ``provider_env_vars``, in order, without duplicates (with ``dotenv=True`` a
+   project ``.env``, found from the current directory, is loaded once first; it
+   never overrides a variable that is already set);
+4. ``store``: any mapping keyed by env-var name (a ``config2py`` store, a dict);
+   only a missing key moves on, any other error propagates;
+5. with ``prompt_if_missing=True`` and an interactive terminal, ``getpass``; the
+   answer is written to ``store`` when it is a ``MutableMapping``, else to the
+   process environment.
+
+When nothing resolves and ``required=True``, it raises ``error`` (default
+:class:`MissingCredentialError`) with a message naming every env var it tried and,
+from ``guidance``, where to get a key::
+
+    >>> resolve_credential("acme", api_key="explicit")
+    'explicit'
+    >>> with using_credentials(acme="bound"):
+    ...     resolve_credential("acme")
+    'bound'
+    >>> resolve_credential("acme", env_var="ACME_SURELY_UNSET_KEY", required=False) is None
+    True
+
+A package binds its own tables once, with :func:`functools.partial` or a thin
+wrapper, and keeps its public names; ocracy's :mod:`ocracy.credentials` is the
+worked example. Stdlib only; imports nothing else from ocracy.
+"""
+
+from __future__ import annotations
+
+import contextlib
+import os
+import sys
+from collections.abc import MutableMapping
+from contextvars import ContextVar
+from typing import Callable, Iterator, Mapping, Optional, Sequence, Union
+
+__all__ = [
+    "MissingCredentialError",
+    "resolve_credential",
+    "env_var_names",
+    "credential_help",
+    "credential_lines",
+    "using_credentials",
+    "current_credentials",
+]
+
+EnvVars = Union[str, Sequence[str], None]
+
+#: Keys bound by :func:`using_credentials`, provider -> key. Replaced, never mutated.
+_BOUND: "ContextVar[Optional[Mapping[str, str]]]" = ContextVar(
+    "ocracy_kit_bound_credentials", default=None
+)
+
+_dotenv_loaded = False
+
+
+class MissingCredentialError(RuntimeError):
+    """A required credential could not be resolved; the message says how to get one."""
+
+
+def current_credentials() -> dict:
+    """The provider keys bound in this context by :func:`using_credentials` (a copy)."""
+    return dict(_BOUND.get() or {})
+
+
+@contextlib.contextmanager
+def using_credentials(
+    keys: Optional[Mapping[str, Optional[str]]] = None,
+    /,
+    **provider_keys: Optional[str],
+) -> Iterator[dict]:
+    """Bind provider keys for the ``with`` block (overlaying any outer binding).
+
+    Pass a mapping for provider ids that are not identifiers (``"google-vision"``)
+    or keywords for the rest. Falsy values are ignored, so an optional request
+    header can be passed straight through.
+
+    >>> with using_credentials(acme="outer"):
+    ...     with using_credentials({"acme": "inner", "other": None}):
+    ...         inner = current_credentials()
+    ...     outer = current_credentials()
+    >>> inner, outer
+    ({'acme': 'inner'}, {'acme': 'outer'})
+    """
+    merged = current_credentials()
+    merged.update({k: v for k, v in {**dict(keys or {}), **provider_keys}.items() if v})
+    token = _BOUND.set(merged)
+    try:
+        yield dict(merged)
+    finally:
+        _BOUND.reset(token)
+
+
+def env_var_names(
+    provider: Optional[str] = None,
+    *,
+    env_var: EnvVars = None,
+    provider_env_vars: Optional[Mapping[str, EnvVars]] = None,
+) -> list:
+    """The env vars the chain checks: ``env_var`` first, then the provider's row."""
+    names = _as_list(env_var)
+    if provider and provider_env_vars and provider in provider_env_vars:
+        names.extend(_as_list(provider_env_vars[provider]))
+    return list(dict.fromkeys(names))
+
+
+def credential_help(provider: str, *, guidance: Optional[Mapping] = None) -> str:
+    """A short, link-bearing "how to get a key" line for ``provider`` (or ``''``).
+
+    ``guidance[provider]`` may carry ``note`` and ``get_key_url``.
+    """
+    g = (guidance or {}).get(provider)
+    if not g:
+        return ""
+    note = f" {g['note']}" if g.get("note") else ""
+    url = f" Get a key: {g['get_key_url']}" if g.get("get_key_url") else ""
+    return f"How to get a credential for {provider}:{note}{url}"
+
+
+def credential_lines(
+    env_var: str, provider: str, *, guidance: Optional[Mapping] = None
+) -> list:
+    """``export VAR  (get a key: URL)`` lines for an install plan (empty if no var)."""
+    if not env_var:
+        return []
+    g = (guidance or {}).get(provider)
+    link = f"  (get a key: {g['get_key_url']})" if g and g.get("get_key_url") else ""
+    return [f"export {env_var}{link}"]
+
+
+def resolve_credential(
+    provider: Optional[str] = None,
+    *,
+    api_key: Optional[str] = None,
+    env_var: EnvVars = None,
+    provider_env_vars: Optional[Mapping[str, EnvVars]] = None,
+    guidance: Optional[Mapping] = None,
+    store: Optional[Mapping[str, str]] = None,
+    dotenv: bool = False,
+    prompt_if_missing: bool = False,
+    required: bool = True,
+    error: Callable[[str], BaseException] = MissingCredentialError,
+    hint: str = "",
+) -> Optional[str]:
+    """Resolve a provider's credential through the chain in the module docstring.
+
+    Args:
+        provider: The provider id, used for bindings, table rows and messages.
+        api_key: An explicit value; wins when non-empty.
+        env_var: Env var name(s) checked before the provider's table row.
+        provider_env_vars: The package's provider -> env var(s) table.
+        guidance: The package's provider -> ``{note, get_key_url}`` table.
+        store: A mapping keyed by env-var name, read after the environment.
+        dotenv: Load a project ``.env`` (from the current directory) once, softly.
+        prompt_if_missing: Ask with ``getpass`` when interactive (last resort).
+        required: Raise when nothing resolves; else return ``None``.
+        error: The exception class (or factory) to raise; called with the message.
+        hint: An extra sentence for the error message (why this key is needed).
+
+    Returns:
+        The secret, or ``None`` when ``required=False`` and nothing resolved.
+    """
+    if api_key:
+        return api_key
+    if provider:
+        bound = (_BOUND.get() or {}).get(provider)
+        if bound:
+            return bound
+    names = env_var_names(
+        provider, env_var=env_var, provider_env_vars=provider_env_vars
+    )
+    if dotenv:
+        _load_dotenv_once()
+    for name in names:
+        value = os.environ.get(name)
+        if value:
+            return value
+    if store is not None:
+        for name in names:
+            value = _store_get(store, name)
+            if value:
+                return value
+    if prompt_if_missing:
+        value = _prompt(names, provider, store)
+        if value:
+            return value
+    if required:
+        raise error(_missing_message(provider, names, guidance, hint))
+    return None
+
+
+def _as_list(env_var: EnvVars) -> list:
+    if not env_var:
+        return []
+    return [env_var] if isinstance(env_var, str) else list(env_var)
+
+
+def _store_get(store: Mapping[str, str], name: str) -> Optional[str]:
+    try:
+        value = store[name]
+    except KeyError:
+        return None
+    return value.strip() if isinstance(value, str) else value
+
+
+def _load_dotenv_once() -> None:
+    """Load the project's ``.env`` (searched from the cwd) once, if dotenv is installed."""
+    global _dotenv_loaded
+    if _dotenv_loaded:
+        return
+    _dotenv_loaded = True
+    try:
+        from dotenv import find_dotenv, load_dotenv  # type: ignore
+    except ImportError:
+        return
+    path = find_dotenv(usecwd=True)
+    if path:
+        load_dotenv(path, override=False)
+
+
+def _prompt(names: list, provider: Optional[str], store) -> Optional[str]:
+    if sys.stdin is None or not sys.stdin.isatty():
+        return None
+    import getpass
+
+    label = names[0] if names else (provider or "API key")
+    value = getpass.getpass(f"Enter credential for {label}: ").strip()
+    if value and names:
+        if isinstance(store, MutableMapping):
+            store[names[0]] = value
+        else:
+            os.environ[names[0]] = value
+    return value or None
+
+
+def _missing_message(provider, names, guidance, hint) -> str:
+    tried = f" (set one of: {', '.join(names)})" if names else ""
+    message = f"No credential found for {provider or 'backend'}{tried}."
+    if hint:
+        message += f" {hint}"
+    help_line = credential_help(provider, guidance=guidance) if provider else ""
+    if help_line:
+        message += "\n" + help_line
+    return message
