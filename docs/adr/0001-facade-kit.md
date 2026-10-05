@@ -1,0 +1,84 @@
+# ADR 0001 — The facade kit lives in `ocracy.kit`
+
+- **Status:** accepted, 2026-10-05
+- **Issue:** [thorwhalen/ocracy#7](https://github.com/thorwhalen/ocracy/issues/7)
+- **Scope:** the param_map translator, the credential chain, install plans
+
+## Context
+
+The fleet has about ten facades: one interface over many providers (ocracy for OCR, scribed for transcription, arioso for music, foley for sound effects, falaw over fal.ai, voxy for speech, illustration, aix, denote…). Each needs the same three mechanisms, and each got them by copying another facade's files and editing them:
+
+| Mechanism | Copies |
+|---|---|
+| canonical → native kwargs translator with an unsupported-parameter policy | ocracy, scribed, denote (identical), arioso, illustration, foley (forks) |
+| credential chain (explicit → … → env → …) with a helpful missing-key error | ocracy, scribed (identical), illustration, aix, falaw (three inline chains), voxy, foley (two inline chains) |
+| per-OS install plans for optional backends | ocracy, scribed (identical mechanism) |
+
+The copies drifted. A diff of every copy found real behavioural divergences, and six bugs that existed in some copies and not others (an explicitly unsupported parameter never raising under `raise`; a policy bypass; `.env` searched from the wrong directory; a store layer swallowing every exception; a health check ignoring the BYO key; three different ElevenLabs env-var orders). The full inventory is kept with the working notes for this change; its tables are summarised below.
+
+## Decision
+
+One stdlib-only subpackage, **`ocracy.kit`**, with three modules:
+
+- `ocracy.kit.translation` — `make_translator(param_map, *, backend, on_unsupported, always_raise, vocabulary, passthrough, skip_none)` returns `translate(kwargs, *, on_unsupported=None) -> Translation(kwargs, notes, dropped)`. A `Translation` unpacks to `(kwargs, notes)`.
+- `ocracy.kit.credentials` — `resolve_credential(provider, *, api_key, env_var, provider_env_vars, guidance, store, dotenv, prompt_if_missing, required, error, hint)`, `using_credentials(...)` (a `ContextVar` binding for bring-your-own-key), `credential_help`, `credential_lines`, `MissingCredentialError`.
+- `ocracy.kit.install` — `Requirements`, `build_requirements(...)`, `run_install(...)`, `current_platform()`.
+
+ocracy's own `translation.py`, `credentials.py` and `install.py` keep their public API and become thin bindings of ocracy's data (provider tables, recipes, registry lookups) to the kit. An old-versus-new comparison over every backend and ledger record (128 install plans, every dry-run result, 130 translation cases) found no difference.
+
+### Every divergence, and what the kit does with it
+
+A divergence that a consumer depends on became a seam: one keyword argument, defaulting to ocracy's behaviour. A divergence that was a bug or an accident got one canonical behaviour, recorded here.
+
+| Divergence between copies | Kit | Kind |
+|---|---|---|
+| Spec forms: `None`, dict with `native_name` (ocracy, arioso) or `name` (illustration), bare `str` rename, bare callable | all accepted; `native_name` and `name` together must agree | canonical (superset) |
+| `native_name: None` in a dict silently dropped (arioso) | same as a bare `None`: unsupported, through the policy | bug fixed |
+| `None` spec never raises under `raise` (ocracy, scribed, denote) | raises | bug fixed |
+| Policy vocabulary: warn/raise/ignore vs raise/warn/note | `raise`, `warn`, `note`, `ignore` (`ignore` = `note`) | seam: `on_unsupported` |
+| Drops returned to the caller: never / names / notes | always both: `.notes` and `.dropped` | canonical (never silent) |
+| Meaning-carrying params: arioso's `lyrics`, foley's `seed` / `negative_prompt` | `always_raise=`; an explicit per-call `on_unsupported=` wins (foley); a facade that never exposes the per-call override gets arioso's "always" | seam |
+| A value left at its vocabulary default is "not asked for" (foley) | `vocabulary=` (also drives "not supported by" vs "not a parameter of") | seam |
+| `None` means unset, even for supported params (illustration) | `skip_none=` | seam |
+| Adapter-only params passed through (arioso `passthrough` / `adapter_handled`) | `passthrough=`; `adapter_handled` is just an identity spec | seam |
+| Defaults injected for omitted params (ocracy) | spec `default` | canonical |
+| Ranges: ocracy `validate_param` raises (but was never called), illustration drops on `choices`, foley clamps `duration` | spec `min`/`max`/`choices` + `out_of_range='raise'|'clamp'|'drop'` + `unit` for the clamp note | seam (per spec) |
+| Exceptions: `ValueError` vs foley's `UnsupportedParameter(ValueError)` | `UnsupportedParameter(ValueError)`; a consumer re-exports it | canonical |
+| Explicit `api_key=""`: absent (5 copies) vs given (foley) | absent | canonical (foley's behaviour changes; noted on its PR) |
+| ContextVar binding: per-provider dict (illustration), single fal key (falaw), none (others) | one per-provider binding, nested overlay, falsy ignored, inert unless used | canonical (superset) |
+| Env vars: explicit first then the provider table, ordered, de-duplicated | `env_var=` + `provider_env_vars=`, order preserved (so voxy keeps `ELEVEN_API_KEY` first) | seam (data) |
+| `.env`: on every miss from the package directory (ocracy, scribed) vs once from the cwd (aix) | `dotenv=True` loads once, from the cwd, never overriding | seam; ocracy's search directory fixed |
+| Store: config2py with `except Exception` (aix, illustration) | `store=` any mapping; only `KeyError` moves on | seam; bug fixed |
+| Prompt result: set in `os.environ` (ocracy) vs persisted to the store (aix) | persisted to `store` when it is a `MutableMapping`, else `os.environ` | canonical rule |
+| Missing-key exception: `MissingCredentialError`, `RuntimeError`, `SourceConfigurationError`, illustration's keyword-constructed error | `error=` (called with the message) | seam |
+| Extra context in the message (falaw: "the pricing endpoint is free but authenticated") | `hint=` | seam |
+| Install plans: package name, recipes, "Lighter" vs "Faster/lighter alternative", the Verify line | `package=`, `recipe=`, `alternative_label=`, `verify_command=` | seams (data) |
+| `requirements(gpu=)` | had no effect in either copy (the recipe's GPU line was always shown); kept as a no-op in ocracy's signature, not in the kit | canonical |
+
+### Why `ocracy.kit`, and what that costs a consumer
+
+The alternatives were a new distribution, `i2` (signature transforms), and a second top-level package inside the ocracy wheel. A new distribution is the end state if more than facades start to need the kit; until then a subpackage costs nothing to create, and every kit module imports only the standard library and `ocracy.kit` (a test enforces it), so moving it later is a `git mv` plus a re-export. `i2` would carry the policy and the chain into a package with many dependents, where every observable behaviour gets depended on (Hyrum's law). A second top-level name in the wheel would claim a PyPI-like name nobody owns.
+
+The cost is that `import ocracy.kit` runs `ocracy/__init__.py`. Two changes keep that small: `__version__` is now computed on first access (PEP 562), so `import ocracy` no longer loads `importlib.metadata`, and `subprocess` is imported only by an actual install. Measured on the maintainer's Mac (warm cache, `python -X importtime`):
+
+| | before | after |
+|---|---|---|
+| `import ocracy` (cold process) | ~65 ms | ~19–23 ms |
+| `import ocracy.kit` after `import foley` | ~69 ms | ~11 ms |
+| … after `import falaw` | ~26 ms | ~10 ms |
+| … after `import voxy` | ~10 ms | ~6 ms |
+
+A test pins that importing the kit loads no Pillow, numpy, pandas, requests, torch, `importlib.metadata`, `subprocess` or `dotenv`.
+
+## Not in v1
+
+- **The cost gate** (foley's `cost.py`: stacked budgets, atomic reserve/settle, `scoped_iter`) and **metered LLM calls**. foley proposed both on #7. The budget exists in one package, and the two estimate conventions (falaw's per-model `count/seconds/megapixels/tokens`, foley's per-config `free/per_call/per_second`) have different shapes. By the rule of three and "duplication is cheaper than the wrong abstraction", it waits for a second budget. Tracked as a follow-up issue.
+- **The ledger loader** (`catalog.py`, ocracy and scribed: 97 lines of diff). Optional in #7; tracked as a follow-up.
+- **`make_backend.py`** (adapter base class, scaffolding): domain-specific per facade.
+
+## Consequences
+
+- New facades import the kit instead of copying files; the facade-design skill's "copy ocracy's three files" advice becomes "import `ocracy.kit`".
+- Draft swap PRs go to foley, falaw and voxy. scribed, denote, arioso, illustration and aix can swap the same way; each is listed on #7.
+- `BaseOcrAdapter.read` now records every dropped parameter in `result.meta["notes"]` (it still warns): ocracy adopts foley's "drops reach the result" behaviour.
+- `testpaths` now includes `ocracy`, so CI's `--doctest-modules` runs the kit's examples, and `doctest_optionflags` matches what CI passes.
