@@ -17,6 +17,7 @@ from pathlib import Path
 import pytest
 
 import ocracy.kit.credentials as kit_credentials
+from ocracy.kit.translation import is_secret_name
 from ocracy.kit import (
     MissingCredentialError,
     Requirements,
@@ -96,6 +97,39 @@ def test_secrets_nested_shaped_or_in_range_errors_are_redacted():
     with pytest.raises(ValueError) as ei:
         check_range("db_password", "pw-SECRET", {"max": "a"})
     assert "SECRET" not in str(ei.value)
+
+
+def test_redaction_fails_closed_on_headers_objects_bytes_and_depth():
+    import dataclasses
+    from collections import namedtuple
+    from types import SimpleNamespace
+
+    @dataclasses.dataclass
+    class Cfg:
+        api_key: str
+
+    P = namedtuple("P", "x y")
+    deep: dict = {"v": "SECRET-deep"}
+    for _ in range(12):
+        deep = {"d": deep}
+    t = make_translator({}, on_unsupported="note")(
+        {
+            "headers": {"x-api-key": "SECRET1", "Ocp-Apim-Subscription-Key": "SECRET2"},
+            "credentials_json": "SECRET3",
+            "client_secret_value": "SECRET4",
+            "cfg": Cfg("SECRET5"),
+            "ns": SimpleNamespace(token="SECRET6"),
+            "raw": b"Bearer SECRET7",
+            "tags": {"Bearer SECRET8"},
+            "point": P(1, 2),  # used to crash the scrubber
+            "deep": deep,
+        }
+    )
+    joined = " ".join(t.notes)
+    assert "SECRET" not in joined
+    assert "cfg=<Cfg>" in joined and "raw=<bytes of length 14>" in joined
+    assert "point=(1, 2)" in joined
+    assert is_secret_name("x-api-key") and not is_secret_name("key_frames")
 
 
 def test_only_names_ending_in_a_secret_word_are_redacted():

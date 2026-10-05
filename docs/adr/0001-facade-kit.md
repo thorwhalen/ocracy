@@ -38,7 +38,7 @@ A divergence that a consumer depends on became a seam: one keyword argument, def
 | `None` spec never raises under `raise` (ocracy, scribed, denote) | raises | bug fixed |
 | Policy vocabulary: warn/raise/ignore vs raise/warn/note | `raise`, `warn`, `note`, `ignore` (`ignore` = `note`). An unknown policy now raises when the translator is built (it used to behave like `ignore`). | seam: `on_unsupported` |
 | Message text | foley's wording: `name=value is not supported by <backend>; dropped` / `is not a parameter of` for unknown names. ocracy's old `Unsupported parameter: 'x'. Supported: [...]` (`raise`) and `... will be ignored.` (`warn`) are gone; the error is `UnsupportedParameter`, a `ValueError`. | canonical |
-| Values in notes, warnings and errors | shortened (`reprlib`, 80 chars) and **secret-free**: a value is `<redacted>` when its parameter name, or a mapping key at any depth, ends in a secret word (`api_key`, `access_token`, `Authorization`…: `SECRET_NAME`; `key_frames` keeps its value), or when a string is shaped like a credential (`Bearer …`: `SECRET_VALUE`). Notes land in results that get stored and logged. | canonical (review blocker) |
+| Values in notes, warnings and errors | shortened (`reprlib`, 80 chars) and **secret-free, failing closed**: a value is `<redacted>` when its parameter name or a mapping key (any depth) has a secret segment (`secret`, `password`, `credentials`, `authorization`…) or ends in `key` / `token` / `auth` (`is_secret_name`: `api_key`, `x-api-key`, `client_secret_value`; `key_frames` keeps its value), or when a string is shaped like a credential (`Bearer …`); anything that is not plain data (an object, bytes) is shown only as its type. Notes land in results that get stored and logged. | canonical (review blocker) |
 | Which frame a `warn` blames | `stacklevel=` (counted from the code calling `translate`); ocracy's wrappers keep the frame they always blamed | seam |
 | Drops returned to the caller: never / names / notes | always both: `.notes` and `.dropped` | canonical (never silent) |
 | Meaning-carrying params: arioso's `lyrics`, foley's `seed` / `negative_prompt` | `always_raise=`; an explicit per-call `on_unsupported=` wins (foley); a facade that never exposes the per-call override gets arioso's "always" | seam |
@@ -76,7 +76,7 @@ The cost is that `import ocracy.kit` runs `ocracy/__init__.py`. Two changes keep
 | `voxy` | 3.7 ms | 6.0 ms |
 | `scribed` | 3.4 ms | 6.1 ms |
 
-The right comparison for a consumer is the last column against zero: its own copy cost nothing extra, so depending on the kit adds about **5–6 ms** to its import when imported at module level (voxy and scribed already load `importlib.metadata`, so for them the lazy version saves nothing). About half of that is ocracy's root re-exports (`base`, `catalog`, `registry`, `services`, `make_backend`, `install`, `status`), which do no I/O at import (no `backends.json` read, no package scan). Making the root lazy would save roughly another 3 ms per consumer; it changes ocracy's import surface for everyone, so it is a separate, measured change, not part of this one. A test pins that importing the kit loads no Pillow, numpy, pandas, requests, torch, `importlib.metadata`, `subprocess`, `dotenv` or any `ocracy.backends` module.
+The right comparison for a consumer is the last column against zero: its own copy cost nothing extra, so depending on the kit adds about **5–6 ms** to its import when imported at module level (voxy and scribed already load `importlib.metadata`, so for them the lazy version saves nothing). About half of that is ocracy's root re-exports (`base`, `catalog`, `registry`, `services`, `make_backend`, `install`, `status`), which do no I/O at import (no `backends.json` read, no package scan). Making the root lazy would save roughly another 3 ms per consumer; it changes ocracy's import surface for everyone, so it is a separate, measured change: [#11](https://github.com/thorwhalen/ocracy/issues/11). A test pins that importing the kit loads no Pillow, numpy, pandas, requests, torch, `importlib.metadata`, `subprocess`, `dotenv` or any `ocracy.backends` module.
 
 ### Moving the kit to its own distribution later
 
@@ -86,8 +86,8 @@ Three small public pieces exist for a named consumer, not for generality: `check
 
 ## Not in v1
 
-- **The cost gate** (foley's `cost.py`: stacked budgets, atomic reserve/settle, `scoped_iter`) and **metered LLM calls**. foley proposed both on #7. The budget exists in one package, and the two estimate conventions (falaw's per-model `count/seconds/megapixels/tokens`, foley's per-config `free/per_call/per_second`) have different shapes. By the rule of three and "duplication is cheaper than the wrong abstraction", it waits for a second budget. Tracked as a follow-up issue.
-- **The ledger loader** (`catalog.py`, ocracy and scribed: 97 lines of diff). Optional in #7; tracked as a follow-up.
+- **The cost gate** (foley's `cost.py`: stacked budgets, atomic reserve/settle, `scoped_iter`) and **metered LLM calls**. foley proposed both on #7. The budget exists in one package, and the two estimate conventions (falaw's per-model `count/seconds/megapixels/tokens`, foley's per-config `free/per_call/per_second`) have different shapes. By the rule of three and "duplication is cheaper than the wrong abstraction", it waits for a second budget: [#9](https://github.com/thorwhalen/ocracy/issues/9).
+- **The ledger loader** (`catalog.py`, ocracy and scribed: 97 lines of diff). Optional in #7: [#10](https://github.com/thorwhalen/ocracy/issues/10).
 - **`make_backend.py`** (adapter base class, scaffolding): domain-specific per facade.
 
 ## Consequences

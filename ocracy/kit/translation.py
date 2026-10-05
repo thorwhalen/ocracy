@@ -42,10 +42,11 @@ The policy for a parameter the backend cannot honour is one of :data:`POLICIES`:
 always in :attr:`Translation.notes` and :attr:`Translation.dropped`).
 
 Notes, warnings and errors show the dropped value, shortened, so a reader knows what
-was lost -- but never a secret: a parameter (or a mapping key, at any depth) named
-like one (``api_key``, ``access_token``, ``Authorization``...) or a string shaped like
-one (``Bearer ...``) is shown as ``<redacted>``, because notes end up in results that
-get stored and logged.
+was lost -- but never a secret, because notes end up in results that get stored and
+logged. A parameter or mapping key named like one (:func:`is_secret_name`:
+``api_key``, ``x-api-key``, ``client_secret``, ``Authorization``...) or a string
+shaped like one (``Bearer ...``) is shown as ``<redacted>``, and anything that is not
+plain data (an object, bytes) is shown only as its type.
 
 Several choices are declared once, when the translator is made, and each was a real
 divergence between the fleet's copies (see ``docs/adr/0001-facade-kit.md``):
@@ -81,7 +82,9 @@ __all__ = [
     "Translation",
     "make_translator",
     "check_range",
-    "SECRET_NAME",
+    "is_secret_name",
+    "SECRET_SEGMENTS",
+    "SECRET_LAST_SEGMENTS",
     "SECRET_VALUE",
 ]
 
@@ -91,17 +94,29 @@ POLICIES = ("raise", "warn", "note", "ignore")
 #: How a value outside a spec's ``choices`` / ``min`` / ``max`` is handled.
 OUT_OF_RANGE = ("raise", "clamp", "drop")
 
-#: Parameter names whose values never appear in a note, a warning or an error: the
-#: secret word ends the name (``api_key``, ``access_token``, ``Authorization``), so
-#: ``key_frames`` or ``token_budget`` keep their values. Applied to mapping keys at
-#: any depth too (a ``headers`` dict).
-SECRET_NAME = re.compile(
-    r"(^|_)(api_?key|app_?key|key|token|secret|password|passwd|credentials?|auth"
-    r"|authorization|cookie)$",
-    re.IGNORECASE,
+#: Name segments (split on ``_``, ``-``, ``.``, case-insensitive) that make a value
+#: secret wherever they appear: ``client_secret_value``, ``credentials_json``.
+SECRET_SEGMENTS = frozenset(
+    {
+        "secret",
+        "password",
+        "passwd",
+        "credential",
+        "credentials",
+        "apikey",
+        "authorization",
+        "cookie",
+        "bearer",
+    }
 )
+#: Name segments that make a value secret when they end the name: ``api_key``,
+#: ``x-api-key``, ``access_token`` -- but not ``key_frames`` or ``token_budget``.
+SECRET_LAST_SEGMENTS = frozenset({"key", "token", "auth"})
 #: String values that are credentials whatever the parameter is called.
 SECRET_VALUE = re.compile(r"^\s*(bearer|basic|token)\s+\S", re.IGNORECASE)
+_SEGMENT_SPLIT = re.compile(r"[_\-.\s]+")
+_PLAIN = (int, float, complex, bool, type(None))
+_MAX_DEPTH = 8
 
 _DEFAULT_WHERE = "this backend"
 _FRAMES_BELOW_CALLER = 2  # _drop -> translate -> (the code calling translate)
@@ -196,33 +211,63 @@ def _check_policy(policy: Optional[str], *, allow_none: bool = False) -> None:
         raise ValueError(f"on_unsupported must be one of {POLICIES}, got {policy!r}")
 
 
-_REDACTED = "<redacted>"
+class _Marker(str):
+    """A placeholder shown as-is (no quotes), even inside a container's repr."""
+
+    def __repr__(self) -> str:
+        return str(self)
 
 
-def _scrub(name: str, value: Any, depth: int = 0) -> Any:
-    """``value`` with every secret replaced: by name, by mapping key, or by shape."""
-    if SECRET_NAME.search(str(name)):
+_REDACTED = _Marker("<redacted>")
+
+
+def _opaque(value: Any) -> _Marker:
+    return _Marker(f"<{type(value).__name__}>")
+
+
+def is_secret_name(name: Any) -> bool:
+    """Whether a parameter (or mapping key) named ``name`` holds a secret."""
+    segments = [seg for seg in _SEGMENT_SPLIT.split(str(name).lower()) if seg]
+    if not segments:
+        return False
+    return bool(SECRET_SEGMENTS.intersection(segments)) or (
+        segments[-1] in SECRET_LAST_SEGMENTS
+    )
+
+
+def _scrub(name: Any, value: Any, depth: int = 0) -> Any:
+    """``value`` made safe to show: secrets redacted, anything opaque reduced to its type.
+
+    Fails closed: a value that is not plain data (str, number, mapping, sequence,
+    set) is shown as ``<TypeName>``, because its repr could carry a secret.
+    """
+    if is_secret_name(name):
         return _REDACTED
+    if isinstance(value, _PLAIN):
+        return value
     if isinstance(value, str):
         return _REDACTED if SECRET_VALUE.match(value) else value
-    if depth > 3:  # deep enough for headers / options dicts; reprlib truncates anyway
-        return value
+    if depth >= _MAX_DEPTH:
+        return _opaque(value)
     if isinstance(value, Mapping):
         return {k: _scrub(k, v, depth + 1) for k, v in value.items()}
-    if isinstance(value, (list, tuple)):
-        return type(value)(_scrub("", v, depth + 1) for v in value)
-    return value
+    if isinstance(value, (list, tuple, set, frozenset)):
+        items = [_scrub("", v, depth + 1) for v in value]
+        return items if isinstance(value, list) else tuple(items)
+    if isinstance(value, (bytes, bytearray)):
+        return _Marker(f"<{type(value).__name__} of length {len(value)}>")
+    return _opaque(value)
 
 
 def _value_text(name: str, value: Any, *, as_str: bool = False) -> str:
     """A short, secret-free rendering of ``value`` (``str()`` if ``as_str``)."""
-    scrubbed = _scrub(name, value)
-    if scrubbed is _REDACTED:
-        return _REDACTED
     try:
-        return str(scrubbed) if as_str else _VALUE_REPR.repr(scrubbed)
-    except Exception:  # noqa: BLE001 - a value whose repr fails is still reportable
-        return f"<{type(value).__name__}>"
+        scrubbed = _scrub(name, value)
+        if isinstance(scrubbed, _Marker) or as_str:
+            return str(scrubbed)
+        return _VALUE_REPR.repr(scrubbed)
+    except Exception:  # noqa: BLE001 - fail closed: never let rendering raise or leak
+        return str(_opaque(value))
 
 
 def _shown(name: str, value: Any) -> str:
