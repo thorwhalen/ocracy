@@ -59,6 +59,7 @@
    base
    catalog
    credentials
+   kit
    make_backend
    registry
    status

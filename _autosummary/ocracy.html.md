@@ -84,7 +84,7 @@ ocracy.services.tesseract.adapter              # raw engine adapter
 | [`Catalog`](#ocracy.Catalog)([path, \_records])                        | A filterable, dict-like collection of [`BackendInfo`](#ocracy.BackendInfo), keyed by id. |
 | [`ServiceCollection`](#ocracy.ServiceCollection)()                               | Lazy mapping of backend ids -> `ServiceHandle`.                                                                  |
 | [`BaseOcrAdapter`](#ocracy.BaseOcrAdapter)(config)                            | Optional base class for backend adapters.                                                                        |
-| [`Requirements`](#ocracy.Requirements)(backend_id, implemented, ...[, ...]) | What a backend needs to run — structured for an agent to act on.                                                 |
+| [`Requirements`](#ocracy.Requirements)(backend_id, implemented, ...[, ...]) | What a backend needs to run, structured for an agent to act on.                                                  |
 
 ### *class* ocracy.BBox(x0, y0, x1, y1, polygon=None)
 
@@ -138,6 +138,23 @@ and implements `read` as: translate normalized kwargs -> native kwargs ->
 Adapters are not *required* to subclass this — the registry only needs an
 `Adapter` class with a `read(image, **kwargs)` method — but doing so
 removes the boilerplate.
+
+#### ADAPTER_KWARGS *= ('api_key', 'app_key', 'app_id')*
+
+Keyword arguments a *remote* adapter reads itself (credentials), passed
+through untranslated: no `param_map` declares them, and they must never be
+dropped. On a local backend they are dropped with a (redacted) note.
+
+#### read(image, \*\*kwargs)
+
+Translate `kwargs`, run `_read()`, and put any drop notes on the result.
+
+A parameter the backend cannot honour is warned about and dropped, and the
+drop is recorded in `result.meta["notes"]` so it is visible after the
+warning is gone (or filtered).
+
+* **Return type:**
+  [`OcrResult`](ocracy.base.html.md#ocracy.base.OcrResult)
 
 ### *class* ocracy.Catalog(path=None, , \_records=None)
 
@@ -269,15 +286,15 @@ Markdown rendering if the backend produced one (else `None`).
 
 Mean confidence over blocks that report one, or `None`.
 
-### *class* ocracy.Requirements(backend_id, implemented, available, is_local, is_remote, pip_command, extra=None, system=<factory>, system_note=None, gpu=None, weights=None, heavy=False, alternative=None, credentials=<factory>, notes=<factory>)
+### *class* ocracy.Requirements(backend_id, implemented, available, is_local, is_remote, pip_command, extra=None, system=<factory>, system_note=None, gpu=None, weights=None, heavy=False, alternative=None, credentials=<factory>, notes=<factory>, verify_command=None, alternative_label='Lighter alternative')
 
 Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
 
-What a backend needs to run — structured for an agent to act on.
+What a backend needs to run, structured for an agent to act on.
 
 #### instructions()
 
-An agent-/human-readable, copy-pasteable install plan.
+An agent- and human-readable, copy-pasteable install plan.
 
 * **Return type:**
   [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
@@ -511,10 +528,11 @@ Return structured install [`Requirements`](#ocracy.Requirements) for `backend_id
 
 Works for both implemented backends (uses the `ocracy[extra]` install and
 the recipe) and ledger-only backends (falls back to the ledger’s
-`python_install` string). Pass `gpu=True` to surface GPU wheel guidance.
+`python_install` string). A recipe’s GPU guidance is always included;
+`gpu` is accepted for compatibility and changes nothing.
 
 * **Return type:**
-  [`Requirements`](#ocracy.Requirements)
+  [`Requirements`](ocracy.kit.install.html.md#ocracy.kit.install.Requirements)
 
 ### ocracy.scaffold_backend(backend_id, , dest=None, overwrite=False, ledger=None, extra_overrides=None)
 
@@ -572,6 +590,7 @@ decide.
 | [`base`](ocracy.base.html.md#module-ocracy.base)                 | Core types and normalized result objects for ocracy.                                                             |
 | [`catalog`](ocracy.catalog.html.md#ocracy.catalog)                  | A filterable, dict-like collection of [`BackendInfo`](#ocracy.BackendInfo), keyed by id. |
 | [`credentials`](ocracy.credentials.html.md#module-ocracy.credentials)   | Credential resolution for remote OCR backends.                                                                   |
+| [`kit`](ocracy.kit.html.md#module-ocracy.kit)                   | The facade kit: the three helpers every fleet facade used to copy by hand.                                       |
 | [`make_backend`](ocracy.make_backend.html.md#module-ocracy.make_backend) | Abstraction tools for *building* OCR facades.                                                                    |
 | [`registry`](ocracy.registry.html.md#module-ocracy.registry)         | Backend discovery, registration, and lazy loading.                                                               |
 | [`status`](ocracy.status.html.md#module-ocracy.status)             | Backend readiness status — four nested levels, info dicts, and a Markdown table.                                 |

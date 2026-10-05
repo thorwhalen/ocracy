@@ -1,0 +1,35 @@
+ocracy.kit.translation
+======================
+
+.. automodule:: ocracy.kit.translation
+
+   
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+   
+      POLICIES
+      OUT_OF_RANGE
+      SECRET_SEGMENTS
+      SECRET_VALUE
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      make_translator
+      check_range
+      is_secret_name
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Translation
+   
+   .. rubric:: Exceptions
+
+   .. autosummary::
+   
+      UnsupportedParameter
+   

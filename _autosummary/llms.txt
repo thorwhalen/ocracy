@@ -55,6 +55,10 @@
 - [ocracy.base](ocracy.base.html.md): Core types and normalized result objects for ocracy.
 - [ocracy.catalog](ocracy.catalog.html.md): A filterable, dict-like collection of &#96;BackendInfo&#96;, keyed by id.
 - [ocracy.credentials](ocracy.credentials.html.md): Credential resolution for remote OCR backends.
+- [ocracy.kit](ocracy.kit.html.md): The facade kit: the three helpers every fleet facade used to copy by hand.
+- [ocracy.kit.credentials](ocracy.kit.credentials.html.md): One credential chain for every facade: explicit -&gt; bound -&gt; env -&gt; store -&gt; prompt.
+- [ocracy.kit.install](ocracy.kit.install.html.md): Install plans: what a backend needs on &#42;this&#42; OS, as data an agent can act on.
+- [ocracy.kit.translation](ocracy.kit.translation.html.md): Canonical -&gt; native keyword translation, with an honest unsupported-parameter policy.
 - [ocracy.make_backend](ocracy.make_backend.html.md): Abstraction tools for &#42;building&#42; OCR facades.
 - [ocracy.registry](ocracy.registry.html.md): Backend discovery, registration, and lazy loading.
 - [ocracy.status](ocracy.status.html.md): Backend readiness status — four nested levels, info dicts, and a Markdown table.

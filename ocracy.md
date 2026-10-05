@@ -1,4 +1,4 @@
-> built 2026-09-22 14:34 UTC from 45527c9 (main) · ocracy 0.1.10. Details: build_info.json
+> built 2026-10-05 15:42 UTC from eb396dc (main) · ocracy 0.1.11. Details: build_info.json
 
 # index.html.md
 
@@ -268,7 +268,32 @@ symlink bridge; they also travel with `pip install ocracy` under
   `make_block`, `scaffold_backend`, `validate_adapter`).
 - `ocracy/backends/<id>/` — one subpackage per engine (`config.py` + `adapter.py`).
 - `ocracy/credentials.py` — credential resolution for remote backends.
+- `ocracy/kit/` — the facade kit: the param_map translator, the credential chain
+  and install plans, stdlib-only and shared with other facades (see below).
 - `ocracy/tools.py` + `ocracy/__main__.py` — the `ocracy` CLI (cw).
+
+### The facade kit, for building other facades
+
+The machinery under ocracy is not OCR-specific, and other facades (foley, falaw,
+voxy, scribed) use it instead of copying it:
+
+```python
+from ocracy.kit import make_translator, resolve_credential, using_credentials
+
+translate = make_translator(
+    {"languages": {"native_name": "lang", "coerce": "+".join}, "dpi": None},
+    backend="tess", on_unsupported="note", always_raise=("seed",),
+)
+t = translate({"languages": ["eng", "fra"], "dpi": 300})
+# t.kwargs == {"lang": "eng+fra"}; t.notes == ["dpi=300 is not supported by tess; dropped"]
+
+key = resolve_credential("acme", env_var="ACME_API_KEY")   # explicit -> bound -> env
+with using_credentials(acme=request_key):                  # per-request BYO key
+    ...
+```
+
+`ocracy.kit` imports only the standard library; the design is in
+`docs/adr/0001-facade-kit.md`.
 
 The architecture mirrors the sibling façade packages
 [`denote`](https://github.com/thorwhalen/denote) (audio→symbol) and
@@ -1208,18 +1233,19 @@ catalog.filter(is_remote=True).filter(pricing_model="free_tier_then_paid")
 
 Credential resolution for remote OCR backends.
 
-Remote engines need an API key (or a path to a service-account JSON). Rather than
-make each adapter reinvent the lookup, this module centralizes a small, layered
-resolver:
+Remote engines need an API key (or a path to a service-account JSON). This module
+holds ocracy’s *data* – which env vars each OCR provider uses and where to get a
+key – and binds it to the facade kit’s chain ([`ocracy.kit.credentials`](_autosummary/ocracy.kit.credentials.html.md#module-ocracy.kit.credentials)):
 
 1. an explicit value passed by the caller (`api_key=...`),
-2. the backend’s declared environment variable(s),
-3. (soft) a `.env` file discovered via `python-dotenv` if it is installed,
-4. (optional) an interactive prompt, only in a REPL and only if asked.
+2. a key bound for the provider with [`using_credentials()`](_autosummary/ocracy.credentials.html.md#ocracy.credentials.using_credentials) (bring-your-own-key),
+3. the backend’s declared environment variable(s), then the provider’s defaults,
+4. (soft) a project `.env` found from the current directory, if `python-dotenv`
+   is installed,
+5. (optional) an interactive prompt, only in a terminal and only if asked.
 
 A backend declares its variable(s) in `BACKEND_CONFIG['api_env_var']` (a string
-or list). The well-known providers below give friendly defaults. The design
-follows the credential pattern used by the sibling `aix` facade.
+or list).
 
 ### Module Attributes
 
@@ -1229,28 +1255,39 @@ follows the credential pattern used by the sibling `aix` facade.
 
 ### Functions
 
-| [`resolve_credential`](_autosummary/ocracy.credentials.html.md#ocracy.credentials.resolve_credential)([provider, api_key, ...])   | Resolve a credential for a remote backend.                               |
-|-------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------|
-| [`credential_help`](_autosummary/ocracy.credentials.html.md#ocracy.credentials.credential_help)(provider)                      | A short, link-bearing 'how to get a key' message for `provider` (or ''). |
+| [`resolve_credential`](_autosummary/ocracy.credentials.html.md#ocracy.credentials.resolve_credential)([provider, api_key, ...])   | Resolve a credential for a remote backend.                                                                                |
+|-------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------|
+| [`credential_help`](_autosummary/ocracy.credentials.html.md#ocracy.credentials.credential_help)(provider)                      | A short, link-bearing 'how to get a key' message for `provider` (or '').                                                  |
+| [`using_credentials`](_autosummary/ocracy.credentials.html.md#ocracy.credentials.using_credentials)([keys])                      | Bind provider keys for the `with` block (overlaying any outer binding).                                                   |
+| [`current_credentials`](_autosummary/ocracy.credentials.html.md#ocracy.credentials.current_credentials)()                          | The provider keys bound in this context by [`using_credentials()`](_autosummary/ocracy.credentials.html.md#ocracy.credentials.using_credentials) (a copy). |
 
 ### Exceptions
 
-| [`MissingCredentialError`](_autosummary/ocracy.credentials.html.md#ocracy.credentials.MissingCredentialError)   | Raised when a required credential cannot be resolved.   |
-|---------------------------------------------------------------------------|---------------------------------------------------------|
+| [`MissingCredentialError`](_autosummary/ocracy.credentials.html.md#ocracy.credentials.MissingCredentialError)([message, provider, ...])   | A required credential could not be resolved; the message says how to get one.   |
+|-----------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------|
 
 ### ocracy.credentials.CREDENTIAL_GUIDANCE *= {'anthropic': {'env_var': 'ANTHROPIC_API_KEY', 'get_key_url': 'https://console.anthropic.com/settings/keys', 'note': 'Create an API key in the Anthropic console.'}, 'aws-textract': {'env_var': 'AWS_ACCESS_KEY_ID (plus AWS_SECRET_ACCESS_KEY, AWS_DEFAULT_REGION)', 'get_key_url': 'https://docs.aws.amazon.com/textract/latest/dg/getting-started.html', 'note': 'Create AWS credentials (IAM user/role) with Textract permissions.'}, 'azure-document-intelligence': {'env_var': 'AZURE_DOCUMENT_INTELLIGENCE_KEY (plus AZURE_DOCUMENT_INTELLIGENCE_ENDPOINT)', 'get_key_url': 'https://learn.microsoft.com/azure/ai-services/document-intelligence/create-document-intelligence-resource', 'note': 'Create a Document Intelligence resource in the Azure portal; copy its key and endpoint.'}, 'gemini': {'env_var': 'GOOGLE_API_KEY (or GEMINI_API_KEY)', 'get_key_url': 'https://aistudio.google.com/app/apikey', 'note': 'Create an API key in Google AI Studio.'}, 'google-vision': {'env_var': 'GOOGLE_APPLICATION_CREDENTIALS', 'get_key_url': 'https://cloud.google.com/vision/docs/setup', 'note': 'Create a Google Cloud project, enable the Cloud Vision API, create a service account, download its JSON key, and point GOOGLE_APPLICATION_CREDENTIALS at that file. Free tier: 1,000 units/month.'}, 'mathpix': {'env_var': 'MATHPIX_APP_KEY (plus MATHPIX_APP_ID)', 'get_key_url': 'https://mathpix.com/ocr-api', 'note': 'Create a Mathpix account, then copy your app_id and app_key from the Mathpix console; set MATHPIX_APP_ID and MATHPIX_APP_KEY.'}, 'mistral-ocr': {'env_var': 'MISTRAL_API_KEY', 'get_key_url': 'https://console.mistral.ai/api-keys', 'note': 'Create an API key in the Mistral console (La Plateforme).'}, 'ocr-space': {'env_var': 'OCR_SPACE_API_KEY', 'get_key_url': 'https://ocr.space/ocrapi/freekey', 'note': 'Register a free API key by email; free tier allows 25,000 requests/month.'}, 'openai': {'env_var': 'OPENAI_API_KEY', 'get_key_url': 'https://platform.openai.com/api-keys', 'note': 'Create an API key in the OpenAI platform dashboard.'}}*
 
 Where/how to get a key, per provider — powers the dynamic “missing credential”
 errors AND the README. Keep links current; these are user-facing.
 
-### *exception* ocracy.credentials.MissingCredentialError
+### *exception* ocracy.credentials.MissingCredentialError(message='', , provider=None, env_vars=(), get_key_url=None)
 
 Bases: [`RuntimeError`](https://docs.python.org/3/builtins/exceptions.html#RuntimeError)
 
-Raised when a required credential cannot be resolved.
+A required credential could not be resolved; the message says how to get one.
 
-Its message includes provider-specific, link-bearing guidance on how to
-obtain a key (see [`CREDENTIAL_GUIDANCE`](_autosummary/ocracy.credentials.html.md#ocracy.credentials.CREDENTIAL_GUIDANCE)).
+#### provider
+
+The provider id asked for (or `None`).
+
+#### env_vars
+
+The env vars that were checked, in order.
+
+#### get_key_url
+
+Where to get a key, when the guidance table knows.
 
 ### ocracy.credentials.PROVIDER_ENV_VARS *= {'anthropic': ['ANTHROPIC_API_KEY'], 'aws-textract': ['AWS_ACCESS_KEY_ID'], 'azure-document-intelligence': ['AZURE_DOCUMENT_INTELLIGENCE_KEY'], 'azure-vision': ['AZURE_VISION_KEY', 'AZURE_COMPUTER_VISION_KEY'], 'gemini': ['GOOGLE_API_KEY', 'GEMINI_API_KEY'], 'google-document-ai': ['GOOGLE_APPLICATION_CREDENTIALS'], 'google-vision': ['GOOGLE_APPLICATION_CREDENTIALS', 'GOOGLE_API_KEY'], 'mathpix': ['MATHPIX_APP_KEY'], 'mistral-ocr': ['MISTRAL_API_KEY'], 'ocr-space': ['OCR_SPACE_API_KEY'], 'openai': ['OPENAI_API_KEY']}*
 
@@ -1263,13 +1300,20 @@ A short, link-bearing ‘how to get a key’ message for `provider` (or ‘’).
 * **Return type:**
   [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
+### ocracy.credentials.current_credentials()
+
+The provider keys bound in this context by [`using_credentials()`](_autosummary/ocracy.credentials.html.md#ocracy.credentials.using_credentials) (a copy).
+
+* **Return type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
+
 ### ocracy.credentials.resolve_credential(provider=None, , api_key=None, env_var=None, required=True, prompt_if_missing=False)
 
 Resolve a credential for a remote backend.
 
 * **Parameters:**
   * **provider** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – A known provider id (see [`PROVIDER_ENV_VARS`](_autosummary/ocracy.credentials.html.md#ocracy.credentials.PROVIDER_ENV_VARS)) used to
-    infer default env-var names.
+    infer default env-var names, and the key for [`using_credentials()`](_autosummary/ocracy.credentials.html.md#ocracy.credentials.using_credentials).
   * **api_key** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – An explicit value; if given, it wins and is returned as-is.
   * **env_var** (`Union`[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Sequence`](https://docs.python.org/3/library/typing.html#typing.Sequence)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)], [`None`](https://docs.python.org/3/builtins/constants.html#None)]) – Extra env-var name(s) to check (checked before provider defaults).
   * **required** ([`bool`](https://docs.python.org/3/builtins/functions.html#bool)) – If True (default), raise [`MissingCredentialError`](_autosummary/ocracy.credentials.html.md#ocracy.credentials.MissingCredentialError) when
@@ -1281,6 +1325,26 @@ Resolve a credential for a remote backend.
 * **Returns:**
   The resolved secret, or `None` when `required=False` and nothing was
   found.
+
+### ocracy.credentials.using_credentials(keys=None, , \*\*provider_keys)
+
+Bind provider keys for the `with` block (overlaying any outer binding).
+
+Pass a mapping for provider ids that are not identifiers (`"google-vision"`)
+or keywords for the rest. Falsy values are ignored, so an optional request
+header can be passed straight through.
+
+* **Return type:**
+  [`Iterator`](https://docs.python.org/3/library/typing.html#typing.Iterator)[[`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)]
+
+```pycon
+>>> with using_credentials(acme="outer"):
+...     with using_credentials({"acme": "inner", "other": None}):
+...         inner = current_credentials()
+...     outer = current_credentials()
+>>> inner, outer
+({'acme': 'inner'}, {'acme': 'outer'})
+```
 
 
 # _autosummary/ocracy.html.md
@@ -1371,7 +1435,7 @@ ocracy.services.tesseract.adapter              # raw engine adapter
 | [`Catalog`](_autosummary/ocracy.html.md#ocracy.Catalog)([path, \_records])                        | A filterable, dict-like collection of [`BackendInfo`](_autosummary/ocracy.html.md#ocracy.BackendInfo), keyed by id. |
 | [`ServiceCollection`](_autosummary/ocracy.html.md#ocracy.ServiceCollection)()                               | Lazy mapping of backend ids -> `ServiceHandle`.                                                                  |
 | [`BaseOcrAdapter`](_autosummary/ocracy.html.md#ocracy.BaseOcrAdapter)(config)                            | Optional base class for backend adapters.                                                                        |
-| [`Requirements`](_autosummary/ocracy.html.md#ocracy.Requirements)(backend_id, implemented, ...[, ...]) | What a backend needs to run — structured for an agent to act on.                                                 |
+| [`Requirements`](_autosummary/ocracy.html.md#ocracy.Requirements)(backend_id, implemented, ...[, ...]) | What a backend needs to run, structured for an agent to act on.                                                  |
 
 ### *class* ocracy.BBox(x0, y0, x1, y1, polygon=None)
 
@@ -1425,6 +1489,23 @@ and implements `read` as: translate normalized kwargs -> native kwargs ->
 Adapters are not *required* to subclass this — the registry only needs an
 `Adapter` class with a `read(image, **kwargs)` method — but doing so
 removes the boilerplate.
+
+#### ADAPTER_KWARGS *= ('api_key', 'app_key', 'app_id')*
+
+Keyword arguments a *remote* adapter reads itself (credentials), passed
+through untranslated: no `param_map` declares them, and they must never be
+dropped. On a local backend they are dropped with a (redacted) note.
+
+#### read(image, \*\*kwargs)
+
+Translate `kwargs`, run `_read()`, and put any drop notes on the result.
+
+A parameter the backend cannot honour is warned about and dropped, and the
+drop is recorded in `result.meta["notes"]` so it is visible after the
+warning is gone (or filtered).
+
+* **Return type:**
+  [`OcrResult`](_autosummary/ocracy.base.html.md#ocracy.base.OcrResult)
 
 ### *class* ocracy.Catalog(path=None, , \_records=None)
 
@@ -1556,15 +1637,15 @@ Markdown rendering if the backend produced one (else `None`).
 
 Mean confidence over blocks that report one, or `None`.
 
-### *class* ocracy.Requirements(backend_id, implemented, available, is_local, is_remote, pip_command, extra=None, system=<factory>, system_note=None, gpu=None, weights=None, heavy=False, alternative=None, credentials=<factory>, notes=<factory>)
+### *class* ocracy.Requirements(backend_id, implemented, available, is_local, is_remote, pip_command, extra=None, system=<factory>, system_note=None, gpu=None, weights=None, heavy=False, alternative=None, credentials=<factory>, notes=<factory>, verify_command=None, alternative_label='Lighter alternative')
 
 Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
 
-What a backend needs to run — structured for an agent to act on.
+What a backend needs to run, structured for an agent to act on.
 
 #### instructions()
 
-An agent-/human-readable, copy-pasteable install plan.
+An agent- and human-readable, copy-pasteable install plan.
 
 * **Return type:**
   [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
@@ -1798,10 +1879,11 @@ Return structured install [`Requirements`](_autosummary/ocracy.html.md#ocracy.Re
 
 Works for both implemented backends (uses the `ocracy[extra]` install and
 the recipe) and ledger-only backends (falls back to the ledger’s
-`python_install` string). Pass `gpu=True` to surface GPU wheel guidance.
+`python_install` string). A recipe’s GPU guidance is always included;
+`gpu` is accepted for compatibility and changes nothing.
 
 * **Return type:**
-  [`Requirements`](_autosummary/ocracy.html.md#ocracy.Requirements)
+  [`Requirements`](_autosummary/ocracy.kit.install.html.md#ocracy.kit.install.Requirements)
 
 ### ocracy.scaffold_backend(backend_id, , dest=None, overwrite=False, ledger=None, extra_overrides=None)
 
@@ -1859,12 +1941,758 @@ decide.
 | [`base`](_autosummary/ocracy.base.html.md#module-ocracy.base)                 | Core types and normalized result objects for ocracy.                                                             |
 | [`catalog`](_autosummary/ocracy.catalog.html.md#ocracy.catalog)                  | A filterable, dict-like collection of [`BackendInfo`](_autosummary/ocracy.html.md#ocracy.BackendInfo), keyed by id. |
 | [`credentials`](_autosummary/ocracy.credentials.html.md#module-ocracy.credentials)   | Credential resolution for remote OCR backends.                                                                   |
+| [`kit`](_autosummary/ocracy.kit.html.md#module-ocracy.kit)                   | The facade kit: the three helpers every fleet facade used to copy by hand.                                       |
 | [`make_backend`](_autosummary/ocracy.make_backend.html.md#module-ocracy.make_backend) | Abstraction tools for *building* OCR facades.                                                                    |
 | [`registry`](_autosummary/ocracy.registry.html.md#module-ocracy.registry)         | Backend discovery, registration, and lazy loading.                                                               |
 | [`status`](_autosummary/ocracy.status.html.md#module-ocracy.status)             | Backend readiness status — four nested levels, info dicts, and a Markdown table.                                 |
 | [`tools`](_autosummary/ocracy.tools.html.md#module-ocracy.tools)               | Command-line tools for ocracy (dispatched via `cw` in `__main__`).                                               |
 | [`translation`](_autosummary/ocracy.translation.html.md#module-ocracy.translation)   | Parameter translation between ocracy's normalized kwargs and native engines.                                     |
 | [`util`](_autosummary/ocracy.util.html.md#module-ocracy.util)                 | Image-input normalization and small shared helpers.                                                              |
+
+
+# _autosummary/ocracy.kit.credentials.html.md
+
+# ocracy.kit.credentials
+
+One credential chain for every facade: explicit -> bound -> env -> store -> prompt.
+
+[`resolve_credential()`](_autosummary/ocracy.kit.credentials.html.md#ocracy.kit.credentials.resolve_credential) looks for a provider’s secret in this order and stops at
+the first non-empty value:
+
+1. `api_key=` passed by the caller (an empty string counts as not given);
+2. a key bound for this provider in the current context with
+   [`using_credentials()`](_autosummary/ocracy.kit.credentials.html.md#ocracy.kit.credentials.using_credentials) – the bring-your-own-key seam a server uses without
+   > threading a key through every call;
+3. the environment: `env_var` first, then the provider’s row of
+   `provider_env_vars`, in order, without duplicates (with `dotenv=True` a
+   project `.env`, found from the current directory, is loaded on a miss and the
+   environment checked again; it never overrides a variable that is already set,
+   and like any `.env` loader it writes to `os.environ`, so every later reader
+   sees it);
+4. `store`: any mapping keyed by env-var name (a `config2py` store, a dict);
+   only a missing key moves on, any other error propagates;
+5. with `prompt_if_missing=True` and an interactive terminal, `getpass`; the
+   answer is written to `store` when it is a `MutableMapping`, else to the
+   process environment.
+
+When nothing resolves and `required=True`, it raises `error` (default
+[`MissingCredentialError`](_autosummary/ocracy.kit.credentials.html.md#ocracy.kit.credentials.MissingCredentialError)) with a message naming every env var it tried and,
+from `guidance`, where to get a key:
+
+```default
+>>> resolve_credential("acme", api_key="explicit")
+'explicit'
+>>> with using_credentials(acme="bound"):
+...     resolve_credential("acme")
+'bound'
+>>> resolve_credential("acme", env_var="ACME_SURELY_UNSET_KEY", required=False) is None
+True
+```
+
+Two properties of the binding (step 2) that a server must know:
+
+- **It is shared by provider id across every package using the kit.** A key bound
+  as `openai` reaches ocracy, aix and any other facade calling OpenAI in that
+  context. That is the point of a bring-your-own-key binding, so pick provider ids
+  that name the *account* (`openai`, `fal`, `elevenlabs`), not the facade.
+- **It is a** [`ContextVar`](https://docs.python.org/3/library/contextvars.html#contextvars.ContextVar) **binding**, so it follows the
+  context: `asyncio` tasks and `asyncio.to_thread` see it, but a bare
+  `threading.Thread`, `ThreadPoolExecutor.submit` or `loop.run_in_executor`
+  start from an empty context and fall through to the environment (the operator’s
+  key). Submit `contextvars.copy_context().run` to keep the binding.
+
+A package binds its own tables once, with [`functools.partial()`](https://docs.python.org/3/library/functools.html#functools.partial) or a thin
+wrapper, and keeps its public names; ocracy’s [`ocracy.credentials`](_autosummary/ocracy.credentials.html.md#module-ocracy.credentials) is the
+worked example. Stdlib only; imports nothing else from ocracy.
+
+### Functions
+
+| [`resolve_credential`](_autosummary/ocracy.kit.credentials.html.md#ocracy.kit.credentials.resolve_credential)([provider, api_key, ...])   | Resolve a provider's credential through the chain in the module docstring.                                                |
+|-------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------|
+| [`env_var_names`](_autosummary/ocracy.kit.credentials.html.md#ocracy.kit.credentials.env_var_names)([provider, env_var, ...])        | The env vars the chain checks: `env_var` first, then the provider's row.                                                  |
+| [`credential_help`](_autosummary/ocracy.kit.credentials.html.md#ocracy.kit.credentials.credential_help)(provider, \*[, guidance])      | A short, link-bearing "how to get a key" line for `provider` (or `''`).                                                   |
+| [`credential_lines`](_autosummary/ocracy.kit.credentials.html.md#ocracy.kit.credentials.credential_lines)(env_var, provider, \*[, ...]) | `export VAR  (get a key: URL)` lines for an install plan (empty if no var).                                               |
+| [`using_credentials`](_autosummary/ocracy.kit.credentials.html.md#ocracy.kit.credentials.using_credentials)([keys])                      | Bind provider keys for the `with` block (overlaying any outer binding).                                                   |
+| [`current_credentials`](_autosummary/ocracy.kit.credentials.html.md#ocracy.kit.credentials.current_credentials)()                          | The provider keys bound in this context by [`using_credentials()`](_autosummary/ocracy.kit.credentials.html.md#ocracy.kit.credentials.using_credentials) (a copy). |
+
+### Exceptions
+
+| [`MissingCredentialError`](_autosummary/ocracy.kit.credentials.html.md#ocracy.kit.credentials.MissingCredentialError)([message, provider, ...])   | A required credential could not be resolved; the message says how to get one.   |
+|-----------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------|
+
+### *exception* ocracy.kit.credentials.MissingCredentialError(message='', , provider=None, env_vars=(), get_key_url=None)
+
+Bases: [`RuntimeError`](https://docs.python.org/3/builtins/exceptions.html#RuntimeError)
+
+A required credential could not be resolved; the message says how to get one.
+
+#### provider
+
+The provider id asked for (or `None`).
+
+#### env_vars
+
+The env vars that were checked, in order.
+
+#### get_key_url
+
+Where to get a key, when the guidance table knows.
+
+### ocracy.kit.credentials.credential_help(provider, , guidance=None)
+
+A short, link-bearing “how to get a key” line for `provider` (or `''`).
+
+`guidance[provider]` may carry `note` and `get_key_url`.
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
+### ocracy.kit.credentials.credential_lines(env_var, provider, , guidance=None)
+
+`export VAR  (get a key: URL)` lines for an install plan (empty if no var).
+
+Several env vars (alternatives) are shown as `A / B`.
+
+* **Return type:**
+  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)
+
+### ocracy.kit.credentials.current_credentials()
+
+The provider keys bound in this context by [`using_credentials()`](_autosummary/ocracy.kit.credentials.html.md#ocracy.kit.credentials.using_credentials) (a copy).
+
+* **Return type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
+
+### ocracy.kit.credentials.env_var_names(provider=None, , env_var=None, provider_env_vars=None)
+
+The env vars the chain checks: `env_var` first, then the provider’s row.
+
+* **Return type:**
+  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)
+
+### ocracy.kit.credentials.resolve_credential(provider=None, \*, api_key=None, env_var=None, provider_env_vars=None, guidance=None, store=None, dotenv=False, prompt_if_missing=False, required=True, error=<class 'ocracy.kit.credentials.MissingCredentialError'>, hint='')
+
+Resolve a provider’s credential through the chain in the module docstring.
+
+* **Parameters:**
+  * **provider** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – The provider id, used for bindings, table rows and messages.
+  * **api_key** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – An explicit value; wins when non-empty.
+  * **env_var** (`Union`[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Sequence`](https://docs.python.org/3/library/typing.html#typing.Sequence)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)], [`None`](https://docs.python.org/3/builtins/constants.html#None)]) – Env var name(s) checked before the provider’s table row.
+  * **provider_env_vars** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Mapping`](https://docs.python.org/3/library/typing.html#typing.Mapping)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), `Union`[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Sequence`](https://docs.python.org/3/library/typing.html#typing.Sequence)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)], [`None`](https://docs.python.org/3/builtins/constants.html#None)]]]) – The package’s provider -> env var(s) table.
+  * **guidance** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Mapping`](https://docs.python.org/3/library/typing.html#typing.Mapping)]) – The package’s provider -> `{note, get_key_url}` table.
+  * **store** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Mapping`](https://docs.python.org/3/library/typing.html#typing.Mapping)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]]) – A mapping keyed by env-var name, read after the environment.
+  * **dotenv** ([`bool`](https://docs.python.org/3/builtins/functions.html#bool)) – On an environment miss, load a project `.env` (searched from the
+    current directory, never overriding) and look again.
+  * **prompt_if_missing** ([`bool`](https://docs.python.org/3/builtins/functions.html#bool)) – Ask with `getpass` when interactive (last resort).
+  * **required** ([`bool`](https://docs.python.org/3/builtins/functions.html#bool)) – Raise when nothing resolves; else return `None`.
+  * **error** ([`Callable`](https://docs.python.org/3/library/typing.html#typing.Callable)[[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)], [`BaseException`](https://docs.python.org/3/builtins/exceptions.html#BaseException)]) – The exception to raise, called with the message. When it builds a
+    [`MissingCredentialError`](_autosummary/ocracy.kit.credentials.html.md#ocracy.kit.credentials.MissingCredentialError) (or subclass), its `provider`,
+    `env_vars` and `get_key_url` attributes are filled in.
+  * **hint** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – An extra sentence for the error message (why this key is needed).
+* **Return type:**
+  [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
+* **Returns:**
+  The secret, or `None` when `required=False` and nothing resolved.
+
+### ocracy.kit.credentials.using_credentials(keys=None, , \*\*provider_keys)
+
+Bind provider keys for the `with` block (overlaying any outer binding).
+
+Pass a mapping for provider ids that are not identifiers (`"google-vision"`)
+or keywords for the rest. Falsy values are ignored, so an optional request
+header can be passed straight through.
+
+* **Return type:**
+  [`Iterator`](https://docs.python.org/3/library/typing.html#typing.Iterator)[[`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)]
+
+```pycon
+>>> with using_credentials(acme="outer"):
+...     with using_credentials({"acme": "inner", "other": None}):
+...         inner = current_credentials()
+...     outer = current_credentials()
+>>> inner, outer
+({'acme': 'inner'}, {'acme': 'outer'})
+```
+
+
+# _autosummary/ocracy.kit.html.md
+
+# ocracy.kit
+
+The facade kit: the three helpers every fleet facade used to copy by hand.
+
+One interface over many backends needs the same three mechanisms whatever the
+backends do, and until this kit each facade (ocracy, scribed, denote, arioso,
+illustration, aix, foley, falaw, voxy) carried its own drifting copy:
+
+- [`translation`](_autosummary/ocracy.kit.translation.html.md#module-ocracy.kit.translation) – canonical kwargs -> native kwargs from a
+  declared `param_map`, with an unsupported-parameter policy that never drops
+  silently (every drop and clamp comes back as a note);
+- [`credentials`](_autosummary/ocracy.kit.credentials.html.md#module-ocracy.kit.credentials) – the key chain (explicit -> bound in context ->
+  env -> store -> prompt), whose error names the env vars and where to get a key;
+- [`install`](_autosummary/ocracy.kit.install.html.md#module-ocracy.kit.install) – per-OS install plans an agent can act on.
+
+Usage:
+
+```default
+from ocracy.kit import make_translator, resolve_credential, using_credentials
+
+translate = make_translator(BACKEND_CONFIG["param_map"], backend="acme",
+                            on_unsupported="note", always_raise=("seed",))
+t = translate(canonical_kwargs)        # t.kwargs, t.notes, t.dropped
+key = resolve_credential("acme", env_var="ACME_API_KEY", api_key=api_key)
+```
+
+Every module here is stdlib-only and imports nothing from ocracy outside
+`ocracy.kit`, so the kit can move to its own distribution without a rewrite.
+The decisions behind its shape are in `docs/adr/0001-facade-kit.md`.
+
+### Functions
+
+| [`make_translator`](_autosummary/ocracy.kit.html.md#ocracy.kit.make_translator)(param_map, \*[, backend, ...])   | Build `translate(kwargs, *, on_unsupported=None) -> Translation` from a map.                                              |
+|---------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------|
+| [`check_range`](_autosummary/ocracy.kit.html.md#ocracy.kit.check_range)(name, value, spec)                   | Raise `ValueError` unless `value` fits `spec`'s `min`/`max`/`choices`.                                                    |
+| [`resolve_credential`](_autosummary/ocracy.kit.html.md#ocracy.kit.resolve_credential)([provider, api_key, ...])     | Resolve a provider's credential through the chain in the module docstring.                                                |
+| [`using_credentials`](_autosummary/ocracy.kit.html.md#ocracy.kit.using_credentials)([keys])                        | Bind provider keys for the `with` block (overlaying any outer binding).                                                   |
+| [`current_credentials`](_autosummary/ocracy.kit.html.md#ocracy.kit.current_credentials)()                            | The provider keys bound in this context by [`using_credentials()`](_autosummary/ocracy.kit.html.md#ocracy.kit.using_credentials) (a copy). |
+| [`env_var_names`](_autosummary/ocracy.kit.html.md#ocracy.kit.env_var_names)([provider, env_var, ...])          | The env vars the chain checks: `env_var` first, then the provider's row.                                                  |
+| [`credential_help`](_autosummary/ocracy.kit.html.md#ocracy.kit.credential_help)(provider, \*[, guidance])        | A short, link-bearing "how to get a key" line for `provider` (or `''`).                                                   |
+| [`credential_lines`](_autosummary/ocracy.kit.html.md#ocracy.kit.credential_lines)(env_var, provider, \*[, ...])   | `export VAR  (get a key: URL)` lines for an install plan (empty if no var).                                               |
+| [`build_requirements`](_autosummary/ocracy.kit.html.md#ocracy.kit.build_requirements)(backend_id, \*, package, ...) | Build [`Requirements`](_autosummary/ocracy.kit.html.md#ocracy.kit.Requirements) for `backend_id` from its recipe and known facts.     |
+| [`run_install`](_autosummary/ocracy.kit.html.md#ocracy.kit.run_install)(req, \*, package[, yes, ...])        | Plan (default) or run (`yes=True`) the pip install that `req` describes.                                                  |
+| [`current_platform`](_autosummary/ocracy.kit.html.md#ocracy.kit.current_platform)()                               | `'darwin'`, `'linux'`, `'windows'`, or `sys.platform` for anything else.                                                  |
+
+### Classes
+
+| [`Translation`](_autosummary/ocracy.kit.html.md#ocracy.kit.Translation)([kwargs, notes, dropped])             | What a translator produced: the native kwargs, and every change it made.   |
+|----------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------|
+| [`Requirements`](_autosummary/ocracy.kit.html.md#ocracy.kit.Requirements)(backend_id, implemented, ...[, ...]) | What a backend needs to run, structured for an agent to act on.            |
+
+### Exceptions
+
+| [`UnsupportedParameter`](_autosummary/ocracy.kit.html.md#ocracy.kit.UnsupportedParameter)                             | A backend cannot honour a parameter, and the policy says not to drop it.      |
+|---------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------|
+| [`MissingCredentialError`](_autosummary/ocracy.kit.html.md#ocracy.kit.MissingCredentialError)([message, provider, ...]) | A required credential could not be resolved; the message says how to get one. |
+
+### *exception* ocracy.kit.MissingCredentialError(message='', , provider=None, env_vars=(), get_key_url=None)
+
+Bases: [`RuntimeError`](https://docs.python.org/3/builtins/exceptions.html#RuntimeError)
+
+A required credential could not be resolved; the message says how to get one.
+
+#### provider
+
+The provider id asked for (or `None`).
+
+#### env_vars
+
+The env vars that were checked, in order.
+
+#### get_key_url
+
+Where to get a key, when the guidance table knows.
+
+### *class* ocracy.kit.Requirements(backend_id, implemented, available, is_local, is_remote, pip_command, extra=None, system=<factory>, system_note=None, gpu=None, weights=None, heavy=False, alternative=None, credentials=<factory>, notes=<factory>, verify_command=None, alternative_label='Lighter alternative')
+
+Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
+
+What a backend needs to run, structured for an agent to act on.
+
+#### instructions()
+
+An agent- and human-readable, copy-pasteable install plan.
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
+### *class* ocracy.kit.Translation(kwargs=<factory>, notes=<factory>, dropped=<factory>)
+
+Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
+
+What a translator produced: the native kwargs, and every change it made.
+
+#### kwargs
+
+The native kwargs to pass to the backend.
+
+#### notes
+
+One human-readable line per drop or clamp, for the facade’s result.
+
+#### dropped
+
+The canonical names that were dropped.
+
+### *exception* ocracy.kit.UnsupportedParameter
+
+Bases: [`ValueError`](https://docs.python.org/3/builtins/exceptions.html#ValueError)
+
+A backend cannot honour a parameter, and the policy says not to drop it.
+
+### ocracy.kit.build_requirements(backend_id, , package, implemented, available, recipe=None, is_local=False, is_remote=False, ledger_pip='', credentials=(), platform=None, verify_command=None, unimplemented_note=None, alternative_label='Lighter alternative')
+
+Build [`Requirements`](_autosummary/ocracy.kit.html.md#ocracy.kit.Requirements) for `backend_id` from its recipe and known facts.
+
+* **Parameters:**
+  * **backend_id** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – The backend’s id.
+  * **package** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – The distribution whose extra installs it (`pip install "pkg[x]"`).
+  * **implemented** ([`bool`](https://docs.python.org/3/builtins/functions.html#bool)) – Whether the package ships a facade for it.
+  * **available** ([`bool`](https://docs.python.org/3/builtins/functions.html#bool)) – Whether it is usable right now (the package’s own probe).
+  * **recipe** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Mapping`](https://docs.python.org/3/library/typing.html#typing.Mapping)]) – Its row of the package’s recipes table (see the module docstring).
+  * **is_remote** ([`bool`](https://docs.python.org/3/builtins/functions.html#bool)) – From the backend’s config or ledger record.
+  * **ledger_pip** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – The ledger’s install line, used for a backend not implemented.
+  * **credentials** ([`Iterable`](https://docs.python.org/3/library/typing.html#typing.Iterable)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – `export` lines (see [`credential_lines()`](_autosummary/ocracy.kit.credentials.html.md#ocracy.kit.credentials.credential_lines)).
+  * **platform** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – Override [`current_platform()`](_autosummary/ocracy.kit.html.md#ocracy.kit.current_platform) (for tests and docs).
+  * **verify_command** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – The shell line shown as `Verify:`.
+  * **unimplemented_note** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – Appended to `notes` when not implemented.
+  * **alternative_label** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – The wording before `alt` in the instructions.
+* **Return type:**
+  [`Requirements`](_autosummary/ocracy.kit.install.html.md#ocracy.kit.install.Requirements)
+
+### ocracy.kit.check_range(name, value, spec)
+
+Raise `ValueError` unless `value` fits `spec`’s `min`/`max`/`choices`.
+
+The standalone form of the translator’s `out_of_range='raise'` check; returns
+`value` unchanged. `None` is “unset” and always fits.
+
+* **Return type:**
+  [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)
+
+### ocracy.kit.credential_help(provider, , guidance=None)
+
+A short, link-bearing “how to get a key” line for `provider` (or `''`).
+
+`guidance[provider]` may carry `note` and `get_key_url`.
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
+### ocracy.kit.credential_lines(env_var, provider, , guidance=None)
+
+`export VAR  (get a key: URL)` lines for an install plan (empty if no var).
+
+Several env vars (alternatives) are shown as `A / B`.
+
+* **Return type:**
+  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)
+
+### ocracy.kit.current_credentials()
+
+The provider keys bound in this context by [`using_credentials()`](_autosummary/ocracy.kit.html.md#ocracy.kit.using_credentials) (a copy).
+
+* **Return type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
+
+### ocracy.kit.current_platform()
+
+`'darwin'`, `'linux'`, `'windows'`, or `sys.platform` for anything else.
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
+### ocracy.kit.env_var_names(provider=None, , env_var=None, provider_env_vars=None)
+
+The env vars the chain checks: `env_var` first, then the provider’s row.
+
+* **Return type:**
+  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)
+
+### ocracy.kit.make_translator(param_map, , backend='', on_unsupported='warn', always_raise=(), vocabulary=None, passthrough=(), skip_none=False, out_of_range='raise', stacklevel=2)
+
+Build `translate(kwargs, *, on_unsupported=None) -> Translation` from a map.
+
+* **Parameters:**
+  * **param_map** ([`Mapping`](https://docs.python.org/3/library/typing.html#typing.Mapping)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]) – Canonical name -> spec (see the module docstring). Specs are
+    validated here, so a malformed map fails when the backend loads, not on
+    the first call that happens to use the bad entry.
+  * **backend** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – The backend’s name, used in notes and errors.
+  * **on_unsupported** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – The backend’s policy (one of `POLICIES`).
+  * **always_raise** ([`Iterable`](https://docs.python.org/3/library/typing.html#typing.Iterable)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – Canonical names that raise under the backend’s policy because
+    dropping them changes what the caller gets.
+  * **vocabulary** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Mapping`](https://docs.python.org/3/library/typing.html#typing.Mapping)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]]) – The facade’s canonical names -> their default values. Enables
+    “not asked for” detection and “not a parameter of” wording.
+  * **passthrough** ([`Iterable`](https://docs.python.org/3/library/typing.html#typing.Iterable)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – Names passed through untranslated and unreported.
+  * **skip_none** ([`bool`](https://docs.python.org/3/builtins/functions.html#bool)) – Treat a `None` value as unset: never sent, never reported.
+  * **out_of_range** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – The default for specs that do not set their own.
+  * **stacklevel** ([`int`](https://docs.python.org/3/builtins/functions.html#int)) – The frame a `'warn'` points at, counted from the code that
+    calls `translate` (1 = that code, 2 = its caller).
+* **Return type:**
+  [`Callable`](https://docs.python.org/3/library/typing.html#typing.Callable)[[`...`](https://docs.python.org/3/builtins/constants.html#Ellipsis), [`Translation`](_autosummary/ocracy.kit.translation.html.md#ocracy.kit.translation.Translation)]
+* **Returns:**
+  `translate`. Its optional `on_unsupported=` is the *caller’s* policy for
+  this one call; when given it replaces both the backend’s policy and
+  `always_raise`.
+
+### ocracy.kit.resolve_credential(provider=None, \*, api_key=None, env_var=None, provider_env_vars=None, guidance=None, store=None, dotenv=False, prompt_if_missing=False, required=True, error=<class 'ocracy.kit.credentials.MissingCredentialError'>, hint='')
+
+Resolve a provider’s credential through the chain in the module docstring.
+
+* **Parameters:**
+  * **provider** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – The provider id, used for bindings, table rows and messages.
+  * **api_key** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – An explicit value; wins when non-empty.
+  * **env_var** (`Union`[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Sequence`](https://docs.python.org/3/library/typing.html#typing.Sequence)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)], [`None`](https://docs.python.org/3/builtins/constants.html#None)]) – Env var name(s) checked before the provider’s table row.
+  * **provider_env_vars** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Mapping`](https://docs.python.org/3/library/typing.html#typing.Mapping)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), `Union`[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Sequence`](https://docs.python.org/3/library/typing.html#typing.Sequence)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)], [`None`](https://docs.python.org/3/builtins/constants.html#None)]]]) – The package’s provider -> env var(s) table.
+  * **guidance** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Mapping`](https://docs.python.org/3/library/typing.html#typing.Mapping)]) – The package’s provider -> `{note, get_key_url}` table.
+  * **store** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Mapping`](https://docs.python.org/3/library/typing.html#typing.Mapping)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]]) – A mapping keyed by env-var name, read after the environment.
+  * **dotenv** ([`bool`](https://docs.python.org/3/builtins/functions.html#bool)) – On an environment miss, load a project `.env` (searched from the
+    current directory, never overriding) and look again.
+  * **prompt_if_missing** ([`bool`](https://docs.python.org/3/builtins/functions.html#bool)) – Ask with `getpass` when interactive (last resort).
+  * **required** ([`bool`](https://docs.python.org/3/builtins/functions.html#bool)) – Raise when nothing resolves; else return `None`.
+  * **error** ([`Callable`](https://docs.python.org/3/library/typing.html#typing.Callable)[[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)], [`BaseException`](https://docs.python.org/3/builtins/exceptions.html#BaseException)]) – The exception to raise, called with the message. When it builds a
+    [`MissingCredentialError`](_autosummary/ocracy.kit.html.md#ocracy.kit.MissingCredentialError) (or subclass), its `provider`,
+    `env_vars` and `get_key_url` attributes are filled in.
+  * **hint** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – An extra sentence for the error message (why this key is needed).
+* **Return type:**
+  [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
+* **Returns:**
+  The secret, or `None` when `required=False` and nothing resolved.
+
+### ocracy.kit.run_install(req, , package, yes=False, verify_code=None, upgrade=False)
+
+Plan (default) or run (`yes=True`) the pip install that `req` describes.
+
+* **Parameters:**
+  * **req** ([`Requirements`](_autosummary/ocracy.kit.install.html.md#ocracy.kit.install.Requirements)) – The plan, from [`build_requirements()`](_autosummary/ocracy.kit.html.md#ocracy.kit.build_requirements).
+  * **package** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – The distribution whose extra to install.
+  * **yes** ([`bool`](https://docs.python.org/3/builtins/functions.html#bool)) – Actually run pip; otherwise a dry run that changes nothing.
+  * **verify_code** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – Python source run in a fresh interpreter after a successful
+    install; `available_after` is whether it printed `True`.
+  * **upgrade** ([`bool`](https://docs.python.org/3/builtins/functions.html#bool)) – Pass `--upgrade` to pip.
+* **Return type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
+* **Returns:**
+  `{backend, requirements, ran, available_before, message?, pip_argv?,
+  returncode?, stdout_tail?, stderr_tail?, available_after?, system_todo?}`.
+
+### ocracy.kit.using_credentials(keys=None, , \*\*provider_keys)
+
+Bind provider keys for the `with` block (overlaying any outer binding).
+
+Pass a mapping for provider ids that are not identifiers (`"google-vision"`)
+or keywords for the rest. Falsy values are ignored, so an optional request
+header can be passed straight through.
+
+* **Return type:**
+  [`Iterator`](https://docs.python.org/3/library/typing.html#typing.Iterator)[[`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)]
+
+```pycon
+>>> with using_credentials(acme="outer"):
+...     with using_credentials({"acme": "inner", "other": None}):
+...         inner = current_credentials()
+...     outer = current_credentials()
+>>> inner, outer
+({'acme': 'inner'}, {'acme': 'outer'})
+```
+
+### Modules
+
+| [`credentials`](_autosummary/ocracy.kit.credentials.html.md#module-ocracy.kit.credentials)   | One credential chain for every facade: explicit -> bound -> env -> store -> prompt.   |
+|----------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|
+| [`install`](_autosummary/ocracy.kit.install.html.md#module-ocracy.kit.install)           | Install plans: what a backend needs on *this* OS, as data an agent can act on.        |
+| [`translation`](_autosummary/ocracy.kit.translation.html.md#module-ocracy.kit.translation)   | Canonical -> native keyword translation, with an honest unsupported-parameter policy. |
+
+
+# _autosummary/ocracy.kit.install.html.md
+
+# ocracy.kit.install
+
+Install plans: what a backend needs on *this* OS, as data an agent can act on.
+
+Many backends are not one `pip install` away: a system binary (`brew install
+tesseract`), a GPU wheel, first-run model weights, a credential. A package keeps
+that knowledge as a `recipes` table (backend id -> recipe) and this module turns
+one recipe into a [`Requirements`](_autosummary/ocracy.kit.install.html.md#ocracy.kit.install.Requirements) whose [`instructions()`](_autosummary/ocracy.kit.install.html.md#ocracy.kit.install.Requirements.instructions) is a
+copy-pasteable plan:
+
+```default
+>>> req = build_requirements(
+...     "tess", package="ocracy", implemented=True, available=False,
+...     recipe={"system": {"linux": ["apt-get install tesseract-ocr"]}},
+...     platform="linux",
+... )
+>>> req.pip_command
+'pip install "ocracy[tess]"'
+>>> req.system
+['apt-get install tesseract-ocr']
+```
+
+A recipe needs only the fields that differ from the trivial
+`pip install "<package>[<id>]"`: `extra` (the pyproject extra, when it differs
+from the id), `system` (platform -> shell commands), `system_note`, `gpu` (an
+alternative pip line), `weights` (first-run downloads), `heavy`, `alt` (a
+lighter backend) and `notes`.
+
+[`run_install()`](_autosummary/ocracy.kit.install.html.md#ocracy.kit.install.run_install) executes the pip part of a plan (`yes=True` only) and verifies
+it in a fresh interpreter. System commands and GPU wheels are surfaced, never run:
+they need sudo, brew, or a CUDA choice only the user can make.
+
+The registry and ledger lookups stay in the package (they are the package’s
+knowledge); [`ocracy.install`](_autosummary/ocracy.html.md#ocracy.install) is the worked example. Stdlib only; imports
+nothing else from ocracy.
+
+### Functions
+
+| [`current_platform`](_autosummary/ocracy.kit.install.html.md#ocracy.kit.install.current_platform)()                               | `'darwin'`, `'linux'`, `'windows'`, or `sys.platform` for anything else.                                              |
+|---------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------|
+| [`build_requirements`](_autosummary/ocracy.kit.install.html.md#ocracy.kit.install.build_requirements)(backend_id, \*, package, ...) | Build [`Requirements`](_autosummary/ocracy.kit.install.html.md#ocracy.kit.install.Requirements) for `backend_id` from its recipe and known facts. |
+| [`run_install`](_autosummary/ocracy.kit.install.html.md#ocracy.kit.install.run_install)(req, \*, package[, yes, ...])        | Plan (default) or run (`yes=True`) the pip install that `req` describes.                                              |
+
+### Classes
+
+| [`Requirements`](_autosummary/ocracy.kit.install.html.md#ocracy.kit.install.Requirements)(backend_id, implemented, ...[, ...])   | What a backend needs to run, structured for an agent to act on.   |
+|------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------|
+
+### *class* ocracy.kit.install.Requirements(backend_id, implemented, available, is_local, is_remote, pip_command, extra=None, system=<factory>, system_note=None, gpu=None, weights=None, heavy=False, alternative=None, credentials=<factory>, notes=<factory>, verify_command=None, alternative_label='Lighter alternative')
+
+Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
+
+What a backend needs to run, structured for an agent to act on.
+
+#### instructions()
+
+An agent- and human-readable, copy-pasteable install plan.
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
+### ocracy.kit.install.build_requirements(backend_id, , package, implemented, available, recipe=None, is_local=False, is_remote=False, ledger_pip='', credentials=(), platform=None, verify_command=None, unimplemented_note=None, alternative_label='Lighter alternative')
+
+Build [`Requirements`](_autosummary/ocracy.kit.install.html.md#ocracy.kit.install.Requirements) for `backend_id` from its recipe and known facts.
+
+* **Parameters:**
+  * **backend_id** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – The backend’s id.
+  * **package** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – The distribution whose extra installs it (`pip install "pkg[x]"`).
+  * **implemented** ([`bool`](https://docs.python.org/3/builtins/functions.html#bool)) – Whether the package ships a facade for it.
+  * **available** ([`bool`](https://docs.python.org/3/builtins/functions.html#bool)) – Whether it is usable right now (the package’s own probe).
+  * **recipe** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Mapping`](https://docs.python.org/3/library/typing.html#typing.Mapping)]) – Its row of the package’s recipes table (see the module docstring).
+  * **is_remote** ([`bool`](https://docs.python.org/3/builtins/functions.html#bool)) – From the backend’s config or ledger record.
+  * **ledger_pip** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – The ledger’s install line, used for a backend not implemented.
+  * **credentials** ([`Iterable`](https://docs.python.org/3/library/typing.html#typing.Iterable)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – `export` lines (see [`credential_lines()`](_autosummary/ocracy.kit.credentials.html.md#ocracy.kit.credentials.credential_lines)).
+  * **platform** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – Override [`current_platform()`](_autosummary/ocracy.kit.install.html.md#ocracy.kit.install.current_platform) (for tests and docs).
+  * **verify_command** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – The shell line shown as `Verify:`.
+  * **unimplemented_note** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – Appended to `notes` when not implemented.
+  * **alternative_label** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – The wording before `alt` in the instructions.
+* **Return type:**
+  [`Requirements`](_autosummary/ocracy.kit.install.html.md#ocracy.kit.install.Requirements)
+
+### ocracy.kit.install.current_platform()
+
+`'darwin'`, `'linux'`, `'windows'`, or `sys.platform` for anything else.
+
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
+### ocracy.kit.install.run_install(req, , package, yes=False, verify_code=None, upgrade=False)
+
+Plan (default) or run (`yes=True`) the pip install that `req` describes.
+
+* **Parameters:**
+  * **req** ([`Requirements`](_autosummary/ocracy.kit.install.html.md#ocracy.kit.install.Requirements)) – The plan, from [`build_requirements()`](_autosummary/ocracy.kit.install.html.md#ocracy.kit.install.build_requirements).
+  * **package** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – The distribution whose extra to install.
+  * **yes** ([`bool`](https://docs.python.org/3/builtins/functions.html#bool)) – Actually run pip; otherwise a dry run that changes nothing.
+  * **verify_code** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – Python source run in a fresh interpreter after a successful
+    install; `available_after` is whether it printed `True`.
+  * **upgrade** ([`bool`](https://docs.python.org/3/builtins/functions.html#bool)) – Pass `--upgrade` to pip.
+* **Return type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
+* **Returns:**
+  `{backend, requirements, ran, available_before, message?, pip_argv?,
+  returncode?, stdout_tail?, stderr_tail?, available_after?, system_todo?}`.
+
+
+# _autosummary/ocracy.kit.translation.html.md
+
+# ocracy.kit.translation
+
+Canonical -> native keyword translation, with an honest unsupported-parameter policy.
+
+A facade speaks one vocabulary (`languages`, `duration`, `seed`); each backend
+speaks its own (`lang`, `audio_length_s`, `random_seed`). A backend declares a
+`param_map` from canonical names to *specs*, and [`make_translator()`](_autosummary/ocracy.kit.translation.html.md#ocracy.kit.translation.make_translator) turns it
+into a function that rewrites the caller’s canonical kwargs into native ones and
+**reports every change** it made:
+
+```default
+>>> translate = make_translator(
+...     {"languages": {"native_name": "lang", "coerce": "+".join},
+...      "dpi": None},                       # known, explicitly unsupported
+...     backend="tess", on_unsupported="note",
+... )
+>>> t = translate({"languages": ["eng", "fra"], "dpi": 300})
+>>> t.kwargs
+{'lang': 'eng+fra'}
+>>> t.notes
+['dpi=300 is not supported by tess; dropped']
+>>> t.dropped
+['dpi']
+```
+
+A spec is one of:
+
+- `None` – the backend explicitly does not support the parameter;
+- a `str` – a plain rename to that native name;
+- a callable – coerce the value, keep the canonical name;
+- a mapping with any of: `native_name` (`name` is accepted as an alias),
+  `coerce`, `default` (injected when the caller omits the parameter),
+  `choices` / `min` / `max` (checked on the *canonical* value), and
+  `out_of_range` – `'raise'`, `'clamp'` (`min`/`max` only, with a note) or
+  `'drop'` (handled like an unsupported parameter); the translator’s
+  `out_of_range=` is the default – plus `unit` (shown in the clamp note).
+  `native_name: None` means unsupported, exactly like a bare `None`.
+  `adapter_handled: True` passes the value through under its canonical name, for
+  the adapter to handle (whatever `native_name` says). Other keys
+  (`description`…) are ignored.
+
+The policy for a parameter the backend cannot honour is one of [`POLICIES`](_autosummary/ocracy.kit.translation.html.md#ocracy.kit.translation.POLICIES):
+`'raise'` ([`UnsupportedParameter`](_autosummary/ocracy.kit.translation.html.md#ocracy.kit.translation.UnsupportedParameter)), `'warn'` (drop, note it, and
+[`warnings.warn()`](https://docs.python.org/3/library/warnings.html#warnings.warn)), `'note'` (drop and note it), or `'ignore'` (an alias of
+`'note'`: kept for the copies that used it, and still never silent – the drop is
+always in [`Translation.notes`](_autosummary/ocracy.kit.translation.html.md#ocracy.kit.translation.Translation.notes) and [`Translation.dropped`](_autosummary/ocracy.kit.translation.html.md#ocracy.kit.translation.Translation.dropped)).
+
+Notes, warnings and errors show the dropped value, shortened, so a reader knows what
+was lost – but never a secret, because notes end up in results that get stored and
+logged. A parameter or mapping key named like one ([`is_secret_name()`](_autosummary/ocracy.kit.translation.html.md#ocracy.kit.translation.is_secret_name):
+`api_key`, `x-api-key`, `accessToken`, `client_secret`…) or a string shaped
+like one (`Bearer ...`, `https://user:pw@host`, `?key=...`) is shown as
+`<redacted>`, and anything that is not plain data (an object, bytes) is shown only
+as its type. This is best-effort by name and shape: a secret passed under an
+innocent name, with no recognisable shape, can still show – so credentials belong
+in parameters named for them.
+
+Several choices are declared once, when the translator is made, and each was a real
+divergence between the fleet’s copies (see `docs/adr/0001-facade-kit.md`):
+
+- `always_raise` – parameters that *carry meaning* (`lyrics`, `seed`,
+  `negative_prompt`): dropping them changes what the caller gets, so they raise
+  under the backend’s policy. A caller who passes `on_unsupported=` to the
+  translator call has chosen explicitly, and that choice wins.
+- `vocabulary` – the facade’s canonical names mapped to their defaults. With it,
+  an unsupported parameter left at its default (or `None`) was never asked for, so
+  it is skipped rather than reported as dropped, and an unknown name is worded
+  “not a parameter of” rather than “not supported by”.
+- `skip_none` / `passthrough` – a `None` value means “unset” and is never sent;
+  named adapter-only parameters (credentials, clients) go through untranslated.
+- `stacklevel` – which frame a `'warn'` points at, counted from the code that
+  calls the translator (1 = that code, 2 = its caller…).
+
+Stdlib only; imports nothing else from ocracy.
+
+### Module Attributes
+
+| [`POLICIES`](_autosummary/ocracy.kit.translation.html.md#ocracy.kit.translation.POLICIES)        | How a parameter the backend cannot honour is handled.                                                                                                                                                      |
+|------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`OUT_OF_RANGE`](_autosummary/ocracy.kit.translation.html.md#ocracy.kit.translation.OUT_OF_RANGE)    | How a value outside a spec's `choices` / `min` / `max` is handled.                                                                                                                                         |
+| [`SECRET_SEGMENTS`](_autosummary/ocracy.kit.translation.html.md#ocracy.kit.translation.SECRET_SEGMENTS) | Name segments (split on `_ - .`, spaces and camelCase, case-insensitive) that make a value secret wherever they appear: `api_key`, `x-api-key`, `aws_access_key_id`, `accessToken`, `client_secret_value`. |
+| [`SECRET_VALUE`](_autosummary/ocracy.kit.translation.html.md#ocracy.kit.translation.SECRET_VALUE)    | an auth scheme (`Bearer ...`), a URL carrying a user:password or a key-like query.                                                                                                                         |
+
+### Functions
+
+| [`make_translator`](_autosummary/ocracy.kit.translation.html.md#ocracy.kit.translation.make_translator)(param_map, \*[, backend, ...])   | Build `translate(kwargs, *, on_unsupported=None) -> Translation` from a map.   |
+|---------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------|
+| [`check_range`](_autosummary/ocracy.kit.translation.html.md#ocracy.kit.translation.check_range)(name, value, spec)                   | Raise `ValueError` unless `value` fits `spec`'s `min`/`max`/`choices`.         |
+| [`is_secret_name`](_autosummary/ocracy.kit.translation.html.md#ocracy.kit.translation.is_secret_name)(name)                             | Whether a parameter (or mapping key) named `name` may hold a secret.           |
+
+### Classes
+
+| [`Translation`](_autosummary/ocracy.kit.translation.html.md#ocracy.kit.translation.Translation)([kwargs, notes, dropped])   | What a translator produced: the native kwargs, and every change it made.   |
+|------------------------------------------------------------------------------------------|----------------------------------------------------------------------------|
+
+### Exceptions
+
+| [`UnsupportedParameter`](_autosummary/ocracy.kit.translation.html.md#ocracy.kit.translation.UnsupportedParameter)   | A backend cannot honour a parameter, and the policy says not to drop it.   |
+|-------------------------------------------------------------------------|----------------------------------------------------------------------------|
+
+### ocracy.kit.translation.OUT_OF_RANGE *= ('raise', 'clamp', 'drop')*
+
+How a value outside a spec’s `choices` / `min` / `max` is handled.
+
+### ocracy.kit.translation.POLICIES *= ('raise', 'warn', 'note', 'ignore')*
+
+How a parameter the backend cannot honour is handled.
+
+### ocracy.kit.translation.SECRET_SEGMENTS *= frozenset({'apikey', 'auth', 'authorization', 'bearer', 'cookie', 'credential', 'credentials', 'key', 'passphrase', 'passwd', 'password', 'private', 'pwd', 'secret', 'session', 'sig', 'signature', 'token'})*
+
+Name segments (split on `_ - .`, spaces and camelCase, case-insensitive) that
+make a value secret wherever they appear: `api_key`, `x-api-key`,
+`aws_access_key_id`, `accessToken`, `client_secret_value`. The rule errs
+toward hiding: `key_frames` or a musical `key` are hidden too, which costs a
+drop note its value and nothing else.
+
+### ocracy.kit.translation.SECRET_VALUE *= re.compile('^\\\\s\*(bearer|basic|token)\\\\s+\\\\S|://[^/\\\\s:@]+:[^/\\\\s@]+@|[?&#](api_?key|key|token|access_token|auth|sig|signature|password)=', re.IGNORECASE)*
+
+an auth
+scheme (`Bearer ...`), a URL carrying a user:password or a key-like query.
+
+* **Type:**
+  String values that are credentials whatever the parameter is called
+
+### *class* ocracy.kit.translation.Translation(kwargs=<factory>, notes=<factory>, dropped=<factory>)
+
+Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
+
+What a translator produced: the native kwargs, and every change it made.
+
+#### kwargs
+
+The native kwargs to pass to the backend.
+
+#### notes
+
+One human-readable line per drop or clamp, for the facade’s result.
+
+#### dropped
+
+The canonical names that were dropped.
+
+### *exception* ocracy.kit.translation.UnsupportedParameter
+
+Bases: [`ValueError`](https://docs.python.org/3/builtins/exceptions.html#ValueError)
+
+A backend cannot honour a parameter, and the policy says not to drop it.
+
+### ocracy.kit.translation.check_range(name, value, spec)
+
+Raise `ValueError` unless `value` fits `spec`’s `min`/`max`/`choices`.
+
+The standalone form of the translator’s `out_of_range='raise'` check; returns
+`value` unchanged. `None` is “unset” and always fits.
+
+* **Return type:**
+  [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)
+
+### ocracy.kit.translation.is_secret_name(name)
+
+Whether a parameter (or mapping key) named `name` may hold a secret.
+
+* **Return type:**
+  [`bool`](https://docs.python.org/3/builtins/functions.html#bool)
+
+### ocracy.kit.translation.make_translator(param_map, , backend='', on_unsupported='warn', always_raise=(), vocabulary=None, passthrough=(), skip_none=False, out_of_range='raise', stacklevel=2)
+
+Build `translate(kwargs, *, on_unsupported=None) -> Translation` from a map.
+
+* **Parameters:**
+  * **param_map** ([`Mapping`](https://docs.python.org/3/library/typing.html#typing.Mapping)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]) – Canonical name -> spec (see the module docstring). Specs are
+    validated here, so a malformed map fails when the backend loads, not on
+    the first call that happens to use the bad entry.
+  * **backend** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – The backend’s name, used in notes and errors.
+  * **on_unsupported** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – The backend’s policy (one of [`POLICIES`](_autosummary/ocracy.kit.translation.html.md#ocracy.kit.translation.POLICIES)).
+  * **always_raise** ([`Iterable`](https://docs.python.org/3/library/typing.html#typing.Iterable)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – Canonical names that raise under the backend’s policy because
+    dropping them changes what the caller gets.
+  * **vocabulary** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Mapping`](https://docs.python.org/3/library/typing.html#typing.Mapping)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Any`](https://docs.python.org/3/library/typing.html#typing.Any)]]) – The facade’s canonical names -> their default values. Enables
+    “not asked for” detection and “not a parameter of” wording.
+  * **passthrough** ([`Iterable`](https://docs.python.org/3/library/typing.html#typing.Iterable)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – Names passed through untranslated and unreported.
+  * **skip_none** ([`bool`](https://docs.python.org/3/builtins/functions.html#bool)) – Treat a `None` value as unset: never sent, never reported.
+  * **out_of_range** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – The default for specs that do not set their own.
+  * **stacklevel** ([`int`](https://docs.python.org/3/builtins/functions.html#int)) – The frame a `'warn'` points at, counted from the code that
+    calls `translate` (1 = that code, 2 = its caller).
+* **Return type:**
+  [`Callable`](https://docs.python.org/3/library/typing.html#typing.Callable)[[`...`](https://docs.python.org/3/builtins/constants.html#Ellipsis), [`Translation`](_autosummary/ocracy.kit.translation.html.md#ocracy.kit.translation.Translation)]
+* **Returns:**
+  `translate`. Its optional `on_unsupported=` is the *caller’s* policy for
+  this one call; when given it replaces both the backend’s policy and
+  `always_raise`.
 
 
 # _autosummary/ocracy.make_backend.html.md
@@ -1920,6 +2748,23 @@ and implements `read` as: translate normalized kwargs -> native kwargs ->
 Adapters are not *required* to subclass this — the registry only needs an
 `Adapter` class with a `read(image, **kwargs)` method — but doing so
 removes the boilerplate.
+
+#### ADAPTER_KWARGS *= ('api_key', 'app_key', 'app_id')*
+
+Keyword arguments a *remote* adapter reads itself (credentials), passed
+through untranslated: no `param_map` declares them, and they must never be
+dropped. On a local backend they are dropped with a (redacted) note.
+
+#### read(image, \*\*kwargs)
+
+Translate `kwargs`, run `_read()`, and put any drop notes on the result.
+
+A parameter the backend cannot honour is warned about and dropped, and the
+drop is recorded in `result.meta["notes"]` so it is visible after the
+warning is gone (or filtered).
+
+* **Return type:**
+  [`OcrResult`](_autosummary/ocracy.base.html.md#ocracy.base.OcrResult)
 
 ### ocracy.make_backend.as_bbox(obj)
 
@@ -2324,11 +3169,13 @@ Every backend exposes its own parameter names and scales (`lang` vs
 vs point units). A backend declares a `param_map` in its `BACKEND_CONFIG`
 mapping *normalized* names to native ones, and [`make_kwargs_translator()`](_autosummary/ocracy.translation.html.md#ocracy.translation.make_kwargs_translator)
 turns that declaration into a function that rewrites caller kwargs into the
-shape the engine wants. This keeps the facade’s vocabulary stable while letting
-each adapter stay a thin shim.
+shape the engine wants.
 
-This mirrors the translation layer used by the sibling `denote` facade so the
-two packages feel the same to read and extend.
+The machinery lives in the facade kit ([`ocracy.kit.translation`](_autosummary/ocracy.kit.translation.html.md#module-ocracy.kit.translation)), shared
+with the fleet’s other facades; this module keeps ocracy’s original
+`translate(**kwargs) -> dict` shape for existing callers. New code that wants
+the drops and clamps as notes uses [`ocracy.kit.make_translator()`](_autosummary/ocracy.kit.html.md#ocracy.kit.make_translator) directly,
+as [`BaseOcrAdapter`](_autosummary/ocracy.make_backend.html.md#ocracy.make_backend.BaseOcrAdapter) does.
 
 ### Functions
 
@@ -2341,19 +3188,11 @@ two packages feel the same to read and extend.
 Create a function that translates normalized kwargs to native kwargs.
 
 * **Parameters:**
-  * **param_map** ([`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)]]) – 
-
-    Mapping of `normalized_name -> native config dict` where the
-    config dict may have:
-    - `native_name` (str): the backend’s parameter name (defaults to
-      the normalized name).
-    - `coerce` (callable): transform the value (e.g. seconds -> ms,
-      `["en","fr"] -> "eng+fra"`).
-    - `default` (Any): value to inject when the caller omits the param.
-    - `None` as the whole value: the parameter is explicitly *not*
-      supported by this backend.
-  * **on_unsupported** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – What to do with caller params absent from `param_map`:
-    `"warn"` (default), `"raise"`, or `"ignore"`.
+  * **param_map** ([`Dict`](https://docs.python.org/3/library/typing.html#typing.Dict)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)]]) – Mapping of `normalized_name -> spec`; see
+    [`ocracy.kit.translation`](_autosummary/ocracy.kit.translation.html.md#module-ocracy.kit.translation) for every spec form (`None` means the
+    backend does not support the parameter).
+  * **on_unsupported** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – `"warn"` (default), `"raise"`, `"note"` or
+    `"ignore"`. The notes are discarded by this dict-returning form.
 * **Return type:**
   [`Callable`](https://docs.python.org/3/library/typing.html#typing.Callable)[[`...`](https://docs.python.org/3/builtins/constants.html#Ellipsis), [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)]
 * **Returns:**
@@ -2484,16 +3323,18 @@ Convert any supported input into a PIL `Image` (lazy import).
 
 # About this build
 
-This documentation was built on **2026-09-22 14:34 UTC** from commit <a href="https://github.com/thorwhalen/ocracy/commit/45527c9a35f0feccd6e425db0825506c77c4661c"><code>45527c9</code></a> on branch <code>main</code>, for **ocracy 0.1.10** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-10-05 15:42 UTC** from commit <a href="https://github.com/thorwhalen/ocracy/commit/eb396dc48e3f4a24435d346de68920860d5ec013"><code>eb396dc</code></a> on branch <code>main</code>, for **ocracy 0.1.11** (from <code>pyproject.toml</code>).
 
-#### NOTE
-Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
+#### WARNING
+The documentation and the package may be misaligned:
+
+- The documented version (0.1.11) is behind the latest release on PyPI (0.1.12): `pip install ocracy` gives newer code than these docs describe.
 
 ## Source
 
 |                     |                                                                                                                                                          |
 |---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/ocracy/commit/45527c9a35f0feccd6e425db0825506c77c4661c"><code>45527c9a35f0feccd6e425db0825506c77c4661c</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/ocracy/commit/eb396dc48e3f4a24435d346de68920860d5ec013"><code>eb396dc48e3f4a24435d346de68920860d5ec013</code></a> |
 | Branch              | <code>main</code>                                                                                                                                        |
 | Tags at this commit | none                                                                                                                                                     |
 | Working tree        | clean                                                                                                                                                    |
@@ -2504,9 +3345,9 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/ocracy</code>                                                             |
-| Run          | <a href="https://github.com/thorwhalen/ocracy/actions/runs/35741022053">35741022053</a>    |
+| Run          | <a href="https://github.com/thorwhalen/ocracy/actions/runs/37334818378">37334818378</a>    |
 | Ref          | <code>refs/heads/main</code>                                                               |
-| Event commit | <code>45527c9a35f0feccd6e425db0825506c77c4661c</code> (in the history of the built commit) |
+| Event commit | <code>eb396dc48e3f4a24435d346de68920860d5ec013</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -2531,13 +3372,13 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/ocracy/0.1.10/">0.1.10</a>, the same as the documented version.
+Latest release: <a href="https://pypi.org/project/ocracy/0.1.12/">0.1.12</a>, newer than the documented version (0.1.11).
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/thorwhalen/ocracy && cd ocracy
-git checkout 45527c9a35f0feccd6e425db0825506c77c4661c
+git checkout eb396dc48e3f4a24435d346de68920860d5ec013
 pip install "epythet==0.2.12"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```

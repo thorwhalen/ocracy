@@ -50,6 +50,23 @@ Adapters are not *required* to subclass this — the registry only needs an
 `Adapter` class with a `read(image, **kwargs)` method — but doing so
 removes the boilerplate.
 
+#### ADAPTER_KWARGS *= ('api_key', 'app_key', 'app_id')*
+
+Keyword arguments a *remote* adapter reads itself (credentials), passed
+through untranslated: no `param_map` declares them, and they must never be
+dropped. On a local backend they are dropped with a (redacted) note.
+
+#### read(image, \*\*kwargs)
+
+Translate `kwargs`, run `_read()`, and put any drop notes on the result.
+
+A parameter the backend cannot honour is warned about and dropped, and the
+drop is recorded in `result.meta["notes"]` so it is visible after the
+warning is gone (or filtered).
+
+* **Return type:**
+  [`OcrResult`](ocracy.base.html.md#ocracy.base.OcrResult)
+
 ### ocracy.make_backend.as_bbox(obj)
 
 Coerce common bbox shapes into a [`BBox`](ocracy.base.html.md#ocracy.base.BBox).

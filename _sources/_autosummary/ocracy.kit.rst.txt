@@ -1,0 +1,45 @@
+ocracy.kit
+==========
+
+.. automodule:: ocracy.kit
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      make_translator
+      check_range
+      resolve_credential
+      using_credentials
+      current_credentials
+      env_var_names
+      credential_help
+      credential_lines
+      build_requirements
+      run_install
+      current_platform
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Translation
+      Requirements
+   
+   .. rubric:: Exceptions
+
+   .. autosummary::
+   
+      UnsupportedParameter
+      MissingCredentialError
+   
+.. rubric:: Modules
+
+.. autosummary::
+   :toctree:
+   :recursive:
+
+   credentials
+   install
+   translation

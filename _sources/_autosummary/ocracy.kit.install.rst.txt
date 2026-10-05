@@ -1,0 +1,20 @@
+ocracy.kit.install
+==================
+
+.. automodule:: ocracy.kit.install
+
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      current_platform
+      build_requirements
+      run_install
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Requirements
+   
