@@ -60,12 +60,21 @@ class BaseOcrAdapter:
     removes the boilerplate.
     """
 
+    #: Keyword arguments an adapter reads itself (credentials), passed through
+    #: untranslated: no ``param_map`` declares them, and they must never be dropped
+    #: (or shown in a note).
+    ADAPTER_KWARGS = ("api_key", "app_key", "app_id")
+
     def __init__(self, config: dict):
         self.config = config
         self.backend_id = config.get("id") or config.get("name", "")
         param_map = config.get("param_map")
         self._translator = (
-            make_translator(param_map, backend=self.backend_id) if param_map else None
+            make_translator(
+                param_map, backend=self.backend_id, passthrough=self.ADAPTER_KWARGS
+            )
+            if param_map
+            else None
         )
 
     def _translate(self, **kwargs) -> dict:
@@ -81,10 +90,10 @@ class BaseOcrAdapter:
         """
         if self._translator is None:
             return self._read(image, **kwargs)
-        native, notes = self._translator(kwargs)
-        result = self._read(image, **native)
-        if notes and isinstance(getattr(result, "meta", None), dict):
-            result.meta.setdefault("notes", []).extend(notes)
+        translation = self._translator(kwargs)
+        result = self._read(image, **translation.kwargs)
+        if translation.notes and isinstance(getattr(result, "meta", None), dict):
+            result.meta.setdefault("notes", []).extend(translation.notes)
         return result
 
     def _read(self, image, **native_kwargs) -> OcrResult:  # pragma: no cover

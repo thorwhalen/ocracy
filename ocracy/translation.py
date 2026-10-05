@@ -38,7 +38,9 @@ def make_kwargs_translator(
     Returns:
         A ``translate(**kwargs) -> dict`` function.
     """
-    translator = make_translator(param_map, on_unsupported=on_unsupported)
+    # stacklevel 3: a warning points at the caller of the code calling translate,
+    # as it always has (this wrapper adds one frame).
+    translator = make_translator(param_map, on_unsupported=on_unsupported, stacklevel=3)
 
     def translate(**kwargs) -> dict:
         return translator(kwargs).kwargs

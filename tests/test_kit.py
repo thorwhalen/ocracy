@@ -56,13 +56,48 @@ def test_spec_forms_rename_coerce_default():
     assert t.notes == [] and t.dropped == []
 
 
-def test_translation_unpacks_to_kwargs_and_notes():
+def test_translation_is_explicit_and_not_a_tuple():
     t = make_translator({"a": {}}, on_unsupported="note")({"a": 1, "b": 2})
     assert isinstance(t, Translation)
-    native, notes = t
-    assert native == {"a": 1}
-    assert notes == ["b=2 is not a parameter of this backend; dropped"]
+    assert t.kwargs == {"a": 1}
+    assert t.notes == ["b=2 is not a parameter of this backend; dropped"]
     assert t.dropped == ["b"]
+    with pytest.raises(TypeError):  # (kwargs, notes) vs (kwargs, dropped): no guessing
+        native, notes = t
+
+
+def test_secret_values_never_reach_notes_warnings_or_errors():
+    translate = make_translator({}, backend="b", on_unsupported="warn")
+    with pytest.warns(UserWarning) as rec:
+        t = translate({"api_key": "sk-SECRET", "auth_token": "tk-SECRET", "x": "y"})
+    shown = " ".join([*t.notes, *(str(w.message) for w in rec)])
+    assert "SECRET" not in shown and "api_key=<redacted>" in shown
+    with pytest.raises(UnsupportedParameter) as ei:
+        translate({"password": "pw-SECRET"}, on_unsupported="raise")
+    assert "SECRET" not in str(ei.value)
+
+
+def test_long_and_unrepresentable_values_are_shortened():
+    class NoRepr:
+        def __repr__(self):
+            raise RuntimeError("no repr")
+
+    t = make_translator({}, on_unsupported="note")(
+        {"blob": b"x" * 10_000, "o": NoRepr()}
+    )
+    assert len(t.notes[0]) < 200
+    assert t.notes[1].startswith("o=<NoRepr")  # a failing repr still yields a note
+
+
+def test_warning_points_at_the_requested_frame():
+    translate = make_translator({}, stacklevel=1)
+
+    def caller():
+        return translate({"x": 1})  # stacklevel=1 blames this line
+
+    with pytest.warns(UserWarning) as rec:
+        caller()
+    assert rec[0].lineno == caller.__code__.co_firstlineno + 1
 
 
 def test_caller_value_beats_default():
@@ -214,6 +249,18 @@ def test_out_of_range_drop_follows_the_policy():
     assert "outside" in t.notes[0]
 
 
+def test_translator_level_out_of_range_default():
+    translate = make_translator(
+        {"o": {"choices": {"a"}}, "n": {"max": 1, "out_of_range": "clamp"}},
+        on_unsupported="note",
+        out_of_range="drop",
+    )
+    t = translate({"o": "b", "n": 5})
+    assert t.dropped == ["o"] and t.kwargs == {"n": 1}  # a spec's own setting wins
+    with pytest.raises(ValueError, match="out_of_range"):
+        make_translator({}, out_of_range="wrap")
+
+
 def test_check_range_standalone():
     assert check_range("t", 0.5, {"min": 0, "max": 1}) == 0.5
     with pytest.raises(ValueError, match="below minimum"):
@@ -251,6 +298,23 @@ def test_consumer_ocracy_adapter_puts_drop_notes_on_the_result():
     assert result.text == "{'lang': 'en'}"
     assert result.meta["notes"] == ["dpi=300 is not a parameter of fake; dropped"]
     assert a._translate(languages="fr") == {"lang": "fr"}  # the old dict hook
+
+
+def test_consumer_ocracy_credentials_reach_the_adapter_and_never_a_note():
+    # Remote adapters pop api_key / app_key / app_id from their kwargs; no
+    # param_map declares them, so before the kit they were dropped (and warned).
+    from ocracy.base import OcrResult
+    from ocracy.make_backend import BaseOcrAdapter
+
+    class Adapter(BaseOcrAdapter):
+        def _read(self, image, **native):
+            return OcrResult.from_text(native.pop("api_key"), backend="fake")
+
+    a = Adapter({"id": "fake", "param_map": {"languages": {"native_name": "lang"}}})
+    with warnings.catch_warnings():
+        warnings.simplefilter("error")
+        result = a.read(b"img", api_key="sk-SECRET")
+    assert result.text == "sk-SECRET" and "notes" not in result.meta
 
 
 # ---------------------------------------------------------------------------
@@ -351,6 +415,21 @@ def test_consumer_foley_credentials_raise_its_own_error_with_env_var_and_url(
 # ---------------------------------------------------------------------------
 
 
+def test_consumer_arioso_adapter_handled_passes_the_canonical_name():
+    # arioso: adapter_handled wins over native_name (even native_name=None).
+    translate = make_translator(
+        {
+            "prompt": {"native_name": "tags", "adapter_handled": True},
+            "lyrics": {"native_name": None, "adapter_handled": True},
+            "genre": {"native_name": "tags"},
+        },
+        on_unsupported="warn",
+        always_raise=("lyrics",),
+    )
+    t = translate({"prompt": "x", "lyrics": "la", "genre": "jazz"})
+    assert t.kwargs == {"prompt": "x", "lyrics": "la", "tags": "jazz"} and not t.notes
+
+
 def test_consumer_arioso_lyrics_always_raise_and_adapter_params_pass():
     translate = make_translator(
         {"prompt": {}, "duration": {"native_name": "length"}},
@@ -385,7 +464,7 @@ def test_consumer_illustration_shapes():
         on_unsupported="ignore",
         skip_none=True,
     )
-    native, notes = translate(
+    t = translate(
         {
             "orientation": "landscape",
             "size": "large",
@@ -393,7 +472,9 @@ def test_consumer_illustration_shapes():
             "q": None,
         }
     )
-    assert native == {"aspect_ratio": "wide", "size": "large"}
+    assert t.kwargs == {"aspect_ratio": "wide", "size": "large"}
+    native, dropped = t.kwargs, t.dropped  # illustration's (native, dropped) shape
+    assert dropped == ["license_type"]
     assert translate({"license_type": "x"}).dropped == ["license_type"]
     assert translate({"orientation": "square"}).dropped == ["orientation"]
 
@@ -407,7 +488,7 @@ def test_consumer_illustration_shapes():
 def no_acme_env(monkeypatch):
     for var in ("ACME_KEY", "ACME_KEY_2"):
         monkeypatch.delenv(var, raising=False)
-    monkeypatch.setattr(kit_credentials, "_dotenv_loaded", True)  # never touch .env
+    monkeypatch.setattr(kit_credentials, "_load_dotenv_once", lambda: None)  # no .env
 
 
 def test_chain_order_explicit_bound_env_store(monkeypatch, no_acme_env):
@@ -490,13 +571,26 @@ def test_prompt_persists_to_a_mutable_store_else_environ(monkeypatch, no_acme_en
     assert os.environ["ACME_KEY"] == "typed"
 
 
-def test_dotenv_is_loaded_once_from_the_cwd(monkeypatch, tmp_path, no_acme_env):
-    dotenv = pytest.importorskip("dotenv")
-    (tmp_path / ".env").write_text("ACME_KEY=from-dotenv\n")
-    monkeypatch.chdir(tmp_path)
-    monkeypatch.setattr(kit_credentials, "_dotenv_loaded", False)
-    assert resolve_credential("acme", env_var="ACME_KEY", dotenv=True) == "from-dotenv"
-    assert dotenv  # imported
+def test_dotenv_is_loaded_from_the_cwd_once_per_directory(monkeypatch, tmp_path):
+    pytest.importorskip("dotenv")
+    monkeypatch.delenv("ACME_KEY", raising=False)
+    monkeypatch.setattr(kit_credentials, "_dotenv_loaded_from", set())
+    empty, project = tmp_path / "empty", tmp_path / "project"
+    empty.mkdir()
+    project.mkdir()
+    (project / ".env").write_text("ACME_KEY=from-dotenv\n")
+    monkeypatch.chdir(empty)  # a miss here must not stop the search elsewhere
+    assert (
+        resolve_credential("acme", env_var="ACME_KEY", dotenv=True, required=False)
+        is None
+    )
+    monkeypatch.chdir(project)
+    try:
+        assert (
+            resolve_credential("acme", env_var="ACME_KEY", dotenv=True) == "from-dotenv"
+        )
+    finally:
+        os.environ.pop("ACME_KEY", None)
 
 
 def test_credential_help_and_lines():
@@ -509,6 +603,19 @@ def test_credential_help_and_lines():
         "export ACME_KEY  (get a key: https://acme.test/k)"
     ]
     assert credential_lines("", "acme", guidance=g) == []
+    assert credential_lines(["A_KEY", "B_KEY"], "acme") == ["export A_KEY / B_KEY"]
+
+
+def test_missing_credential_error_carries_structure(no_acme_env):
+    g = {"acme": {"get_key_url": "https://acme.test/k"}}
+    with pytest.raises(MissingCredentialError) as ei:
+        resolve_credential("acme", env_var=("ACME_KEY", "ACME_KEY_2"), guidance=g)
+    err = ei.value
+    assert (err.provider, err.env_vars, err.get_key_url) == (
+        "acme",
+        ("ACME_KEY", "ACME_KEY_2"),
+        "https://acme.test/k",
+    )
 
 
 # ---------------------------------------------------------------------------
@@ -682,24 +789,27 @@ def test_run_install_runs_pip_then_verifies(monkeypatch):
 # ---------------------------------------------------------------------------
 
 
-def _imported_top_level_names(path: Path) -> set:
-    names = set()
+def _imports(path: Path) -> list:
+    """``(module name, imported at module level?)`` for every import in ``path``."""
+    found = []
     for node in ast.walk(ast.parse(path.read_text())):
         if isinstance(node, ast.Import):
-            names.update(a.name for a in node.names)
+            found.extend((a.name, node.col_offset == 0) for a in node.names)
         elif isinstance(node, ast.ImportFrom) and node.level == 0:
-            names.add(node.module)
-    return names
+            found.append((node.module, node.col_offset == 0))
+    return found
 
 
 @pytest.mark.parametrize("module", sorted(p.name for p in KIT_DIR.glob("*.py")))
 def test_kit_modules_import_only_stdlib_and_the_kit(module):
     stdlib = set(sys.stdlib_module_names)
-    for name in _imported_top_level_names(KIT_DIR / module):
+    for name, module_level in _imports(KIT_DIR / module):
         top = name.split(".")[0]
         if top == "ocracy":
             assert name.startswith("ocracy.kit"), f"{module} imports {name}"
-        elif top != "dotenv":  # optional, imported inside a function, guarded
+        elif top == "dotenv":  # optional: only ever inside a function, guarded
+            assert not module_level, f"{module} imports dotenv at module level"
+        else:
             assert top in stdlib or top == "__future__", f"{module} imports {name}"
 
 
@@ -708,7 +818,9 @@ def test_importing_the_kit_loads_no_engine_and_no_metadata():
         "import sys, ocracy.kit; "
         "heavy = {'PIL', 'numpy', 'pandas', 'requests', 'torch', 'importlib.metadata', "
         "'subprocess', 'dotenv'}; "
-        "print(sorted(heavy & set(sys.modules)))"
+        "loaded = heavy & set(sys.modules); "
+        "loaded |= {m for m in sys.modules if m.startswith('ocracy.backends')}; "
+        "print(sorted(loaded))"
     )
     out = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True)
     assert out.returncode == 0, out.stderr
@@ -718,6 +830,7 @@ def test_importing_the_kit_loads_no_engine_and_no_metadata():
 def test_version_is_lazy_but_available():
     import ocracy
 
+    assert "__version__" in dir(ocracy)  # listed before its first access
     assert isinstance(ocracy.__version__, str) and ocracy.__version__
     with pytest.raises(AttributeError):
         ocracy.no_such_attribute  # noqa: B018

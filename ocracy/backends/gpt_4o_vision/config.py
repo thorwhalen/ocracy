@@ -18,6 +18,8 @@ BACKEND_CONFIG = {
     "capabilities": ["handwriting", "math", "tables", "key_value", "charts"],
     "default_for": [],
     "api_env_var": "OPENAI_API_KEY",
+    # The account the key belongs to: what ocracy.kit.using_credentials binds.
+    "credential_provider": "openai",
     "description": (
         "VLM 'read + reason' OCR via OpenAI GPT-4o vision — strong on messy/"
         "handwritten/structured docs and prompt-driven extraction; no boxes/confidence."

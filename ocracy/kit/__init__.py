@@ -17,7 +17,7 @@ Usage::
 
     translate = make_translator(BACKEND_CONFIG["param_map"], backend="acme",
                                 on_unsupported="note", always_raise=("seed",))
-    native, notes = translate(canonical_kwargs)
+    t = translate(canonical_kwargs)        # t.kwargs, t.notes, t.dropped
     key = resolve_credential("acme", env_var="ACME_API_KEY", api_key=api_key)
 
 Every module here is stdlib-only and imports nothing from ocracy outside

@@ -276,8 +276,8 @@ translate = make_translator(
     {"languages": {"native_name": "lang", "coerce": "+".join}, "dpi": None},
     backend="tess", on_unsupported="note", always_raise=("seed",),
 )
-native, notes = translate({"languages": ["eng", "fra"], "dpi": 300})
-# native == {"lang": "eng+fra"}; notes == ["dpi=300 is not supported by tess; dropped"]
+t = translate({"languages": ["eng", "fra"], "dpi": 300})
+# t.kwargs == {"lang": "eng+fra"}; t.notes == ["dpi=300 is not supported by tess; dropped"]
 
 key = resolve_credential("acme", env_var="ACME_API_KEY")   # explicit -> bound -> env
 with using_credentials(acme=request_key):                  # per-request BYO key

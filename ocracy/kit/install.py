@@ -188,7 +188,6 @@ def run_install(
     yes: bool = False,
     verify_code: Optional[str] = None,
     upgrade: bool = False,
-    python: str = sys.executable,
 ) -> dict:
     """Plan (default) or run (``yes=True``) the pip install that ``req`` describes.
 
@@ -199,7 +198,6 @@ def run_install(
         verify_code: Python source run in a fresh interpreter after a successful
             install; ``available_after`` is whether it printed ``True``.
         upgrade: Pass ``--upgrade`` to pip.
-        python: The interpreter to install into.
 
     Returns:
         ``{backend, requirements, ran, available_before, message?, pip_argv?,
@@ -225,6 +223,7 @@ def run_install(
 
     import subprocess  # only an actual install pays for it
 
+    python = sys.executable  # the running interpreter, read at call time
     target = f"{package}[{req.extra}]" if req.extra else req.backend_id
     cmd = [python, "-m", "pip", "install", *(["--upgrade"] if upgrade else []), target]
     proc = subprocess.run(cmd, capture_output=True, text=True)

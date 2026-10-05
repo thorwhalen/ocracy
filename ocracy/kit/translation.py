@@ -16,7 +16,8 @@ into a function that rewrites the caller's canonical kwargs into native ones and
     {'lang': 'eng+fra'}
     >>> t.notes
     ['dpi=300 is not supported by tess; dropped']
-    >>> native, notes = t                         # a Translation unpacks to two
+    >>> t.dropped
+    ['dpi']
 
 A spec is one of:
 
@@ -26,10 +27,13 @@ A spec is one of:
 - a mapping with any of: ``native_name`` (``name`` is accepted as an alias),
   ``coerce``, ``default`` (injected when the caller omits the parameter),
   ``choices`` / ``min`` / ``max`` (checked on the *canonical* value), and
-  ``out_of_range`` -- ``'raise'`` (default), ``'clamp'`` (``min``/``max`` only, with a
-  note) or ``'drop'`` (handled like an unsupported parameter) -- plus ``unit`` (shown
-  in the clamp note). ``native_name: None`` means unsupported, exactly like a bare
-  ``None``. Unknown keys (``description``, ``adapter_handled``...) are ignored.
+  ``out_of_range`` -- ``'raise'``, ``'clamp'`` (``min``/``max`` only, with a note) or
+  ``'drop'`` (handled like an unsupported parameter); the translator's
+  ``out_of_range=`` is the default -- plus ``unit`` (shown in the clamp note).
+  ``native_name: None`` means unsupported, exactly like a bare ``None``.
+  ``adapter_handled: True`` passes the value through under its canonical name, for
+  the adapter to handle (whatever ``native_name`` says). Other keys
+  (``description``...) are ignored.
 
 The policy for a parameter the backend cannot honour is one of :data:`POLICIES`:
 ``'raise'`` (:class:`UnsupportedParameter`), ``'warn'`` (drop, note it, and
@@ -37,7 +41,12 @@ The policy for a parameter the backend cannot honour is one of :data:`POLICIES`:
 ``'note'``: kept for the copies that used it, and still never silent -- the drop is
 always in :attr:`Translation.notes` and :attr:`Translation.dropped`).
 
-Three choices are declared once, when the translator is made, and each was a real
+Notes and warnings show the dropped value, shortened, so a reader knows what was
+lost -- except for a parameter whose name looks like a secret (``api_key``,
+``token``, ``password``...), whose value is never shown: notes end up in results
+that get stored and logged.
+
+Several choices are declared once, when the translator is made, and each was a real
 divergence between the fleet's copies (see ``docs/adr/0001-facade-kit.md``):
 
 - ``always_raise`` -- parameters that *carry meaning* (``lyrics``, ``seed``,
@@ -49,16 +58,20 @@ divergence between the fleet's copies (see ``docs/adr/0001-facade-kit.md``):
   it is skipped rather than reported as dropped, and an unknown name is worded
   "not a parameter of" rather than "not supported by".
 - ``skip_none`` / ``passthrough`` -- a ``None`` value means "unset" and is never sent;
-  named adapter-only parameters go through untranslated.
+  named adapter-only parameters (credentials, clients) go through untranslated.
+- ``stacklevel`` -- which frame a ``'warn'`` points at, counted from the code that
+  calls the translator (1 = that code, 2 = its caller...).
 
 Stdlib only; imports nothing else from ocracy.
 """
 
 from __future__ import annotations
 
+import re
+import reprlib
 import warnings
 from dataclasses import dataclass, field
-from typing import Any, Callable, Iterable, Iterator, Mapping, Optional
+from typing import Any, Callable, Iterable, Mapping, Optional
 
 __all__ = [
     "POLICIES",
@@ -67,6 +80,7 @@ __all__ = [
     "Translation",
     "make_translator",
     "check_range",
+    "SECRET_NAME",
 ]
 
 #: How a parameter the backend cannot honour is handled.
@@ -75,8 +89,16 @@ POLICIES = ("raise", "warn", "note", "ignore")
 #: How a value outside a spec's ``choices`` / ``min`` / ``max`` is handled.
 OUT_OF_RANGE = ("raise", "clamp", "drop")
 
+#: Parameter names whose values never appear in a note, a warning or an error.
+SECRET_NAME = re.compile(
+    r"(^|_)(api_?key|app_?key|key|token|secret|password|passwd|credentials?|auth)($|_)",
+    re.IGNORECASE,
+)
+
 _DEFAULT_WHERE = "this backend"
-_WARN_STACKLEVEL = 4  # _drop -> translate -> the adapter calling it -> its caller
+_FRAMES_BELOW_CALLER = 2  # _drop -> translate -> (the code calling translate)
+_VALUE_REPR = reprlib.Repr()
+_VALUE_REPR.maxstring = _VALUE_REPR.maxother = 80
 
 
 class UnsupportedParameter(ValueError):
@@ -87,8 +109,6 @@ class UnsupportedParameter(ValueError):
 class Translation:
     """What a translator produced: the native kwargs, and every change it made.
 
-    Iterating gives ``(kwargs, notes)``, so ``native, notes = translate(kw)`` works.
-
     Attributes:
         kwargs: The native kwargs to pass to the backend.
         notes: One human-readable line per drop or clamp, for the facade's result.
@@ -98,9 +118,6 @@ class Translation:
     kwargs: dict = field(default_factory=dict)
     notes: list = field(default_factory=list)
     dropped: list = field(default_factory=list)
-
-    def __iter__(self) -> Iterator:
-        return iter((self.kwargs, self.notes))
 
 
 _MISSING = object()
@@ -118,13 +135,22 @@ class _Spec:
     unit: str = ""
 
 
-def _parse_spec(name: str, spec: Any) -> Optional[_Spec]:
+def _check_out_of_range(value: Any, where: str) -> None:
+    if value not in OUT_OF_RANGE:
+        raise ValueError(f"{where} must be one of {OUT_OF_RANGE}, got {value!r}")
+
+
+def _parse_spec(
+    name: str, spec: Any, *, out_of_range: str = "raise"
+) -> Optional[_Spec]:
     """Normalize one ``param_map`` value; ``None`` means unsupported."""
     if spec is None:
         return None
     if isinstance(spec, str):
         return _Spec(native_name=spec)
     if isinstance(spec, Mapping):
+        if spec.get("adapter_handled"):
+            return _Spec(native_name=name)
         if "native_name" in spec and "name" in spec:
             if spec["native_name"] != spec["name"]:
                 raise TypeError(
@@ -134,13 +160,9 @@ def _parse_spec(name: str, spec: Any) -> Optional[_Spec]:
         native = spec.get("native_name", spec.get("name", name))
         if native is None:
             return None
-        out_of_range = spec.get("out_of_range", "raise")
-        if out_of_range not in OUT_OF_RANGE:
-            raise ValueError(
-                f"param_map[{name!r}]['out_of_range'] must be one of {OUT_OF_RANGE}, "
-                f"got {out_of_range!r}"
-            )
-        if out_of_range == "clamp" and spec.get("choices") is not None:
+        spec_range = spec.get("out_of_range", out_of_range)
+        _check_out_of_range(spec_range, f"param_map[{name!r}]['out_of_range']")
+        if spec_range == "clamp" and spec.get("choices") is not None:
             raise ValueError(
                 f"param_map[{name!r}]: out_of_range='clamp' needs min/max, not choices"
             )
@@ -151,7 +173,7 @@ def _parse_spec(name: str, spec: Any) -> Optional[_Spec]:
             choices=spec.get("choices"),
             min=spec.get("min"),
             max=spec.get("max"),
-            out_of_range=out_of_range,
+            out_of_range=spec_range,
             unit=spec.get("unit") or "",
         )
     if callable(spec):
@@ -166,13 +188,23 @@ def _check_policy(policy: Optional[str], *, allow_none: bool = False) -> None:
         raise ValueError(f"on_unsupported must be one of {POLICIES}, got {policy!r}")
 
 
+def _shown(name: str, value: Any) -> str:
+    """``name=<short repr>``, or ``name=<redacted>`` for a secret-looking name."""
+    if SECRET_NAME.search(name):
+        return f"{name}=<redacted>"
+    try:
+        return f"{name}={_VALUE_REPR.repr(value)}"
+    except Exception:  # noqa: BLE001 - a value whose repr fails is still reportable
+        return f"{name}=<{type(value).__name__}>"
+
+
 def check_range(name: str, value: Any, spec: Mapping) -> Any:
     """Raise ``ValueError`` unless ``value`` fits ``spec``'s ``min``/``max``/``choices``.
 
     The standalone form of the translator's ``out_of_range='raise'`` check; returns
-    ``value`` unchanged.
+    ``value`` unchanged. ``None`` is "unset" and always fits.
     """
-    _range_problem_raise(name, value, _parse_spec(name, dict(spec)) or _Spec(name))
+    _raise_if_out_of_range(name, value, _parse_spec(name, dict(spec)) or _Spec(name))
     return value
 
 
@@ -192,7 +224,7 @@ def _range_problem(value: Any, spec: _Spec) -> Optional[str]:
     return None
 
 
-def _range_problem_raise(name: str, value: Any, spec: _Spec) -> None:
+def _raise_if_out_of_range(name: str, value: Any, spec: _Spec) -> None:
     problem = _range_problem(value, spec)
     if problem == "min":
         raise ValueError(
@@ -215,6 +247,8 @@ def make_translator(
     vocabulary: Optional[Mapping[str, Any]] = None,
     passthrough: Iterable[str] = (),
     skip_none: bool = False,
+    out_of_range: str = "raise",
+    stacklevel: int = 2,
 ) -> Callable[..., Translation]:
     """Build ``translate(kwargs, *, on_unsupported=None) -> Translation`` from a map.
 
@@ -230,6 +264,9 @@ def make_translator(
             "not asked for" detection and "not a parameter of" wording.
         passthrough: Names passed through untranslated and unreported.
         skip_none: Treat a ``None`` value as unset: never sent, never reported.
+        out_of_range: The default for specs that do not set their own.
+        stacklevel: The frame a ``'warn'`` points at, counted from the code that
+            calls ``translate`` (1 = that code, 2 = its caller).
 
     Returns:
         ``translate``. Its optional ``on_unsupported=`` is the *caller's* policy for
@@ -237,13 +274,18 @@ def make_translator(
         ``always_raise``.
     """
     _check_policy(on_unsupported)
-    specs = {name: _parse_spec(name, spec) for name, spec in param_map.items()}
+    _check_out_of_range(out_of_range, "out_of_range")
+    specs = {
+        name: _parse_spec(name, spec, out_of_range=out_of_range)
+        for name, spec in param_map.items()
+    }
     supported = sorted(n for n, s in specs.items() if s is not None)
     raising = frozenset(always_raise)
     passing = frozenset(passthrough)
     vocab = dict(vocabulary) if vocabulary is not None else None
     where = backend or _DEFAULT_WHERE
     default_policy = on_unsupported
+    warn_stacklevel = _FRAMES_BELOW_CALLER + stacklevel
 
     def _not_asked_for(name: str, value: Any) -> bool:
         if vocab is None:
@@ -261,6 +303,7 @@ def make_translator(
         return "not supported by" if known else "not a parameter of"
 
     def _drop(name, value, policy, call_policy, out: Translation, *, reason=None):
+        what = f"{_shown(name, value)} {reason or 'is ' + _kind(name) + ' ' + where}"
         if policy == "raise":
             changes_meaning = call_policy is None and name in raising
             detail = (
@@ -269,15 +312,12 @@ def make_translator(
                 else f". Supported: {supported}"
             )
             raise UnsupportedParameter(
-                f"{name}={value!r} {reason or 'is ' + _kind(name) + ' ' + where}"
-                f"{detail}. Remove it, pick a backend that supports it, or pass "
+                f"{what}{detail}. Remove it, pick a backend that supports it, or pass "
                 "on_unsupported='note' to drop it with a note."
             )
-        message = (
-            f"{name}={value!r} {reason or 'is ' + _kind(name) + ' ' + where}; dropped"
-        )
+        message = f"{what}; dropped"
         if policy == "warn":
-            warnings.warn(message, UserWarning, stacklevel=_WARN_STACKLEVEL)
+            warnings.warn(message, UserWarning, stacklevel=warn_stacklevel)
         out.notes.append(message)
         out.dropped.append(name)
 
@@ -311,7 +351,7 @@ def make_translator(
             problem = _range_problem(value, spec)
             if problem is not None:
                 if spec.out_of_range == "raise":
-                    _range_problem_raise(name, value, spec)
+                    _raise_if_out_of_range(name, value, spec)
                 if spec.out_of_range == "drop":
                     bound = (
                         spec.choices
@@ -348,7 +388,7 @@ def _clamp(name: str, value: Any, spec: _Spec, where: str, out: Translation) -> 
     except (TypeError, ValueError):
         shown = repr(clamped)
     out.notes.append(
-        f"{name}={value!r}{unit} is outside {where}'s [{spec.min}, {spec.max}]{unit} "
-        f"window; clamped to {shown}{unit}"
+        f"{_shown(name, value)}{unit} is outside {where}'s [{spec.min}, {spec.max}]"
+        f"{unit} window; clamped to {shown}{unit}"
     )
     return clamped

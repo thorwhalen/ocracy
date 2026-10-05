@@ -21,6 +21,8 @@ BACKEND_CONFIG = {
     "capabilities": ["handwriting", "math", "tables", "layout", "key_value"],
     "default_for": [],
     "api_env_var": "ANTHROPIC_API_KEY",
+    # The account the key belongs to: what ocracy.kit.using_credentials binds.
+    "credential_provider": "anthropic",
     "description": (
         "VLM 'read + reason' OCR via Claude vision — strong on messy/handwritten/"
         "structured docs and prompt-driven field extraction; no boxes/confidence."
