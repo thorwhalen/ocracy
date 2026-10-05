@@ -5,15 +5,18 @@ Every backend exposes its own parameter names and scales (``lang`` vs
 vs point units). A backend declares a ``param_map`` in its ``BACKEND_CONFIG``
 mapping *normalized* names to native ones, and :func:`make_kwargs_translator`
 turns that declaration into a function that rewrites caller kwargs into the
-shape the engine wants. This keeps the facade's vocabulary stable while letting
-each adapter stay a thin shim.
+shape the engine wants.
 
-This mirrors the translation layer used by the sibling ``denote`` facade so the
-two packages feel the same to read and extend.
+The machinery lives in the facade kit (:mod:`ocracy.kit.translation`), shared
+with the fleet's other facades; this module keeps ocracy's original
+``translate(**kwargs) -> dict`` shape for existing callers. New code that wants
+the drops and clamps as notes uses :func:`ocracy.kit.make_translator` directly,
+as :class:`~ocracy.make_backend.BaseOcrAdapter` does.
 """
 
-import warnings
 from typing import Any, Callable, Dict, Optional
+
+from ocracy.kit.translation import check_range, make_translator
 
 __all__ = ["make_kwargs_translator", "validate_param"]
 
@@ -26,82 +29,25 @@ def make_kwargs_translator(
     """Create a function that translates normalized kwargs to native kwargs.
 
     Args:
-        param_map: Mapping of ``normalized_name -> native config dict`` where the
-            config dict may have:
-
-            - ``native_name`` (str): the backend's parameter name (defaults to
-              the normalized name).
-            - ``coerce`` (callable): transform the value (e.g. seconds -> ms,
-              ``["en","fr"] -> "eng+fra"``).
-            - ``default`` (Any): value to inject when the caller omits the param.
-            - ``None`` as the whole value: the parameter is explicitly *not*
-              supported by this backend.
-        on_unsupported: What to do with caller params absent from ``param_map``:
-            ``"warn"`` (default), ``"raise"``, or ``"ignore"``.
+        param_map: Mapping of ``normalized_name -> spec``; see
+            :mod:`ocracy.kit.translation` for every spec form (``None`` means the
+            backend does not support the parameter).
+        on_unsupported: ``"warn"`` (default), ``"raise"``, ``"note"`` or
+            ``"ignore"``. The notes are discarded by this dict-returning form.
 
     Returns:
         A ``translate(**kwargs) -> dict`` function.
     """
-    supported_names = {k for k, v in param_map.items() if v is not None}
+    # stacklevel 3: a warning points at the caller of the code calling translate,
+    # as it always has (this wrapper adds one frame).
+    translator = make_translator(param_map, on_unsupported=on_unsupported, stacklevel=3)
 
     def translate(**kwargs) -> dict:
-        native_kwargs: dict = {}
-
-        for name, value in kwargs.items():
-            if name not in param_map:
-                if on_unsupported == "raise":
-                    raise ValueError(
-                        f"Unsupported parameter: {name!r}. "
-                        f"Supported: {sorted(supported_names)}"
-                    )
-                if on_unsupported == "warn":
-                    warnings.warn(
-                        f"Parameter {name!r} is not supported by this backend "
-                        f"and will be ignored.",
-                        stacklevel=3,
-                    )
-                continue
-
-            config = param_map[name]
-            if config is None:
-                if on_unsupported == "warn":
-                    warnings.warn(
-                        f"Parameter {name!r} is not supported by this backend.",
-                        stacklevel=3,
-                    )
-                continue
-
-            native_name = config.get("native_name", name)
-            coerce = config.get("coerce")
-            if coerce is not None:
-                value = coerce(value)
-            native_kwargs[native_name] = value
-
-        # Apply defaults for params the caller did not provide.
-        for name, config in param_map.items():
-            if config is None:
-                continue
-            native_name = config.get("native_name", name)
-            if native_name not in native_kwargs and "default" in config:
-                native_kwargs[native_name] = config["default"]
-
-        return native_kwargs
+        return translator(kwargs).kwargs
 
     return translate
 
 
 def validate_param(name: str, value: Any, config: dict) -> Any:
     """Validate a single parameter against ``min``/``max``/``choices`` in config."""
-    if "min" in config and value < config["min"]:
-        raise ValueError(
-            f"Parameter {name!r} value {value} is below minimum {config['min']}"
-        )
-    if "max" in config and value > config["max"]:
-        raise ValueError(
-            f"Parameter {name!r} value {value} is above maximum {config['max']}"
-        )
-    if "choices" in config and value not in config["choices"]:
-        raise ValueError(
-            f"Parameter {name!r} value {value!r} not in {config['choices']}"
-        )
-    return value
+    return check_range(name, value, config)

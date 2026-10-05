@@ -27,7 +27,7 @@ from pathlib import Path
 from typing import Any, Iterable, Optional, Sequence, Union
 
 from ocracy.base import BBox, OcrResult, TextBlock
-from ocracy.translation import make_kwargs_translator
+from ocracy.kit.translation import make_translator
 
 __all__ = [
     "BaseOcrAdapter",
@@ -60,15 +60,45 @@ class BaseOcrAdapter:
     removes the boilerplate.
     """
 
+    #: Keyword arguments a *remote* adapter reads itself (credentials), passed
+    #: through untranslated: no ``param_map`` declares them, and they must never be
+    #: dropped. On a local backend they are dropped with a (redacted) note.
+    ADAPTER_KWARGS = ("api_key", "app_key", "app_id")
+
     def __init__(self, config: dict):
         self.config = config
         self.backend_id = config.get("id") or config.get("name", "")
         param_map = config.get("param_map")
-        self._translate = make_kwargs_translator(param_map) if param_map else None
+        self._translator = (
+            make_translator(
+                param_map,
+                backend=self.backend_id,
+                # Only a remote adapter reads credentials; a local engine forwarding
+                # **extra to its library would choke on them (easyocr's readtext).
+                passthrough=self.ADAPTER_KWARGS if config.get("is_remote") else (),
+            )
+            if param_map
+            else None
+        )
+
+    def _translate(self, **kwargs) -> dict:
+        """The native kwargs for ``kwargs`` (drops warned about, notes discarded)."""
+        return self._translator(kwargs).kwargs if self._translator else dict(kwargs)
 
     def read(self, image, **kwargs) -> OcrResult:
-        native = self._translate(**kwargs) if self._translate else dict(kwargs)
-        return self._read(image, **native)
+        """Translate ``kwargs``, run :meth:`_read`, and put any drop notes on the result.
+
+        A parameter the backend cannot honour is warned about and dropped, and the
+        drop is recorded in ``result.meta["notes"]`` so it is visible after the
+        warning is gone (or filtered).
+        """
+        if self._translator is None:
+            return self._read(image, **kwargs)
+        translation = self._translator(kwargs)
+        result = self._read(image, **translation.kwargs)
+        if translation.notes and isinstance(getattr(result, "meta", None), dict):
+            result.meta.setdefault("notes", []).extend(translation.notes)
+        return result
 
     def _read(self, image, **native_kwargs) -> OcrResult:  # pragma: no cover
         raise NotImplementedError(

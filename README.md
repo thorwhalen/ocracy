@@ -260,7 +260,32 @@ symlink bridge; they also travel with `pip install ocracy` under
   `make_block`, `scaffold_backend`, `validate_adapter`).
 - `ocracy/backends/<id>/` — one subpackage per engine (`config.py` + `adapter.py`).
 - `ocracy/credentials.py` — credential resolution for remote backends.
+- `ocracy/kit/` — the facade kit: the param_map translator, the credential chain
+  and install plans, stdlib-only and shared with other facades (see below).
 - `ocracy/tools.py` + `ocracy/__main__.py` — the `ocracy` CLI (cw).
+
+### The facade kit, for building other facades
+
+The machinery under ocracy is not OCR-specific, and other facades (foley, falaw,
+voxy, scribed) use it instead of copying it:
+
+```python
+from ocracy.kit import make_translator, resolve_credential, using_credentials
+
+translate = make_translator(
+    {"languages": {"native_name": "lang", "coerce": "+".join}, "dpi": None},
+    backend="tess", on_unsupported="note", always_raise=("seed",),
+)
+t = translate({"languages": ["eng", "fra"], "dpi": 300})
+# t.kwargs == {"lang": "eng+fra"}; t.notes == ["dpi=300 is not supported by tess; dropped"]
+
+key = resolve_credential("acme", env_var="ACME_API_KEY")   # explicit -> bound -> env
+with using_credentials(acme=request_key):                  # per-request BYO key
+    ...
+```
+
+`ocracy.kit` imports only the standard library; the design is in
+`docs/adr/0001-facade-kit.md`.
 
 The architecture mirrors the sibling façade packages
 [`denote`](https://github.com/thorwhalen/denote) (audio→symbol) and

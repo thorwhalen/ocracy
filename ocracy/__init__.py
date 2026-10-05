@@ -125,15 +125,32 @@ __all__ = [
     "__version__",
 ]
 
-# Derive the version from installed package metadata (the pyproject SSOT, which CI
-# auto-bumps) so __version__ never drifts from a hardcoded literal.
-from importlib.metadata import PackageNotFoundError as _PNFE, version as _version
 
-try:
-    __version__ = _version("ocracy")
-except _PNFE:  # running from a source tree without install metadata
-    __version__ = "0.0.0+source"
-del _version, _PNFE
+def __getattr__(name: str):
+    """Compute ``__version__`` on first access (PEP 562), then cache it.
+
+    It comes from installed package metadata (the pyproject SSOT, which CI
+    auto-bumps), not a hardcoded literal. An editable install's metadata is frozen at
+    install time, so there it can lag ``pyproject.toml`` until a reinstall. Reading it lazily keeps
+    ``importlib.metadata`` out of ``import ocracy`` -- which every facade importing
+    :mod:`ocracy.kit` pays for.
+    """
+    if name == "__version__":
+        from importlib.metadata import PackageNotFoundError, version
+
+        try:
+            value = version("ocracy")
+        except PackageNotFoundError:  # a source tree without install metadata
+            value = "0.0.0+source"
+        globals()["__version__"] = value
+        return value
+    raise AttributeError(f"module {__name__!r} has no attribute {name!r}")
+
+
+def __dir__():
+    """List ``__version__`` too, before its first (lazy) access."""
+    return sorted(set(globals()) | {"__version__"})
+
 
 #: Singleton service collection for per-backend access (``services.tesseract``).
 services = ServiceCollection()

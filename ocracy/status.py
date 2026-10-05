@@ -74,7 +74,9 @@ def is_set_up(backend_id: str) -> bool:
         try:
             return bool(
                 resolve_credential(
-                    backend_id, env_var=cfg.get("api_env_var") or None, required=False
+                    cfg.get("credential_provider") or backend_id,
+                    env_var=cfg.get("api_env_var") or None,
+                    required=False,
                 )
             )
         except Exception:

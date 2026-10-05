@@ -25,7 +25,7 @@ class Adapter(BaseOcrAdapter):
         from ocracy.credentials import resolve_credential
 
         api_key = resolve_credential(
-            "anthropic",
+            self.config.get("credential_provider") or self.backend_id,
             api_key=extra.pop("api_key", None),
             env_var=self.config.get("api_env_var"),
         )

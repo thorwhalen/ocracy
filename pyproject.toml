@@ -118,12 +118,15 @@ convention = "google"
 
 [tool.pytest.ini_options]
 minversion = "6.0"
+# "ocracy" so CI's --doctest-modules reaches the package's own examples (the kit has
+# some); the flags match what CI passes with -o, so a doctest behaves the same in both.
 testpaths = [
+    "ocracy",
     "tests",
 ]
 doctest_optionflags = [
-    "NORMALIZE_WHITESPACE",
     "ELLIPSIS",
+    "IGNORE_EXCEPTION_DETAIL",
 ]
 
 [tool.wads.ci]

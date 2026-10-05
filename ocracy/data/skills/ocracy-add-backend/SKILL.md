@@ -76,7 +76,10 @@ replace.
   ```
   `coerce` is a callable (define it in `config.py`); `default` injects a value
   when the caller omits the param. Keep ocracy's vocabulary stable across engines
-  (prefer `languages`, not each engine's spelling).
+  (prefer `languages`, not each engine's spelling). A dropped parameter is warned
+  about and recorded in `result.meta["notes"]`. Every spec form (`min`/`max`/
+  `choices`, clamping) is documented in `ocracy.kit.translation`, the facade kit
+  ocracy shares with other facades.
 
 ### 4. Implement `adapter.py`'s `_read`
 Three jobs, in order:

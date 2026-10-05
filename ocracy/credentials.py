@@ -1,28 +1,36 @@
 """Credential resolution for remote OCR backends.
 
-Remote engines need an API key (or a path to a service-account JSON). Rather than
-make each adapter reinvent the lookup, this module centralizes a small, layered
-resolver:
+Remote engines need an API key (or a path to a service-account JSON). This module
+holds ocracy's *data* -- which env vars each OCR provider uses and where to get a
+key -- and binds it to the facade kit's chain (:mod:`ocracy.kit.credentials`):
 
 1. an explicit value passed by the caller (``api_key=...``),
-2. the backend's declared environment variable(s),
-3. (soft) a ``.env`` file discovered via ``python-dotenv`` if it is installed,
-4. (optional) an interactive prompt, only in a REPL and only if asked.
+2. a key bound for the provider with :func:`using_credentials` (bring-your-own-key),
+3. the backend's declared environment variable(s), then the provider's defaults,
+4. (soft) a project ``.env`` found from the current directory, if ``python-dotenv``
+   is installed,
+5. (optional) an interactive prompt, only in a terminal and only if asked.
 
 A backend declares its variable(s) in ``BACKEND_CONFIG['api_env_var']`` (a string
-or list). The well-known providers below give friendly defaults. The design
-follows the credential pattern used by the sibling ``aix`` facade.
+or list).
 """
 
 from __future__ import annotations
 
-import os
-import sys
-from typing import List, Optional, Sequence, Union
+from typing import Optional, Sequence, Union
+
+from ocracy.kit import credentials as _kit
+from ocracy.kit.credentials import (
+    MissingCredentialError,
+    current_credentials,
+    using_credentials,
+)
 
 __all__ = [
     "resolve_credential",
     "credential_help",
+    "using_credentials",
+    "current_credentials",
     "PROVIDER_ENV_VARS",
     "CREDENTIAL_GUIDANCE",
     "MissingCredentialError",
@@ -104,47 +112,7 @@ CREDENTIAL_GUIDANCE = {
 
 def credential_help(provider: str) -> str:
     """A short, link-bearing 'how to get a key' message for ``provider`` (or '')."""
-    g = CREDENTIAL_GUIDANCE.get(provider)
-    if not g:
-        return ""
-    return (
-        f"How to get a credential for {provider}: {g['note']} "
-        f"Get a key: {g['get_key_url']}"
-    )
-
-
-class MissingCredentialError(RuntimeError):
-    """Raised when a required credential cannot be resolved.
-
-    Its message includes provider-specific, link-bearing guidance on how to
-    obtain a key (see :data:`CREDENTIAL_GUIDANCE`).
-    """
-
-
-def _candidate_env_vars(
-    provider: Optional[str], env_var: Optional[Union[str, Sequence[str]]]
-) -> List[str]:
-    names: List[str] = []
-    if env_var:
-        names.extend([env_var] if isinstance(env_var, str) else list(env_var))
-    if provider and provider in PROVIDER_ENV_VARS:
-        names.extend(PROVIDER_ENV_VARS[provider])
-    # De-dup preserving order.
-    seen, out = set(), []
-    for n in names:
-        if n not in seen:
-            seen.add(n)
-            out.append(n)
-    return out
-
-
-def _soft_load_dotenv() -> None:
-    """Load a ``.env`` into the environment if python-dotenv is available."""
-    try:
-        from dotenv import load_dotenv  # type: ignore
-    except ImportError:
-        return
-    load_dotenv()
+    return _kit.credential_help(provider, guidance=CREDENTIAL_GUIDANCE)
 
 
 def resolve_credential(
@@ -159,7 +127,7 @@ def resolve_credential(
 
     Args:
         provider: A known provider id (see :data:`PROVIDER_ENV_VARS`) used to
-            infer default env-var names.
+            infer default env-var names, and the key for :func:`using_credentials`.
         api_key: An explicit value; if given, it wins and is returned as-is.
         env_var: Extra env-var name(s) to check (checked before provider defaults).
         required: If True (default), raise :class:`MissingCredentialError` when
@@ -171,38 +139,13 @@ def resolve_credential(
         The resolved secret, or ``None`` when ``required=False`` and nothing was
         found.
     """
-    if api_key:
-        return api_key
-
-    candidates = _candidate_env_vars(provider, env_var)
-
-    for name in candidates:
-        val = os.environ.get(name)
-        if val:
-            return val
-
-    # Soft .env discovery, then re-check.
-    _soft_load_dotenv()
-    for name in candidates:
-        val = os.environ.get(name)
-        if val:
-            return val
-
-    if prompt_if_missing and sys.stdin is not None and sys.stdin.isatty():
-        import getpass
-
-        label = candidates[0] if candidates else (provider or "API key")
-        val = getpass.getpass(f"Enter credential for {label}: ").strip()
-        if val:
-            if candidates:
-                os.environ[candidates[0]] = val
-            return val
-
-    if required:
-        hint = f" (set one of: {', '.join(candidates)})" if candidates else ""
-        guidance = credential_help(provider) if provider else ""
-        msg = f"No credential found for {provider or 'backend'}{hint}."
-        if guidance:
-            msg += "\n" + guidance
-        raise MissingCredentialError(msg)
-    return None
+    return _kit.resolve_credential(
+        provider,
+        api_key=api_key,
+        env_var=env_var,
+        provider_env_vars=PROVIDER_ENV_VARS,
+        guidance=CREDENTIAL_GUIDANCE,
+        dotenv=True,
+        prompt_if_missing=prompt_if_missing,
+        required=required,
+    )

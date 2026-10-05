@@ -78,6 +78,8 @@ instance/
 # Sphinx documentation
 docs/_build/
 docs/*
+# Architecture decision records are source, not build output.
+!docs/adr/
 
 # PyBuilder
 target/
