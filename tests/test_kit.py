@@ -7,12 +7,13 @@ break a consumer fails here first.
 """
 
 import ast
+import enum
 import os
 import subprocess
 import sys
 import threading
 import warnings
-from pathlib import Path
+from pathlib import Path, PurePath
 
 import pytest
 
@@ -34,6 +35,11 @@ from ocracy.kit import (
     run_install,
     using_credentials,
 )
+
+
+class Level(enum.Enum):
+    WORD = "word"
+
 
 KIT_DIR = Path(__file__).resolve().parent.parent / "ocracy" / "kit"
 
@@ -129,19 +135,37 @@ def test_redaction_fails_closed_on_headers_objects_bytes_and_depth():
     assert "SECRET" not in joined
     assert "cfg=<Cfg>" in joined and "raw=<bytes of length 14>" in joined
     assert "point=(1, 2)" in joined
-    assert is_secret_name("x-api-key") and not is_secret_name("key_frames")
+    assert is_secret_name("x-api-key") and is_secret_name("accessToken")
 
 
-def test_only_names_ending_in_a_secret_word_are_redacted():
-    t = make_translator({}, on_unsupported="note")(
-        {"key_frames": 12, "token_budget": 5, "access_token": "tk", "key": "k"}
-    )
-    assert [n.split(" ")[0] for n in t.notes] == [
-        "key_frames=12",
-        "token_budget=5",
-        "access_token=<redacted>",
-        "key=<redacted>",
+def test_redaction_errs_toward_hiding():
+    secret_names = [
+        "aws_access_key_id",
+        "private_key_pem",
+        "api_key_value",
+        "accessToken",
+        "apiToken",
+        "sessionToken",
+        "privateKey",
+        "pwd",
+        "passphrase",
+        "signature",
     ]
+    assert all(is_secret_name(n) for n in secret_names)
+    shown_names = ["max_tokens", "keyword", "author", "monkey", "tokens", "duration"]
+    assert not any(is_secret_name(n) for n in shown_names)
+    t = make_translator({}, on_unsupported="note")(
+        {
+            "endpoint": "https://user:hunter2@host/x",
+            "url": "https://maps.example/api?key=AIzaSECRET",
+            "n": 5,
+            "path": PurePath("/tmp/a.png"),
+            "level": Level.WORD,
+        }
+    )
+    joined = " ".join(t.notes)
+    assert "hunter2" not in joined and "AIzaSECRET" not in joined
+    assert "n=5 " in joined and "a.png" in joined and "Level.WORD" in joined
 
 
 def test_long_and_unrepresentable_values_are_shortened():

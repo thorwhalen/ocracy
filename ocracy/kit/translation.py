@@ -44,9 +44,12 @@ always in :attr:`Translation.notes` and :attr:`Translation.dropped`).
 Notes, warnings and errors show the dropped value, shortened, so a reader knows what
 was lost -- but never a secret, because notes end up in results that get stored and
 logged. A parameter or mapping key named like one (:func:`is_secret_name`:
-``api_key``, ``x-api-key``, ``client_secret``, ``Authorization``...) or a string
-shaped like one (``Bearer ...``) is shown as ``<redacted>``, and anything that is not
-plain data (an object, bytes) is shown only as its type.
+``api_key``, ``x-api-key``, ``accessToken``, ``client_secret``...) or a string shaped
+like one (``Bearer ...``, ``https://user:pw@host``, ``?key=...``) is shown as
+``<redacted>``, and anything that is not plain data (an object, bytes) is shown only
+as its type. This is best-effort by name and shape: a secret passed under an
+innocent name, with no recognisable shape, can still show -- so credentials belong
+in parameters named for them.
 
 Several choices are declared once, when the translator is made, and each was a real
 divergence between the fleet's copies (see ``docs/adr/0001-facade-kit.md``):
@@ -69,10 +72,13 @@ Stdlib only; imports nothing else from ocracy.
 
 from __future__ import annotations
 
+import enum
+import numbers
 import re
 import reprlib
 import warnings
 from dataclasses import dataclass, field
+from pathlib import PurePath
 from typing import Any, Callable, Iterable, Mapping, Optional
 
 __all__ = [
@@ -84,7 +90,6 @@ __all__ = [
     "check_range",
     "is_secret_name",
     "SECRET_SEGMENTS",
-    "SECRET_LAST_SEGMENTS",
     "SECRET_VALUE",
 ]
 
@@ -94,28 +99,42 @@ POLICIES = ("raise", "warn", "note", "ignore")
 #: How a value outside a spec's ``choices`` / ``min`` / ``max`` is handled.
 OUT_OF_RANGE = ("raise", "clamp", "drop")
 
-#: Name segments (split on ``_``, ``-``, ``.``, case-insensitive) that make a value
-#: secret wherever they appear: ``client_secret_value``, ``credentials_json``.
+#: Name segments (split on ``_ - .``, spaces and camelCase, case-insensitive) that
+#: make a value secret wherever they appear: ``api_key``, ``x-api-key``,
+#: ``aws_access_key_id``, ``accessToken``, ``client_secret_value``. The rule errs
+#: toward hiding: ``key_frames`` or a musical ``key`` are hidden too, which costs a
+#: drop note its value and nothing else.
 SECRET_SEGMENTS = frozenset(
     {
+        "key",
+        "apikey",
+        "token",
+        "auth",
+        "authorization",
         "secret",
         "password",
         "passwd",
+        "pwd",
+        "passphrase",
         "credential",
         "credentials",
-        "apikey",
-        "authorization",
         "cookie",
         "bearer",
+        "signature",
+        "sig",
+        "private",
+        "session",
     }
 )
-#: Name segments that make a value secret when they end the name: ``api_key``,
-#: ``x-api-key``, ``access_token`` -- but not ``key_frames`` or ``token_budget``.
-SECRET_LAST_SEGMENTS = frozenset({"key", "token", "auth"})
-#: String values that are credentials whatever the parameter is called.
-SECRET_VALUE = re.compile(r"^\s*(bearer|basic|token)\s+\S", re.IGNORECASE)
-_SEGMENT_SPLIT = re.compile(r"[_\-.\s]+")
-_PLAIN = (int, float, complex, bool, type(None))
+#: String values that are credentials whatever the parameter is called: an auth
+#: scheme (``Bearer ...``), a URL carrying a user:password or a key-like query.
+SECRET_VALUE = re.compile(
+    r"^\s*(bearer|basic|token)\s+\S"
+    r"|://[^/\s:@]+:[^/\s@]+@"
+    r"|[?&#](api_?key|key|token|access_token|auth|sig|signature|password)=",
+    re.IGNORECASE,
+)
+_SEGMENT_SPLIT = re.compile(r"[_\-.\s]+|(?<=[a-z0-9])(?=[A-Z])")
 _MAX_DEPTH = 8
 
 _DEFAULT_WHERE = "this backend"
@@ -226,13 +245,9 @@ def _opaque(value: Any) -> _Marker:
 
 
 def is_secret_name(name: Any) -> bool:
-    """Whether a parameter (or mapping key) named ``name`` holds a secret."""
-    segments = [seg for seg in _SEGMENT_SPLIT.split(str(name).lower()) if seg]
-    if not segments:
-        return False
-    return bool(SECRET_SEGMENTS.intersection(segments)) or (
-        segments[-1] in SECRET_LAST_SEGMENTS
-    )
+    """Whether a parameter (or mapping key) named ``name`` may hold a secret."""
+    segments = {seg.lower() for seg in _SEGMENT_SPLIT.split(str(name)) if seg}
+    return bool(SECRET_SEGMENTS & segments)
 
 
 def _scrub(name: Any, value: Any, depth: int = 0) -> Any:
@@ -243,10 +258,10 @@ def _scrub(name: Any, value: Any, depth: int = 0) -> Any:
     """
     if is_secret_name(name):
         return _REDACTED
-    if isinstance(value, _PLAIN):
+    if value is None or isinstance(value, (numbers.Number, enum.Enum, PurePath)):
         return value
     if isinstance(value, str):
-        return _REDACTED if SECRET_VALUE.match(value) else value
+        return _REDACTED if SECRET_VALUE.search(value) else value
     if depth >= _MAX_DEPTH:
         return _opaque(value)
     if isinstance(value, Mapping):
