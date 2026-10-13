@@ -119,3 +119,10 @@ class ServiceCollection(Mapping):
 
     def __repr__(self):
         return f"<ServiceCollection backends={list(self)}>"
+
+
+#: Singleton service collection for per-backend access (``ocracy.services.tesseract``).
+#: Created here, at module import, rather than in the package root's lazy
+#: ``__getattr__``: the import lock then guarantees there is exactly one, even
+#: when several threads touch ``ocracy.services`` first at once (ocracy#11).
+services = ServiceCollection()

@@ -939,3 +939,67 @@ def test_version_is_lazy_but_available():
     assert isinstance(ocracy.__version__, str) and ocracy.__version__
     with pytest.raises(AttributeError):
         ocracy.no_such_attribute  # noqa: B018
+
+
+# --- the lazy root (#11) ----------------------------------------------------
+
+
+def _fresh(code: str) -> str:
+    out = subprocess.run([sys.executable, "-c", code], capture_output=True, text=True)
+    assert out.returncode == 0, out.stderr
+    return out.stdout.strip()
+
+
+def test_importing_the_kit_loads_no_non_kit_ocracy_module():
+    """Every facade importing ocracy.kit runs ocracy/__init__; it must stay a stub."""
+    loaded = _fresh(
+        "import sys, ocracy.kit; "
+        "print(sorted(m for m in sys.modules if m.startswith('ocracy') "
+        "and m != 'ocracy' and not m.startswith('ocracy.kit')))"
+    )
+    assert loaded == "[]"
+
+
+def test_every_root_export_resolves_and_is_listed():
+    import ocracy
+
+    lazy = set(ocracy._LAZY_EXPORTS)
+    assert lazy <= set(ocracy.__all__)
+    assert set(ocracy.__all__) - lazy == {"ocr", "read_text", "find", "__version__"}
+    assert set(ocracy.__all__) <= set(dir(ocracy))
+    for name in ocracy.__all__:
+        getattr(ocracy, name)
+
+
+def test_root_exports_win_over_same_named_submodules():
+    """ocracy.catalog / .install / .services are the export, whichever loads first."""
+    for first in ("ocracy.catalog", "ocracy.install", "ocracy.services"):
+        kinds = _fresh(
+            f"import {first}, ocracy.catalog, ocracy.install, ocracy.services, ocracy; "
+            "print(type(ocracy.catalog).__name__, type(ocracy.install).__name__, "
+            "type(ocracy.services).__name__)"
+        )
+        assert kinds == "Catalog function ServiceCollection", first
+
+
+def test_submodules_stay_reachable_as_attributes():
+    out = _fresh("import ocracy; print(ocracy.status.__name__, ocracy.registry.__name__)")
+    assert out == "ocracy.status ocracy.registry"
+
+
+def test_star_import_and_facade_still_work():
+    out = _fresh("from ocracy import *; print(len(find()) > 0, callable(ocr), LEVELS[0])")
+    assert out == "True True all"
+
+
+def test_services_singleton_is_unique_across_threads():
+    """First touches from several threads at once must share one collection."""
+    out = _fresh(
+        "import threading, ocracy; seen = []; barrier = threading.Barrier(8)\n"
+        "def touch():\n    barrier.wait(); seen.append(id(ocracy.services))\n"
+        "ts = [threading.Thread(target=touch) for _ in range(8)]\n"
+        "[t.start() for t in ts]; [t.join() for t in ts]\n"
+        "import ocracy.services as m\n"
+        "print(len(set(seen)), id(ocracy.services) == seen[0])"
+    )
+    assert out == "1 True"
