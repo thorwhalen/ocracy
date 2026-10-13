@@ -965,7 +965,7 @@ def test_every_root_export_resolves_and_is_listed():
 
     lazy = set(ocracy._LAZY_EXPORTS)
     assert lazy <= set(ocracy.__all__)
-    assert set(ocracy.__all__) - lazy == {"ocr", "read_text", "find", "services", "__version__"}
+    assert set(ocracy.__all__) - lazy == {"ocr", "read_text", "find", "__version__"}
     assert set(ocracy.__all__) <= set(dir(ocracy))
     for name in ocracy.__all__:
         getattr(ocracy, name)
@@ -990,3 +990,16 @@ def test_submodules_stay_reachable_as_attributes():
 def test_star_import_and_facade_still_work():
     out = _fresh("from ocracy import *; print(len(find()) > 0, callable(ocr), LEVELS[0])")
     assert out == "True True all"
+
+
+def test_services_singleton_is_unique_across_threads():
+    """First touches from several threads at once must share one collection."""
+    out = _fresh(
+        "import threading, ocracy; seen = []; barrier = threading.Barrier(8)\n"
+        "def touch():\n    barrier.wait(); seen.append(id(ocracy.services))\n"
+        "ts = [threading.Thread(target=touch) for _ in range(8)]\n"
+        "[t.start() for t in ts]; [t.join() for t in ts]\n"
+        "import ocracy.services as m\n"
+        "print(len(set(seen)), id(ocracy.services) == seen[0])"
+    )
+    assert out == "1 True"

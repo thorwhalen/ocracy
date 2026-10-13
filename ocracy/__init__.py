@@ -70,6 +70,7 @@ _LAZY_EXPORTS: dict[str, tuple[str, str]] = {
     "list_backends": ("ocracy.registry", "list_backends"),
     "register_backend": ("ocracy.registry", "register_backend"),
     "ServiceCollection": ("ocracy.services", "ServiceCollection"),
+    "services": ("ocracy.services", "services"),
     "BaseOcrAdapter": ("ocracy.make_backend", "BaseOcrAdapter"),
     "make_block": ("ocracy.make_backend", "make_block"),
     "scaffold_backend": ("ocracy.make_backend", "scaffold_backend"),
@@ -183,10 +184,13 @@ def __getattr__(name: str):
       which CI auto-bumps), not a hardcoded literal. An editable install's
       metadata is frozen at install time, so there it can lag ``pyproject.toml``
       until a reinstall.
-    - ``services`` is the singleton :class:`~ocracy.services.ServiceCollection`.
-    - Every other re-export comes from :data:`_LAZY_EXPORTS`.
+    - Every other re-export comes from :data:`_LAZY_EXPORTS`, including the
+      ``services`` singleton, which ``ocracy.services`` creates at its import so
+      the import lock keeps it unique across threads.
     - A submodule (``ocracy.status``) is imported, as the eager re-exports used
-      to do as a side effect.
+      to do as a side effect. So ``hasattr(ocracy, name)`` may import
+      ``ocracy.<name>``, and a submodule that fails to import raises rather than
+      answering ``False``.
 
     Nothing here runs on ``import ocracy`` or ``import ocracy.kit``.
     """
@@ -199,8 +203,6 @@ def __getattr__(name: str):
             value = version("ocracy")
         except PackageNotFoundError:  # a source tree without install metadata
             value = "0.0.0+source"
-    elif name == "services":
-        value = importlib.import_module("ocracy.services").ServiceCollection()
     elif name in _LAZY_EXPORTS:
         module_name, attr = _LAZY_EXPORTS[name]
         value = getattr(importlib.import_module(module_name), attr)
@@ -221,7 +223,14 @@ def __dir__():
 
 
 class _Root(_types.ModuleType):
-    """The package's module type: refuses to let a submodule shadow a root export."""
+    """The package's module type: refuses to let a submodule shadow a root export.
+
+    It drops any binding of ``ocracy.catalog`` / ``.install`` / ``.services`` to
+    the same-named submodule, including an explicit one
+    (``ocracy.catalog = sys.modules["ocracy.catalog"]`` is silently ignored).
+    ``type(ocracy)`` is this class, so ``isinstance(ocracy, ModuleType)`` holds
+    but ``type(ocracy) is ModuleType`` does not.
+    """
 
     def __setattr__(self, name, value):
         if (
