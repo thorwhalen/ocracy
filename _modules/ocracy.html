@@ -27,20 +27,20 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=64cc4de3f052d77215f0" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=64cc4de3f052d77215f0" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d75fae25" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/epythet.css?v=8b94de43" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="../_static/scripts/fontawesome.js?digest=64cc4de3f052d77215f0"></script>
+  <script defer src="../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=64cc4de3f052d77215f0" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=64cc4de3f052d77215f0" />
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../_static/documentation_options.js?v=1e825a29"></script>
+    <script src="../_static/documentation_options.js?v=297ad043"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -408,8 +408,9 @@ window.runMermaid = runMermaid;</script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.1.11" />
+  <meta name="docsearch:version" content="0.1.12" />
   
     
     <script src="../_static/searchtools.js"></script>
@@ -752,51 +753,102 @@ window.runMermaid = runMermaid;</script>
 <span class="sd">    ocracy.services.tesseract.adapter              # raw engine adapter</span>
 <span class="sd">"""</span>
 
+<span class="kn">import</span><span class="w"> </span><span class="nn">sys</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">_sys</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">types</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">_types</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span>
+
 <span class="c1"># Two unrelated tuples are called ``LEVELS`` inside ocracy: OCR granularity</span>
 <span class="c1"># (``ocracy.base``) and backend readiness (``ocracy.status``). At the package root</span>
 <span class="c1"># the readiness one owns the bare name ``ocracy.LEVELS`` — that is what it has</span>
 <span class="c1"># meant since the status module landed, and what ``ocracy status`` reads. Each</span>
 <span class="c1"># also gets an unambiguous alias below (``GRANULARITY_LEVELS`` / ``STATUS_LEVELS``)</span>
 <span class="c1"># so neither is shadowed and no reader has to guess which tuple they are holding.</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.base</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">BBox</span><span class="p">,</span>
-    <span class="n">ImageInput</span><span class="p">,</span>
-    <span class="n">LEVELS</span> <span class="k">as</span> <span class="n">GRANULARITY_LEVELS</span><span class="p">,</span>
-    <span class="n">OcrResult</span><span class="p">,</span>
-    <span class="n">TextBlock</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.catalog</span><span class="w"> </span><span class="kn">import</span> <span class="n">BackendInfo</span><span class="p">,</span> <span class="n">Catalog</span><span class="p">,</span> <span class="n">catalog</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.registry</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">get_config</span><span class="p">,</span>
-    <span class="n">get_default_backend</span><span class="p">,</span>
-    <span class="n">list_backends</span><span class="p">,</span>
-    <span class="n">register_backend</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.services</span><span class="w"> </span><span class="kn">import</span> <span class="n">ServiceCollection</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.make_backend</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">BaseOcrAdapter</span><span class="p">,</span>
-    <span class="n">make_block</span><span class="p">,</span>
-    <span class="n">scaffold_backend</span><span class="p">,</span>
-    <span class="n">validate_adapter</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.install</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">Requirements</span><span class="p">,</span>
-    <span class="n">available_backends</span><span class="p">,</span>
-    <span class="n">check</span><span class="p">,</span>
-    <span class="n">doctor</span><span class="p">,</span>
-    <span class="n">install</span><span class="p">,</span>
-    <span class="n">requirements</span><span class="p">,</span>
-<span class="p">)</span>
-<span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.status</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-    <span class="n">LEVELS</span><span class="p">,</span>
-    <span class="n">LEVELS</span> <span class="k">as</span> <span class="n">STATUS_LEVELS</span><span class="p">,</span>
-    <span class="n">backend_ids</span><span class="p">,</span>
-    <span class="n">backend_info</span><span class="p">,</span>
-    <span class="n">is_set_up</span><span class="p">,</span>
-    <span class="n">is_tested</span><span class="p">,</span>
-    <span class="n">names_with_sites</span><span class="p">,</span>
-    <span class="n">status_table</span><span class="p">,</span>
-<span class="p">)</span>
+<span class="c1">#</span>
+<span class="c1"># The root re-exports are LAZY (PEP 562, issue #11): every facade that imports</span>
+<span class="c1"># ``ocracy.kit`` runs this file first, and the kit uses none of them. Each name</span>
+<span class="c1"># below maps to ``(module, attribute)`` and is imported on first access, then</span>
+<span class="c1"># cached in this module's globals. ``TYPE_CHECKING`` keeps them visible to type</span>
+<span class="c1"># checkers and IDEs.</span>
+<span class="n">_LAZY_EXPORTS</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"BBox"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"ocracy.base"</span><span class="p">,</span> <span class="s2">"BBox"</span><span class="p">),</span>
+    <span class="s2">"ImageInput"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"ocracy.base"</span><span class="p">,</span> <span class="s2">"ImageInput"</span><span class="p">),</span>
+    <span class="s2">"GRANULARITY_LEVELS"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"ocracy.base"</span><span class="p">,</span> <span class="s2">"LEVELS"</span><span class="p">),</span>
+    <span class="s2">"OcrResult"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"ocracy.base"</span><span class="p">,</span> <span class="s2">"OcrResult"</span><span class="p">),</span>
+    <span class="s2">"TextBlock"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"ocracy.base"</span><span class="p">,</span> <span class="s2">"TextBlock"</span><span class="p">),</span>
+    <span class="s2">"BackendInfo"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"ocracy.catalog"</span><span class="p">,</span> <span class="s2">"BackendInfo"</span><span class="p">),</span>
+    <span class="s2">"Catalog"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"ocracy.catalog"</span><span class="p">,</span> <span class="s2">"Catalog"</span><span class="p">),</span>
+    <span class="s2">"catalog"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"ocracy.catalog"</span><span class="p">,</span> <span class="s2">"catalog"</span><span class="p">),</span>
+    <span class="s2">"get_config"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"ocracy.registry"</span><span class="p">,</span> <span class="s2">"get_config"</span><span class="p">),</span>
+    <span class="s2">"get_default_backend"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"ocracy.registry"</span><span class="p">,</span> <span class="s2">"get_default_backend"</span><span class="p">),</span>
+    <span class="s2">"list_backends"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"ocracy.registry"</span><span class="p">,</span> <span class="s2">"list_backends"</span><span class="p">),</span>
+    <span class="s2">"register_backend"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"ocracy.registry"</span><span class="p">,</span> <span class="s2">"register_backend"</span><span class="p">),</span>
+    <span class="s2">"ServiceCollection"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"ocracy.services"</span><span class="p">,</span> <span class="s2">"ServiceCollection"</span><span class="p">),</span>
+    <span class="s2">"services"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"ocracy.services"</span><span class="p">,</span> <span class="s2">"services"</span><span class="p">),</span>
+    <span class="s2">"BaseOcrAdapter"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"ocracy.make_backend"</span><span class="p">,</span> <span class="s2">"BaseOcrAdapter"</span><span class="p">),</span>
+    <span class="s2">"make_block"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"ocracy.make_backend"</span><span class="p">,</span> <span class="s2">"make_block"</span><span class="p">),</span>
+    <span class="s2">"scaffold_backend"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"ocracy.make_backend"</span><span class="p">,</span> <span class="s2">"scaffold_backend"</span><span class="p">),</span>
+    <span class="s2">"validate_adapter"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"ocracy.make_backend"</span><span class="p">,</span> <span class="s2">"validate_adapter"</span><span class="p">),</span>
+    <span class="s2">"Requirements"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"ocracy.install"</span><span class="p">,</span> <span class="s2">"Requirements"</span><span class="p">),</span>
+    <span class="s2">"available_backends"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"ocracy.install"</span><span class="p">,</span> <span class="s2">"available_backends"</span><span class="p">),</span>
+    <span class="s2">"check"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"ocracy.install"</span><span class="p">,</span> <span class="s2">"check"</span><span class="p">),</span>
+    <span class="s2">"doctor"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"ocracy.install"</span><span class="p">,</span> <span class="s2">"doctor"</span><span class="p">),</span>
+    <span class="s2">"install"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"ocracy.install"</span><span class="p">,</span> <span class="s2">"install"</span><span class="p">),</span>
+    <span class="s2">"requirements"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"ocracy.install"</span><span class="p">,</span> <span class="s2">"requirements"</span><span class="p">),</span>
+    <span class="s2">"LEVELS"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"ocracy.status"</span><span class="p">,</span> <span class="s2">"LEVELS"</span><span class="p">),</span>
+    <span class="s2">"STATUS_LEVELS"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"ocracy.status"</span><span class="p">,</span> <span class="s2">"LEVELS"</span><span class="p">),</span>
+    <span class="s2">"backend_ids"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"ocracy.status"</span><span class="p">,</span> <span class="s2">"backend_ids"</span><span class="p">),</span>
+    <span class="s2">"backend_info"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"ocracy.status"</span><span class="p">,</span> <span class="s2">"backend_info"</span><span class="p">),</span>
+    <span class="s2">"is_set_up"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"ocracy.status"</span><span class="p">,</span> <span class="s2">"is_set_up"</span><span class="p">),</span>
+    <span class="s2">"is_tested"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"ocracy.status"</span><span class="p">,</span> <span class="s2">"is_tested"</span><span class="p">),</span>
+    <span class="s2">"names_with_sites"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"ocracy.status"</span><span class="p">,</span> <span class="s2">"names_with_sites"</span><span class="p">),</span>
+    <span class="s2">"status_table"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"ocracy.status"</span><span class="p">,</span> <span class="s2">"status_table"</span><span class="p">),</span>
+<span class="p">}</span>
+
+<span class="c1">#: Root names that are ALSO the names of submodules (``ocracy.catalog`` the</span>
+<span class="c1">#: module vs ``ocracy.catalog`` the ledger instance, and likewise ``install``</span>
+<span class="c1">#: and ``services``). Eagerly, the ``from ... import`` ran after the submodule</span>
+<span class="c1">#: import and so won. Lazily, importing the submodule later would make the</span>
+<span class="c1">#: import system bind the MODULE over the root name; :class:`_Root` refuses</span>
+<span class="c1">#: exactly that binding, so the root export keeps winning.</span>
+<span class="n">_SUBMODULE_SHADOWED</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">({</span><span class="s2">"catalog"</span><span class="p">,</span> <span class="s2">"install"</span><span class="p">,</span> <span class="s2">"services"</span><span class="p">})</span>
+
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>  <span class="c1"># pragma: no cover - static view of the lazy names</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">LEVELS</span> <span class="k">as</span> <span class="n">GRANULARITY_LEVELS</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BBox</span><span class="p">,</span> <span class="n">ImageInput</span><span class="p">,</span> <span class="n">OcrResult</span><span class="p">,</span> <span class="n">TextBlock</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.catalog</span><span class="w"> </span><span class="kn">import</span> <span class="n">BackendInfo</span><span class="p">,</span> <span class="n">Catalog</span><span class="p">,</span> <span class="n">catalog</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.install</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+        <span class="n">Requirements</span><span class="p">,</span>
+        <span class="n">available_backends</span><span class="p">,</span>
+        <span class="n">check</span><span class="p">,</span>
+        <span class="n">doctor</span><span class="p">,</span>
+        <span class="n">install</span><span class="p">,</span>
+        <span class="n">requirements</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.make_backend</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+        <span class="n">BaseOcrAdapter</span><span class="p">,</span>
+        <span class="n">make_block</span><span class="p">,</span>
+        <span class="n">scaffold_backend</span><span class="p">,</span>
+        <span class="n">validate_adapter</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.registry</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+        <span class="n">get_config</span><span class="p">,</span>
+        <span class="n">get_default_backend</span><span class="p">,</span>
+        <span class="n">list_backends</span><span class="p">,</span>
+        <span class="n">register_backend</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.services</span><span class="w"> </span><span class="kn">import</span> <span class="n">ServiceCollection</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.status</span><span class="w"> </span><span class="kn">import</span> <span class="n">LEVELS</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.status</span><span class="w"> </span><span class="kn">import</span> <span class="n">LEVELS</span> <span class="k">as</span> <span class="n">STATUS_LEVELS</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.status</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
+        <span class="n">backend_ids</span><span class="p">,</span>
+        <span class="n">backend_info</span><span class="p">,</span>
+        <span class="n">is_set_up</span><span class="p">,</span>
+        <span class="n">is_tested</span><span class="p">,</span>
+        <span class="n">names_with_sites</span><span class="p">,</span>
+        <span class="n">status_table</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">services</span><span class="p">:</span> <span class="n">ServiceCollection</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
     <span class="s2">"ocr"</span><span class="p">,</span>
@@ -839,14 +891,24 @@ window.runMermaid = runMermaid;</script>
 
 
 <span class="k">def</span><span class="w"> </span><span class="fm">__getattr__</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">"""Compute ``__version__`` on first access (PEP 562), then cache it.</span>
+<span class="w">    </span><span class="sd">"""Resolve a lazy root name on first access (PEP 562), then cache it.</span>
 
-<span class="sd">    It comes from installed package metadata (the pyproject SSOT, which CI</span>
-<span class="sd">    auto-bumps), not a hardcoded literal. An editable install's metadata is frozen at</span>
-<span class="sd">    install time, so there it can lag ``pyproject.toml`` until a reinstall. Reading it lazily keeps</span>
-<span class="sd">    ``importlib.metadata`` out of ``import ocracy`` -- which every facade importing</span>
-<span class="sd">    :mod:`ocracy.kit` pays for.</span>
+<span class="sd">    - ``__version__`` comes from installed package metadata (the pyproject SSOT,</span>
+<span class="sd">      which CI auto-bumps), not a hardcoded literal. An editable install's</span>
+<span class="sd">      metadata is frozen at install time, so there it can lag ``pyproject.toml``</span>
+<span class="sd">      until a reinstall.</span>
+<span class="sd">    - Every other re-export comes from :data:`_LAZY_EXPORTS`, including the</span>
+<span class="sd">      ``services`` singleton, which ``ocracy.services`` creates at its import so</span>
+<span class="sd">      the import lock keeps it unique across threads.</span>
+<span class="sd">    - A submodule (``ocracy.status``) is imported, as the eager re-exports used</span>
+<span class="sd">      to do as a side effect. So ``hasattr(ocracy, name)`` may import</span>
+<span class="sd">      ``ocracy.&lt;name&gt;``, and a submodule that fails to import raises rather than</span>
+<span class="sd">      answering ``False``.</span>
+
+<span class="sd">    Nothing here runs on ``import ocracy`` or ``import ocracy.kit``.</span>
 <span class="sd">    """</span>
+    <span class="kn">import</span><span class="w"> </span><span class="nn">importlib</span>
+
     <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">"__version__"</span><span class="p">:</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">importlib.metadata</span><span class="w"> </span><span class="kn">import</span> <span class="n">PackageNotFoundError</span><span class="p">,</span> <span class="n">version</span>
 
@@ -854,23 +916,51 @@ window.runMermaid = runMermaid;</script>
             <span class="n">value</span> <span class="o">=</span> <span class="n">version</span><span class="p">(</span><span class="s2">"ocracy"</span><span class="p">)</span>
         <span class="k">except</span> <span class="n">PackageNotFoundError</span><span class="p">:</span>  <span class="c1"># a source tree without install metadata</span>
             <span class="n">value</span> <span class="o">=</span> <span class="s2">"0.0.0+source"</span>
-        <span class="nb">globals</span><span class="p">()[</span><span class="s2">"__version__"</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
-        <span class="k">return</span> <span class="n">value</span>
-    <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"module </span><span class="si">{</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2"> has no attribute </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">_LAZY_EXPORTS</span><span class="p">:</span>
+        <span class="n">module_name</span><span class="p">,</span> <span class="n">attr</span> <span class="o">=</span> <span class="n">_LAZY_EXPORTS</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="n">module_name</span><span class="p">),</span> <span class="n">attr</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">importlib</span><span class="o">.</span><span class="n">import_module</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ModuleNotFoundError</span> <span class="k">as</span> <span class="n">exc</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">exc</span><span class="o">.</span><span class="n">name</span> <span class="o">!=</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span><span class="p">:</span>
+                <span class="k">raise</span>
+        <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"module </span><span class="si">{</span><span class="vm">__name__</span><span class="si">!r}</span><span class="s2"> has no attribute </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="nb">globals</span><span class="p">()[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+    <span class="k">return</span> <span class="n">value</span>
 
 
 <span class="k">def</span><span class="w"> </span><span class="fm">__dir__</span><span class="p">():</span>
-<span class="w">    </span><span class="sd">"""List ``__version__`` too, before its first (lazy) access."""</span>
-    <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span> <span class="o">|</span> <span class="p">{</span><span class="s2">"__version__"</span><span class="p">})</span>
+<span class="w">    </span><span class="sd">"""List the lazy names too, before their first access."""</span>
+    <span class="k">return</span> <span class="nb">sorted</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span> <span class="o">|</span> <span class="nb">set</span><span class="p">(</span><span class="n">__all__</span><span class="p">))</span>
 
 
-<span class="c1">#: Singleton service collection for per-backend access (``services.tesseract``).</span>
-<span class="n">services</span> <span class="o">=</span> <span class="n">ServiceCollection</span><span class="p">()</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">_Root</span><span class="p">(</span><span class="n">_types</span><span class="o">.</span><span class="n">ModuleType</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""The package's module type: refuses to let a submodule shadow a root export.</span>
+
+<span class="sd">    It drops any binding of ``ocracy.catalog`` / ``.install`` / ``.services`` to</span>
+<span class="sd">    the same-named submodule, including an explicit one</span>
+<span class="sd">    (``ocracy.catalog = sys.modules["ocracy.catalog"]`` is silently ignored).</span>
+<span class="sd">    ``type(ocracy)`` is this class, so ``isinstance(ocracy, ModuleType)`` holds</span>
+<span class="sd">    but ``type(ocracy) is ModuleType`` does not.</span>
+<span class="sd">    """</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="n">name</span> <span class="ow">in</span> <span class="n">_SUBMODULE_SHADOWED</span>
+            <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">_types</span><span class="o">.</span><span class="n">ModuleType</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="n">value</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">==</span> <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">.</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">"</span>
+        <span class="p">):</span>
+            <span class="k">return</span>  <span class="c1"># the import system binding ocracy.&lt;name&gt;; the root export wins</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+
+<span class="n">_sys</span><span class="o">.</span><span class="n">modules</span><span class="p">[</span><span class="vm">__name__</span><span class="p">]</span><span class="o">.</span><span class="vm">__class__</span> <span class="o">=</span> <span class="n">_Root</span>
 
 
 <div class="viewcode-block" id="ocr">
 <a class="viewcode-back" href="../_autosummary/ocracy.html#ocracy.ocr">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">ocr</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageInput</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">backend</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OcrResult</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">ocr</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="s2">"ImageInput"</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">backend</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"OcrResult"</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Read text from an image with any backend, returning a normalized result.</span>
 
 <span class="sd">    Args:</span>
@@ -883,6 +973,8 @@ window.runMermaid = runMermaid;</script>
 <span class="sd">    Returns:</span>
 <span class="sd">        An :class:`~ocracy.base.OcrResult` (``str(result)`` is the text).</span>
 <span class="sd">    """</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">ocracy</span><span class="w"> </span><span class="kn">import</span> <span class="n">get_default_backend</span><span class="p">,</span> <span class="n">services</span>
+
     <span class="n">backend</span> <span class="o">=</span> <span class="n">backend</span> <span class="ow">or</span> <span class="n">get_default_backend</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">services</span><span class="p">[</span><span class="n">backend</span><span class="p">]</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
@@ -890,7 +982,7 @@ window.runMermaid = runMermaid;</script>
 
 <div class="viewcode-block" id="read_text">
 <a class="viewcode-back" href="../_autosummary/ocracy.html#ocracy.read_text">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">read_text</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="n">ImageInput</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">backend</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">read_text</span><span class="p">(</span><span class="n">image</span><span class="p">:</span> <span class="s2">"ImageInput"</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">backend</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Like :func:`ocr` but returns just the recognized text string."""</span>
     <span class="k">return</span> <span class="n">ocr</span><span class="p">(</span><span class="n">image</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="n">backend</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span><span class="o">.</span><span class="n">text</span></div>
 
@@ -898,7 +990,7 @@ window.runMermaid = runMermaid;</script>
 
 <div class="viewcode-block" id="find">
 <a class="viewcode-back" href="../_autosummary/ocracy.html#ocracy.find">[docs]</a>
-<span class="k">def</span><span class="w"> </span><span class="nf">find</span><span class="p">(</span><span class="o">**</span><span class="n">criteria</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Catalog</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">find</span><span class="p">(</span><span class="o">**</span><span class="n">criteria</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="s2">"Catalog"</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Filter the ledger; shorthand for :meth:`ocracy.catalog.Catalog.filter`.</span>
 
 <span class="sd">    Example::</span>
@@ -906,6 +998,8 @@ window.runMermaid = runMermaid;</script>
 <span class="sd">        ocracy.find(is_local=True, open_source=True, handwriting="yes")</span>
 <span class="sd">        ocracy.find(implemented=True)        # only backends ocracy can run now</span>
 <span class="sd">    """</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">ocracy</span><span class="w"> </span><span class="kn">import</span> <span class="n">catalog</span>
+
     <span class="k">return</span> <span class="n">catalog</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="o">**</span><span class="n">criteria</span><span class="p">)</span></div>
 
 </pre></div>
@@ -937,8 +1031,8 @@ window.runMermaid = runMermaid;</script>
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../_static/scripts/bootstrap.js?digest=64cc4de3f052d77215f0"></script>
-<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=64cc4de3f052d77215f0"></script>
+  <script defer src="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -950,7 +1044,7 @@ window.runMermaid = runMermaid;</script>
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.22.0.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.23.0.
 </p></div>
       
     </div>

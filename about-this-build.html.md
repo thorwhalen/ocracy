@@ -2,18 +2,18 @@
 
 # About this build
 
-This documentation was built on **2026-10-05 15:42 UTC** from commit <a href="https://github.com/thorwhalen/ocracy/commit/eb396dc48e3f4a24435d346de68920860d5ec013"><code>eb396dc</code></a> on branch <code>main</code>, for **ocracy 0.1.11** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-10-13 20:56 UTC** from commit <a href="https://github.com/thorwhalen/ocracy/commit/fd643a14c0131849abca4f91f30740de15ff96da"><code>fd643a1</code></a> on branch <code>main</code>, for **ocracy 0.1.12** (from <code>pyproject.toml</code>).
 
 #### WARNING
 The documentation and the package may be misaligned:
 
-- The documented version (0.1.11) is behind the latest release on PyPI (0.1.12): `pip install ocracy` gives newer code than these docs describe.
+- The documented version (0.1.12) is behind the latest release on PyPI (0.1.13): `pip install ocracy` gives newer code than these docs describe.
 
 ## Source
 
 |                     |                                                                                                                                                          |
 |---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/ocracy/commit/eb396dc48e3f4a24435d346de68920860d5ec013"><code>eb396dc48e3f4a24435d346de68920860d5ec013</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/ocracy/commit/fd643a14c0131849abca4f91f30740de15ff96da"><code>fd643a14c0131849abca4f91f30740de15ff96da</code></a> |
 | Branch              | <code>main</code>                                                                                                                                        |
 | Tags at this commit | none                                                                                                                                                     |
 | Working tree        | clean                                                                                                                                                    |
@@ -24,18 +24,18 @@ The documentation and the package may be misaligned:
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/ocracy</code>                                                             |
-| Run          | <a href="https://github.com/thorwhalen/ocracy/actions/runs/37334818378">37334818378</a>    |
+| Run          | <a href="https://github.com/thorwhalen/ocracy/actions/runs/38466481192">38466481192</a>    |
 | Ref          | <code>refs/heads/main</code>                                                               |
-| Event commit | <code>eb396dc48e3f4a24435d346de68920860d5ec013</code> (in the history of the built commit) |
+| Event commit | <code>fd643a14c0131849abca4f91f30740de15ff96da</code> (in the history of the built commit) |
 
 ## Tools
 
 |          |         |
 |----------|---------|
-| epythet  | 0.2.12  |
+| epythet  | 0.2.17  |
 | Sphinx   | 9.1.0   |
 | docutils | 0.22.4  |
-| Python   | 3.12.14 |
+| Python   | 3.12.15 |
 
 ## Configuration as resolved
 
@@ -51,14 +51,14 @@ The documentation and the package may be misaligned:
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/ocracy/0.1.12/">0.1.12</a>, newer than the documented version (0.1.11).
+Latest release: <a href="https://pypi.org/project/ocracy/0.1.13/">0.1.13</a>, newer than the documented version (0.1.12).
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/thorwhalen/ocracy && cd ocracy
-git checkout eb396dc48e3f4a24435d346de68920860d5ec013
-pip install "epythet==0.2.12"
+git checkout fd643a14c0131849abca4f91f30740de15ff96da
+pip install "epythet==0.2.17"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```
 

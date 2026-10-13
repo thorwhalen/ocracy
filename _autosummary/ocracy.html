@@ -30,20 +30,20 @@
   </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../_static/styles/theme.css?digest=64cc4de3f052d77215f0" rel="stylesheet" />
-<link href="../_static/styles/pydata-sphinx-theme.css?digest=64cc4de3f052d77215f0" rel="stylesheet" />
+  <link href="../_static/styles/theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
+<link href="../_static/styles/pydata-sphinx-theme.css?digest=18bd87630a240e9c25be" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=d75fae25" />
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/epythet.css?v=8b94de43" />
   
   <!-- So that users can add custom icons -->
-  <script defer src="../_static/scripts/fontawesome.js?digest=64cc4de3f052d77215f0"></script>
+  <script defer src="../_static/scripts/fontawesome.js?digest=18bd87630a240e9c25be"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=64cc4de3f052d77215f0" />
-<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=64cc4de3f052d77215f0" />
+  <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
+<link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../_static/documentation_options.js?v=1e825a29"></script>
+    <script src="../_static/documentation_options.js?v=297ad043"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -55,8 +55,9 @@
     <link rel="next" title="ocracy.backends" href="ocracy.backends.html" />
     <link rel="prev" title="API reference" href="../api.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.1.11" />
+  <meta name="docsearch:version" content="0.1.12" />
   
     
     <script src="../_static/searchtools.js"></script>
@@ -347,6 +348,7 @@
 </details></li>
 <li class="toctree-l2"><a class="reference internal" href="ocracy.make_backend.html">ocracy.make_backend</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ocracy.registry.html">ocracy.registry</a></li>
+<li class="toctree-l2"><a class="reference internal" href="ocracy.services.html">ocracy.services</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ocracy.status.html">ocracy.status</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ocracy.tools.html">ocracy.tools</a></li>
 <li class="toctree-l2"><a class="reference internal" href="ocracy.translation.html">ocracy.translation</a></li>
@@ -457,15 +459,6 @@ other one in minutes:</p>
 <span class="n">ocracy</span><span class="o">.</span><span class="n">services</span><span class="o">.</span><span class="n">tesseract</span><span class="o">.</span><span class="n">adapter</span>              <span class="c1"># raw engine adapter</span>
 </pre></div>
 </div>
-<p class="rubric">Module Attributes</p>
-<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#ocracy.services" title="ocracy.services"><code class="xref py py-obj docutils literal notranslate"><span class="pre">services</span></code></a></p></td>
-<td><p>Singleton service collection for per-backend access (<code class="docutils literal notranslate"><span class="pre">services.tesseract</span></code>).</p></td>
-</tr>
-</tbody>
-</table>
-</div>
 <p class="rubric">Functions</p>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
@@ -568,7 +561,7 @@ other one in minutes:</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="ocracy.BBox">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ocracy.</span></span><span class="sig-name descname"><span class="pre">BBox</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">polygon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocracy/base.html#BBox"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.BBox" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#object" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>An axis-aligned bounding box in pixel coordinates (origin = top-left).</p>
 <p><code class="docutils literal notranslate"><span class="pre">polygon</span></code> optionally carries the original (possibly rotated) vertices as a
 sequence of <code class="docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">y)</span></code> points; the axis-aligned <code class="docutils literal notranslate"><span class="pre">x0/y0/x1/y1</span></code> are always
@@ -577,7 +570,7 @@ populated (derived from the polygon if a backend only gives one).</p>
 </dl>
 <dl class="py property">
 <dt class="sig sig-object py" id="ocracy.BBox.as_tuple">
-<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">as_tuple</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.14)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#ocracy.BBox.as_tuple" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">as_tuple</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.15)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#ocracy.BBox.as_tuple" title="Link to this definition">#</a></dt>
 <dd><p><code class="docutils literal notranslate"><span class="pre">(x0,</span> <span class="pre">y0,</span> <span class="pre">x1,</span> <span class="pre">y1)</span></code> — the convention PIL’s <code class="docutils literal notranslate"><span class="pre">crop</span></code> expects.</p>
 </dd></dl>
 
@@ -596,7 +589,7 @@ polygon is preserved for callers that care about rotation.</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ocracy.BBox.xywh">
-<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">xywh</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.14)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#ocracy.BBox.xywh" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">xywh</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Tuple" title="(in Python v3.15)"><span class="pre">Tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="p"><span class="pre">]</span></span></span><a class="headerlink" href="#ocracy.BBox.xywh" title="Link to this definition">#</a></dt>
 <dd><p><code class="docutils literal notranslate"><span class="pre">(x,</span> <span class="pre">y,</span> <span class="pre">width,</span> <span class="pre">height)</span></code> — the convention many drawing libs expect.</p>
 </dd></dl>
 
@@ -605,7 +598,7 @@ polygon is preserved for callers that care about rotation.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="ocracy.BackendInfo">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ocracy.</span></span><span class="sig-name descname"><span class="pre">BackendInfo</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">record</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">implemented</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocracy/catalog.html#BackendInfo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.BackendInfo" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code></a></p>
 <p>One backend’s ledger entry — a read-only, attribute-and-dict accessible record.</p>
 <p>Wraps the raw record dict so that new fields added to the JSON are available
 immediately (via attribute or key access) without code changes, while a few
@@ -617,7 +610,7 @@ commonly used fields get typed properties for convenience and discoverability.</
 <dl class="py class">
 <dt class="sig sig-object py" id="ocracy.BaseOcrAdapter">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ocracy.</span></span><span class="sig-name descname"><span class="pre">BaseOcrAdapter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocracy/make_backend.html#BaseOcrAdapter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.BaseOcrAdapter" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#object" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Optional base class for backend adapters.</p>
 <p>Stores the config, builds a kwarg translator from <code class="docutils literal notranslate"><span class="pre">config['param_map']</span></code>,
 and implements <code class="docutils literal notranslate"><span class="pre">read</span></code> as: translate normalized kwargs -&gt; native kwargs -&gt;
@@ -655,7 +648,7 @@ warning is gone (or filtered).</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="ocracy.Catalog">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ocracy.</span></span><span class="sig-name descname"><span class="pre">Catalog</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">_records</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocracy/catalog.html#Catalog"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.Catalog" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code></a></p>
 <p>A filterable, dict-like collection of <a class="reference internal" href="#ocracy.BackendInfo" title="ocracy.BackendInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">BackendInfo</span></code></a>, keyed by id.</p>
 <p>Loaded lazily from <code class="xref py py-data docutils literal notranslate"><span class="pre">DEFAULT_LEDGER_PATH</span></code> (override via the <code class="docutils literal notranslate"><span class="pre">path</span></code>
 argument or the <code class="docutils literal notranslate"><span class="pre">OCRACY_LEDGER</span></code> environment variable). <a class="reference internal" href="#ocracy.Catalog.filter" title="ocracy.Catalog.filter"><code class="xref py py-meth docutils literal notranslate"><span class="pre">filter()</span></code></a>
@@ -684,7 +677,7 @@ to <code class="docutils literal notranslate"><span class="pre">&quot;yes&quot;<
 <dd><p>A trimmed, side-by-side view of selected backends and fields.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>]</span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>]</span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -696,9 +689,9 @@ to <code class="docutils literal notranslate"><span class="pre">&quot;yes&quot;<
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>predicate</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code></a>[[<a class="reference internal" href="#ocracy.BackendInfo" title="ocracy.catalog.BackendInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">BackendInfo</span></code></a>], <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>]]</span>) – An arbitrary <code class="docutils literal notranslate"><span class="pre">BackendInfo</span> <span class="pre">-&gt;</span> <span class="pre">bool</span></code> callable.</p></li>
-<li><p><strong>implemented</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>]</span>) – If set, keep only (un)implemented backends.</p></li>
-<li><p><strong>**criteria</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span>) – <code class="docutils literal notranslate"><span class="pre">field=value</span></code> constraints. <code class="docutils literal notranslate"><span class="pre">value</span></code> may be a
+<li><p><strong>predicate</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.15)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Callable" title="(in Python v3.15)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code></a>[[<a class="reference internal" href="#ocracy.BackendInfo" title="ocracy.catalog.BackendInfo"><code class="xref py py-class docutils literal notranslate"><span class="pre">BackendInfo</span></code></a>], <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>]]</span>) – An arbitrary <code class="docutils literal notranslate"><span class="pre">BackendInfo</span> <span class="pre">-&gt;</span> <span class="pre">bool</span></code> callable.</p></li>
+<li><p><strong>implemented</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.15)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a>]</span>) – If set, keep only (un)implemented backends.</p></li>
+<li><p><strong>**criteria</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.15)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span>) – <code class="docutils literal notranslate"><span class="pre">field=value</span></code> constraints. <code class="docutils literal notranslate"><span class="pre">value</span></code> may be a
 set/list/tuple meaning “one of”. Free-text fields
 (<code class="docutils literal notranslate"><span class="pre">languages_note</span></code>, <code class="docutils literal notranslate"><span class="pre">beyond_text</span></code>, <code class="docutils literal notranslate"><span class="pre">output_formats</span></code>) use a
 case-insensitive substring match.</p></li>
@@ -738,7 +731,7 @@ case-insensitive substring match.</p></li>
 <dl class="py class">
 <dt class="sig sig-object py" id="ocracy.OcrResult">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ocracy.</span></span><span class="sig-name descname"><span class="pre">OcrResult</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">blocks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">backend</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">raw</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocracy/base.html#OcrResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.OcrResult" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#object" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>The normalized result of reading an image with any backend.</p>
 <p><code class="docutils literal notranslate"><span class="pre">text</span></code> is the headline payload: the full recognized text in reading order.
 <code class="docutils literal notranslate"><span class="pre">blocks</span></code> carries the structured units (with boxes/confidences) when the
@@ -764,7 +757,7 @@ timing, …).</p>
 <dd><p>Blocks at a given granularity (<code class="docutils literal notranslate"><span class="pre">&quot;word&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;line&quot;</span></code>, …).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference internal" href="ocracy.base.html#ocracy.base.TextBlock" title="ocracy.base.TextBlock"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextBlock</span></code></a>]</span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference internal" href="ocracy.base.html#ocracy.base.TextBlock" title="ocracy.base.TextBlock"><code class="xref py py-class docutils literal notranslate"><span class="pre">TextBlock</span></code></a>]</span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -809,13 +802,13 @@ reading order, or pre-join and pass <code class="docutils literal notranslate"><
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ocracy.OcrResult.markdown">
-<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">markdown</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><a class="headerlink" href="#ocracy.OcrResult.markdown" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">markdown</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span><a class="headerlink" href="#ocracy.OcrResult.markdown" title="Link to this definition">#</a></dt>
 <dd><p>Markdown rendering if the backend produced one (else <code class="docutils literal notranslate"><span class="pre">None</span></code>).</p>
 </dd></dl>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="ocracy.OcrResult.mean_confidence">
-<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">mean_confidence</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.14)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.14)"><span class="pre">None</span></a></span><a class="headerlink" href="#ocracy.OcrResult.mean_confidence" title="Link to this definition">#</a></dt>
+<span class="property"><span class="k"><span class="pre">property</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">mean_confidence</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#float" title="(in Python v3.15)"><span class="pre">float</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><span class="pre">None</span></a></span><a class="headerlink" href="#ocracy.OcrResult.mean_confidence" title="Link to this definition">#</a></dt>
 <dd><p>Mean confidence over blocks that report one, or <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p>
 </dd></dl>
 
@@ -824,7 +817,7 @@ reading order, or pre-join and pass <code class="docutils literal notranslate"><
 <dl class="py class">
 <dt class="sig sig-object py" id="ocracy.Requirements">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ocracy.</span></span><span class="sig-name descname"><span class="pre">Requirements</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">backend_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">implemented</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">available</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_local</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">is_remote</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pip_command</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extra</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">system</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">system_note</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gpu</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">heavy</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alternative</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">credentials</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">notes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verify_command</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alternative_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Lighter</span> <span class="pre">alternative'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocracy/kit/install.html#Requirements"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.Requirements" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#object" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>What a backend needs to run, structured for an agent to act on.</p>
 <dl class="field-list simple">
 </dl>
@@ -834,7 +827,7 @@ reading order, or pre-join and pass <code class="docutils literal notranslate"><
 <dd><p>An agent- and human-readable, copy-pasteable install plan.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -844,7 +837,7 @@ reading order, or pre-join and pass <code class="docutils literal notranslate"><
 <dl class="py class">
 <dt class="sig sig-object py" id="ocracy.ServiceCollection">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ocracy.</span></span><span class="sig-name descname"><span class="pre">ServiceCollection</span></span><a class="reference internal" href="../_modules/ocracy/services.html#ServiceCollection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.ServiceCollection" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Mapping</span></code></a></p>
 <p>Lazy mapping of backend ids -&gt; <code class="xref py py-class docutils literal notranslate"><span class="pre">ServiceHandle</span></code>.</p>
 <p>Supports dict-style (<code class="docutils literal notranslate"><span class="pre">services['tesseract']</span></code>) and attribute-style
 (<code class="docutils literal notranslate"><span class="pre">services.tesseract</span></code>) access.</p>
@@ -853,7 +846,7 @@ reading order, or pre-join and pass <code class="docutils literal notranslate"><
 <dl class="py class">
 <dt class="sig sig-object py" id="ocracy.TextBlock">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ocracy.</span></span><span class="sig-name descname"><span class="pre">TextBlock</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">text</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bbox</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">confidence</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">level</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'line'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">language</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">meta</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">&lt;factory&gt;</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocracy/base.html#TextBlock"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.TextBlock" title="Link to this definition">#</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#object" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/builtins/functions.html#object" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>One recognized unit of text.</p>
 <dl class="field-list simple">
 </dl>
@@ -902,7 +895,7 @@ from whatever scale the backend used), if available.</p>
 <dd><p>Implemented backends whose dependency is importable right now.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -915,7 +908,7 @@ from whatever scale the backend used), if available.</p>
 — important for <code class="docutils literal notranslate"><span class="pre">&quot;tested&quot;</span></code>, which otherwise re-runs OCR.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -927,15 +920,15 @@ from whatever scale the backend used), if available.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>ids</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterable" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code></a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]]</span>) – Which backends (default: every ledger id).</p></li>
+<li><p><strong>ids</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.15)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Iterable" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Iterable</span></code></a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]]</span>) – Which backends (default: every ledger id).</p></li>
 <li><p><strong>run_tests</strong> – Which set-up backends to actually OCR-test. <code class="docutils literal notranslate"><span class="pre">True</span></code> = all
 set-up (real API calls for remotes!); <code class="docutils literal notranslate"><span class="pre">False</span></code> = none (<code class="docutils literal notranslate"><span class="pre">tested</span></code> is
 <code class="docutils literal notranslate"><span class="pre">None</span></code>); or an iterable of ids to limit testing to those.</p></li>
-<li><p><strong>test_image</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span>) – Image to test with (default: a generated one, shared across all).</p></li>
+<li><p><strong>test_image</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.15)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span>) – Image to test with (default: a generated one, shared across all).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>]</span></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Dict" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dict</span></code></a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>]</span></p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">{id:</span> <span class="pre">{...,</span> <span class="pre">&quot;name&quot;,</span> <span class="pre">&quot;website&quot;,</span> <span class="pre">&quot;implemented&quot;,</span> <span class="pre">&quot;set_up&quot;,</span> <span class="pre">&quot;tested&quot;}}</span></code> where
@@ -950,7 +943,7 @@ set-up (real API calls for remotes!); <code class="docutils literal notranslate"
 <dd><p>Is <code class="docutils literal notranslate"><span class="pre">backend_id</span></code> importable / usable right now? (no install, no network).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -962,7 +955,7 @@ set-up (real API calls for remotes!); <code class="docutils literal notranslate"
 <p>Returns <code class="docutils literal notranslate"><span class="pre">{&quot;available&quot;:</span> <span class="pre">[...],</span> <span class="pre">&quot;missing&quot;:</span> <span class="pre">{id:</span> <span class="pre">one-line</span> <span class="pre">install</span> <span class="pre">hint}}</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -989,7 +982,7 @@ set-up (real API calls for remotes!); <code class="docutils literal notranslate"
 <dd><p>A backend’s <code class="docutils literal notranslate"><span class="pre">BACKEND_CONFIG</span></code> without loading its adapter.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1005,7 +998,7 @@ installed — the first registered candidate (using it will raise a helpful
 install error).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1023,7 +1016,7 @@ the current interpreter, then (if <code class="docutils literal notranslate"><sp
 yourself from <code class="docutils literal notranslate"><span class="pre">result['requirements'].system</span></code> / <code class="docutils literal notranslate"><span class="pre">.gpu</span></code>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1038,7 +1031,7 @@ whose key is set but whose client library isn’t installed is <em>not</em> set 
 (it couldn’t actually run). Returns False for ledger-only backends.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1051,7 +1044,7 @@ whose key is set but whose client library isn’t installed is <em>not</em> set 
 backend isn’t set up or the run fails.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1064,7 +1057,7 @@ backend isn’t set up or the run fails.</p>
 <code class="docutils literal notranslate"><span class="pre">capabilities</span></code> list (the primary <code class="docutils literal notranslate"><span class="pre">&quot;read&quot;</span></code> is implied for all).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.List" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>]</span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1089,7 +1082,7 @@ percent-scale engines).</p>
 <dd><p><code class="docutils literal notranslate"><span class="pre">&quot;Name</span> <span class="pre">(website),</span> <span class="pre">Name2</span> <span class="pre">(website2),</span> <span class="pre">...&quot;</span></code> for <code class="docutils literal notranslate"><span class="pre">ids</span></code> (name, not id).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1101,15 +1094,15 @@ percent-scale engines).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>image</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></a>, <a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#bytes" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bytes</span></code></a>, PILImage, NDArray]</span>) – A path, <code class="docutils literal notranslate"><span class="pre">http(s)</span></code> URL, <code class="docutils literal notranslate"><span class="pre">bytes</span></code>, PIL image, or numpy array.</p></li>
-<li><p><strong>backend</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – Backend id (see <a class="reference internal" href="#ocracy.list_backends" title="ocracy.list_backends"><code class="xref py py-func docutils literal notranslate"><span class="pre">list_backends()</span></code></a>). Defaults to the first
+<li><p><strong>image</strong> (<span class="sphinx_autodoc_typehints-type">ImageInput</span>) – A path, <code class="docutils literal notranslate"><span class="pre">http(s)</span></code> URL, <code class="docutils literal notranslate"><span class="pre">bytes</span></code>, PIL image, or numpy array.</p></li>
+<li><p><strong>backend</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – Backend id (see <a class="reference internal" href="#ocracy.list_backends" title="ocracy.list_backends"><code class="xref py py-func docutils literal notranslate"><span class="pre">list_backends()</span></code></a>). Defaults to the first
 <em>installed</em> implemented backend (see <a class="reference internal" href="#ocracy.get_default_backend" title="ocracy.get_default_backend"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_default_backend()</span></code></a>).</p></li>
 <li><p><strong>**kwargs</strong> – Normalized, backend-translated options (e.g. <code class="docutils literal notranslate"><span class="pre">languages</span></code>).
 Unknown options for the chosen backend are warned about and dropped.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="ocracy.base.html#ocracy.base.OcrResult" title="ocracy.base.OcrResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">OcrResult</span></code></a></span></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type">OcrResult</span></p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>An <a class="reference internal" href="ocracy.base.html#ocracy.base.OcrResult" title="ocracy.base.OcrResult"><code class="xref py py-class docutils literal notranslate"><span class="pre">OcrResult</span></code></a> (<code class="docutils literal notranslate"><span class="pre">str(result)</span></code> is the text).</p>
@@ -1123,7 +1116,7 @@ Unknown options for the chosen backend are warned about and dropped.</p></li>
 <dd><p>Like <a class="reference internal" href="#ocracy.ocr" title="ocracy.ocr"><code class="xref py py-func docutils literal notranslate"><span class="pre">ocr()</span></code></a> but returns just the recognized text string.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1135,14 +1128,14 @@ Unknown options for the chosen backend are warned about and dropped.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>backend_id</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – Unique identifier.</p></li>
-<li><p><strong>config</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></span>) – <code class="docutils literal notranslate"><span class="pre">BACKEND_CONFIG</span></code>-shaped dict (needs at least <code class="docutils literal notranslate"><span class="pre">name</span></code>).</p></li>
-<li><p><strong>adapter</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span>) – Optional pre-instantiated adapter; else loaded lazily from
+<li><p><strong>backend_id</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – Unique identifier.</p></li>
+<li><p><strong>config</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></span>) – <code class="docutils literal notranslate"><span class="pre">BACKEND_CONFIG</span></code>-shaped dict (needs at least <code class="docutils literal notranslate"><span class="pre">name</span></code>).</p></li>
+<li><p><strong>adapter</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.15)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span>) – Optional pre-instantiated adapter; else loaded lazily from
 <code class="docutils literal notranslate"><span class="pre">config['module_path']</span></code> when first used.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1171,29 +1164,23 @@ have to flesh out <code class="docutils literal notranslate"><span class="pre">p
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>backend_id</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – The ledger id (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;easyocr&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;google-vision&quot;</span></code>). The
+<li><p><strong>backend_id</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span>) – The ledger id (e.g. <code class="docutils literal notranslate"><span class="pre">&quot;easyocr&quot;</span></code>, <code class="docutils literal notranslate"><span class="pre">&quot;google-vision&quot;</span></code>). The
 on-disk module name uses underscores; the config <code class="docutils literal notranslate"><span class="pre">id</span></code> keeps the id
 verbatim.</p></li>
-<li><p><strong>dest</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></a>, <a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.14)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span>) – Target directory (defaults to <code class="docutils literal notranslate"><span class="pre">ocracy/backends/&lt;id_underscored&gt;</span></code>).</p></li>
-<li><p><strong>overwrite</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span>) – Allow writing into an existing non-empty directory.</p></li>
-<li><p><strong>ledger</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span>) – A <a class="reference internal" href="#ocracy.Catalog" title="ocracy.catalog.Catalog"><code class="xref py py-class docutils literal notranslate"><span class="pre">Catalog</span></code></a> to read the record from
+<li><p><strong>dest</strong> (<span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a>, <a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></a>, <a class="reference external" href="https://docs.python.org/3/builtins/constants.html#None" title="(in Python v3.15)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></a>]</span>) – Target directory (defaults to <code class="docutils literal notranslate"><span class="pre">ocracy/backends/&lt;id_underscored&gt;</span></code>).</p></li>
+<li><p><strong>overwrite</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span>) – Allow writing into an existing non-empty directory.</p></li>
+<li><p><strong>ledger</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Any" title="(in Python v3.15)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Any</span></code></a></span>) – A <a class="reference internal" href="#ocracy.Catalog" title="ocracy.catalog.Catalog"><code class="xref py py-class docutils literal notranslate"><span class="pre">Catalog</span></code></a> to read the record from
 (defaults to the shipped catalog).</p></li>
-<li><p><strong>extra_overrides</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.14)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>]</span>) – Extra config-key overrides applied on top of the record.</p></li>
+<li><p><strong>extra_overrides</strong> (<span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/typing.html#typing.Optional" title="(in Python v3.15)"><code class="xref py py-data docutils literal notranslate"><span class="pre">Optional</span></code></a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a>]</span>) – Extra config-key overrides applied on top of the record.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></a></span></p>
+<dd class="field-even"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/library/pathlib.html#pathlib.Path" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></a></span></p>
 </dd>
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>The path to the created backend package.</p>
 </dd>
 </dl>
-</dd></dl>
-
-<dl class="py data">
-<dt class="sig sig-object py" id="ocracy.services">
-<span class="sig-prename descclassname"><span class="pre">ocracy.</span></span><span class="sig-name descname"><span class="pre">services</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ServiceCollection</span> <span class="pre">backends=['aws-textract',</span> <span class="pre">'azure-document-intelligence',</span> <span class="pre">'claude-vision',</span> <span class="pre">'easyocr',</span> <span class="pre">'google-vision',</span> <span class="pre">'gpt-4o-vision',</span> <span class="pre">'mathpix',</span> <span class="pre">'mistral-ocr',</span> <span class="pre">'ocr-space',</span> <span class="pre">'ocrmac',</span> <span class="pre">'paddleocr',</span> <span class="pre">'pix2tex-latex-ocr',</span> <span class="pre">'rapidocr',</span> <span class="pre">'tesseract',</span> <span class="pre">'trocr-handwritten']&gt;</span></span><a class="headerlink" href="#ocracy.services" title="Link to this definition">#</a></dt>
-<dd><p>Singleton service collection for per-backend access (<code class="docutils literal notranslate"><span class="pre">services.tesseract</span></code>).</p>
 </dd></dl>
 
 <dl class="py function">
@@ -1205,7 +1192,7 @@ verbatim.</p></li>
 tests; otherwise <code class="docutils literal notranslate"><span class="pre">run_tests</span></code> controls which set-up backends get OCR-tested.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#str" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1221,7 +1208,7 @@ raises on a <em>recognition</em> mismatch — it returns what happened so caller
 decide.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></span></p>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1250,16 +1237,19 @@ decide.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="ocracy.registry.html#module-ocracy.registry" title="ocracy.registry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">registry</span></code></a></p></td>
 <td><p>Backend discovery, registration, and lazy loading.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="ocracy.status.html#module-ocracy.status" title="ocracy.status"><code class="xref py py-obj docutils literal notranslate"><span class="pre">status</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="ocracy.services.html#ocracy.services" title="ocracy.services"><code class="xref py py-obj docutils literal notranslate"><span class="pre">services</span></code></a></p></td>
+<td><p>Lazy mapping of backend ids -&gt; <code class="xref py py-class docutils literal notranslate"><span class="pre">ServiceHandle</span></code>.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ocracy.status.html#module-ocracy.status" title="ocracy.status"><code class="xref py py-obj docutils literal notranslate"><span class="pre">status</span></code></a></p></td>
 <td><p>Backend readiness status — four nested levels, info dicts, and a Markdown table.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="ocracy.tools.html#module-ocracy.tools" title="ocracy.tools"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tools</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="ocracy.tools.html#module-ocracy.tools" title="ocracy.tools"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tools</span></code></a></p></td>
 <td><p>Command-line tools for ocracy (dispatched via <code class="docutils literal notranslate"><span class="pre">cw</span></code> in <code class="docutils literal notranslate"><span class="pre">__main__</span></code>).</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="ocracy.translation.html#module-ocracy.translation" title="ocracy.translation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translation</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="ocracy.translation.html#module-ocracy.translation" title="ocracy.translation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">translation</span></code></a></p></td>
 <td><p>Parameter translation between ocracy's normalized kwargs and native engines.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="ocracy.util.html#module-ocracy.util" title="ocracy.util"><code class="xref py py-obj docutils literal notranslate"><span class="pre">util</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="ocracy.util.html#module-ocracy.util" title="ocracy.util"><code class="xref py py-obj docutils literal notranslate"><span class="pre">util</span></code></a></p></td>
 <td><p>Image-input normalization and small shared helpers.</p></td>
 </tr>
 </tbody>
@@ -1376,7 +1366,6 @@ decide.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ocracy.register_backend"><code class="docutils literal notranslate"><span class="pre">register_backend()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ocracy.requirements"><code class="docutils literal notranslate"><span class="pre">requirements()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ocracy.scaffold_backend"><code class="docutils literal notranslate"><span class="pre">scaffold_backend()</span></code></a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ocracy.services"><code class="docutils literal notranslate"><span class="pre">services</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ocracy.status_table"><code class="docutils literal notranslate"><span class="pre">status_table()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ocracy.validate_adapter"><code class="docutils literal notranslate"><span class="pre">validate_adapter()</span></code></a></li>
 </ul>
@@ -1404,8 +1393,8 @@ decide.</p>
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script defer src="../_static/scripts/bootstrap.js?digest=64cc4de3f052d77215f0"></script>
-<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=64cc4de3f052d77215f0"></script>
+  <script defer src="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be"></script>
+<script defer src="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be"></script>
 
   <footer class="bd-footer">
 <div class="bd-footer__inner bd-page-width">
@@ -1417,7 +1406,7 @@ decide.</p>
         <div class="footer-item">
 <p class="theme-version">
   <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
-  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.22.0.
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.23.0.
 </p></div>
       
     </div>

@@ -44,11 +44,6 @@ ocracy.services.tesseract.read(img, lang="fra")  # pick a backend
 ocracy.services.tesseract.adapter              # raw engine adapter
 ```
 
-### Module Attributes
-
-| [`services`](#ocracy.services)   | Singleton service collection for per-backend access (`services.tesseract`).   |
-|-------------------------------------------------------------|-------------------------------------------------------------------------------|
-
 ### Functions
 
 | [`ocr`](#ocracy.ocr)(image, \*[, backend])                        | Read text from an image with any backend, returning a normalized result.                                  |
@@ -493,13 +488,13 @@ percent-scale engines).
 Read text from an image with any backend, returning a normalized result.
 
 * **Parameters:**
-  * **image** (`Union`[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path), [`bytes`](https://docs.python.org/3/builtins/stdtypes.html#bytes), PILImage, NDArray]) – A path, `http(s)` URL, `bytes`, PIL image, or numpy array.
+  * **image** (ImageInput) – A path, `http(s)` URL, `bytes`, PIL image, or numpy array.
   * **backend** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – Backend id (see [`list_backends()`](#ocracy.list_backends)). Defaults to the first
     *installed* implemented backend (see [`get_default_backend()`](#ocracy.get_default_backend)).
   * **\*\*kwargs** – Normalized, backend-translated options (e.g. `languages`).
     Unknown options for the chosen backend are warned about and dropped.
 * **Return type:**
-  [`OcrResult`](ocracy.base.html.md#ocracy.base.OcrResult)
+  OcrResult
 * **Returns:**
   An [`OcrResult`](ocracy.base.html.md#ocracy.base.OcrResult) (`str(result)` is the text).
 
@@ -555,10 +550,6 @@ have to flesh out `param_map` and implement `adapter.py`’s `_read`.
 * **Returns:**
   The path to the created backend package.
 
-### ocracy.services *= <ServiceCollection backends=['aws-textract', 'azure-document-intelligence', 'claude-vision', 'easyocr', 'google-vision', 'gpt-4o-vision', 'mathpix', 'mistral-ocr', 'ocr-space', 'ocrmac', 'paddleocr', 'pix2tex-latex-ocr', 'rapidocr', 'tesseract', 'trocr-handwritten']>*
-
-Singleton service collection for per-backend access (`services.tesseract`).
-
 ### ocracy.status_table(ids=None, , info=None, columns=None, run_tests=False, test_image=None)
 
 Render an aligned Markdown table of backend status (also plain-text readable).
@@ -593,6 +584,7 @@ decide.
 | [`kit`](ocracy.kit.html.md#module-ocracy.kit)                   | The facade kit: the three helpers every fleet facade used to copy by hand.                                       |
 | [`make_backend`](ocracy.make_backend.html.md#module-ocracy.make_backend) | Abstraction tools for *building* OCR facades.                                                                    |
 | [`registry`](ocracy.registry.html.md#module-ocracy.registry)         | Backend discovery, registration, and lazy loading.                                                               |
+| [`services`](ocracy.services.html.md#ocracy.services)                | Lazy mapping of backend ids -> `ServiceHandle`.                                                                  |
 | [`status`](ocracy.status.html.md#module-ocracy.status)             | Backend readiness status — four nested levels, info dicts, and a Markdown table.                                 |
 | [`tools`](ocracy.tools.html.md#module-ocracy.tools)               | Command-line tools for ocracy (dispatched via `cw` in `__main__`).                                               |
 | [`translation`](ocracy.translation.html.md#module-ocracy.translation)   | Parameter translation between ocracy's normalized kwargs and native engines.                                     |

@@ -1,4 +1,4 @@
-> built 2026-10-05 15:42 UTC from eb396dc (main) · ocracy 0.1.11. Details: build_info.json
+> built 2026-10-13 20:56 UTC from fd643a1 (main) · ocracy 0.1.12. Details: build_info.json
 
 # index.html.md
 
@@ -282,13 +282,15 @@ from ocracy.kit import make_translator, resolve_credential, using_credentials
 
 translate = make_translator(
     {"languages": {"native_name": "lang", "coerce": "+".join}, "dpi": None},
-    backend="tess", on_unsupported="note", always_raise=("seed",),
+    backend="tess",
+    on_unsupported="note",
+    always_raise=("seed",),
 )
 t = translate({"languages": ["eng", "fra"], "dpi": 300})
 # t.kwargs == {"lang": "eng+fra"}; t.notes == ["dpi=300 is not supported by tess; dropped"]
 
-key = resolve_credential("acme", env_var="ACME_API_KEY")   # explicit -> bound -> env
-with using_credentials(acme=request_key):                  # per-request BYO key
+key = resolve_credential("acme", env_var="ACME_API_KEY")  # explicit -> bound -> env
+with using_credentials(acme=request_key):  # per-request BYO key
     ...
 ```
 
@@ -1395,11 +1397,6 @@ ocracy.services.tesseract.read(img, lang="fra")  # pick a backend
 ocracy.services.tesseract.adapter              # raw engine adapter
 ```
 
-### Module Attributes
-
-| [`services`](_autosummary/ocracy.html.md#ocracy.services)   | Singleton service collection for per-backend access (`services.tesseract`).   |
-|-------------------------------------------------------------|-------------------------------------------------------------------------------|
-
 ### Functions
 
 | [`ocr`](_autosummary/ocracy.html.md#ocracy.ocr)(image, \*[, backend])                        | Read text from an image with any backend, returning a normalized result.                                  |
@@ -1844,13 +1841,13 @@ percent-scale engines).
 Read text from an image with any backend, returning a normalized result.
 
 * **Parameters:**
-  * **image** (`Union`[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path), [`bytes`](https://docs.python.org/3/builtins/stdtypes.html#bytes), PILImage, NDArray]) – A path, `http(s)` URL, `bytes`, PIL image, or numpy array.
+  * **image** (ImageInput) – A path, `http(s)` URL, `bytes`, PIL image, or numpy array.
   * **backend** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – Backend id (see [`list_backends()`](_autosummary/ocracy.html.md#ocracy.list_backends)). Defaults to the first
     *installed* implemented backend (see [`get_default_backend()`](_autosummary/ocracy.html.md#ocracy.get_default_backend)).
   * **\*\*kwargs** – Normalized, backend-translated options (e.g. `languages`).
     Unknown options for the chosen backend are warned about and dropped.
 * **Return type:**
-  [`OcrResult`](_autosummary/ocracy.base.html.md#ocracy.base.OcrResult)
+  OcrResult
 * **Returns:**
   An [`OcrResult`](_autosummary/ocracy.base.html.md#ocracy.base.OcrResult) (`str(result)` is the text).
 
@@ -1906,10 +1903,6 @@ have to flesh out `param_map` and implement `adapter.py`’s `_read`.
 * **Returns:**
   The path to the created backend package.
 
-### ocracy.services *= <ServiceCollection backends=['aws-textract', 'azure-document-intelligence', 'claude-vision', 'easyocr', 'google-vision', 'gpt-4o-vision', 'mathpix', 'mistral-ocr', 'ocr-space', 'ocrmac', 'paddleocr', 'pix2tex-latex-ocr', 'rapidocr', 'tesseract', 'trocr-handwritten']>*
-
-Singleton service collection for per-backend access (`services.tesseract`).
-
 ### ocracy.status_table(ids=None, , info=None, columns=None, run_tests=False, test_image=None)
 
 Render an aligned Markdown table of backend status (also plain-text readable).
@@ -1944,6 +1937,7 @@ decide.
 | [`kit`](_autosummary/ocracy.kit.html.md#module-ocracy.kit)                   | The facade kit: the three helpers every fleet facade used to copy by hand.                                       |
 | [`make_backend`](_autosummary/ocracy.make_backend.html.md#module-ocracy.make_backend) | Abstraction tools for *building* OCR facades.                                                                    |
 | [`registry`](_autosummary/ocracy.registry.html.md#module-ocracy.registry)         | Backend discovery, registration, and lazy loading.                                                               |
+| [`services`](_autosummary/ocracy.services.html.md#ocracy.services)                | Lazy mapping of backend ids -> `ServiceHandle`.                                                                  |
 | [`status`](_autosummary/ocracy.status.html.md#module-ocracy.status)             | Backend readiness status — four nested levels, info dicts, and a Markdown table.                                 |
 | [`tools`](_autosummary/ocracy.tools.html.md#module-ocracy.tools)               | Command-line tools for ocracy (dispatched via `cw` in `__main__`).                                               |
 | [`translation`](_autosummary/ocracy.translation.html.md#module-ocracy.translation)   | Parameter translation between ocracy's normalized kwargs and native engines.                                     |
@@ -2938,6 +2932,18 @@ Register a backend at runtime (for third-party plugins).
   [`None`](https://docs.python.org/3/builtins/constants.html#None)
 
 
+# _autosummary/ocracy.services.html.md
+
+# ocracy.services
+
+### ocracy.services *: [ServiceCollection](_autosummary/ocracy.html.md#ocracy.ServiceCollection)* *= <ServiceCollection backends=['aws-textract', 'azure-document-intelligence', 'claude-vision', 'easyocr', 'google-vision', 'gpt-4o-vision', 'mathpix', 'mistral-ocr', 'ocr-space', 'ocrmac', 'paddleocr', 'pix2tex-latex-ocr', 'rapidocr', 'tesseract', 'trocr-handwritten']>*
+
+Lazy mapping of backend ids -> `ServiceHandle`.
+
+Supports dict-style (`services['tesseract']`) and attribute-style
+(`services.tesseract`) access.
+
+
 # _autosummary/ocracy.status.html.md
 
 # ocracy.status
@@ -3323,18 +3329,18 @@ Convert any supported input into a PIL `Image` (lazy import).
 
 # About this build
 
-This documentation was built on **2026-10-05 15:42 UTC** from commit <a href="https://github.com/thorwhalen/ocracy/commit/eb396dc48e3f4a24435d346de68920860d5ec013"><code>eb396dc</code></a> on branch <code>main</code>, for **ocracy 0.1.11** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-10-13 20:56 UTC** from commit <a href="https://github.com/thorwhalen/ocracy/commit/fd643a14c0131849abca4f91f30740de15ff96da"><code>fd643a1</code></a> on branch <code>main</code>, for **ocracy 0.1.12** (from <code>pyproject.toml</code>).
 
 #### WARNING
 The documentation and the package may be misaligned:
 
-- The documented version (0.1.11) is behind the latest release on PyPI (0.1.12): `pip install ocracy` gives newer code than these docs describe.
+- The documented version (0.1.12) is behind the latest release on PyPI (0.1.13): `pip install ocracy` gives newer code than these docs describe.
 
 ## Source
 
 |                     |                                                                                                                                                          |
 |---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/ocracy/commit/eb396dc48e3f4a24435d346de68920860d5ec013"><code>eb396dc48e3f4a24435d346de68920860d5ec013</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/ocracy/commit/fd643a14c0131849abca4f91f30740de15ff96da"><code>fd643a14c0131849abca4f91f30740de15ff96da</code></a> |
 | Branch              | <code>main</code>                                                                                                                                        |
 | Tags at this commit | none                                                                                                                                                     |
 | Working tree        | clean                                                                                                                                                    |
@@ -3345,18 +3351,18 @@ The documentation and the package may be misaligned:
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/ocracy</code>                                                             |
-| Run          | <a href="https://github.com/thorwhalen/ocracy/actions/runs/37334818378">37334818378</a>    |
+| Run          | <a href="https://github.com/thorwhalen/ocracy/actions/runs/38466481192">38466481192</a>    |
 | Ref          | <code>refs/heads/main</code>                                                               |
-| Event commit | <code>eb396dc48e3f4a24435d346de68920860d5ec013</code> (in the history of the built commit) |
+| Event commit | <code>fd643a14c0131849abca4f91f30740de15ff96da</code> (in the history of the built commit) |
 
 ## Tools
 
 |          |         |
 |----------|---------|
-| epythet  | 0.2.12  |
+| epythet  | 0.2.17  |
 | Sphinx   | 9.1.0   |
 | docutils | 0.22.4  |
-| Python   | 3.12.14 |
+| Python   | 3.12.15 |
 
 ## Configuration as resolved
 
@@ -3372,14 +3378,14 @@ The documentation and the package may be misaligned:
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/ocracy/0.1.12/">0.1.12</a>, newer than the documented version (0.1.11).
+Latest release: <a href="https://pypi.org/project/ocracy/0.1.13/">0.1.13</a>, newer than the documented version (0.1.12).
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/thorwhalen/ocracy && cd ocracy
-git checkout eb396dc48e3f4a24435d346de68920860d5ec013
-pip install "epythet==0.2.12"
+git checkout fd643a14c0131849abca4f91f30740de15ff96da
+pip install "epythet==0.2.17"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```
 
