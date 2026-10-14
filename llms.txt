@@ -69,7 +69,7 @@
 - [ocracy.translation](_autosummary/ocracy.translation.html.md): Parameter translation between ocracy’s normalized kwargs and native engines.
 - [ocracy.util](_autosummary/ocracy.util.html.md): Image-input normalization and small shared helpers.
 - [For AI agents](ai-agents.html.md): &#96;ocracy&#96; ships artifacts for coding agents alongside its code. This page lists
-- [About this build](about-this-build.html.md): This documentation was built on &#42;&#42;2026-10-13 20:56 UTC&#42;&#42; from commit &lt;a href="https://github.com/tho...
+- [About this build](about-this-build.html.md): This documentation was built on &#42;&#42;2026-10-14 02:29 UTC&#42;&#42; from commit &lt;a href="https://github.com/tho...
 
 ## Optional
 
