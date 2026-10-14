@@ -25,8 +25,27 @@ def test_get_config_without_loading_adapter():
 
 
 def test_default_backend_resolves():
-    # Should resolve to some implemented backend (tesseract is the only one,
-    # and it is default_for 'read').
+    """The strategy, not the machine (ocracy#13): which optional OCR SDKs are
+    installed must not change the verdict."""
+    # Availability ignored: the backend flagged default_for 'read'.
+    assert registry.get_default_backend("read", require_available=False) == "tesseract"
+
+
+def test_default_backend_prefers_an_available_flagged_backend(monkeypatch):
+    candidates = registry.list_backends("read")
+    assert "tesseract" in candidates and len(candidates) > 1
+    other = next(b for b in candidates if b != "tesseract")
+
+    # Flagged and importable: the flagged one wins, whatever else is installed.
+    monkeypatch.setattr(registry, "_is_available", lambda bid: True)
+    assert registry.get_default_backend("read") == "tesseract"
+
+    # Flagged one missing: any importable candidate, in registry order.
+    monkeypatch.setattr(registry, "_is_available", lambda bid: bid == other)
+    assert registry.get_default_backend("read") == other
+
+    # Nothing importable: back to the flagged default (using it raises an install hint).
+    monkeypatch.setattr(registry, "_is_available", lambda bid: False)
     assert registry.get_default_backend("read") == "tesseract"
 
 
