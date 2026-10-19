@@ -30,7 +30,10 @@ A spec is one of:
 - a callable – coerce the value, keep the canonical name;
 - a mapping with any of: `native_name` (`name` is accepted as an alias),
   `coerce`, `default` (injected when the caller omits the parameter),
-  `choices` / `min` / `max` (checked on the *canonical* value), and
+  `choices` / `min` / `max` (checked on the *canonical* value, which for
+  `min` / `max` must be a scalar: an array is compared elementwise and is not
+  range-checked reliably, so a facade taking arrays checks them itself; a NaN
+  bound is refused when the translator is built), and
   `out_of_range` – `'raise'`, `'clamp'` (`min`/`max` only, with a note) or
   `'drop'` (handled like an unsupported parameter); the translator’s
   `out_of_range=` is the default – plus `unit` (shown in the clamp note).

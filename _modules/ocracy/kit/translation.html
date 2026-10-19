@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../../_static/documentation_options.js?v=468bc497"></script>
+    <script src="../../../_static/documentation_options.js?v=e2f3408e"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -411,7 +411,7 @@ window.runMermaid = runMermaid;</script>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.1.14" />
+  <meta name="docsearch:version" content="0.1.15" />
   
     
     <script src="../../../_static/searchtools.js"></script>
@@ -743,7 +743,10 @@ window.runMermaid = runMermaid;</script>
 <span class="sd">- a callable -- coerce the value, keep the canonical name;</span>
 <span class="sd">- a mapping with any of: ``native_name`` (``name`` is accepted as an alias),</span>
 <span class="sd">  ``coerce``, ``default`` (injected when the caller omits the parameter),</span>
-<span class="sd">  ``choices`` / ``min`` / ``max`` (checked on the *canonical* value), and</span>
+<span class="sd">  ``choices`` / ``min`` / ``max`` (checked on the *canonical* value, which for</span>
+<span class="sd">  ``min`` / ``max`` must be a scalar: an array is compared elementwise and is not</span>
+<span class="sd">  range-checked reliably, so a facade taking arrays checks them itself; a NaN</span>
+<span class="sd">  bound is refused when the translator is built), and</span>
 <span class="sd">  ``out_of_range`` -- ``'raise'``, ``'clamp'`` (``min``/``max`` only, with a note) or</span>
 <span class="sd">  ``'drop'`` (handled like an unsupported parameter); the translator's</span>
 <span class="sd">  ``out_of_range=`` is the default -- plus ``unit`` (shown in the clamp note).</span>
@@ -935,6 +938,12 @@ window.runMermaid = runMermaid;</script>
         <span class="n">native</span> <span class="o">=</span> <span class="n">spec</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"native_name"</span><span class="p">,</span> <span class="n">spec</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"name"</span><span class="p">,</span> <span class="n">name</span><span class="p">))</span>
         <span class="k">if</span> <span class="n">native</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">bound</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"min"</span><span class="p">,</span> <span class="s2">"max"</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">_is_nan</span><span class="p">(</span><span class="n">spec</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">bound</span><span class="p">)):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"param_map[</span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">][</span><span class="si">{</span><span class="n">bound</span><span class="si">!r}</span><span class="s2">] is NaN, which every value "</span>
+                    <span class="s2">"compares false against; give a number or leave it out"</span>
+                <span class="p">)</span>
         <span class="n">spec_range</span> <span class="o">=</span> <span class="n">spec</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"out_of_range"</span><span class="p">,</span> <span class="n">out_of_range</span><span class="p">)</span>
         <span class="n">_check_out_of_range</span><span class="p">(</span><span class="n">spec_range</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"param_map[</span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">]['out_of_range']"</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">spec_range</span> <span class="o">==</span> <span class="s2">"clamp"</span> <span class="ow">and</span> <span class="n">spec</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"choices"</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
