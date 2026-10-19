@@ -168,6 +168,37 @@ def test_redaction_errs_toward_hiding():
     assert "n=5 " in joined and "a.png" in joined and "Level.WORD" in joined
 
 
+def test_scheme_words_in_ordinary_values_are_not_redacted():
+    # Found adopting the kit in foley: ``negative_prompt='basic drums'`` came out as
+    # ``negative_prompt=<redacted>`` because any "basic/bearer/token <word>" matched.
+    t = make_translator({}, on_unsupported="note")(
+        {
+            "negative_prompt": "basic drums",
+            "style": "Basic Drums",
+            "budget": "token budget",
+            "mood": "bearer of bad news",
+            "hint": "  Bearer  ",
+        }
+    )
+    joined = " ".join(t.notes)
+    assert "<redacted>" not in joined
+    assert "negative_prompt='basic drums'" in joined
+    for opaque in [
+        "Bearer sk-ant-api03-abc",
+        "Basic dXNlcjpwYXNzd29yZA==",
+        "token ghp_16C7e42F292c6912E7710c838347Ae178B4a",
+        "bearer SECRET",
+        "Token abc123",
+        "basic " + "a" * 20,  # long enough to be opaque even as one plain word
+        "Bearer sk-abc123 (expired)",  # whatever follows the token
+        "Basic dXNlcjpwYXNz, realm=x",
+        "Bearer sk-abc\nX-Other: 1",  # a pasted header block
+    ]:
+        assert "<redacted>" in " ".join(
+            make_translator({}, on_unsupported="note")({"x": opaque}).notes
+        ), opaque
+
+
 def test_long_and_unrepresentable_values_are_shortened():
     class NoRepr:
         def __repr__(self):
@@ -350,6 +381,35 @@ def test_translator_level_out_of_range_default():
     assert t.dropped == ["o"] and t.kwargs == {"n": 1}  # a spec's own setting wins
     with pytest.raises(ValueError, match="out_of_range"):
         make_translator({}, out_of_range="wrap")
+
+
+def test_nan_is_never_within_a_min_or_max():
+    import decimal
+    import math
+
+    nan = float("nan")
+    spec = {"min": 0.5, "max": 30.0}
+    with pytest.raises(ValueError, match="not a number"):
+        make_translator({"d": spec})({"d": nan})
+    with pytest.raises(ValueError, match="not a number"):  # no bound to clamp to
+        make_translator({"d": {**spec, "out_of_range": "clamp"}})({"d": nan})
+    t = make_translator(
+        {"d": {**spec, "out_of_range": "drop"}}, on_unsupported="note"
+    )({"d": nan})
+    assert t.kwargs == {} and t.dropped == ["d"] and "not a number" in t.notes[0]
+    with pytest.raises(ValueError, match="not a number"):
+        check_range("d", nan, {"max": 1})  # one bound is enough
+    with pytest.raises(ValueError, match="not a number"):
+        check_range("d", decimal.Decimal("NaN"), {"min": 0})
+    with pytest.raises(ValueError, match="not a number"):
+        check_range("d", decimal.Decimal("sNaN"), {"min": 0})  # not InvalidOperation
+    # Infinities compare normally: clamped to the bound they cross, kept when unbounded.
+    clamp = make_translator({"d": {**spec, "out_of_range": "clamp"}})
+    assert clamp({"d": float("inf")}).kwargs == {"d": 30.0}
+    assert clamp({"d": float("-inf")}).kwargs == {"d": 0.5}
+    assert check_range("d", float("inf"), {"min": 0}) == float("inf")
+    # A NaN with no min/max to check is the backend's business, as before.
+    assert math.isnan(make_translator({"d": {}})({"d": nan}).kwargs["d"])
 
 
 def test_check_range_standalone():

@@ -126,10 +126,20 @@ SECRET_SEGMENTS = frozenset(
         "session",
     }
 )
+#: Length from which a word after an auth scheme is opaque however it is spelled.
+_PLAIN_WORD_MAX = 19
 #: String values that are credentials whatever the parameter is called: an auth
-#: scheme (``Bearer ...``), a URL carrying a user:password or a key-like query.
+#: scheme followed by an opaque token (``Bearer sk-...``, ``Basic dXNlcjpwdw==``,
+#: whatever follows it), a URL carrying a user:password, or a key-like query. Only
+#: the first word after the scheme is judged: a short plain word (``drums``,
+#: ``Drums``) means ordinary prose (``'basic drums'``, ``'Token budget'``, ``'bearer
+#: of bad news'``) and is shown, while one with digits, punctuation or capitals
+#: inside it (``SECRET``, ``abc123``, ``sk-x``), or any word of 20+ characters, is
+#: hidden. The exception to erring toward hiding: a short all-letter password after
+#: a scheme (``token hunter``) shows.
 SECRET_VALUE = re.compile(
-    r"^\s*(bearer|basic|token)\s+\S"
+    r"^\s*(bearer|basic|token)\s+"
+    rf"(?!(?-i:[A-Za-z][a-z]{{0,{_PLAIN_WORD_MAX - 1}}})(?:\s|$))\S"
     r"|://[^/\s:@]+:[^/\s@]+@"
     r"|[?&#](api_?key|key|token|access_token|auth|sig|signature|password)=",
     re.IGNORECASE,
@@ -303,10 +313,16 @@ def check_range(name: str, value: Any, spec: Mapping) -> Any:
 def _range_problem(value: Any, spec: _Spec) -> Optional[str]:
     """Which bound ``value`` breaks: ``'min'``, ``'max'``, ``'choices'`` or ``None``.
 
-    A ``None`` value breaks nothing: it means "unset", and the backend decides.
+    A ``None`` value breaks nothing: it means "unset", and the backend decides. A NaN
+    breaks any ``min``/``max`` (it compares false with every bound, so it would
+    otherwise slip through); it is reported as ``'nan'``: ``'raise'`` and ``'drop'``
+    treat it like any other out-of-range value, and ``'clamp'`` raises, since there is
+    no bound a NaN is nearer to.
     """
     if value is None:
         return None
+    if (spec.min is not None or spec.max is not None) and _is_nan(value):
+        return "nan"
     if spec.min is not None and value < spec.min:
         return "min"
     if spec.max is not None and value > spec.max:
@@ -316,11 +332,27 @@ def _range_problem(value: Any, spec: _Spec) -> Optional[str]:
     return None
 
 
+def _is_nan(value: Any) -> bool:
+    """Whether ``value`` is a numeric NaN (``float``, ``Decimal``, numpy...)."""
+    if not isinstance(value, numbers.Number):
+        return False
+    is_nan = getattr(value, "is_nan", None)  # Decimal: comparing an sNaN raises
+    try:
+        return bool(is_nan()) if callable(is_nan) else bool(value != value)
+    except Exception:  # noqa: BLE001 - an exotic number that cannot compare
+        return False
+
+
 def _raise_if_out_of_range(name: str, value: Any, spec: _Spec) -> None:
     problem = _range_problem(value, spec)
     if problem is None:
         return
     shown = _value_text(name, value, as_str=problem != "choices")
+    if problem == "nan":
+        raise ValueError(
+            f"Parameter {name!r} value {shown} is not a number, so it cannot be "
+            f"checked against [{spec.min}, {spec.max}]"
+        )
     if problem == "min":
         raise ValueError(
             f"Parameter {name!r} value {shown} is below minimum {spec.min}"
@@ -444,7 +476,9 @@ def make_translator(
                 continue
             problem = _range_problem(value, spec)
             if problem is not None:
-                if spec.out_of_range == "raise":
+                if spec.out_of_range == "raise" or (
+                    problem == "nan" and spec.out_of_range == "clamp"
+                ):
                     _raise_if_out_of_range(name, value, spec)
                 if spec.out_of_range == "drop":
                     bound = (
@@ -452,7 +486,11 @@ def make_translator(
                         if problem == "choices"
                         else f"[{spec.min}, {spec.max}]"
                     )
-                    reason = f"is outside {where}'s {bound}"
+                    reason = (
+                        f"is not a number, so not within {where}'s {bound}"
+                        if problem == "nan"
+                        else f"is outside {where}'s {bound}"
+                    )
                     _drop(
                         name, value, policy_for(name), call_policy, out, reason=reason
                     )
