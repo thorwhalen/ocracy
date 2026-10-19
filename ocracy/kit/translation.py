@@ -129,15 +129,17 @@ SECRET_SEGMENTS = frozenset(
 #: Length from which a word after an auth scheme is opaque however it is spelled.
 _PLAIN_WORD_MAX = 19
 #: String values that are credentials whatever the parameter is called: an auth
-#: scheme followed by one opaque token and nothing else (``Bearer sk-...``, ``Basic
-#: dXNlcjpwdw==``), a URL carrying a user:password, or a key-like query. A scheme
-#: word followed by ordinary prose (``'basic drums'``, ``'Token budget'``, ``'bearer
-#: of bad news'``) is not a credential: a short plain word (``drums``, ``Drums``)
-#: after the scheme is shown, while one with digits, punctuation or capitals inside
-#: it (``SECRET``, ``abc123``, ``sk-x``), or any word of 20+ characters, is hidden.
+#: scheme followed by an opaque token (``Bearer sk-...``, ``Basic dXNlcjpwdw==``,
+#: whatever follows it), a URL carrying a user:password, or a key-like query. Only
+#: the first word after the scheme is judged: a short plain word (``drums``,
+#: ``Drums``) means ordinary prose (``'basic drums'``, ``'Token budget'``, ``'bearer
+#: of bad news'``) and is shown, while one with digits, punctuation or capitals
+#: inside it (``SECRET``, ``abc123``, ``sk-x``), or any word of 20+ characters, is
+#: hidden. The exception to erring toward hiding: a short all-letter password after
+#: a scheme (``token hunter``) shows.
 SECRET_VALUE = re.compile(
     r"^\s*(bearer|basic|token)\s+"
-    rf"(?!(?-i:[A-Za-z][a-z]{{0,{_PLAIN_WORD_MAX - 1}}})\s*$)\S+\s*$"
+    rf"(?!(?-i:[A-Za-z][a-z]{{0,{_PLAIN_WORD_MAX - 1}}})(?:\s|$))\S"
     r"|://[^/\s:@]+:[^/\s@]+@"
     r"|[?&#](api_?key|key|token|access_token|auth|sig|signature|password)=",
     re.IGNORECASE,
@@ -332,8 +334,11 @@ def _range_problem(value: Any, spec: _Spec) -> Optional[str]:
 
 def _is_nan(value: Any) -> bool:
     """Whether ``value`` is a numeric NaN (``float``, ``Decimal``, numpy...)."""
+    if not isinstance(value, numbers.Number):
+        return False
+    is_nan = getattr(value, "is_nan", None)  # Decimal: comparing an sNaN raises
     try:
-        return isinstance(value, numbers.Number) and bool(value != value)
+        return bool(is_nan()) if callable(is_nan) else bool(value != value)
     except Exception:  # noqa: BLE001 - an exotic number that cannot compare
         return False
 

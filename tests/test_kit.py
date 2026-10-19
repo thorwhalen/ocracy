@@ -190,6 +190,9 @@ def test_scheme_words_in_ordinary_values_are_not_redacted():
         "bearer SECRET",
         "Token abc123",
         "basic " + "a" * 20,  # long enough to be opaque even as one plain word
+        "Bearer sk-abc123 (expired)",  # whatever follows the token
+        "Basic dXNlcjpwYXNz, realm=x",
+        "Bearer sk-abc\nX-Other: 1",  # a pasted header block
     ]:
         assert "<redacted>" in " ".join(
             make_translator({}, on_unsupported="note")({"x": opaque}).notes
@@ -398,6 +401,8 @@ def test_nan_is_never_within_a_min_or_max():
         check_range("d", nan, {"max": 1})  # one bound is enough
     with pytest.raises(ValueError, match="not a number"):
         check_range("d", decimal.Decimal("NaN"), {"min": 0})
+    with pytest.raises(ValueError, match="not a number"):
+        check_range("d", decimal.Decimal("sNaN"), {"min": 0})  # not InvalidOperation
     # Infinities compare normally: clamped to the bound they cross, kept when unbounded.
     clamp = make_translator({"d": {**spec, "out_of_range": "clamp"}})
     assert clamp({"d": float("inf")}).kwargs == {"d": 30.0}
