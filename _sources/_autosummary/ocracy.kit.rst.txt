@@ -26,6 +26,8 @@ ocracy.kit
    
       Translation
       Requirements
+      Catalog
+      BackendInfo
    
    .. rubric:: Exceptions
 
@@ -42,4 +44,5 @@ ocracy.kit
 
    credentials
    install
+   ledger
    translation

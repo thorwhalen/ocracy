@@ -1,4 +1,4 @@
-> built 2026-10-19 12:08 UTC from 2f25b4c (main) · ocracy 0.1.15. Details: build_info.json
+> built 2026-10-19 12:18 UTC from 18fa60f (main) · ocracy 0.1.16. Details: build_info.json
 
 # index.html.md
 
@@ -268,8 +268,8 @@ symlink bridge; they also travel with `pip install ocracy` under
   `make_block`, `scaffold_backend`, `validate_adapter`).
 - `ocracy/backends/<id>/` — one subpackage per engine (`config.py` + `adapter.py`).
 - `ocracy/credentials.py` — credential resolution for remote backends.
-- `ocracy/kit/` — the facade kit: the param_map translator, the credential chain
-  and install plans, stdlib-only and shared with other facades (see below).
+- `ocracy/kit/` — the facade kit: the param_map translator, the credential chain,
+  install plans and the ledger loader, stdlib-only and shared with other facades (see below).
 - `ocracy/tools.py` + `ocracy/__main__.py` — the `ocracy` CLI (cw).
 
 ### The facade kit, for building other facades
@@ -294,6 +294,7 @@ with using_credentials(acme=request_key):  # per-request BYO key
     ...
 ```
 
+A facade’s ledger is `ocracy.kit.Catalog(default_path=..., env_var=..., implemented=registry_ids)`.
 `ocracy.kit` imports only the standard library; the design is in
 `docs/adr/0001-facade-kit.md`.
 
@@ -1236,7 +1237,7 @@ Backend-specific extras (font size, style, page index, …).
 
 ### ocracy.catalog *= <Catalog 64 backends | 15 implemented | 40 local, 38 remote>*
 
-A filterable, dict-like collection of [`BackendInfo`](_autosummary/ocracy.html.md#ocracy.BackendInfo), keyed by id.
+[`ocracy.kit.ledger.Catalog`](_autosummary/ocracy.kit.ledger.html.md#ocracy.kit.ledger.Catalog) bound to ocracy’s data.
 
 Loaded lazily from `DEFAULT_LEDGER_PATH` (override via the `path`
 argument or the `OCRACY_LEDGER` environment variable). `filter()`
@@ -1245,6 +1246,9 @@ returns a *new* `Catalog` over the matching subset, so filters compose:
 ```default
 catalog.filter(is_remote=True).filter(pricing_model="free_tier_then_paid")
 ```
+
+* **Type:**
+  ocracy’s ledger
 
 
 # _autosummary/ocracy.credentials.html.md
@@ -1442,15 +1446,15 @@ ocracy.services.tesseract.adapter              # raw engine adapter
 
 ### Classes
 
-| [`OcrResult`](_autosummary/ocracy.html.md#ocracy.OcrResult)(text[, blocks, backend, raw, meta])     | The normalized result of reading an image with any backend.                                                      |
-|----------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------|
-| [`TextBlock`](_autosummary/ocracy.html.md#ocracy.TextBlock)(text[, bbox, confidence, level, ...])   | One recognized unit of text.                                                                                     |
-| [`BBox`](_autosummary/ocracy.html.md#ocracy.BBox)(x0, y0, x1, y1[, polygon])                   | An axis-aligned bounding box in pixel coordinates (origin = top-left).                                           |
-| [`BackendInfo`](_autosummary/ocracy.html.md#ocracy.BackendInfo)(record, \*[, implemented])            | One backend's ledger entry — a read-only, attribute-and-dict accessible record.                                  |
-| [`Catalog`](_autosummary/ocracy.html.md#ocracy.Catalog)([path, \_records])                        | A filterable, dict-like collection of [`BackendInfo`](_autosummary/ocracy.html.md#ocracy.BackendInfo), keyed by id. |
-| [`ServiceCollection`](_autosummary/ocracy.html.md#ocracy.ServiceCollection)()                               | Lazy mapping of backend ids -> `ServiceHandle`.                                                                  |
-| [`BaseOcrAdapter`](_autosummary/ocracy.html.md#ocracy.BaseOcrAdapter)(config)                            | Optional base class for backend adapters.                                                                        |
-| [`Requirements`](_autosummary/ocracy.html.md#ocracy.Requirements)(backend_id, implemented, ...[, ...]) | What a backend needs to run, structured for an agent to act on.                                                  |
+| [`OcrResult`](_autosummary/ocracy.html.md#ocracy.OcrResult)(text[, blocks, backend, raw, meta])     | The normalized result of reading an image with any backend.                                                                                   |
+|----------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|
+| [`TextBlock`](_autosummary/ocracy.html.md#ocracy.TextBlock)(text[, bbox, confidence, level, ...])   | One recognized unit of text.                                                                                                                  |
+| [`BBox`](_autosummary/ocracy.html.md#ocracy.BBox)(x0, y0, x1, y1[, polygon])                   | An axis-aligned bounding box in pixel coordinates (origin = top-left).                                                                        |
+| [`BackendInfo`](_autosummary/ocracy.html.md#ocracy.BackendInfo)(record, \*[, implemented])            | One backend's ledger entry: a read-only record, by key or by attribute.                                                                       |
+| [`Catalog`](_autosummary/ocracy.html.md#ocracy.Catalog)([path, \_records])                        | ocracy's ledger: [`ocracy.kit.ledger.Catalog`](_autosummary/ocracy.kit.ledger.html.md#ocracy.kit.ledger.Catalog) bound to ocracy's data. |
+| [`ServiceCollection`](_autosummary/ocracy.html.md#ocracy.ServiceCollection)()                               | Lazy mapping of backend ids -> `ServiceHandle`.                                                                                               |
+| [`BaseOcrAdapter`](_autosummary/ocracy.html.md#ocracy.BaseOcrAdapter)(config)                            | Optional base class for backend adapters.                                                                                                     |
+| [`Requirements`](_autosummary/ocracy.html.md#ocracy.Requirements)(backend_id, implemented, ...[, ...]) | What a backend needs to run, structured for an agent to act on.                                                                               |
 
 ### *class* ocracy.BBox(x0, y0, x1, y1, polygon=None)
 
@@ -1484,11 +1488,11 @@ polygon is preserved for callers that care about rotation.
 
 Bases: [`Mapping`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping)
 
-One backend’s ledger entry — a read-only, attribute-and-dict accessible record.
+One backend’s ledger entry: a read-only record, by key or by attribute.
 
-Wraps the raw record dict so that new fields added to the JSON are available
-immediately (via attribute or key access) without code changes, while a few
-commonly used fields get typed properties for convenience and discoverability.
+New fields added to the JSON are available at once (`info.price_note`,
+`info["price_note"]`) with no code change; a few common fields get typed
+properties.
 
 ### *class* ocracy.BaseOcrAdapter(config)
 
@@ -1524,65 +1528,17 @@ warning is gone (or filtered).
 
 ### *class* ocracy.Catalog(path=None, , \_records=None)
 
-Bases: [`Mapping`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping)
+Bases: [`Catalog`](_autosummary/ocracy.kit.ledger.html.md#ocracy.kit.ledger.Catalog)
 
-A filterable, dict-like collection of [`BackendInfo`](_autosummary/ocracy.html.md#ocracy.BackendInfo), keyed by id.
+ocracy’s ledger: [`ocracy.kit.ledger.Catalog`](_autosummary/ocracy.kit.ledger.html.md#ocracy.kit.ledger.Catalog) bound to ocracy’s data.
 
 Loaded lazily from `DEFAULT_LEDGER_PATH` (override via the `path`
-argument or the `OCRACY_LEDGER` environment variable). [`filter()`](_autosummary/ocracy.html.md#ocracy.Catalog.filter)
+argument or the `OCRACY_LEDGER` environment variable). `filter()`
 returns a *new* `Catalog` over the matching subset, so filters compose:
 
 ```default
 catalog.filter(is_remote=True).filter(pricing_model="free_tier_then_paid")
 ```
-
-#### can(capability)
-
-Backends with a non-plain-text `capability` (e.g. `"math"`, `"tables"`).
-
-Matches either the `beyond_text` list or a `<capability>` field set
-to `"yes"` (e.g. `handwriting`, `tables`, `math_formula`).
-
-* **Return type:**
-  [`Catalog`](_autosummary/ocracy.html.md#ocracy.Catalog)
-
-#### compare(ids=None, , fields=('name', 'is_local', 'is_remote', 'open_source', 'pricing_model', 'price_note', 'accuracy_tier', 'languages_count', 'handwriting', 'math_formula', 'tables', 'best_for'))
-
-A trimmed, side-by-side view of selected backends and fields.
-
-* **Return type:**
-  [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)]
-
-#### filter(, predicate=None, implemented=None, \*\*criteria)
-
-Return a new `Catalog` of backends matching every criterion.
-
-* **Parameters:**
-  * **predicate** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Callable`](https://docs.python.org/3/library/typing.html#typing.Callable)[[[`BackendInfo`](_autosummary/ocracy.html.md#ocracy.BackendInfo)], [`bool`](https://docs.python.org/3/builtins/functions.html#bool)]]) – An arbitrary `BackendInfo -> bool` callable.
-  * **implemented** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/builtins/functions.html#bool)]) – If set, keep only (un)implemented backends.
-  * **\*\*criteria** ([`Any`](https://docs.python.org/3/library/typing.html#typing.Any)) – `field=value` constraints. `value` may be a
-    set/list/tuple meaning “one of”. Free-text fields
-    (`languages_note`, `beyond_text`, `output_formats`) use a
-    case-insensitive substring match.
-* **Return type:**
-  [`Catalog`](_autosummary/ocracy.html.md#ocracy.Catalog)
-
-Example:
-
-```default
-catalog.filter(is_local=True, open_source=True, handwriting="yes")
-```
-
-#### supports_language(language)
-
-Backends whose `languages_note` mentions `language` (name or code).
-
-* **Return type:**
-  [`Catalog`](_autosummary/ocracy.html.md#ocracy.Catalog)
-
-#### to_dataframe(, columns=None)
-
-Return a pandas DataFrame of the catalog (pandas imported lazily).
 
 ### *class* ocracy.OcrResult(text, blocks=list(), backend='', raw=None, meta=dict())
 
@@ -1965,19 +1921,19 @@ decide.
 
 ### Modules
 
-| [`backends`](_autosummary/ocracy.backends.html.md#module-ocracy.backends)         | Implemented OCR backends.                                                                                        |
-|------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------|
-| [`base`](_autosummary/ocracy.base.html.md#module-ocracy.base)                 | Core types and normalized result objects for ocracy.                                                             |
-| [`catalog`](_autosummary/ocracy.catalog.html.md#ocracy.catalog)                  | A filterable, dict-like collection of [`BackendInfo`](_autosummary/ocracy.html.md#ocracy.BackendInfo), keyed by id. |
-| [`credentials`](_autosummary/ocracy.credentials.html.md#module-ocracy.credentials)   | Credential resolution for remote OCR backends.                                                                   |
-| [`kit`](_autosummary/ocracy.kit.html.md#module-ocracy.kit)                   | The facade kit: the three helpers every fleet facade used to copy by hand.                                       |
-| [`make_backend`](_autosummary/ocracy.make_backend.html.md#module-ocracy.make_backend) | Abstraction tools for *building* OCR facades.                                                                    |
-| [`registry`](_autosummary/ocracy.registry.html.md#module-ocracy.registry)         | Backend discovery, registration, and lazy loading.                                                               |
-| [`services`](_autosummary/ocracy.services.html.md#ocracy.services)                | Lazy mapping of backend ids -> `ServiceHandle`.                                                                  |
-| [`status`](_autosummary/ocracy.status.html.md#module-ocracy.status)             | Backend readiness status — four nested levels, info dicts, and a Markdown table.                                 |
-| [`tools`](_autosummary/ocracy.tools.html.md#module-ocracy.tools)               | Command-line tools for ocracy (dispatched via `cw` in `__main__`).                                               |
-| [`translation`](_autosummary/ocracy.translation.html.md#module-ocracy.translation)   | Parameter translation between ocracy's normalized kwargs and native engines.                                     |
-| [`util`](_autosummary/ocracy.util.html.md#module-ocracy.util)                 | Image-input normalization and small shared helpers.                                                              |
+| [`backends`](_autosummary/ocracy.backends.html.md#module-ocracy.backends)         | Implemented OCR backends.                                                                                                    |
+|------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------|
+| [`base`](_autosummary/ocracy.base.html.md#module-ocracy.base)                 | Core types and normalized result objects for ocracy.                                                                         |
+| [`catalog`](_autosummary/ocracy.catalog.html.md#ocracy.catalog)                  | [`ocracy.kit.ledger.Catalog`](_autosummary/ocracy.kit.ledger.html.md#ocracy.kit.ledger.Catalog) bound to ocracy's data. |
+| [`credentials`](_autosummary/ocracy.credentials.html.md#module-ocracy.credentials)   | Credential resolution for remote OCR backends.                                                                               |
+| [`kit`](_autosummary/ocracy.kit.html.md#module-ocracy.kit)                   | The facade kit: the three helpers every fleet facade used to copy by hand.                                                   |
+| [`make_backend`](_autosummary/ocracy.make_backend.html.md#module-ocracy.make_backend) | Abstraction tools for *building* OCR facades.                                                                                |
+| [`registry`](_autosummary/ocracy.registry.html.md#module-ocracy.registry)         | Backend discovery, registration, and lazy loading.                                                                           |
+| [`services`](_autosummary/ocracy.services.html.md#ocracy.services)                | Lazy mapping of backend ids -> `ServiceHandle`.                                                                              |
+| [`status`](_autosummary/ocracy.status.html.md#module-ocracy.status)             | Backend readiness status — four nested levels, info dicts, and a Markdown table.                                             |
+| [`tools`](_autosummary/ocracy.tools.html.md#module-ocracy.tools)               | Command-line tools for ocracy (dispatched via `cw` in `__main__`).                                                           |
+| [`translation`](_autosummary/ocracy.translation.html.md#module-ocracy.translation)   | Parameter translation between ocracy's normalized kwargs and native engines.                                                 |
+| [`util`](_autosummary/ocracy.util.html.md#module-ocracy.util)                 | Image-input normalization and small shared helpers.                                                                          |
 
 
 # _autosummary/ocracy.kit.credentials.html.md
@@ -2160,7 +2116,9 @@ illustration, aix, foley, falaw, voxy) carried its own drifting copy:
   silently (every drop and clamp comes back as a note);
 - [`credentials`](_autosummary/ocracy.kit.credentials.html.md#module-ocracy.kit.credentials) – the key chain (explicit -> bound in context ->
   env -> store -> prompt), whose error names the env vars and where to get a key;
-- [`install`](_autosummary/ocracy.kit.install.html.md#module-ocracy.kit.install) – per-OS install plans an agent can act on.
+- [`install`](_autosummary/ocracy.kit.install.html.md#module-ocracy.kit.install) – per-OS install plans an agent can act on;
+- [`ledger`](_autosummary/ocracy.kit.ledger.html.md#module-ocracy.kit.ledger) – the filterable catalog over a facade’s
+  `backends.json`, with `implemented` computed from its registry.
 
 Usage:
 
@@ -2194,15 +2152,112 @@ The decisions behind its shape are in `docs/adr/0001-facade-kit.md`.
 
 ### Classes
 
-| [`Translation`](_autosummary/ocracy.kit.html.md#ocracy.kit.Translation)([kwargs, notes, dropped])             | What a translator produced: the native kwargs, and every change it made.   |
-|----------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------|
-| [`Requirements`](_autosummary/ocracy.kit.html.md#ocracy.kit.Requirements)(backend_id, implemented, ...[, ...]) | What a backend needs to run, structured for an agent to act on.            |
+| [`Translation`](_autosummary/ocracy.kit.html.md#ocracy.kit.Translation)([kwargs, notes, dropped])             | What a translator produced: the native kwargs, and every change it made.                                         |
+|----------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------|
+| [`Requirements`](_autosummary/ocracy.kit.html.md#ocracy.kit.Requirements)(backend_id, implemented, ...[, ...]) | What a backend needs to run, structured for an agent to act on.                                                  |
+| [`Catalog`](_autosummary/ocracy.kit.html.md#ocracy.kit.Catalog)([path, records, default_path, ...])       | A filterable, dict-like collection of [`BackendInfo`](_autosummary/ocracy.kit.html.md#ocracy.kit.BackendInfo), keyed by id. |
+| [`BackendInfo`](_autosummary/ocracy.kit.html.md#ocracy.kit.BackendInfo)(record, \*[, implemented])            | One backend's ledger entry: a read-only record, by key or by attribute.                                          |
 
 ### Exceptions
 
 | [`UnsupportedParameter`](_autosummary/ocracy.kit.html.md#ocracy.kit.UnsupportedParameter)                             | A backend cannot honour a parameter, and the policy says not to drop it.      |
 |---------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------|
 | [`MissingCredentialError`](_autosummary/ocracy.kit.html.md#ocracy.kit.MissingCredentialError)([message, provider, ...]) | A required credential could not be resolved; the message says how to get one. |
+
+### *class* ocracy.kit.BackendInfo(record, , implemented=False)
+
+Bases: [`Mapping`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping)
+
+One backend’s ledger entry: a read-only record, by key or by attribute.
+
+New fields added to the JSON are available at once (`info.price_note`,
+`info["price_note"]`) with no code change; a few common fields get typed
+properties.
+
+### *class* ocracy.kit.Catalog(path=None, \*, records=None, default_path=None, env_var=None, implemented=<function \_nothing_implemented>, text_fields=frozenset({'beyond_text', 'languages_note', 'output_formats'}), capability_suffixes=(), compare_fields=('name', 'is_local', 'is_remote', 'open_source', 'pricing_model', 'price_note', 'accuracy_tier', 'languages_count', 'best_for'))
+
+Bases: [`Mapping`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping)
+
+A filterable, dict-like collection of [`BackendInfo`](_autosummary/ocracy.kit.html.md#ocracy.kit.BackendInfo), keyed by id.
+
+Loaded lazily from `path`, else from the `env_var` environment variable,
+else from `default_path`; a missing file is an empty catalog. `records`
+gives the records directly instead. [`filter()`](_autosummary/ocracy.kit.html.md#ocracy.kit.Catalog.filter) returns a new `Catalog`
+with the same settings over the matching subset, so filters compose:
+
+```default
+catalog.filter(is_remote=True).filter(pricing_model="free_tier_then_paid")
+```
+
+* **Parameters:**
+  * **path** ([`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path), [`None`](https://docs.python.org/3/builtins/constants.html#None)]) – The ledger JSON (a `{"backends": [...]}` object or a bare list).
+  * **records** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)]]) – The records themselves, instead of a file.
+  * **default_path** ([`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path), [`None`](https://docs.python.org/3/builtins/constants.html#None)]) – Where the ledger lives when neither `path` nor the
+    environment says otherwise.
+  * **env_var** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – An environment variable that overrides `default_path`.
+  * **implemented** ([`Callable`](https://docs.python.org/3/library/typing.html#typing.Callable)[[], [`Iterable`](https://docs.python.org/3/library/typing.html#typing.Iterable)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]]) – Returns the ids that have a working adapter; called once,
+    on first load (a filtered subset reuses the flags already computed).
+    An exception it raises propagates: catch it in the binding if a
+    broken registry should read as “nothing implemented”.
+  * **text_fields** ([`Iterable`](https://docs.python.org/3/library/typing.html#typing.Iterable)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – Fields filtered by case-insensitive membership.
+  * **capability_suffixes** ([`Iterable`](https://docs.python.org/3/library/typing.html#typing.Iterable)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – Extra field-name suffixes [`can()`](_autosummary/ocracy.kit.html.md#ocracy.kit.Catalog.can) checks besides
+    the capability’s own field: `("_formula",)` makes `can("math")`
+    also read `math_formula`.
+  * **compare_fields** ([`Iterable`](https://docs.python.org/3/library/typing.html#typing.Iterable)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – Default columns of [`compare()`](_autosummary/ocracy.kit.html.md#ocracy.kit.Catalog.compare).
+
+`text_fields`, `capability_suffixes` and `compare_fields` take
+collections of names; a bare string is refused rather than split into letters.
+A subclass binding a facade’s data should keep no derived state of its own:
+[`filter()`](_autosummary/ocracy.kit.html.md#ocracy.kit.Catalog.filter) builds a subset from these settings alone.
+
+#### can(capability)
+
+Backends with `capability`: listed in `beyond_text`, or a field set.
+
+A field counts when it is named `capability`, or that plus one of the
+catalog’s `capability_suffixes`, and its value is one of
+`CAPABILITY_VALUES`.
+
+* **Return type:**
+  [`Catalog`](_autosummary/ocracy.kit.ledger.html.md#ocracy.kit.ledger.Catalog)
+
+#### compare(ids=None, , fields=None)
+
+A trimmed, side-by-side view of selected backends and fields.
+
+* **Return type:**
+  [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)]
+
+#### filter(, predicate=None, implemented=None, \*\*criteria)
+
+Return a new `Catalog` of backends matching every criterion.
+
+* **Parameters:**
+  * **predicate** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Callable`](https://docs.python.org/3/library/typing.html#typing.Callable)[[[`BackendInfo`](_autosummary/ocracy.kit.ledger.html.md#ocracy.kit.ledger.BackendInfo)], [`bool`](https://docs.python.org/3/builtins/functions.html#bool)]]) – An arbitrary `BackendInfo -> bool` callable.
+  * **implemented** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/builtins/functions.html#bool)]) – If set, keep only (un)implemented backends.
+  * **\*\*criteria** ([`Any`](https://docs.python.org/3/library/typing.html#typing.Any)) – `field=value` constraints. `value` may be a
+    set/list/tuple meaning “one of”. The catalog’s text fields (by
+    default `languages_note`, `beyond_text`, `output_formats`)
+    use a case-insensitive substring match.
+* **Return type:**
+  [`Catalog`](_autosummary/ocracy.kit.ledger.html.md#ocracy.kit.ledger.Catalog)
+
+Example:
+
+```default
+catalog.filter(is_local=True, open_source=True)
+```
+
+#### supports_language(language)
+
+Backends whose `languages_note` mentions `language` (name or code).
+
+* **Return type:**
+  [`Catalog`](_autosummary/ocracy.kit.ledger.html.md#ocracy.kit.ledger.Catalog)
+
+#### to_dataframe(, columns=None)
+
+Return a pandas DataFrame of the catalog (pandas imported lazily).
 
 ### *exception* ocracy.kit.MissingCredentialError(message='', , provider=None, env_vars=(), get_key_url=None)
 
@@ -2429,6 +2484,7 @@ header can be passed straight through.
 | [`credentials`](_autosummary/ocracy.kit.credentials.html.md#module-ocracy.kit.credentials)   | One credential chain for every facade: explicit -> bound -> env -> store -> prompt.   |
 |----------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|
 | [`install`](_autosummary/ocracy.kit.install.html.md#module-ocracy.kit.install)           | Install plans: what a backend needs on *this* OS, as data an agent can act on.        |
+| [`ledger`](_autosummary/ocracy.kit.ledger.html.md#module-ocracy.kit.ledger)             | The ledger loader: a filterable catalog over a facade's `backends.json`.              |
 | [`translation`](_autosummary/ocracy.kit.translation.html.md#module-ocracy.kit.translation)   | Canonical -> native keyword translation, with an honest unsupported-parameter policy. |
 
 
@@ -2538,6 +2594,175 @@ Plan (default) or run (`yes=True`) the pip install that `req` describes.
 * **Returns:**
   `{backend, requirements, ran, available_before, message?, pip_argv?,
   returncode?, stdout_tail?, stderr_tail?, available_after?, system_todo?}`.
+
+
+# _autosummary/ocracy.kit.ledger.html.md
+
+# ocracy.kit.ledger
+
+The ledger loader: a filterable catalog over a facade’s `backends.json`.
+
+Each fleet facade ships a *ledger*: a JSON catalog that describes every engine or
+service in its domain, whether or not the facade can run it yet. The research
+changes far more often than the code, so it is data, not code. This module reads
+any such file and exposes it as a dict-like [`Catalog`](_autosummary/ocracy.kit.ledger.html.md#ocracy.kit.ledger.Catalog) of
+[`BackendInfo`](_autosummary/ocracy.kit.ledger.html.md#ocracy.kit.ledger.BackendInfo) records. A facade binds its own data:
+
+```default
+from ocracy.kit.ledger import Catalog
+
+catalog = Catalog(
+    default_path=Path(__file__).parent / "data" / "backends.json",
+    env_var="ACME_LEDGER",                      # override the path from the env
+    implemented=lambda: registry.list_backends(),
+    text_fields=DEFAULT_TEXT_FIELDS | {"pros", "cons"},
+)
+catalog["some-engine"]                           # one record
+catalog.filter(is_local=True, open_source=True)  # a new Catalog; filters compose
+catalog.filter(implemented=True)                 # what the facade runs today
+catalog.supports_language("French")
+catalog.can("diarization")
+```
+
+`implemented` is the one computed field. It comes from the facade’s registry
+through the `implemented=` callable, so it cannot drift from the code. A record
+that stores its own `implemented` keeps it.
+
+The seams, all keyword-only: `default_path` and `env_var` (where the JSON
+lives), `implemented` (ids with a working adapter), `text_fields` (fields
+filtered by case-insensitive membership rather than equality),
+`capability_suffixes` (extra field names [`Catalog.can()`](_autosummary/ocracy.kit.ledger.html.md#ocracy.kit.ledger.Catalog.can) looks at, such as
+ocracy’s `math` -> `math_formula`) and `compare_fields` (the default columns
+of [`Catalog.compare()`](_autosummary/ocracy.kit.ledger.html.md#ocracy.kit.ledger.Catalog.compare)).
+
+Stdlib only; imports nothing else from ocracy. pandas is imported by
+[`Catalog.to_dataframe()`](_autosummary/ocracy.kit.ledger.html.md#ocracy.kit.ledger.Catalog.to_dataframe) only.
+
+### Module Attributes
+
+| [`DEFAULT_TEXT_FIELDS`](_autosummary/ocracy.kit.ledger.html.md#ocracy.kit.ledger.DEFAULT_TEXT_FIELDS)    | filtered by a case-insensitive substring test rather than by equality.                                                        |
+|-------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------|
+| [`DEFAULT_COMPARE_FIELDS`](_autosummary/ocracy.kit.ledger.html.md#ocracy.kit.ledger.DEFAULT_COMPARE_FIELDS) | The columns [`Catalog.compare()`](_autosummary/ocracy.kit.ledger.html.md#ocracy.kit.ledger.Catalog.compare) shows when a facade does not name its own.     |
+| [`CAPABILITY_VALUES`](_autosummary/ocracy.kit.ledger.html.md#ocracy.kit.ledger.CAPABILITY_VALUES)      | Field values that mean "this backend has the capability", for [`Catalog.can()`](_autosummary/ocracy.kit.ledger.html.md#ocracy.kit.ledger.Catalog.can). |
+
+### Classes
+
+| [`BackendInfo`](_autosummary/ocracy.kit.ledger.html.md#ocracy.kit.ledger.BackendInfo)(record, \*[, implemented])      | One backend's ledger entry: a read-only record, by key or by attribute.                                          |
+|----------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------|
+| [`Catalog`](_autosummary/ocracy.kit.ledger.html.md#ocracy.kit.ledger.Catalog)([path, records, default_path, ...]) | A filterable, dict-like collection of [`BackendInfo`](_autosummary/ocracy.kit.ledger.html.md#ocracy.kit.ledger.BackendInfo), keyed by id. |
+
+### *class* ocracy.kit.ledger.BackendInfo(record, , implemented=False)
+
+Bases: [`Mapping`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping)
+
+One backend’s ledger entry: a read-only record, by key or by attribute.
+
+New fields added to the JSON are available at once (`info.price_note`,
+`info["price_note"]`) with no code change; a few common fields get typed
+properties.
+
+### ocracy.kit.ledger.CAPABILITY_VALUES *= ('yes', True)*
+
+Field values that mean “this backend has the capability”, for [`Catalog.can()`](_autosummary/ocracy.kit.ledger.html.md#ocracy.kit.ledger.Catalog.can).
+Compared by identity for `True`, so a count of `1` is not a capability –
+and neither is a numpy `True` or the string `"True"`: JSON gives real bools.
+
+### *class* ocracy.kit.ledger.Catalog(path=None, \*, records=None, default_path=None, env_var=None, implemented=<function \_nothing_implemented>, text_fields=frozenset({'beyond_text', 'languages_note', 'output_formats'}), capability_suffixes=(), compare_fields=('name', 'is_local', 'is_remote', 'open_source', 'pricing_model', 'price_note', 'accuracy_tier', 'languages_count', 'best_for'))
+
+Bases: [`Mapping`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping)
+
+A filterable, dict-like collection of [`BackendInfo`](_autosummary/ocracy.kit.ledger.html.md#ocracy.kit.ledger.BackendInfo), keyed by id.
+
+Loaded lazily from `path`, else from the `env_var` environment variable,
+else from `default_path`; a missing file is an empty catalog. `records`
+gives the records directly instead. [`filter()`](_autosummary/ocracy.kit.ledger.html.md#ocracy.kit.ledger.Catalog.filter) returns a new `Catalog`
+with the same settings over the matching subset, so filters compose:
+
+```default
+catalog.filter(is_remote=True).filter(pricing_model="free_tier_then_paid")
+```
+
+* **Parameters:**
+  * **path** ([`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path), [`None`](https://docs.python.org/3/builtins/constants.html#None)]) – The ledger JSON (a `{"backends": [...]}` object or a bare list).
+  * **records** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)]]) – The records themselves, instead of a file.
+  * **default_path** ([`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path), [`None`](https://docs.python.org/3/builtins/constants.html#None)]) – Where the ledger lives when neither `path` nor the
+    environment says otherwise.
+  * **env_var** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – An environment variable that overrides `default_path`.
+  * **implemented** ([`Callable`](https://docs.python.org/3/library/typing.html#typing.Callable)[[], [`Iterable`](https://docs.python.org/3/library/typing.html#typing.Iterable)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]]) – Returns the ids that have a working adapter; called once,
+    on first load (a filtered subset reuses the flags already computed).
+    An exception it raises propagates: catch it in the binding if a
+    broken registry should read as “nothing implemented”.
+  * **text_fields** ([`Iterable`](https://docs.python.org/3/library/typing.html#typing.Iterable)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – Fields filtered by case-insensitive membership.
+  * **capability_suffixes** ([`Iterable`](https://docs.python.org/3/library/typing.html#typing.Iterable)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – Extra field-name suffixes [`can()`](_autosummary/ocracy.kit.ledger.html.md#ocracy.kit.ledger.Catalog.can) checks besides
+    the capability’s own field: `("_formula",)` makes `can("math")`
+    also read `math_formula`.
+  * **compare_fields** ([`Iterable`](https://docs.python.org/3/library/typing.html#typing.Iterable)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – Default columns of [`compare()`](_autosummary/ocracy.kit.ledger.html.md#ocracy.kit.ledger.Catalog.compare).
+
+`text_fields`, `capability_suffixes` and `compare_fields` take
+collections of names; a bare string is refused rather than split into letters.
+A subclass binding a facade’s data should keep no derived state of its own:
+[`filter()`](_autosummary/ocracy.kit.ledger.html.md#ocracy.kit.ledger.Catalog.filter) builds a subset from these settings alone.
+
+#### can(capability)
+
+Backends with `capability`: listed in `beyond_text`, or a field set.
+
+A field counts when it is named `capability`, or that plus one of the
+catalog’s `capability_suffixes`, and its value is one of
+[`CAPABILITY_VALUES`](_autosummary/ocracy.kit.ledger.html.md#ocracy.kit.ledger.CAPABILITY_VALUES).
+
+* **Return type:**
+  [`Catalog`](_autosummary/ocracy.kit.ledger.html.md#ocracy.kit.ledger.Catalog)
+
+#### compare(ids=None, , fields=None)
+
+A trimmed, side-by-side view of selected backends and fields.
+
+* **Return type:**
+  [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)]
+
+#### filter(, predicate=None, implemented=None, \*\*criteria)
+
+Return a new `Catalog` of backends matching every criterion.
+
+* **Parameters:**
+  * **predicate** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Callable`](https://docs.python.org/3/library/typing.html#typing.Callable)[[[`BackendInfo`](_autosummary/ocracy.kit.ledger.html.md#ocracy.kit.ledger.BackendInfo)], [`bool`](https://docs.python.org/3/builtins/functions.html#bool)]]) – An arbitrary `BackendInfo -> bool` callable.
+  * **implemented** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/builtins/functions.html#bool)]) – If set, keep only (un)implemented backends.
+  * **\*\*criteria** ([`Any`](https://docs.python.org/3/library/typing.html#typing.Any)) – `field=value` constraints. `value` may be a
+    set/list/tuple meaning “one of”. The catalog’s text fields (by
+    default `languages_note`, `beyond_text`, `output_formats`)
+    use a case-insensitive substring match.
+* **Return type:**
+  [`Catalog`](_autosummary/ocracy.kit.ledger.html.md#ocracy.kit.ledger.Catalog)
+
+Example:
+
+```default
+catalog.filter(is_local=True, open_source=True)
+```
+
+#### supports_language(language)
+
+Backends whose `languages_note` mentions `language` (name or code).
+
+* **Return type:**
+  [`Catalog`](_autosummary/ocracy.kit.ledger.html.md#ocracy.kit.ledger.Catalog)
+
+#### to_dataframe(, columns=None)
+
+Return a pandas DataFrame of the catalog (pandas imported lazily).
+
+### ocracy.kit.ledger.DEFAULT_COMPARE_FIELDS *= ('name', 'is_local', 'is_remote', 'open_source', 'pricing_model', 'price_note', 'accuracy_tier', 'languages_count', 'best_for')*
+
+The columns [`Catalog.compare()`](_autosummary/ocracy.kit.ledger.html.md#ocracy.kit.ledger.Catalog.compare) shows when a facade does not name its own.
+
+### ocracy.kit.ledger.DEFAULT_TEXT_FIELDS *= frozenset({'beyond_text', 'languages_note', 'output_formats'})*
+
+filtered by a
+case-insensitive substring test rather than by equality.
+
+* **Type:**
+  Fields whose meaning is “membership in a free-text description”
 
 
 # _autosummary/ocracy.kit.translation.html.md
@@ -3393,18 +3618,18 @@ Convert any supported input into a PIL `Image` (lazy import).
 
 # About this build
 
-This documentation was built on **2026-10-19 12:08 UTC** from commit <a href="https://github.com/thorwhalen/ocracy/commit/2f25b4c3db44b7645273d520f48849b0bc71900e"><code>2f25b4c</code></a> on branch <code>main</code>, for **ocracy 0.1.15** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-10-19 12:18 UTC** from commit <a href="https://github.com/thorwhalen/ocracy/commit/18fa60fb7aa1dfe5bcef9997ee638a20e3ec6954"><code>18fa60f</code></a> on branch <code>main</code>, for **ocracy 0.1.16** (from <code>pyproject.toml</code>).
 
 #### WARNING
 The documentation and the package may be misaligned:
 
-- The documented version (0.1.15) is behind the latest release on PyPI (0.1.16): `pip install ocracy` gives newer code than these docs describe.
+- The documented version (0.1.16) is behind the latest release on PyPI (0.1.17): `pip install ocracy` gives newer code than these docs describe.
 
 ## Source
 
 |                     |                                                                                                                                                          |
 |---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/ocracy/commit/2f25b4c3db44b7645273d520f48849b0bc71900e"><code>2f25b4c3db44b7645273d520f48849b0bc71900e</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/ocracy/commit/18fa60fb7aa1dfe5bcef9997ee638a20e3ec6954"><code>18fa60fb7aa1dfe5bcef9997ee638a20e3ec6954</code></a> |
 | Branch              | <code>main</code>                                                                                                                                        |
 | Tags at this commit | none                                                                                                                                                     |
 | Working tree        | clean                                                                                                                                                    |
@@ -3415,9 +3640,9 @@ The documentation and the package may be misaligned:
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/ocracy</code>                                                             |
-| Run          | <a href="https://github.com/thorwhalen/ocracy/actions/runs/39249504417">39249504417</a>    |
+| Run          | <a href="https://github.com/thorwhalen/ocracy/actions/runs/39250822751">39250822751</a>    |
 | Ref          | <code>refs/heads/main</code>                                                               |
-| Event commit | <code>2f25b4c3db44b7645273d520f48849b0bc71900e</code> (in the history of the built commit) |
+| Event commit | <code>18fa60fb7aa1dfe5bcef9997ee638a20e3ec6954</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -3442,13 +3667,13 @@ The documentation and the package may be misaligned:
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/ocracy/0.1.16/">0.1.16</a>, newer than the documented version (0.1.15).
+Latest release: <a href="https://pypi.org/project/ocracy/0.1.17/">0.1.17</a>, newer than the documented version (0.1.16).
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/thorwhalen/ocracy && cd ocracy
-git checkout 2f25b4c3db44b7645273d520f48849b0bc71900e
+git checkout 18fa60fb7aa1dfe5bcef9997ee638a20e3ec6954
 pip install "epythet==0.2.18"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```

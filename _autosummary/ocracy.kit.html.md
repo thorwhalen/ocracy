@@ -11,7 +11,9 @@ illustration, aix, foley, falaw, voxy) carried its own drifting copy:
   silently (every drop and clamp comes back as a note);
 - [`credentials`](ocracy.kit.credentials.html.md#module-ocracy.kit.credentials) – the key chain (explicit -> bound in context ->
   env -> store -> prompt), whose error names the env vars and where to get a key;
-- [`install`](ocracy.kit.install.html.md#module-ocracy.kit.install) – per-OS install plans an agent can act on.
+- [`install`](ocracy.kit.install.html.md#module-ocracy.kit.install) – per-OS install plans an agent can act on;
+- [`ledger`](ocracy.kit.ledger.html.md#module-ocracy.kit.ledger) – the filterable catalog over a facade’s
+  `backends.json`, with `implemented` computed from its registry.
 
 Usage:
 
@@ -45,15 +47,112 @@ The decisions behind its shape are in `docs/adr/0001-facade-kit.md`.
 
 ### Classes
 
-| [`Translation`](#ocracy.kit.Translation)([kwargs, notes, dropped])             | What a translator produced: the native kwargs, and every change it made.   |
-|----------------------------------------------------------------------------------------------------|----------------------------------------------------------------------------|
-| [`Requirements`](#ocracy.kit.Requirements)(backend_id, implemented, ...[, ...]) | What a backend needs to run, structured for an agent to act on.            |
+| [`Translation`](#ocracy.kit.Translation)([kwargs, notes, dropped])             | What a translator produced: the native kwargs, and every change it made.                                         |
+|----------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------|
+| [`Requirements`](#ocracy.kit.Requirements)(backend_id, implemented, ...[, ...]) | What a backend needs to run, structured for an agent to act on.                                                  |
+| [`Catalog`](#ocracy.kit.Catalog)([path, records, default_path, ...])       | A filterable, dict-like collection of [`BackendInfo`](#ocracy.kit.BackendInfo), keyed by id. |
+| [`BackendInfo`](#ocracy.kit.BackendInfo)(record, \*[, implemented])            | One backend's ledger entry: a read-only record, by key or by attribute.                                          |
 
 ### Exceptions
 
 | [`UnsupportedParameter`](#ocracy.kit.UnsupportedParameter)                             | A backend cannot honour a parameter, and the policy says not to drop it.      |
 |---------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------|
 | [`MissingCredentialError`](#ocracy.kit.MissingCredentialError)([message, provider, ...]) | A required credential could not be resolved; the message says how to get one. |
+
+### *class* ocracy.kit.BackendInfo(record, , implemented=False)
+
+Bases: [`Mapping`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping)
+
+One backend’s ledger entry: a read-only record, by key or by attribute.
+
+New fields added to the JSON are available at once (`info.price_note`,
+`info["price_note"]`) with no code change; a few common fields get typed
+properties.
+
+### *class* ocracy.kit.Catalog(path=None, \*, records=None, default_path=None, env_var=None, implemented=<function \_nothing_implemented>, text_fields=frozenset({'beyond_text', 'languages_note', 'output_formats'}), capability_suffixes=(), compare_fields=('name', 'is_local', 'is_remote', 'open_source', 'pricing_model', 'price_note', 'accuracy_tier', 'languages_count', 'best_for'))
+
+Bases: [`Mapping`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping)
+
+A filterable, dict-like collection of [`BackendInfo`](#ocracy.kit.BackendInfo), keyed by id.
+
+Loaded lazily from `path`, else from the `env_var` environment variable,
+else from `default_path`; a missing file is an empty catalog. `records`
+gives the records directly instead. [`filter()`](#ocracy.kit.Catalog.filter) returns a new `Catalog`
+with the same settings over the matching subset, so filters compose:
+
+```default
+catalog.filter(is_remote=True).filter(pricing_model="free_tier_then_paid")
+```
+
+* **Parameters:**
+  * **path** ([`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path), [`None`](https://docs.python.org/3/builtins/constants.html#None)]) – The ledger JSON (a `{"backends": [...]}` object or a bare list).
+  * **records** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)]]) – The records themselves, instead of a file.
+  * **default_path** ([`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path), [`None`](https://docs.python.org/3/builtins/constants.html#None)]) – Where the ledger lives when neither `path` nor the
+    environment says otherwise.
+  * **env_var** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – An environment variable that overrides `default_path`.
+  * **implemented** ([`Callable`](https://docs.python.org/3/library/typing.html#typing.Callable)[[], [`Iterable`](https://docs.python.org/3/library/typing.html#typing.Iterable)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]]) – Returns the ids that have a working adapter; called once,
+    on first load (a filtered subset reuses the flags already computed).
+    An exception it raises propagates: catch it in the binding if a
+    broken registry should read as “nothing implemented”.
+  * **text_fields** ([`Iterable`](https://docs.python.org/3/library/typing.html#typing.Iterable)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – Fields filtered by case-insensitive membership.
+  * **capability_suffixes** ([`Iterable`](https://docs.python.org/3/library/typing.html#typing.Iterable)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – Extra field-name suffixes [`can()`](#ocracy.kit.Catalog.can) checks besides
+    the capability’s own field: `("_formula",)` makes `can("math")`
+    also read `math_formula`.
+  * **compare_fields** ([`Iterable`](https://docs.python.org/3/library/typing.html#typing.Iterable)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – Default columns of [`compare()`](#ocracy.kit.Catalog.compare).
+
+`text_fields`, `capability_suffixes` and `compare_fields` take
+collections of names; a bare string is refused rather than split into letters.
+A subclass binding a facade’s data should keep no derived state of its own:
+[`filter()`](#ocracy.kit.Catalog.filter) builds a subset from these settings alone.
+
+#### can(capability)
+
+Backends with `capability`: listed in `beyond_text`, or a field set.
+
+A field counts when it is named `capability`, or that plus one of the
+catalog’s `capability_suffixes`, and its value is one of
+`CAPABILITY_VALUES`.
+
+* **Return type:**
+  [`Catalog`](ocracy.kit.ledger.html.md#ocracy.kit.ledger.Catalog)
+
+#### compare(ids=None, , fields=None)
+
+A trimmed, side-by-side view of selected backends and fields.
+
+* **Return type:**
+  [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)]
+
+#### filter(, predicate=None, implemented=None, \*\*criteria)
+
+Return a new `Catalog` of backends matching every criterion.
+
+* **Parameters:**
+  * **predicate** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Callable`](https://docs.python.org/3/library/typing.html#typing.Callable)[[[`BackendInfo`](ocracy.kit.ledger.html.md#ocracy.kit.ledger.BackendInfo)], [`bool`](https://docs.python.org/3/builtins/functions.html#bool)]]) – An arbitrary `BackendInfo -> bool` callable.
+  * **implemented** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/builtins/functions.html#bool)]) – If set, keep only (un)implemented backends.
+  * **\*\*criteria** ([`Any`](https://docs.python.org/3/library/typing.html#typing.Any)) – `field=value` constraints. `value` may be a
+    set/list/tuple meaning “one of”. The catalog’s text fields (by
+    default `languages_note`, `beyond_text`, `output_formats`)
+    use a case-insensitive substring match.
+* **Return type:**
+  [`Catalog`](ocracy.kit.ledger.html.md#ocracy.kit.ledger.Catalog)
+
+Example:
+
+```default
+catalog.filter(is_local=True, open_source=True)
+```
+
+#### supports_language(language)
+
+Backends whose `languages_note` mentions `language` (name or code).
+
+* **Return type:**
+  [`Catalog`](ocracy.kit.ledger.html.md#ocracy.kit.ledger.Catalog)
+
+#### to_dataframe(, columns=None)
+
+Return a pandas DataFrame of the catalog (pandas imported lazily).
 
 ### *exception* ocracy.kit.MissingCredentialError(message='', , provider=None, env_vars=(), get_key_url=None)
 
@@ -280,4 +379,5 @@ header can be passed straight through.
 | [`credentials`](ocracy.kit.credentials.html.md#module-ocracy.kit.credentials)   | One credential chain for every facade: explicit -> bound -> env -> store -> prompt.   |
 |----------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------|
 | [`install`](ocracy.kit.install.html.md#module-ocracy.kit.install)           | Install plans: what a backend needs on *this* OS, as data an agent can act on.        |
+| [`ledger`](ocracy.kit.ledger.html.md#module-ocracy.kit.ledger)             | The ledger loader: a filterable catalog over a facade's `backends.json`.              |
 | [`translation`](ocracy.kit.translation.html.md#module-ocracy.kit.translation)   | Canonical -> native keyword translation, with an honest unsupported-parameter policy. |

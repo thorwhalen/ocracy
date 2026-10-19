@@ -1,0 +1,21 @@
+ocracy.kit.ledger
+=================
+
+.. automodule:: ocracy.kit.ledger
+
+   
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+   
+      DEFAULT_TEXT_FIELDS
+      DEFAULT_COMPARE_FIELDS
+      CAPABILITY_VALUES
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      BackendInfo
+      Catalog
+   

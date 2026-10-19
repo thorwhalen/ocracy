@@ -71,15 +71,15 @@ ocracy.services.tesseract.adapter              # raw engine adapter
 
 ### Classes
 
-| [`OcrResult`](#ocracy.OcrResult)(text[, blocks, backend, raw, meta])     | The normalized result of reading an image with any backend.                                                      |
-|----------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------|
-| [`TextBlock`](#ocracy.TextBlock)(text[, bbox, confidence, level, ...])   | One recognized unit of text.                                                                                     |
-| [`BBox`](#ocracy.BBox)(x0, y0, x1, y1[, polygon])                   | An axis-aligned bounding box in pixel coordinates (origin = top-left).                                           |
-| [`BackendInfo`](#ocracy.BackendInfo)(record, \*[, implemented])            | One backend's ledger entry — a read-only, attribute-and-dict accessible record.                                  |
-| [`Catalog`](#ocracy.Catalog)([path, \_records])                        | A filterable, dict-like collection of [`BackendInfo`](#ocracy.BackendInfo), keyed by id. |
-| [`ServiceCollection`](#ocracy.ServiceCollection)()                               | Lazy mapping of backend ids -> `ServiceHandle`.                                                                  |
-| [`BaseOcrAdapter`](#ocracy.BaseOcrAdapter)(config)                            | Optional base class for backend adapters.                                                                        |
-| [`Requirements`](#ocracy.Requirements)(backend_id, implemented, ...[, ...]) | What a backend needs to run, structured for an agent to act on.                                                  |
+| [`OcrResult`](#ocracy.OcrResult)(text[, blocks, backend, raw, meta])     | The normalized result of reading an image with any backend.                                                                                   |
+|----------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|
+| [`TextBlock`](#ocracy.TextBlock)(text[, bbox, confidence, level, ...])   | One recognized unit of text.                                                                                                                  |
+| [`BBox`](#ocracy.BBox)(x0, y0, x1, y1[, polygon])                   | An axis-aligned bounding box in pixel coordinates (origin = top-left).                                                                        |
+| [`BackendInfo`](#ocracy.BackendInfo)(record, \*[, implemented])            | One backend's ledger entry: a read-only record, by key or by attribute.                                                                       |
+| [`Catalog`](#ocracy.Catalog)([path, \_records])                        | ocracy's ledger: [`ocracy.kit.ledger.Catalog`](ocracy.kit.ledger.html.md#ocracy.kit.ledger.Catalog) bound to ocracy's data. |
+| [`ServiceCollection`](#ocracy.ServiceCollection)()                               | Lazy mapping of backend ids -> `ServiceHandle`.                                                                                               |
+| [`BaseOcrAdapter`](#ocracy.BaseOcrAdapter)(config)                            | Optional base class for backend adapters.                                                                                                     |
+| [`Requirements`](#ocracy.Requirements)(backend_id, implemented, ...[, ...]) | What a backend needs to run, structured for an agent to act on.                                                                               |
 
 ### *class* ocracy.BBox(x0, y0, x1, y1, polygon=None)
 
@@ -113,11 +113,11 @@ polygon is preserved for callers that care about rotation.
 
 Bases: [`Mapping`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping)
 
-One backend’s ledger entry — a read-only, attribute-and-dict accessible record.
+One backend’s ledger entry: a read-only record, by key or by attribute.
 
-Wraps the raw record dict so that new fields added to the JSON are available
-immediately (via attribute or key access) without code changes, while a few
-commonly used fields get typed properties for convenience and discoverability.
+New fields added to the JSON are available at once (`info.price_note`,
+`info["price_note"]`) with no code change; a few common fields get typed
+properties.
 
 ### *class* ocracy.BaseOcrAdapter(config)
 
@@ -153,65 +153,17 @@ warning is gone (or filtered).
 
 ### *class* ocracy.Catalog(path=None, , \_records=None)
 
-Bases: [`Mapping`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping)
+Bases: [`Catalog`](ocracy.kit.ledger.html.md#ocracy.kit.ledger.Catalog)
 
-A filterable, dict-like collection of [`BackendInfo`](#ocracy.BackendInfo), keyed by id.
+ocracy’s ledger: [`ocracy.kit.ledger.Catalog`](ocracy.kit.ledger.html.md#ocracy.kit.ledger.Catalog) bound to ocracy’s data.
 
 Loaded lazily from `DEFAULT_LEDGER_PATH` (override via the `path`
-argument or the `OCRACY_LEDGER` environment variable). [`filter()`](#ocracy.Catalog.filter)
+argument or the `OCRACY_LEDGER` environment variable). `filter()`
 returns a *new* `Catalog` over the matching subset, so filters compose:
 
 ```default
 catalog.filter(is_remote=True).filter(pricing_model="free_tier_then_paid")
 ```
-
-#### can(capability)
-
-Backends with a non-plain-text `capability` (e.g. `"math"`, `"tables"`).
-
-Matches either the `beyond_text` list or a `<capability>` field set
-to `"yes"` (e.g. `handwriting`, `tables`, `math_formula`).
-
-* **Return type:**
-  [`Catalog`](#ocracy.Catalog)
-
-#### compare(ids=None, , fields=('name', 'is_local', 'is_remote', 'open_source', 'pricing_model', 'price_note', 'accuracy_tier', 'languages_count', 'handwriting', 'math_formula', 'tables', 'best_for'))
-
-A trimmed, side-by-side view of selected backends and fields.
-
-* **Return type:**
-  [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)]
-
-#### filter(, predicate=None, implemented=None, \*\*criteria)
-
-Return a new `Catalog` of backends matching every criterion.
-
-* **Parameters:**
-  * **predicate** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Callable`](https://docs.python.org/3/library/typing.html#typing.Callable)[[[`BackendInfo`](#ocracy.BackendInfo)], [`bool`](https://docs.python.org/3/builtins/functions.html#bool)]]) – An arbitrary `BackendInfo -> bool` callable.
-  * **implemented** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`bool`](https://docs.python.org/3/builtins/functions.html#bool)]) – If set, keep only (un)implemented backends.
-  * **\*\*criteria** ([`Any`](https://docs.python.org/3/library/typing.html#typing.Any)) – `field=value` constraints. `value` may be a
-    set/list/tuple meaning “one of”. Free-text fields
-    (`languages_note`, `beyond_text`, `output_formats`) use a
-    case-insensitive substring match.
-* **Return type:**
-  [`Catalog`](#ocracy.Catalog)
-
-Example:
-
-```default
-catalog.filter(is_local=True, open_source=True, handwriting="yes")
-```
-
-#### supports_language(language)
-
-Backends whose `languages_note` mentions `language` (name or code).
-
-* **Return type:**
-  [`Catalog`](#ocracy.Catalog)
-
-#### to_dataframe(, columns=None)
-
-Return a pandas DataFrame of the catalog (pandas imported lazily).
 
 ### *class* ocracy.OcrResult(text, blocks=list(), backend='', raw=None, meta=dict())
 
@@ -594,16 +546,16 @@ decide.
 
 ### Modules
 
-| [`backends`](ocracy.backends.html.md#module-ocracy.backends)         | Implemented OCR backends.                                                                                        |
-|------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------|
-| [`base`](ocracy.base.html.md#module-ocracy.base)                 | Core types and normalized result objects for ocracy.                                                             |
-| [`catalog`](ocracy.catalog.html.md#ocracy.catalog)                  | A filterable, dict-like collection of [`BackendInfo`](#ocracy.BackendInfo), keyed by id. |
-| [`credentials`](ocracy.credentials.html.md#module-ocracy.credentials)   | Credential resolution for remote OCR backends.                                                                   |
-| [`kit`](ocracy.kit.html.md#module-ocracy.kit)                   | The facade kit: the three helpers every fleet facade used to copy by hand.                                       |
-| [`make_backend`](ocracy.make_backend.html.md#module-ocracy.make_backend) | Abstraction tools for *building* OCR facades.                                                                    |
-| [`registry`](ocracy.registry.html.md#module-ocracy.registry)         | Backend discovery, registration, and lazy loading.                                                               |
-| [`services`](ocracy.services.html.md#ocracy.services)                | Lazy mapping of backend ids -> `ServiceHandle`.                                                                  |
-| [`status`](ocracy.status.html.md#module-ocracy.status)             | Backend readiness status — four nested levels, info dicts, and a Markdown table.                                 |
-| [`tools`](ocracy.tools.html.md#module-ocracy.tools)               | Command-line tools for ocracy (dispatched via `cw` in `__main__`).                                               |
-| [`translation`](ocracy.translation.html.md#module-ocracy.translation)   | Parameter translation between ocracy's normalized kwargs and native engines.                                     |
-| [`util`](ocracy.util.html.md#module-ocracy.util)                 | Image-input normalization and small shared helpers.                                                              |
+| [`backends`](ocracy.backends.html.md#module-ocracy.backends)         | Implemented OCR backends.                                                                                                    |
+|------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------|
+| [`base`](ocracy.base.html.md#module-ocracy.base)                 | Core types and normalized result objects for ocracy.                                                                         |
+| [`catalog`](ocracy.catalog.html.md#ocracy.catalog)                  | [`ocracy.kit.ledger.Catalog`](ocracy.kit.ledger.html.md#ocracy.kit.ledger.Catalog) bound to ocracy's data. |
+| [`credentials`](ocracy.credentials.html.md#module-ocracy.credentials)   | Credential resolution for remote OCR backends.                                                                               |
+| [`kit`](ocracy.kit.html.md#module-ocracy.kit)                   | The facade kit: the three helpers every fleet facade used to copy by hand.                                                   |
+| [`make_backend`](ocracy.make_backend.html.md#module-ocracy.make_backend) | Abstraction tools for *building* OCR facades.                                                                                |
+| [`registry`](ocracy.registry.html.md#module-ocracy.registry)         | Backend discovery, registration, and lazy loading.                                                                           |
+| [`services`](ocracy.services.html.md#ocracy.services)                | Lazy mapping of backend ids -> `ServiceHandle`.                                                                              |
+| [`status`](ocracy.status.html.md#module-ocracy.status)             | Backend readiness status — four nested levels, info dicts, and a Markdown table.                                             |
+| [`tools`](ocracy.tools.html.md#module-ocracy.tools)               | Command-line tools for ocracy (dispatched via `cw` in `__main__`).                                                           |
+| [`translation`](ocracy.translation.html.md#module-ocracy.translation)   | Parameter translation between ocracy's normalized kwargs and native engines.                                                 |
+| [`util`](ocracy.util.html.md#module-ocracy.util)                 | Image-input normalization and small shared helpers.                                                                          |
