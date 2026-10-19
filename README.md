@@ -260,8 +260,8 @@ symlink bridge; they also travel with `pip install ocracy` under
   `make_block`, `scaffold_backend`, `validate_adapter`).
 - `ocracy/backends/<id>/` — one subpackage per engine (`config.py` + `adapter.py`).
 - `ocracy/credentials.py` — credential resolution for remote backends.
-- `ocracy/kit/` — the facade kit: the param_map translator, the credential chain
-  and install plans, stdlib-only and shared with other facades (see below).
+- `ocracy/kit/` — the facade kit: the param_map translator, the credential chain,
+  install plans and the ledger loader, stdlib-only and shared with other facades (see below).
 - `ocracy/tools.py` + `ocracy/__main__.py` — the `ocracy` CLI (cw).
 
 ### The facade kit, for building other facades
@@ -286,6 +286,7 @@ with using_credentials(acme=request_key):  # per-request BYO key
     ...
 ```
 
+A facade's ledger is `ocracy.kit.Catalog(default_path=..., env_var=..., implemented=registry_ids)`.
 `ocracy.kit` imports only the standard library; the design is in
 `docs/adr/0001-facade-kit.md`.
 

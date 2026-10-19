@@ -87,7 +87,7 @@ Three small public pieces exist for a named consumer, not for generality: `check
 ## Not in v1
 
 - **The cost gate** (foley's `cost.py`: stacked budgets, atomic reserve/settle, `scoped_iter`) and **metered LLM calls**. foley proposed both on #7. The budget exists in one package, and the two estimate conventions (falaw's per-model `count/seconds/megapixels/tokens`, foley's per-config `free/per_call/per_second`) have different shapes. By the rule of three and "duplication is cheaper than the wrong abstraction", it waits for a second budget: [#9](https://github.com/thorwhalen/ocracy/issues/9).
-- **The ledger loader** (`catalog.py`, ocracy and scribed: 97 lines of diff). Optional in #7: [#10](https://github.com/thorwhalen/ocracy/issues/10).
+- **The ledger loader** (`catalog.py`, ocracy and scribed: 97 lines of diff). Optional in #7; added later as `ocracy.kit.ledger` (see the addendum below).
 - **`make_backend.py`** (adapter base class, scaffolding): domain-specific per facade.
 
 ## Consequences
@@ -97,3 +97,18 @@ Three small public pieces exist for a named consumer, not for generality: `check
 - `BaseOcrAdapter.read` now records every dropped parameter in `result.meta["notes"]` (it still warns): ocracy adopts foley's "drops reach the result" behaviour.
 - Three independent adversarial reviews (API seam completeness, hidden behaviour differences, import-time cost) ran before landing; every confirmed finding is either fixed above or recorded here as a deliberate change.
 - `testpaths` now includes `ocracy`, so CI's `--doctest-modules` runs the kit's examples, and `doctest_optionflags` matches what CI passes.
+
+## Addendum, 2026-10-19 — `ocracy.kit.ledger` ([#10](https://github.com/thorwhalen/ocracy/issues/10))
+
+The ledger loader joined the kit as a fourth module: `Catalog` and `BackendInfo` over any `backends.json`. ocracy's and scribed's copies differed only in data, and each difference became a keyword seam (the `default_path` and `env_var` that locate the JSON, `implemented=` a callable returning the registry's ids, `text_fields`, `capability_suffixes`, `compare_fields`), with one exception:
+
+| Divergence | Kit | Kind |
+|---|---|---|
+| Ledger path, env override (`OCRACY_LEDGER` / `SCRIBED_LEDGER`), registry import | `default_path=`, `env_var=`, `implemented=` | seams (data) |
+| Free-text membership fields: scribed adds `pros`, `cons` | `text_fields=` (default: `languages_note`, `beyond_text`, `output_formats`) | seam |
+| `can("math")` also reads `math_formula` (ocracy) | `capability_suffixes=`, extra suffixes besides the plain field (ocracy passes `("_formula",)`) | seam |
+| `compare()` default columns (OCR vs ASR capabilities) | `compare_fields=`; `compare(fields=)` still wins | seam |
+| `can()` accepts `"yes"` (ocracy) vs `"yes"` or `True` (scribed) | `"yes"` or `True`, with `True` matched by identity so a `languages_count` of 1 is not a capability | canonical. In ocracy, `can()` on a boolean field (`bounding_boxes`, `open_source`, …) used to return nothing and now returns the backends where the field is true. |
+| `filter()` returned a bare `Catalog(_records=...)`, re-deriving its settings from the class | an instance of the parent's class built from the parent's settings alone. A subset of a bound catalog filters the same way, carries no derived state the parent cached, and does not call `implemented` again, because the records already carry their flags. | canonical |
+
+An old-versus-new inventory compared ocracy's catalog on main with this branch: every record, `repr`, and 1,273 queries (`filter` on every scalar value of every field, text-field and language lookups, `can` on every field, chained filters, `compare`). The only differences were the boolean-field `can()` rows. `json` is imported when a ledger is first read, not when the kit is imported, so importing `ocracy.kit` does not get more expensive. The seams that take names (`text_fields`, `capability_suffixes`, `compare_fields`) refuse a bare string, which would otherwise be split into letters.
