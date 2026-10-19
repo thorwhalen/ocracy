@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../_static/documentation_options.js?v=71734efd"></script>
+    <script src="../_static/documentation_options.js?v=9969ed3f"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -58,7 +58,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.1.17" />
+  <meta name="docsearch:version" content="0.1.18" />
   
     
     <script src="../_static/searchtools.js"></script>
@@ -332,6 +332,7 @@
 <li class="toctree-l3"><a class="reference internal" href="ocracy.backends.ocr_space.html">ocracy.backends.ocr_space</a></li>
 <li class="toctree-l3"><a class="reference internal" href="ocracy.backends.ocrmac.html">ocracy.backends.ocrmac</a></li>
 <li class="toctree-l3"><a class="reference internal" href="ocracy.backends.paddleocr.html">ocracy.backends.paddleocr</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ocracy.backends.paddleocr_ppstructure.html">ocracy.backends.paddleocr_ppstructure</a></li>
 <li class="toctree-l3"><a class="reference internal" href="ocracy.backends.pix2tex_latex_ocr.html">ocracy.backends.pix2tex_latex_ocr</a></li>
 <li class="toctree-l3"><a class="reference internal" href="ocracy.backends.rapidocr.html">ocracy.backends.rapidocr</a></li>
 <li class="toctree-l3"><a class="reference internal" href="ocracy.backends.tesseract.html">ocracy.backends.tesseract</a></li>
@@ -424,7 +425,7 @@
 <h1>ocracy.services<a class="headerlink" href="#ocracy-services" title="Link to this heading">#</a></h1>
 <dl class="py data">
 <dt class="sig sig-object py" id="ocracy.services">
-<span class="sig-prename descclassname"><span class="pre">ocracy.</span></span><span class="sig-name descname"><span class="pre">services</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="ocracy.html#ocracy.ServiceCollection" title="ocracy.services.ServiceCollection"><span class="pre">ServiceCollection</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ServiceCollection</span> <span class="pre">backends=['aws-textract',</span> <span class="pre">'azure-document-intelligence',</span> <span class="pre">'claude-vision',</span> <span class="pre">'easyocr',</span> <span class="pre">'google-vision',</span> <span class="pre">'gpt-4o-vision',</span> <span class="pre">'mathpix',</span> <span class="pre">'mistral-ocr',</span> <span class="pre">'ocr-space',</span> <span class="pre">'ocrmac',</span> <span class="pre">'paddleocr',</span> <span class="pre">'pix2tex-latex-ocr',</span> <span class="pre">'rapidocr',</span> <span class="pre">'tesseract',</span> <span class="pre">'trocr-handwritten']&gt;</span></span><a class="headerlink" href="#ocracy.services" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">ocracy.</span></span><span class="sig-name descname"><span class="pre">services</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="ocracy.html#ocracy.ServiceCollection" title="ocracy.services.ServiceCollection"><span class="pre">ServiceCollection</span></a></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;ServiceCollection</span> <span class="pre">backends=['aws-textract',</span> <span class="pre">'azure-document-intelligence',</span> <span class="pre">'claude-vision',</span> <span class="pre">'easyocr',</span> <span class="pre">'google-vision',</span> <span class="pre">'gpt-4o-vision',</span> <span class="pre">'mathpix',</span> <span class="pre">'mistral-ocr',</span> <span class="pre">'ocr-space',</span> <span class="pre">'ocrmac',</span> <span class="pre">'paddleocr',</span> <span class="pre">'paddleocr-ppstructure',</span> <span class="pre">'pix2tex-latex-ocr',</span> <span class="pre">'rapidocr',</span> <span class="pre">'tesseract',</span> <span class="pre">'trocr-handwritten']&gt;</span></span><a class="headerlink" href="#ocracy.services" title="Link to this definition">#</a></dt>
 <dd><p>Lazy mapping of backend ids -&gt; <code class="xref py py-class docutils literal notranslate"><span class="pre">ServiceHandle</span></code>.</p>
 <p>Supports dict-style (<code class="docutils literal notranslate"><span class="pre">services['tesseract']</span></code>) and attribute-style
 (<code class="docutils literal notranslate"><span class="pre">services.tesseract</span></code>) access.</p>

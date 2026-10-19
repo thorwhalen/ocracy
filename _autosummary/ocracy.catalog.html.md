@@ -1,6 +1,6 @@
 # ocracy.catalog
 
-### ocracy.catalog *= <Catalog 64 backends | 15 implemented | 40 local, 38 remote>*
+### ocracy.catalog *= <Catalog 64 backends | 16 implemented | 40 local, 38 remote>*
 
 [`ocracy.kit.ledger.Catalog`](ocracy.kit.ledger.html.md#ocracy.kit.ledger.Catalog) bound to ocracy’s data.
 

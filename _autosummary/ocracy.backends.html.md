@@ -29,6 +29,7 @@ scaffold_backend("easyocr")   # creates ocracy/backends/easyocr/ from the templa
 | [`ocr_space`](ocracy.backends.ocr_space.html.md#module-ocracy.backends.ocr_space)                                     | OCR.space OCR API backend for ocracy.                                                  |
 | [`ocrmac`](ocracy.backends.ocrmac.html.md#module-ocracy.backends.ocrmac)                                           | ocrmac (Apple Vision) backend for ocracy.                                              |
 | [`paddleocr`](ocracy.backends.paddleocr.html.md#module-ocracy.backends.paddleocr)                                     | PaddleOCR backend for ocracy (PP-OCR text recognition).                                |
+| [`paddleocr_ppstructure`](ocracy.backends.paddleocr_ppstructure.html.md#module-ocracy.backends.paddleocr_ppstructure)             | PaddleOCR PP-StructureV3 backend: tables, layout and formulas -> Markdown.             |
 | [`pix2tex_latex_ocr`](ocracy.backends.pix2tex_latex_ocr.html.md#module-ocracy.backends.pix2tex_latex_ocr)                     | pix2tex (LaTeX-OCR) backend for ocracy — local math image -> LaTeX.                    |
 | [`rapidocr`](ocracy.backends.rapidocr.html.md#module-ocracy.backends.rapidocr)                                       | RapidOCR backend for ocracy.                                                           |
 | [`tesseract`](ocracy.backends.tesseract.html.md#module-ocracy.backends.tesseract)                                     | Tesseract backend for ocracy (via pytesseract).                                        |

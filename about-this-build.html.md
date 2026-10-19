@@ -2,16 +2,18 @@
 
 # About this build
 
-This documentation was built on **2026-10-19 12:43 UTC** from commit <a href="https://github.com/thorwhalen/ocracy/commit/f40f14649d574a09559d1456639126efd856191f"><code>f40f146</code></a> on branch <code>main</code>, for **ocracy 0.1.17** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-10-19 13:50 UTC** from commit <a href="https://github.com/thorwhalen/ocracy/commit/aa561645bd7ad7511790d4886bbf14dc9d749455"><code>aa56164</code></a> on branch <code>main</code>, for **ocracy 0.1.18** (from <code>pyproject.toml</code>).
 
-#### NOTE
-Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
+#### WARNING
+The documentation and the package may be misaligned:
+
+- The documented version (0.1.18) is behind the latest release on PyPI (0.1.19): `pip install ocracy` gives newer code than these docs describe.
 
 ## Source
 
 |                     |                                                                                                                                                          |
 |---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/ocracy/commit/f40f14649d574a09559d1456639126efd856191f"><code>f40f14649d574a09559d1456639126efd856191f</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/ocracy/commit/aa561645bd7ad7511790d4886bbf14dc9d749455"><code>aa561645bd7ad7511790d4886bbf14dc9d749455</code></a> |
 | Branch              | <code>main</code>                                                                                                                                        |
 | Tags at this commit | none                                                                                                                                                     |
 | Working tree        | clean                                                                                                                                                    |
@@ -22,9 +24,9 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/ocracy</code>                                                             |
-| Run          | <a href="https://github.com/thorwhalen/ocracy/actions/runs/39254123350">39254123350</a>    |
+| Run          | <a href="https://github.com/thorwhalen/ocracy/actions/runs/39263331977">39263331977</a>    |
 | Ref          | <code>refs/heads/main</code>                                                               |
-| Event commit | <code>f40f14649d574a09559d1456639126efd856191f</code> (in the history of the built commit) |
+| Event commit | <code>aa561645bd7ad7511790d4886bbf14dc9d749455</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -49,13 +51,13 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/ocracy/0.1.17/">0.1.17</a>, the same as the documented version.
+Latest release: <a href="https://pypi.org/project/ocracy/0.1.19/">0.1.19</a>, newer than the documented version (0.1.18).
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/thorwhalen/ocracy && cd ocracy
-git checkout f40f14649d574a09559d1456639126efd856191f
+git checkout aa561645bd7ad7511790d4886bbf14dc9d749455
 pip install "epythet==0.2.18"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```

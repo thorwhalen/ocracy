@@ -4,6 +4,14 @@ ocracy.backends.paddleocr.adapter
 .. automodule:: ocracy.backends.paddleocr.adapter
 
    
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      blocks_from_v2
+      blocks_from_v3
+      is_v3
+   
    .. rubric:: Classes
 
    .. autosummary::

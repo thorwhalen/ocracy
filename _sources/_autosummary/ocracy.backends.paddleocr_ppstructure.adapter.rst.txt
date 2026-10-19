@@ -1,0 +1,12 @@
+ocracy.backends.paddleocr\_ppstructure.adapter
+==============================================
+
+.. automodule:: ocracy.backends.paddleocr_ppstructure.adapter
+
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      Adapter
+   

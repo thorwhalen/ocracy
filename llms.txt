@@ -42,6 +42,9 @@
 - [ocracy.backends.paddleocr](_autosummary/ocracy.backends.paddleocr.html.md): PaddleOCR backend for ocracy (PP-OCR text recognition).
 - [ocracy.backends.paddleocr.adapter](_autosummary/ocracy.backends.paddleocr.adapter.html.md): Adapter for PaddleOCR — image -&gt; text + quad boxes via PP-OCR.
 - [ocracy.backends.paddleocr.config](_autosummary/ocracy.backends.paddleocr.config.html.md): Configuration for the PaddleOCR backend.
+- [ocracy.backends.paddleocr_ppstructure](_autosummary/ocracy.backends.paddleocr_ppstructure.html.md): PaddleOCR PP-StructureV3 backend: tables, layout and formulas -&gt; Markdown.
+- [ocracy.backends.paddleocr_ppstructure.adapter](_autosummary/ocracy.backends.paddleocr_ppstructure.adapter.html.md): Adapter for PaddleOCR PP-StructureV3 — image -&gt; Markdown with tables, plus text lines.
+- [ocracy.backends.paddleocr_ppstructure.config](_autosummary/ocracy.backends.paddleocr_ppstructure.config.html.md): Configuration for the PaddleOCR PP-StructureV3 backend.
 - [ocracy.backends.pix2tex_latex_ocr](_autosummary/ocracy.backends.pix2tex_latex_ocr.html.md): pix2tex (LaTeX-OCR) backend for ocracy — local math image -&gt; LaTeX.
 - [ocracy.backends.pix2tex_latex_ocr.adapter](_autosummary/ocracy.backends.pix2tex_latex_ocr.adapter.html.md): Adapter for pix2tex — image of an equation -&gt; LaTeX, locally.
 - [ocracy.backends.pix2tex_latex_ocr.config](_autosummary/ocracy.backends.pix2tex_latex_ocr.config.html.md): Configuration for the pix2tex (LaTeX-OCR) backend.
@@ -70,7 +73,7 @@
 - [ocracy.translation](_autosummary/ocracy.translation.html.md): Parameter translation between ocracy’s normalized kwargs and native engines.
 - [ocracy.util](_autosummary/ocracy.util.html.md): Image-input normalization and small shared helpers.
 - [For AI agents](ai-agents.html.md): &#96;ocracy&#96; ships artifacts for coding agents alongside its code. This page lists
-- [About this build](about-this-build.html.md): This documentation was built on &#42;&#42;2026-10-19 12:43 UTC&#42;&#42; from commit &lt;a href="https://github.com/tho...
+- [About this build](about-this-build.html.md): This documentation was built on &#42;&#42;2026-10-19 13:50 UTC&#42;&#42; from commit &lt;a href="https://github.com/tho...
 
 ## Optional
 

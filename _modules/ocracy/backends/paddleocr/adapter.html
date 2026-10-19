@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../../../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../../../_static/documentation_options.js?v=71734efd"></script>
+    <script src="../../../../_static/documentation_options.js?v=9969ed3f"></script>
     <script src="../../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -411,7 +411,7 @@ window.runMermaid = runMermaid;</script>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.1.17" />
+  <meta name="docsearch:version" content="0.1.18" />
   
     
     <script src="../../../../_static/searchtools.js"></script>
@@ -717,14 +717,71 @@ window.runMermaid = runMermaid;</script>
   <h1>Source code for ocracy.backends.paddleocr.adapter</h1><div class="highlight"><pre>
 <span></span><span class="sd">"""Adapter for PaddleOCR — image -&gt; text + quad boxes via PP-OCR.</span>
 
-<span class="sd">PaddleOCR's constructor and ``ocr()`` signatures have shifted across major versions</span>
-<span class="sd">(``use_angle_cls``/``cls`` in 2.x vs ``use_textline_orientation`` in 3.x), so this</span>
-<span class="sd">adapter probes a couple of signatures defensively and parses the classic</span>
-<span class="sd">``[[ [box, (text, score)], ... ]]`` result. Engines are cached per language.</span>
+<span class="sd">PaddleOCR 3.x replaced the 2.x API: the constructor refuses 2.x keywords such as</span>
+<span class="sd">``show_log``, ``predict()`` returns result objects holding ``rec_texts`` /</span>
+<span class="sd">``rec_scores`` / ``rec_polys`` instead of 2.x ``ocr()``'s ``[[box, (text, score)],</span>
+<span class="sd">...]``, and language names changed (3.x takes ISO codes). The adapter tells the two</span>
+<span class="sd">apart by whether ``PaddleOCR`` has ``predict`` (2.x accepts any keyword, so a</span>
+<span class="sd">constructor error cannot), then builds and parses accordingly. The 3.x document</span>
+<span class="sd">pre-processors (page orientation, unwarping, text-line orientation) are off: they</span>
+<span class="sd">are for photographed pages, and they slow every call. Engines are cached per</span>
+<span class="sd">language.</span>
 <span class="sd">"""</span>
 
+<span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.backends.paddleocr.config</span><span class="w"> </span><span class="kn">import</span> <span class="n">V2_LANG</span><span class="p">,</span> <span class="n">V3_LANG</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">OcrResult</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.make_backend</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseOcrAdapter</span><span class="p">,</span> <span class="n">make_block</span>
+
+<span class="c1"># 3.x pipeline switches that only help photographed or rotated pages.</span>
+<span class="n">V3_PREPROCESSORS_OFF</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s2">"use_doc_orientation_classify"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">"use_doc_unwarping"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+    <span class="s2">"use_textline_orientation"</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+<span class="p">}</span>
+
+
+<div class="viewcode-block" id="is_v3">
+<a class="viewcode-back" href="../../../../_autosummary/ocracy.backends.paddleocr.adapter.html#ocracy.backends.paddleocr.adapter.is_v3">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">is_v3</span><span class="p">(</span><span class="n">paddle_class</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Whether a PaddleOCR pipeline class has the 3.x API (``predict``)."""</span>
+    <span class="k">return</span> <span class="nb">callable</span><span class="p">(</span><span class="nb">getattr</span><span class="p">(</span><span class="n">paddle_class</span><span class="p">,</span> <span class="s2">"predict"</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span></div>
+
+
+
+<div class="viewcode-block" id="blocks_from_v3">
+<a class="viewcode-back" href="../../../../_autosummary/ocracy.backends.paddleocr.adapter.html#ocracy.backends.paddleocr.adapter.blocks_from_v3">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">blocks_from_v3</span><span class="p">(</span><span class="n">page</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Line blocks from one 3.x result (``rec_texts`` / ``rec_scores`` / ``rec_polys``)."""</span>
+    <span class="n">texts</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"rec_texts"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[]</span>
+    <span class="n">scores</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"rec_scores"</span><span class="p">)</span> <span class="ow">or</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>
+    <span class="n">polys</span> <span class="o">=</span> <span class="n">page</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"rec_polys"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">polys</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">polys</span> <span class="o">=</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">texts</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[</span>
+        <span class="n">make_block</span><span class="p">(</span>
+            <span class="n">text</span><span class="p">,</span>
+            <span class="n">bbox</span><span class="o">=</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">float</span><span class="p">,</span> <span class="n">p</span><span class="p">))</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">poly</span><span class="p">]</span> <span class="k">if</span> <span class="n">poly</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">None</span><span class="p">,</span>
+            <span class="n">confidence</span><span class="o">=</span><span class="kc">None</span> <span class="k">if</span> <span class="n">score</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="nb">float</span><span class="p">(</span><span class="n">score</span><span class="p">),</span>
+            <span class="n">level</span><span class="o">=</span><span class="s2">"line"</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">text</span><span class="p">,</span> <span class="n">score</span><span class="p">,</span> <span class="n">poly</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">texts</span><span class="p">,</span> <span class="n">scores</span><span class="p">,</span> <span class="n">polys</span><span class="p">)</span>
+    <span class="p">]</span></div>
+
+
+
+<div class="viewcode-block" id="blocks_from_v2">
+<a class="viewcode-back" href="../../../../_autosummary/ocracy.backends.paddleocr.adapter.html#ocracy.backends.paddleocr.adapter.blocks_from_v2">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">blocks_from_v2</span><span class="p">(</span><span class="n">page</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Line blocks from one 2.x page (``[[box, (text, score)], ...]``)."""</span>
+    <span class="n">blocks</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">page</span> <span class="ow">or</span> <span class="p">[]:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">box</span><span class="p">,</span> <span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span> <span class="o">=</span> <span class="n">item</span>
+        <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
+            <span class="k">continue</span>
+        <span class="n">blocks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">make_block</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">bbox</span><span class="o">=</span><span class="n">box</span><span class="p">,</span> <span class="n">confidence</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">score</span><span class="p">),</span> <span class="n">level</span><span class="o">=</span><span class="s2">"line"</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">blocks</span></div>
+
 
 
 <div class="viewcode-block" id="Adapter">
@@ -740,38 +797,27 @@ window.runMermaid = runMermaid;</script>
         <span class="k">if</span> <span class="n">lang</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_engines</span><span class="p">:</span>
             <span class="kn">from</span><span class="w"> </span><span class="nn">paddleocr</span><span class="w"> </span><span class="kn">import</span> <span class="n">PaddleOCR</span>
 
-            <span class="k">try</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_engines</span><span class="p">[</span><span class="n">lang</span><span class="p">]</span> <span class="o">=</span> <span class="n">PaddleOCR</span><span class="p">(</span>
-                    <span class="n">use_angle_cls</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">lang</span><span class="o">=</span><span class="n">lang</span><span class="p">,</span> <span class="n">show_log</span><span class="o">=</span><span class="kc">False</span>
-                <span class="p">)</span>
-            <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
-                <span class="c1"># Newer PaddleOCR dropped/renamed those kwargs.</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_engines</span><span class="p">[</span><span class="n">lang</span><span class="p">]</span> <span class="o">=</span> <span class="n">PaddleOCR</span><span class="p">(</span><span class="n">lang</span><span class="o">=</span><span class="n">lang</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">is_v3</span><span class="p">(</span><span class="n">PaddleOCR</span><span class="p">):</span>
+                <span class="n">native</span> <span class="o">=</span> <span class="n">V3_LANG</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">lang</span><span class="p">,</span> <span class="n">lang</span><span class="p">)</span>
+                <span class="n">engine</span> <span class="o">=</span> <span class="n">PaddleOCR</span><span class="p">(</span><span class="n">lang</span><span class="o">=</span><span class="n">native</span><span class="p">,</span> <span class="o">**</span><span class="n">V3_PREPROCESSORS_OFF</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">native</span> <span class="o">=</span> <span class="n">V2_LANG</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">lang</span><span class="p">,</span> <span class="n">lang</span><span class="p">)</span>
+                <span class="n">engine</span> <span class="o">=</span> <span class="n">PaddleOCR</span><span class="p">(</span><span class="n">use_angle_cls</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">lang</span><span class="o">=</span><span class="n">native</span><span class="p">,</span> <span class="n">show_log</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_engines</span><span class="p">[</span><span class="n">lang</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">engine</span><span class="p">,</span> <span class="n">is_v3</span><span class="p">(</span><span class="n">PaddleOCR</span><span class="p">))</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_engines</span><span class="p">[</span><span class="n">lang</span><span class="p">]</span>
 
     <span class="k">def</span><span class="w"> </span><span class="nf">_read</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">image</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">lang</span><span class="o">=</span><span class="s2">"en"</span><span class="p">,</span> <span class="o">**</span><span class="n">extra</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">OcrResult</span><span class="p">:</span>
         <span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.util</span><span class="w"> </span><span class="kn">import</span> <span class="n">to_numpy</span>
 
         <span class="n">arr</span> <span class="o">=</span> <span class="n">to_numpy</span><span class="p">(</span><span class="n">image</span><span class="p">)</span>
-        <span class="n">engine</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_engine</span><span class="p">(</span><span class="n">lang</span><span class="p">)</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">raw</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">ocr</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
-            <span class="n">raw</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">ocr</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
-
-        <span class="c1"># Classic shape: raw is a per-image list; each page is a list of</span>
-        <span class="c1"># [box, (text, score)] entries.</span>
-        <span class="n">page</span> <span class="o">=</span> <span class="n">raw</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">raw</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">))</span> <span class="k">else</span> <span class="n">raw</span>
-        <span class="n">blocks</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">page</span> <span class="ow">or</span> <span class="p">[]:</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="n">box</span><span class="p">,</span> <span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">score</span><span class="p">)</span> <span class="o">=</span> <span class="n">item</span>
-            <span class="k">except</span> <span class="p">(</span><span class="ne">TypeError</span><span class="p">,</span> <span class="ne">ValueError</span><span class="p">):</span>
-                <span class="k">continue</span>
-            <span class="n">blocks</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-                <span class="n">make_block</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="n">bbox</span><span class="o">=</span><span class="n">box</span><span class="p">,</span> <span class="n">confidence</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="n">score</span><span class="p">),</span> <span class="n">level</span><span class="o">=</span><span class="s2">"line"</span><span class="p">)</span>
-            <span class="p">)</span>
-
+        <span class="n">engine</span><span class="p">,</span> <span class="n">v3</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_engine</span><span class="p">(</span><span class="n">lang</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">v3</span><span class="p">:</span>
+            <span class="n">raw</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="o">**</span><span class="n">extra</span><span class="p">)</span>
+            <span class="n">blocks</span> <span class="o">=</span> <span class="n">blocks_from_v3</span><span class="p">(</span><span class="n">raw</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="k">if</span> <span class="n">raw</span> <span class="k">else</span> <span class="p">[]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">raw</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">ocr</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="bp">cls</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">extra</span><span class="p">)</span>
+            <span class="n">page</span> <span class="o">=</span> <span class="n">raw</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">if</span> <span class="n">raw</span> <span class="ow">and</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">raw</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">))</span> <span class="k">else</span> <span class="n">raw</span>
+            <span class="n">blocks</span> <span class="o">=</span> <span class="n">blocks_from_v2</span><span class="p">(</span><span class="n">page</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">OcrResult</span><span class="o">.</span><span class="n">from_blocks</span><span class="p">(</span><span class="n">blocks</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">backend_id</span><span class="p">,</span> <span class="n">raw</span><span class="o">=</span><span class="n">raw</span><span class="p">)</span></div>
 
 </pre></div>

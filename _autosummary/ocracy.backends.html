@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../_static/documentation_options.js?v=71734efd"></script>
+    <script src="../_static/documentation_options.js?v=9969ed3f"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -58,7 +58,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.1.17" />
+  <meta name="docsearch:version" content="0.1.18" />
   
     
     <script src="../_static/searchtools.js"></script>
@@ -332,6 +332,7 @@
 <li class="toctree-l3"><a class="reference internal" href="ocracy.backends.ocr_space.html">ocracy.backends.ocr_space</a></li>
 <li class="toctree-l3"><a class="reference internal" href="ocracy.backends.ocrmac.html">ocracy.backends.ocrmac</a></li>
 <li class="toctree-l3"><a class="reference internal" href="ocracy.backends.paddleocr.html">ocracy.backends.paddleocr</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ocracy.backends.paddleocr_ppstructure.html">ocracy.backends.paddleocr_ppstructure</a></li>
 <li class="toctree-l3"><a class="reference internal" href="ocracy.backends.pix2tex_latex_ocr.html">ocracy.backends.pix2tex_latex_ocr</a></li>
 <li class="toctree-l3"><a class="reference internal" href="ocracy.backends.rapidocr.html">ocracy.backends.rapidocr</a></li>
 <li class="toctree-l3"><a class="reference internal" href="ocracy.backends.tesseract.html">ocracy.backends.tesseract</a></li>
@@ -469,16 +470,19 @@ helpers, not real backends, and are skipped by discovery.</p>
 <tr class="row-odd"><td><p><a class="reference internal" href="ocracy.backends.paddleocr.html#module-ocracy.backends.paddleocr" title="ocracy.backends.paddleocr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">paddleocr</span></code></a></p></td>
 <td><p>PaddleOCR backend for ocracy (PP-OCR text recognition).</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="ocracy.backends.pix2tex_latex_ocr.html#module-ocracy.backends.pix2tex_latex_ocr" title="ocracy.backends.pix2tex_latex_ocr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pix2tex_latex_ocr</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="ocracy.backends.paddleocr_ppstructure.html#module-ocracy.backends.paddleocr_ppstructure" title="ocracy.backends.paddleocr_ppstructure"><code class="xref py py-obj docutils literal notranslate"><span class="pre">paddleocr_ppstructure</span></code></a></p></td>
+<td><p>PaddleOCR PP-StructureV3 backend: tables, layout and formulas -&gt; Markdown.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="ocracy.backends.pix2tex_latex_ocr.html#module-ocracy.backends.pix2tex_latex_ocr" title="ocracy.backends.pix2tex_latex_ocr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pix2tex_latex_ocr</span></code></a></p></td>
 <td><p>pix2tex (LaTeX-OCR) backend for ocracy — local math image -&gt; LaTeX.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="ocracy.backends.rapidocr.html#module-ocracy.backends.rapidocr" title="ocracy.backends.rapidocr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rapidocr</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="ocracy.backends.rapidocr.html#module-ocracy.backends.rapidocr" title="ocracy.backends.rapidocr"><code class="xref py py-obj docutils literal notranslate"><span class="pre">rapidocr</span></code></a></p></td>
 <td><p>RapidOCR backend for ocracy.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="ocracy.backends.tesseract.html#module-ocracy.backends.tesseract" title="ocracy.backends.tesseract"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tesseract</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="ocracy.backends.tesseract.html#module-ocracy.backends.tesseract" title="ocracy.backends.tesseract"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tesseract</span></code></a></p></td>
 <td><p>Tesseract backend for ocracy (via pytesseract).</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="ocracy.backends.trocr_handwritten.html#module-ocracy.backends.trocr_handwritten" title="ocracy.backends.trocr_handwritten"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trocr_handwritten</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="ocracy.backends.trocr_handwritten.html#module-ocracy.backends.trocr_handwritten" title="ocracy.backends.trocr_handwritten"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trocr_handwritten</span></code></a></p></td>
 <td><p>TrOCR (handwritten) backend for ocracy — local handwriting recognition.</p></td>
 </tr>
 </tbody>

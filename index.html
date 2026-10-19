@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="_static/documentation_options.js?v=71734efd"></script>
+    <script src="_static/documentation_options.js?v=9969ed3f"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -57,7 +57,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.1.17" />
+  <meta name="docsearch:version" content="0.1.18" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -402,7 +402,7 @@ one granularity, so <code class="docutils literal notranslate"><span class="pre"
 <td><p>free</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">ocracy[rapidocr]</span></code></p></td>
 <td><p><strong>line</strong></p></td>
-<td><p>same PP-OCR models as Paddle, light CPU/ONNX — <strong>recommended default for local plain text</strong></p></td>
+<td><p>light CPU/ONNX, fast; today ships older PP-OCRv4 models that can drop word spaces (moving to PP-OCRv6: <a class="reference external" href="https://github.com/thorwhalen/ocracy/issues/22">#22</a>)</p></td>
 </tr>
 <tr class="row-odd"><td><p>PaddleOCR</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">paddleocr</span></code></p></td>
@@ -410,9 +410,17 @@ one granularity, so <code class="docutils literal notranslate"><span class="pre"
 <td><p>free</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">ocracy[paddleocr]</span></code></p></td>
 <td><p><strong>line</strong></p></td>
-<td><p>the platform: server models, GPU, on-ramp to tables/layout (PP-Structure) &amp; VL — heavier install</p></td>
+<td><p>PaddleOCR 3.x, PP-OCRv6 models: near-perfect on clean and degraded print, and well ahead of <code class="docutils literal notranslate"><span class="pre">rapidocr</span></code> today (<a class="reference external" href="https://github.com/thorwhalen/ocracy/issues/1">#1</a>); heavier install, ~3 s/page CPU</p></td>
 </tr>
-<tr class="row-even"><td><p>ocrmac (Apple Vision)</p></td>
+<tr class="row-even"><td><p>PaddleOCR PP-StructureV3</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">paddleocr-ppstructure</span></code></p></td>
+<td><p>local</p></td>
+<td><p>free</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">ocracy[paddleocr-ppstructure]</span></code></p></td>
+<td><p><strong>line</strong></p></td>
+<td><p>tables (HTML), layout and formulas → <code class="docutils literal notranslate"><span class="pre">result.markdown</span></code>; slow on CPU (~25 s/page)</p></td>
+</tr>
+<tr class="row-odd"><td><p>ocrmac (Apple Vision)</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">ocrmac</span></code></p></td>
 <td><p>local (macOS)</p></td>
 <td><p>free</p></td>
@@ -420,7 +428,7 @@ one granularity, so <code class="docutils literal notranslate"><span class="pre"
 <td><p><strong>line</strong></p></td>
 <td><p>on-device, handwriting</p></td>
 </tr>
-<tr class="row-odd"><td><p>pix2tex (LaTeX-OCR)</p></td>
+<tr class="row-even"><td><p>pix2tex (LaTeX-OCR)</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">pix2tex-latex-ocr</span></code></p></td>
 <td><p>local</p></td>
 <td><p>free</p></td>
@@ -428,7 +436,7 @@ one granularity, so <code class="docutils literal notranslate"><span class="pre"
 <td><p><em>text only</em></p></td>
 <td><p>one printed equation → LaTeX, offline</p></td>
 </tr>
-<tr class="row-even"><td><p>TrOCR (handwritten)</p></td>
+<tr class="row-odd"><td><p>TrOCR (handwritten)</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">trocr-handwritten</span></code></p></td>
 <td><p>local</p></td>
 <td><p>free</p></td>
@@ -436,7 +444,7 @@ one granularity, so <code class="docutils literal notranslate"><span class="pre"
 <td><p><em>text only</em></p></td>
 <td><p>one pre-segmented handwritten line, MIT weights</p></td>
 </tr>
-<tr class="row-odd"><td><p>OCR.space</p></td>
+<tr class="row-even"><td><p>OCR.space</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">ocr-space</span></code></p></td>
 <td><p>remote</p></td>
 <td><p>free tier</p></td>
@@ -444,7 +452,7 @@ one granularity, so <code class="docutils literal notranslate"><span class="pre"
 <td><p><strong>word</strong></p></td>
 <td><p>zero-install REST</p></td>
 </tr>
-<tr class="row-even"><td><p>Google Cloud Vision</p></td>
+<tr class="row-odd"><td><p>Google Cloud Vision</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">google-vision</span></code></p></td>
 <td><p>remote</p></td>
 <td><p>paid (+free tier)</p></td>
@@ -452,7 +460,7 @@ one granularity, so <code class="docutils literal notranslate"><span class="pre"
 <td><p><strong>word</strong></p></td>
 <td><p>high accuracy, handwriting, structure</p></td>
 </tr>
-<tr class="row-odd"><td><p>AWS Textract</p></td>
+<tr class="row-even"><td><p>AWS Textract</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">aws-textract</span></code></p></td>
 <td><p>remote</p></td>
 <td><p>paid (+free tier)</p></td>
@@ -460,7 +468,7 @@ one granularity, so <code class="docutils literal notranslate"><span class="pre"
 <td><p><strong>word</strong></p></td>
 <td><p>business docs, handwriting (forms/tables in analyze mode)</p></td>
 </tr>
-<tr class="row-even"><td><p>Azure Document Intelligence</p></td>
+<tr class="row-odd"><td><p>Azure Document Intelligence</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">azure-document-intelligence</span></code></p></td>
 <td><p>remote</p></td>
 <td><p>paid (+free tier)</p></td>
@@ -468,7 +476,7 @@ one granularity, so <code class="docutils literal notranslate"><span class="pre"
 <td><p><strong>word</strong></p></td>
 <td><p>layout/tables/handwriting, on-prem container option</p></td>
 </tr>
-<tr class="row-odd"><td><p>Mistral OCR</p></td>
+<tr class="row-even"><td><p>Mistral OCR</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">mistral-ocr</span></code></p></td>
 <td><p>remote</p></td>
 <td><p>paid (pay-as-you-go)</p></td>
@@ -476,7 +484,7 @@ one granularity, so <code class="docutils literal notranslate"><span class="pre"
 <td><p><em>text only</em></p></td>
 <td><p>cheap VLM → clean Markdown + math/tables</p></td>
 </tr>
-<tr class="row-even"><td><p>Mathpix</p></td>
+<tr class="row-odd"><td><p>Mathpix</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">mathpix</span></code></p></td>
 <td><p>remote</p></td>
 <td><p>paid (+free tier)</p></td>
@@ -484,7 +492,7 @@ one granularity, so <code class="docutils literal notranslate"><span class="pre"
 <td><p><em>text only</em></p></td>
 <td><p>math/handwriting → LaTeX &amp; Markdown</p></td>
 </tr>
-<tr class="row-odd"><td><p>Claude Vision</p></td>
+<tr class="row-even"><td><p>Claude Vision</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">claude-vision</span></code></p></td>
 <td><p>remote</p></td>
 <td><p>paid</p></td>
@@ -492,7 +500,7 @@ one granularity, so <code class="docutils literal notranslate"><span class="pre"
 <td><p><em>text only</em></p></td>
 <td><p>prompt-driven “read + reason” over messy/mixed documents</p></td>
 </tr>
-<tr class="row-even"><td><p>GPT-4o Vision</p></td>
+<tr class="row-odd"><td><p>GPT-4o Vision</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">gpt-4o-vision</span></code></p></td>
 <td><p>remote</p></td>
 <td><p>paid</p></td>
@@ -503,7 +511,7 @@ one granularity, so <code class="docutils literal notranslate"><span class="pre"
 </tbody>
 </table>
 </div>
-<p>…plus <strong>49 more</strong> engines/services catalogued in the ledger that you can turn into
+<p>…plus <strong>48 more</strong> engines/services catalogued in the ledger that you can turn into
 a working façade with one command (see <em>Add a backend</em> below).</p>
 <section id="granularity-which-backends-fill-words-which-fill-lines">
 <h3>Granularity: which backends fill <code class="docutils literal notranslate"><span class="pre">.words</span></code>, which fill <code class="docutils literal notranslate"><span class="pre">.lines</span></code><a class="headerlink" href="#granularity-which-backends-fill-words-which-fill-lines" title="Link to this heading">#</a></h3>
@@ -524,7 +532,7 @@ not produce returns <code class="docutils literal notranslate"><span class="pre"
 <li><p><strong>word-level</strong> (<code class="docutils literal notranslate"><span class="pre">.words</span></code> populated, <code class="docutils literal notranslate"><span class="pre">.lines</span></code> empty): <code class="docutils literal notranslate"><span class="pre">tesseract</span></code>, <code class="docutils literal notranslate"><span class="pre">google-vision</span></code>,
 <code class="docutils literal notranslate"><span class="pre">aws-textract</span></code>, <code class="docutils literal notranslate"><span class="pre">azure-document-intelligence</span></code>, <code class="docutils literal notranslate"><span class="pre">ocr-space</span></code>.</p></li>
 <li><p><strong>line-level</strong> (<code class="docutils literal notranslate"><span class="pre">.lines</span></code> populated, <code class="docutils literal notranslate"><span class="pre">.words</span></code> empty): <code class="docutils literal notranslate"><span class="pre">easyocr</span></code>, <code class="docutils literal notranslate"><span class="pre">rapidocr</span></code>,
-<code class="docutils literal notranslate"><span class="pre">paddleocr</span></code>, <code class="docutils literal notranslate"><span class="pre">ocrmac</span></code>.</p></li>
+<code class="docutils literal notranslate"><span class="pre">paddleocr</span></code>, <code class="docutils literal notranslate"><span class="pre">paddleocr-ppstructure</span></code>, <code class="docutils literal notranslate"><span class="pre">ocrmac</span></code>.</p></li>
 <li><p><strong>text only</strong> (<code class="docutils literal notranslate"><span class="pre">blocks</span> <span class="pre">==</span> <span class="pre">[]</span></code>, so <em>both</em> are empty and <code class="docutils literal notranslate"><span class="pre">mean_confidence</span></code> is <code class="docutils literal notranslate"><span class="pre">None</span></code>):
 <code class="docutils literal notranslate"><span class="pre">claude-vision</span></code>, <code class="docutils literal notranslate"><span class="pre">gpt-4o-vision</span></code>, <code class="docutils literal notranslate"><span class="pre">mathpix</span></code>, <code class="docutils literal notranslate"><span class="pre">mistral-ocr</span></code>, <code class="docutils literal notranslate"><span class="pre">pix2tex-latex-ocr</span></code>,
 <code class="docutils literal notranslate"><span class="pre">trocr-handwritten</span></code>. Use <code class="docutils literal notranslate"><span class="pre">result.text</span></code> / <code class="docutils literal notranslate"><span class="pre">result.markdown</span></code>.</p></li>
@@ -777,7 +785,7 @@ voxy, scribed) use it instead of copying it:</p>
 </section>
 </section>
 
-<p class="epythet-provenance" style="font-size:.8em;opacity:.65;margin-top:2.5em;text-align:right">built 2026-10-19 12:43 UTC from <a href="https://github.com/thorwhalen/ocracy/commit/f40f14649d574a09559d1456639126efd856191f">f40f146</a> (main) · ocracy 0.1.17 · <a href="about-this-build.html">about this build</a></p>
+<p class="epythet-provenance" style="font-size:.8em;opacity:.65;margin-top:2.5em;text-align:right">built 2026-10-19 13:50 UTC from <a href="https://github.com/thorwhalen/ocracy/commit/aa561645bd7ad7511790d4886bbf14dc9d749455">aa56164</a> (main) · ocracy 0.1.18 · <a href="about-this-build.html">about this build</a></p>
 
                 </article>
               

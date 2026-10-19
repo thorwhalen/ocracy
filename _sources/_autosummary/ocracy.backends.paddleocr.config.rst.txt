@@ -4,3 +4,9 @@ ocracy.backends.paddleocr.config
 .. automodule:: ocracy.backends.paddleocr.config
 
    
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      first_language
+   

@@ -40,6 +40,9 @@
 - [ocracy.backends.paddleocr](ocracy.backends.paddleocr.html.md): PaddleOCR backend for ocracy (PP-OCR text recognition).
 - [ocracy.backends.paddleocr.adapter](ocracy.backends.paddleocr.adapter.html.md): Adapter for PaddleOCR — image -&gt; text + quad boxes via PP-OCR.
 - [ocracy.backends.paddleocr.config](ocracy.backends.paddleocr.config.html.md): Configuration for the PaddleOCR backend.
+- [ocracy.backends.paddleocr_ppstructure](ocracy.backends.paddleocr_ppstructure.html.md): PaddleOCR PP-StructureV3 backend: tables, layout and formulas -&gt; Markdown.
+- [ocracy.backends.paddleocr_ppstructure.adapter](ocracy.backends.paddleocr_ppstructure.adapter.html.md): Adapter for PaddleOCR PP-StructureV3 — image -&gt; Markdown with tables, plus text lines.
+- [ocracy.backends.paddleocr_ppstructure.config](ocracy.backends.paddleocr_ppstructure.config.html.md): Configuration for the PaddleOCR PP-StructureV3 backend.
 - [ocracy.backends.pix2tex_latex_ocr](ocracy.backends.pix2tex_latex_ocr.html.md): pix2tex (LaTeX-OCR) backend for ocracy — local math image -&gt; LaTeX.
 - [ocracy.backends.pix2tex_latex_ocr.adapter](ocracy.backends.pix2tex_latex_ocr.adapter.html.md): Adapter for pix2tex — image of an equation -&gt; LaTeX, locally.
 - [ocracy.backends.pix2tex_latex_ocr.config](ocracy.backends.pix2tex_latex_ocr.config.html.md): Configuration for the pix2tex (LaTeX-OCR) backend.

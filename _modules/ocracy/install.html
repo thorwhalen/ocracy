@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../_static/documentation_options.js?v=71734efd"></script>
+    <script src="../../_static/documentation_options.js?v=9969ed3f"></script>
     <script src="../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -411,7 +411,7 @@ window.runMermaid = runMermaid;</script>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.1.17" />
+  <meta name="docsearch:version" content="0.1.18" />
   
     
     <script src="../../_static/searchtools.js"></script>
@@ -786,16 +786,17 @@ window.runMermaid = runMermaid;</script>
         <span class="s2">"heavy"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
         <span class="s2">"gpu"</span><span class="p">:</span> <span class="s2">"For GPU, install a CUDA build of torch first (see https://pytorch.org/get-started/locally/)."</span><span class="p">,</span>
         <span class="s2">"weights"</span><span class="p">:</span> <span class="s2">"Downloads recognition/detection model weights on first use (cached under ~/.EasyOCR)."</span><span class="p">,</span>
-        <span class="s2">"alt"</span><span class="p">:</span> <span class="s2">"rapidocr (same PP-OCR-class accuracy, much lighter install, no Torch)"</span><span class="p">,</span>
+        <span class="s2">"alt"</span><span class="p">:</span> <span class="s2">"rapidocr (PP-OCR text models via ONNX: much lighter install, no Torch)"</span><span class="p">,</span>
     <span class="p">},</span>
     <span class="s2">"rapidocr"</span><span class="p">:</span> <span class="p">{</span>
         <span class="s2">"extra"</span><span class="p">:</span> <span class="s2">"rapidocr"</span><span class="p">,</span>
         <span class="s2">"weights"</span><span class="p">:</span> <span class="s2">"Model weights ship inside the wheel — no first-run download."</span><span class="p">,</span>
         <span class="s2">"notes"</span><span class="p">:</span> <span class="p">[</span>
-            <span class="s2">"Light, CPU-only (ONNXRuntime); the recommended default for local plain-text OCR."</span><span class="p">,</span>
-            <span class="s2">"Runs the same PP-OCR models as paddleocr. For tables/layout/formula "</span>
-            <span class="s2">"(PP-Structure), the larger server models, GPU-scale throughput, or "</span>
-            <span class="s2">"fine-tuning, use paddleocr instead."</span><span class="p">,</span>
+            <span class="s2">"Light, CPU-only (ONNXRuntime) and fast (about 0.5 s a page)."</span><span class="p">,</span>
+            <span class="s2">"Ships PP-OCRv4 mobile models, which drop word spaces on clean print; "</span>
+            <span class="s2">"paddleocr's PP-OCRv6 models are far more accurate today (ocracy#1). "</span>
+            <span class="s2">"Moving rapidocr to PP-OCRv6 is ocracy#22. For tables/layout/formula, "</span>
+            <span class="s2">"use paddleocr-ppstructure."</span><span class="p">,</span>
         <span class="p">],</span>
     <span class="p">},</span>
     <span class="s2">"paddleocr"</span><span class="p">:</span> <span class="p">{</span>
@@ -803,16 +804,31 @@ window.runMermaid = runMermaid;</script>
         <span class="s2">"heavy"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
         <span class="s2">"gpu"</span><span class="p">:</span> <span class="s2">"For GPU, replace paddlepaddle with the CUDA build: pip install paddlepaddle-gpu "</span>
         <span class="s2">"(match your CUDA version per https://www.paddlepaddle.org.cn/en/install/quick)."</span><span class="p">,</span>
-        <span class="s2">"weights"</span><span class="p">:</span> <span class="s2">"Downloads PP-OCR model weights on first use (cached under ~/.paddleocr)."</span><span class="p">,</span>
-        <span class="s2">"alt"</span><span class="p">:</span> <span class="s2">"rapidocr — the same PP-OCR text models via ONNX, lighter and CPU-only "</span>
-        <span class="s2">"(plain-text recognition only)"</span><span class="p">,</span>
+        <span class="s2">"weights"</span><span class="p">:</span> <span class="s2">"Downloads PP-OCR model weights on first use (cached under ~/.paddlex "</span>
+        <span class="s2">"on PaddleOCR 3.x, ~/.paddleocr on 2.x)."</span><span class="p">,</span>
+        <span class="s2">"alt"</span><span class="p">:</span> <span class="s2">"rapidocr — PP-OCR text models via ONNX, much lighter and CPU-only, "</span>
+        <span class="s2">"but less accurate until ocracy#22 (plain-text recognition only)"</span><span class="p">,</span>
         <span class="s2">"notes"</span><span class="p">:</span> <span class="p">[</span>
-            <span class="s2">"For plain printed text, prefer rapidocr (lighter, same models). Choose "</span>
-            <span class="s2">"paddleocr when you want the larger server models, GPU throughput, "</span>
-            <span class="s2">"fine-tuning, or to grow into PP-Structure (tables/layout/formula) / "</span>
-            <span class="s2">"PaddleOCR-VL — capabilities RapidOCR does not provide."</span><span class="p">,</span>
+            <span class="s2">"PaddleOCR 3.x runs PP-OCRv6 models: near-perfect on the printed pages "</span>
+            <span class="s2">"measured in ocracy#1 (against rapidocr only), at about 3 s a page on CPU."</span><span class="p">,</span>
+            <span class="s2">"For tables/layout/formula, use paddleocr-ppstructure (same install plus "</span>
+            <span class="s2">"the doc-parser extra)."</span><span class="p">,</span>
             <span class="s2">"PaddlePaddle wheels are platform/Python-version sensitive; if the install "</span>
             <span class="s2">"fights you and you only need plain text, switch to rapidocr."</span><span class="p">,</span>
+        <span class="p">],</span>
+    <span class="p">},</span>
+    <span class="s2">"paddleocr-ppstructure"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s2">"extra"</span><span class="p">:</span> <span class="s2">"paddleocr-ppstructure"</span><span class="p">,</span>
+        <span class="s2">"heavy"</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+        <span class="s2">"gpu"</span><span class="p">:</span> <span class="s2">"For GPU, replace paddlepaddle with the CUDA build: pip install paddlepaddle-gpu "</span>
+        <span class="s2">"(match your CUDA version per https://www.paddlepaddle.org.cn/en/install/quick)."</span><span class="p">,</span>
+        <span class="s2">"weights"</span><span class="p">:</span> <span class="s2">"Downloads the layout, table, formula and PP-OCR models on first use "</span>
+        <span class="s2">"(about 2 GB, a few minutes; cached under ~/.paddlex)."</span><span class="p">,</span>
+        <span class="s2">"alt"</span><span class="p">:</span> <span class="s2">"paddleocr — the text lines only, about 8x faster"</span><span class="p">,</span>
+        <span class="s2">"notes"</span><span class="p">:</span> <span class="p">[</span>
+            <span class="s2">"PP-StructureV3 returns tables as HTML inside result.markdown, plus the "</span>
+            <span class="s2">"text lines. About 25 s a page on an Apple-silicon CPU (ocracy#1); batch "</span>
+            <span class="s2">"it or use a GPU."</span><span class="p">,</span>
         <span class="p">],</span>
     <span class="p">},</span>
     <span class="s2">"ocrmac"</span><span class="p">:</span> <span class="p">{</span>

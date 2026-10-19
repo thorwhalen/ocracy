@@ -1,0 +1,6 @@
+ocracy.backends.paddleocr\_ppstructure.config
+=============================================
+
+.. automodule:: ocracy.backends.paddleocr_ppstructure.config
+
+   

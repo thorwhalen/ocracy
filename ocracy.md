@@ -1,4 +1,4 @@
-> built 2026-10-19 12:43 UTC from f40f146 (main) · ocracy 0.1.17. Details: build_info.json
+> built 2026-10-19 13:50 UTC from aa56164 (main) · ocracy 0.1.18. Details: build_info.json
 
 # index.html.md
 
@@ -42,25 +42,26 @@ one granularity, so `result.words` is empty on a line-level backend and
 `result.lines` is empty on a word-level one — an empty list, not an error. See
 *Granularity* just below.
 
-| Backend                     | `backend=` id                 | Local / Remote   | Cost                 | Install                                    | Blocks      | Notable                                                                                          |
-|-----------------------------|-------------------------------|------------------|----------------------|--------------------------------------------|-------------|--------------------------------------------------------------------------------------------------|
-| Tesseract                   | `tesseract`                   | local            | free                 | `ocracy[tesseract]` (+ system `tesseract`) | **word**    | 100+ language baseline                                                                           |
-| EasyOCR                     | `easyocr`                     | local            | free                 | `ocracy[easyocr]`                          | **line**    | 80+ languages, scene text                                                                        |
-| RapidOCR                    | `rapidocr`                    | local            | free                 | `ocracy[rapidocr]`                         | **line**    | same PP-OCR models as Paddle, light CPU/ONNX — **recommended default for local plain text**      |
-| PaddleOCR                   | `paddleocr`                   | local            | free                 | `ocracy[paddleocr]`                        | **line**    | the platform: server models, GPU, on-ramp to tables/layout (PP-Structure) & VL — heavier install |
-| ocrmac (Apple Vision)       | `ocrmac`                      | local (macOS)    | free                 | `ocracy[ocrmac]`                           | **line**    | on-device, handwriting                                                                           |
-| pix2tex (LaTeX-OCR)         | `pix2tex-latex-ocr`           | local            | free                 | `ocracy[pix2tex]`                          | *text only* | one printed equation → LaTeX, offline                                                            |
-| TrOCR (handwritten)         | `trocr-handwritten`           | local            | free                 | `ocracy[trocr]`                            | *text only* | one pre-segmented handwritten line, MIT weights                                                  |
-| OCR.space                   | `ocr-space`                   | remote           | free tier            | `ocracy[ocr-space]`                        | **word**    | zero-install REST                                                                                |
-| Google Cloud Vision         | `google-vision`               | remote           | paid (+free tier)    | `ocracy[google-vision]`                    | **word**    | high accuracy, handwriting, structure                                                            |
-| AWS Textract                | `aws-textract`                | remote           | paid (+free tier)    | `ocracy[aws-textract]`                     | **word**    | business docs, handwriting (forms/tables in analyze mode)                                        |
-| Azure Document Intelligence | `azure-document-intelligence` | remote           | paid (+free tier)    | `ocracy[azure]`                            | **word**    | layout/tables/handwriting, on-prem container option                                              |
-| Mistral OCR                 | `mistral-ocr`                 | remote           | paid (pay-as-you-go) | `ocracy[mistral]`                          | *text only* | cheap VLM → clean Markdown + math/tables                                                         |
-| Mathpix                     | `mathpix`                     | remote           | paid (+free tier)    | `ocracy[mathpix]`                          | *text only* | math/handwriting → LaTeX & Markdown                                                              |
-| Claude Vision               | `claude-vision`               | remote           | paid                 | `ocracy[anthropic]`                        | *text only* | prompt-driven “read + reason” over messy/mixed documents                                         |
-| GPT-4o Vision               | `gpt-4o-vision`               | remote           | paid                 | `ocracy[openai]`                           | *text only* | same, via OpenAI; schema-constrained JSON output                                                 |
+| Backend                     | `backend=` id                 | Local / Remote   | Cost                 | Install                                    | Blocks      | Notable                                                                                                                                                                                            |
+|-----------------------------|-------------------------------|------------------|----------------------|--------------------------------------------|-------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Tesseract                   | `tesseract`                   | local            | free                 | `ocracy[tesseract]` (+ system `tesseract`) | **word**    | 100+ language baseline                                                                                                                                                                             |
+| EasyOCR                     | `easyocr`                     | local            | free                 | `ocracy[easyocr]`                          | **line**    | 80+ languages, scene text                                                                                                                                                                          |
+| RapidOCR                    | `rapidocr`                    | local            | free                 | `ocracy[rapidocr]`                         | **line**    | light CPU/ONNX, fast; today ships older PP-OCRv4 models that can drop word spaces (moving to PP-OCRv6: [#22](https://github.com/thorwhalen/ocracy/issues/22))                                      |
+| PaddleOCR                   | `paddleocr`                   | local            | free                 | `ocracy[paddleocr]`                        | **line**    | PaddleOCR 3.x, PP-OCRv6 models: near-perfect on clean and degraded print, and well ahead of `rapidocr` today ([#1](https://github.com/thorwhalen/ocracy/issues/1)); heavier install, ~3 s/page CPU |
+| PaddleOCR PP-StructureV3    | `paddleocr-ppstructure`       | local            | free                 | `ocracy[paddleocr-ppstructure]`            | **line**    | tables (HTML), layout and formulas → `result.markdown`; slow on CPU (~25 s/page)                                                                                                                   |
+| ocrmac (Apple Vision)       | `ocrmac`                      | local (macOS)    | free                 | `ocracy[ocrmac]`                           | **line**    | on-device, handwriting                                                                                                                                                                             |
+| pix2tex (LaTeX-OCR)         | `pix2tex-latex-ocr`           | local            | free                 | `ocracy[pix2tex]`                          | *text only* | one printed equation → LaTeX, offline                                                                                                                                                              |
+| TrOCR (handwritten)         | `trocr-handwritten`           | local            | free                 | `ocracy[trocr]`                            | *text only* | one pre-segmented handwritten line, MIT weights                                                                                                                                                    |
+| OCR.space                   | `ocr-space`                   | remote           | free tier            | `ocracy[ocr-space]`                        | **word**    | zero-install REST                                                                                                                                                                                  |
+| Google Cloud Vision         | `google-vision`               | remote           | paid (+free tier)    | `ocracy[google-vision]`                    | **word**    | high accuracy, handwriting, structure                                                                                                                                                              |
+| AWS Textract                | `aws-textract`                | remote           | paid (+free tier)    | `ocracy[aws-textract]`                     | **word**    | business docs, handwriting (forms/tables in analyze mode)                                                                                                                                          |
+| Azure Document Intelligence | `azure-document-intelligence` | remote           | paid (+free tier)    | `ocracy[azure]`                            | **word**    | layout/tables/handwriting, on-prem container option                                                                                                                                                |
+| Mistral OCR                 | `mistral-ocr`                 | remote           | paid (pay-as-you-go) | `ocracy[mistral]`                          | *text only* | cheap VLM → clean Markdown + math/tables                                                                                                                                                           |
+| Mathpix                     | `mathpix`                     | remote           | paid (+free tier)    | `ocracy[mathpix]`                          | *text only* | math/handwriting → LaTeX & Markdown                                                                                                                                                                |
+| Claude Vision               | `claude-vision`               | remote           | paid                 | `ocracy[anthropic]`                        | *text only* | prompt-driven “read + reason” over messy/mixed documents                                                                                                                                           |
+| GPT-4o Vision               | `gpt-4o-vision`               | remote           | paid                 | `ocracy[openai]`                           | *text only* | same, via OpenAI; schema-constrained JSON output                                                                                                                                                   |
 
-…plus **49 more** engines/services catalogued in the ledger that you can turn into
+…plus **48 more** engines/services catalogued in the ledger that you can turn into
 a working façade with one command (see *Add a backend* below).
 
 ### Granularity: which backends fill `.words`, which fill `.lines`
@@ -83,7 +84,7 @@ r.lines  # [] — tesseract reports words
 - **word-level** (`.words` populated, `.lines` empty): `tesseract`, `google-vision`,
   `aws-textract`, `azure-document-intelligence`, `ocr-space`.
 - **line-level** (`.lines` populated, `.words` empty): `easyocr`, `rapidocr`,
-  `paddleocr`, `ocrmac`.
+  `paddleocr`, `paddleocr-ppstructure`, `ocrmac`.
 - **text only** (`blocks == []`, so *both* are empty and `mean_confidence` is `None`):
   `claude-vision`, `gpt-4o-vision`, `mathpix`, `mistral-ocr`, `pix2tex-latex-ocr`,
   `trocr-handwritten`. Use `result.text` / `result.markdown`.
@@ -617,6 +618,7 @@ scaffold_backend("easyocr")   # creates ocracy/backends/easyocr/ from the templa
 | [`ocr_space`](_autosummary/ocracy.backends.ocr_space.html.md#module-ocracy.backends.ocr_space)                                     | OCR.space OCR API backend for ocracy.                                                  |
 | [`ocrmac`](_autosummary/ocracy.backends.ocrmac.html.md#module-ocracy.backends.ocrmac)                                           | ocrmac (Apple Vision) backend for ocracy.                                              |
 | [`paddleocr`](_autosummary/ocracy.backends.paddleocr.html.md#module-ocracy.backends.paddleocr)                                     | PaddleOCR backend for ocracy (PP-OCR text recognition).                                |
+| [`paddleocr_ppstructure`](_autosummary/ocracy.backends.paddleocr_ppstructure.html.md#module-ocracy.backends.paddleocr_ppstructure)             | PaddleOCR PP-StructureV3 backend: tables, layout and formulas -> Markdown.             |
 | [`pix2tex_latex_ocr`](_autosummary/ocracy.backends.pix2tex_latex_ocr.html.md#module-ocracy.backends.pix2tex_latex_ocr)                     | pix2tex (LaTeX-OCR) backend for ocracy — local math image -> LaTeX.                    |
 | [`rapidocr`](_autosummary/ocracy.backends.rapidocr.html.md#module-ocracy.backends.rapidocr)                                       | RapidOCR backend for ocracy.                                                           |
 | [`tesseract`](_autosummary/ocracy.backends.tesseract.html.md#module-ocracy.backends.tesseract)                                     | Tesseract backend for ocracy (via pytesseract).                                        |
@@ -812,10 +814,22 @@ ocrmac (Apple Vision) backend for ocracy.
 
 Adapter for PaddleOCR — image -> text + quad boxes via PP-OCR.
 
-PaddleOCR’s constructor and `ocr()` signatures have shifted across major versions
-(`use_angle_cls`/`cls` in 2.x vs `use_textline_orientation` in 3.x), so this
-adapter probes a couple of signatures defensively and parses the classic
-`[[ [box, (text, score)], ... ]]` result. Engines are cached per language.
+PaddleOCR 3.x replaced the 2.x API: the constructor refuses 2.x keywords such as
+`show_log`, `predict()` returns result objects holding `rec_texts` /
+`rec_scores` / `rec_polys` instead of 2.x `ocr()`’s `[[box, (text, score)],
+...]`, and language names changed (3.x takes ISO codes). The adapter tells the two
+apart by whether `PaddleOCR` has `predict` (2.x accepts any keyword, so a
+constructor error cannot), then builds and parses accordingly. The 3.x document
+pre-processors (page orientation, unwarping, text-line orientation) are off: they
+are for photographed pages, and they slow every call. Engines are cached per
+language.
+
+### Functions
+
+| [`blocks_from_v2`](_autosummary/ocracy.backends.paddleocr.adapter.html.md#ocracy.backends.paddleocr.adapter.blocks_from_v2)(page)   | Line blocks from one 2.x page (`[[box, (text, score)], ...]`).              |
+|-------------------------------------------------------------------------|-----------------------------------------------------------------------------|
+| [`blocks_from_v3`](_autosummary/ocracy.backends.paddleocr.adapter.html.md#ocracy.backends.paddleocr.adapter.blocks_from_v3)(page)   | Line blocks from one 3.x result (`rec_texts` / `rec_scores` / `rec_polys`). |
+| [`is_v3`](_autosummary/ocracy.backends.paddleocr.adapter.html.md#ocracy.backends.paddleocr.adapter.is_v3)(paddle_class)    | Whether a PaddleOCR pipeline class has the 3.x API (`predict`).             |
 
 ### Classes
 
@@ -828,6 +842,27 @@ Bases: [`BaseOcrAdapter`](_autosummary/ocracy.make_backend.html.md#ocracy.make_b
 
 PaddleOCR adapter (caches one engine per language).
 
+### ocracy.backends.paddleocr.adapter.blocks_from_v2(page)
+
+Line blocks from one 2.x page (`[[box, (text, score)], ...]`).
+
+* **Return type:**
+  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)
+
+### ocracy.backends.paddleocr.adapter.blocks_from_v3(page)
+
+Line blocks from one 3.x result (`rec_texts` / `rec_scores` / `rec_polys`).
+
+* **Return type:**
+  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)
+
+### ocracy.backends.paddleocr.adapter.is_v3(paddle_class)
+
+Whether a PaddleOCR pipeline class has the 3.x API (`predict`).
+
+* **Return type:**
+  [`bool`](https://docs.python.org/3/builtins/functions.html#bool)
+
 
 # _autosummary/ocracy.backends.paddleocr.config.html.md
 
@@ -836,10 +871,23 @@ PaddleOCR adapter (caches one engine per language).
 Configuration for the PaddleOCR backend.
 
 PaddleOCR’s PP-OCR models are among the most accurate open engines, especially for
-CJK, across 100+ languages. `languages` (ISO-639-1) is coerced to PaddleOCR’s own
-`lang` codes (`fr` -> `french`, `zh` -> `ch`, …). The adapter caches one
+CJK, across 100+ languages. `languages` (ISO-639-1) becomes PaddleOCR’s
+`lang`: ISO codes on 3.x (`zh` -> `ch`, `ja` -> `japan`), the 2.x names on
+2.x (`fr` -> `french`, `ru` -> `cyrillic`). The adapter caches one
 engine per language. (Table/layout extraction is PP-StructureV3 — a separate ledger
 entry, `paddleocr-ppstructure`; this façade wraps the text OCR.)
+
+### Functions
+
+| [`first_language`](_autosummary/ocracy.backends.paddleocr.config.html.md#ocracy.backends.paddleocr.config.first_language)(languages)   | ocracy's `languages` -> the one code PaddleOCR takes (lower-cased), `en` if unset.   |
+|------------------------------------------------------------------------------|--------------------------------------------------------------------------------------|
+
+### ocracy.backends.paddleocr.config.first_language(languages)
+
+ocracy’s `languages` -> the one code PaddleOCR takes (lower-cased), `en` if unset.
+
+The adapter maps it to the installed PaddleOCR’s spelling (`V3_LANG` /
+`V2_LANG`); `paddleocr-ppstructure` uses the same coercion.
 
 
 # _autosummary/ocracy.backends.paddleocr.html.md
@@ -853,6 +901,62 @@ PaddleOCR backend for ocracy (PP-OCR text recognition).
 | [`adapter`](_autosummary/ocracy.backends.paddleocr.adapter.html.md#module-ocracy.backends.paddleocr.adapter)   | Adapter for PaddleOCR — image -> text + quad boxes via PP-OCR.   |
 |-----------------------------------------------------------------------------------------------------|------------------------------------------------------------------|
 | [`config`](_autosummary/ocracy.backends.paddleocr.config.html.md#module-ocracy.backends.paddleocr.config)     | Configuration for the PaddleOCR backend.                         |
+
+
+# _autosummary/ocracy.backends.paddleocr_ppstructure.adapter.html.md
+
+# ocracy.backends.paddleocr_ppstructure.adapter
+
+Adapter for PaddleOCR PP-StructureV3 — image -> Markdown with tables, plus text lines.
+
+`result.markdown` is the document as PP-StructureV3 renders it: headings and
+paragraphs as Markdown, tables as HTML, formulas as LaTeX. `result.blocks` are
+the PP-OCR text lines it found along the way (`level="line"`), so `result.lines`
+works as with `paddleocr`; `result.text` joins those lines.
+
+PP-StructureV3 needs PaddleOCR’s `doc-parser` extra on top of `paddleocr`. When
+it is missing, PaddleOCR raises a `RuntimeError` at construction; the adapter
+turns that into an `ImportError` that names the install line.
+
+### Classes
+
+| [`Adapter`](_autosummary/ocracy.backends.paddleocr_ppstructure.adapter.html.md#ocracy.backends.paddleocr_ppstructure.adapter.Adapter)(config)   | PP-StructureV3 adapter (caches one pipeline per language).   |
+|--------------------------------------------------------------------|--------------------------------------------------------------|
+
+### *class* ocracy.backends.paddleocr_ppstructure.adapter.Adapter(config)
+
+Bases: [`BaseOcrAdapter`](_autosummary/ocracy.make_backend.html.md#ocracy.make_backend.BaseOcrAdapter)
+
+PP-StructureV3 adapter (caches one pipeline per language).
+
+
+# _autosummary/ocracy.backends.paddleocr_ppstructure.config.html.md
+
+# ocracy.backends.paddleocr_ppstructure.config
+
+Configuration for the PaddleOCR PP-StructureV3 backend.
+
+PP-StructureV3 is PaddleOCR’s document parser: layout detection, table structure
+recognition and formula recognition on top of the PP-OCR text models, rendered as
+Markdown (tables as HTML inside it). It is the capability RapidOCR and the plain
+`paddleocr` backend do not have, and it is slow on CPU: about 25 s a page on an
+Apple-silicon Mac, after a first-run download of the models (about 3 minutes).
+See [https://github.com/thorwhalen/ocracy/issues/1](https://github.com/thorwhalen/ocracy/issues/1) for the measurements.
+
+`languages` is handled exactly as for `paddleocr` (the same text models).
+
+
+# _autosummary/ocracy.backends.paddleocr_ppstructure.html.md
+
+# ocracy.backends.paddleocr_ppstructure
+
+PaddleOCR PP-StructureV3 backend: tables, layout and formulas -> Markdown.
+
+### Modules
+
+| [`adapter`](_autosummary/ocracy.backends.paddleocr_ppstructure.adapter.html.md#module-ocracy.backends.paddleocr_ppstructure.adapter)   | Adapter for PaddleOCR PP-StructureV3 — image -> Markdown with tables, plus text lines.   |
+|-----------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|
+| [`config`](_autosummary/ocracy.backends.paddleocr_ppstructure.config.html.md#module-ocracy.backends.paddleocr_ppstructure.config)     | Configuration for the PaddleOCR PP-StructureV3 backend.                                  |
 
 
 # _autosummary/ocracy.backends.pix2tex_latex_ocr.adapter.html.md
@@ -1235,7 +1339,7 @@ Backend-specific extras (font size, style, page index, …).
 
 # ocracy.catalog
 
-### ocracy.catalog *= <Catalog 64 backends | 15 implemented | 40 local, 38 remote>*
+### ocracy.catalog *= <Catalog 64 backends | 16 implemented | 40 local, 38 remote>*
 
 [`ocracy.kit.ledger.Catalog`](_autosummary/ocracy.kit.ledger.html.md#ocracy.kit.ledger.Catalog) bound to ocracy’s data.
 
@@ -3226,7 +3330,7 @@ Register a backend at runtime (for third-party plugins).
 
 # ocracy.services
 
-### ocracy.services *: [ServiceCollection](_autosummary/ocracy.html.md#ocracy.ServiceCollection)* *= <ServiceCollection backends=['aws-textract', 'azure-document-intelligence', 'claude-vision', 'easyocr', 'google-vision', 'gpt-4o-vision', 'mathpix', 'mistral-ocr', 'ocr-space', 'ocrmac', 'paddleocr', 'pix2tex-latex-ocr', 'rapidocr', 'tesseract', 'trocr-handwritten']>*
+### ocracy.services *: [ServiceCollection](_autosummary/ocracy.html.md#ocracy.ServiceCollection)* *= <ServiceCollection backends=['aws-textract', 'azure-document-intelligence', 'claude-vision', 'easyocr', 'google-vision', 'gpt-4o-vision', 'mathpix', 'mistral-ocr', 'ocr-space', 'ocrmac', 'paddleocr', 'paddleocr-ppstructure', 'pix2tex-latex-ocr', 'rapidocr', 'tesseract', 'trocr-handwritten']>*
 
 Lazy mapping of backend ids -> `ServiceHandle`.
 
@@ -3619,16 +3723,18 @@ Convert any supported input into a PIL `Image` (lazy import).
 
 # About this build
 
-This documentation was built on **2026-10-19 12:43 UTC** from commit <a href="https://github.com/thorwhalen/ocracy/commit/f40f14649d574a09559d1456639126efd856191f"><code>f40f146</code></a> on branch <code>main</code>, for **ocracy 0.1.17** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-10-19 13:50 UTC** from commit <a href="https://github.com/thorwhalen/ocracy/commit/aa561645bd7ad7511790d4886bbf14dc9d749455"><code>aa56164</code></a> on branch <code>main</code>, for **ocracy 0.1.18** (from <code>pyproject.toml</code>).
 
-#### NOTE
-Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
+#### WARNING
+The documentation and the package may be misaligned:
+
+- The documented version (0.1.18) is behind the latest release on PyPI (0.1.19): `pip install ocracy` gives newer code than these docs describe.
 
 ## Source
 
 |                     |                                                                                                                                                          |
 |---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/ocracy/commit/f40f14649d574a09559d1456639126efd856191f"><code>f40f14649d574a09559d1456639126efd856191f</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/ocracy/commit/aa561645bd7ad7511790d4886bbf14dc9d749455"><code>aa561645bd7ad7511790d4886bbf14dc9d749455</code></a> |
 | Branch              | <code>main</code>                                                                                                                                        |
 | Tags at this commit | none                                                                                                                                                     |
 | Working tree        | clean                                                                                                                                                    |
@@ -3639,9 +3745,9 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/ocracy</code>                                                             |
-| Run          | <a href="https://github.com/thorwhalen/ocracy/actions/runs/39254123350">39254123350</a>    |
+| Run          | <a href="https://github.com/thorwhalen/ocracy/actions/runs/39263331977">39263331977</a>    |
 | Ref          | <code>refs/heads/main</code>                                                               |
-| Event commit | <code>f40f14649d574a09559d1456639126efd856191f</code> (in the history of the built commit) |
+| Event commit | <code>aa561645bd7ad7511790d4886bbf14dc9d749455</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -3666,13 +3772,13 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/ocracy/0.1.17/">0.1.17</a>, the same as the documented version.
+Latest release: <a href="https://pypi.org/project/ocracy/0.1.19/">0.1.19</a>, newer than the documented version (0.1.18).
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/thorwhalen/ocracy && cd ocracy
-git checkout f40f14649d574a09559d1456639126efd856191f
+git checkout aa561645bd7ad7511790d4886bbf14dc9d749455
 pip install "epythet==0.2.18"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```

@@ -21,6 +21,7 @@ ocracy.backends
    ocr_space
    ocrmac
    paddleocr
+   paddleocr_ppstructure
    pix2tex_latex_ocr
    rapidocr
    tesseract
