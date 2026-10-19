@@ -46,7 +46,7 @@ Decided structurally (and via duck typing for PIL/numpy) so we never import
 Pillow or numpy just to look at the input.
 
 * **Return type:**
-  str
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 ### ocracy.util.cleanup_temp(path, is_temp)
 
@@ -65,7 +65,7 @@ the caller is responsible for cleanup (use [`cleanup_temp()`](#ocracy.util.clean
 the [`image_path()`](#ocracy.util.image_path) context manager).
 
 * **Return type:**
-  Tuple[str, bool]
+  [`Tuple`](https://docs.python.org/3/library/typing.html#typing.Tuple)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`bool`](https://docs.python.org/3/builtins/functions.html#bool)]
 
 ### ocracy.util.image_path(image, , suffix='.png')
 
@@ -79,7 +79,7 @@ with image_path(pil_image) as p:
 ```
 
 * **Return type:**
-  Iterator[str]
+  [`Iterator`](https://docs.python.org/3/library/typing.html#typing.Iterator)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
 
 ### ocracy.util.is_url(x)
 
@@ -96,7 +96,7 @@ Pass-through for `bytes`; reads files; fetches URLs; encodes PIL/numpy
 inputs as `fmt` (PNG by default — lossless and universally accepted).
 
 * **Return type:**
-  bytes
+  [`bytes`](https://docs.python.org/3/builtins/stdtypes.html#bytes)
 
 ### ocracy.util.to_numpy(image)
 

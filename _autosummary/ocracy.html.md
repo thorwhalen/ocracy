@@ -213,7 +213,7 @@ Backends whose `languages_note` mentions `language` (name or code).
 
 Return a pandas DataFrame of the catalog (pandas imported lazily).
 
-### *class* ocracy.OcrResult(text, blocks=<factory>, backend='', raw=None, meta=<factory>)
+### *class* ocracy.OcrResult(text, blocks=list(), backend='', raw=None, meta=dict())
 
 Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
 
@@ -255,7 +255,7 @@ surviving blocks (joined by newline).
 * **Return type:**
   [`OcrResult`](ocracy.base.html.md#ocracy.base.OcrResult)
 
-#### *classmethod* from_blocks(blocks, , backend='', raw=None, text=None, joiner='\\\\n', \*\*meta)
+#### *classmethod* from_blocks(blocks, , backend='', raw=None, text=None, joiner='\\n', \*\*meta)
 
 Build a result from structured blocks.
 
@@ -273,15 +273,15 @@ Build a minimal result from just a text string (no geometry).
 * **Return type:**
   [`OcrResult`](ocracy.base.html.md#ocracy.base.OcrResult)
 
-#### *property* markdown *: [str](https://docs.python.org/3/builtins/stdtypes.html#str) | [None](https://docs.python.org/3/builtins/constants.html#None)*
+#### *property* markdown *: [Optional](https://docs.python.org/3/library/typing.html#typing.Optional)[[str](https://docs.python.org/3/builtins/stdtypes.html#str)]*
 
 Markdown rendering if the backend produced one (else `None`).
 
-#### *property* mean_confidence *: [float](https://docs.python.org/3/builtins/functions.html#float) | [None](https://docs.python.org/3/builtins/constants.html#None)*
+#### *property* mean_confidence *: [Optional](https://docs.python.org/3/library/typing.html#typing.Optional)[[float](https://docs.python.org/3/builtins/functions.html#float)]*
 
 Mean confidence over blocks that report one, or `None`.
 
-### *class* ocracy.Requirements(backend_id, implemented, available, is_local, is_remote, pip_command, extra=None, system=<factory>, system_note=None, gpu=None, weights=None, heavy=False, alternative=None, credentials=<factory>, notes=<factory>, verify_command=None, alternative_label='Lighter alternative')
+### *class* ocracy.Requirements(backend_id, implemented, available, is_local, is_remote, pip_command, extra=None, system=list(), system_note=None, gpu=None, weights=None, heavy=False, alternative=None, credentials=list(), notes=list(), verify_command=None, alternative_label='Lighter alternative')
 
 Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
 
@@ -303,7 +303,7 @@ Lazy mapping of backend ids -> `ServiceHandle`.
 Supports dict-style (`services['tesseract']`) and attribute-style
 (`services.tesseract`) access.
 
-### *class* ocracy.TextBlock(text, bbox=None, confidence=None, level='line', language=None, meta=<factory>)
+### *class* ocracy.TextBlock(text, bbox=None, confidence=None, level='line', language=None, meta=dict())
 
 Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
 
@@ -313,26 +313,44 @@ One recognized unit of text.
 
 The recognized string for this unit.
 
+* **Type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
 #### bbox
 
 Where it was found (pixel coordinates), if the backend reports it.
+
+* **Type:**
+  [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BBox`](ocracy.base.html.md#ocracy.base.BBox)]
 
 #### confidence
 
 Recognition confidence in `[0, 1]` (normalized by ocracy
 from whatever scale the backend used), if available.
 
+* **Type:**
+  [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/builtins/functions.html#float)]
+
 #### level
 
 Granularity — one of `ocracy.base.LEVELS` (“word”, “line”, …).
+
+* **Type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 #### language
 
 Detected/declared language code for this unit, if any.
 
+* **Type:**
+  [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
+
 #### meta
 
 Backend-specific extras (font size, style, page index, …).
+
+* **Type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
 
 ### ocracy.available_backends()
 
@@ -488,13 +506,13 @@ percent-scale engines).
 Read text from an image with any backend, returning a normalized result.
 
 * **Parameters:**
-  * **image** (ImageInput) – A path, `http(s)` URL, `bytes`, PIL image, or numpy array.
+  * **image** ([`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path), [`bytes`](https://docs.python.org/3/builtins/stdtypes.html#bytes), PILImage, NDArray]) – A path, `http(s)` URL, `bytes`, PIL image, or numpy array.
   * **backend** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – Backend id (see [`list_backends()`](#ocracy.list_backends)). Defaults to the first
     *installed* implemented backend (see [`get_default_backend()`](#ocracy.get_default_backend)).
   * **\*\*kwargs** – Normalized, backend-translated options (e.g. `languages`).
     Unknown options for the chosen backend are warned about and dropped.
 * **Return type:**
-  OcrResult
+  [`OcrResult`](ocracy.base.html.md#ocracy.base.OcrResult)
 * **Returns:**
   An [`OcrResult`](ocracy.base.html.md#ocracy.base.OcrResult) (`str(result)` is the text).
 
@@ -540,7 +558,7 @@ have to flesh out `param_map` and implement `adapter.py`’s `_read`.
   * **backend_id** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – The ledger id (e.g. `"easyocr"`, `"google-vision"`). The
     on-disk module name uses underscores; the config `id` keeps the id
     verbatim.
-  * **dest** (`Union`[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path), [`None`](https://docs.python.org/3/builtins/constants.html#None)]) – Target directory (defaults to `ocracy/backends/<id_underscored>`).
+  * **dest** ([`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path), [`None`](https://docs.python.org/3/builtins/constants.html#None)]) – Target directory (defaults to `ocracy/backends/<id_underscored>`).
   * **overwrite** ([`bool`](https://docs.python.org/3/builtins/functions.html#bool)) – Allow writing into an existing non-empty directory.
   * **ledger** ([`Any`](https://docs.python.org/3/library/typing.html#typing.Any)) – A [`Catalog`](#ocracy.Catalog) to read the record from
     (defaults to the shipped catalog).

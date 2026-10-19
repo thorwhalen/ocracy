@@ -79,7 +79,7 @@ Stdlib only; imports nothing else from ocracy.
 |------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | [`OUT_OF_RANGE`](#ocracy.kit.translation.OUT_OF_RANGE)    | How a value outside a spec's `choices` / `min` / `max` is handled.                                                                                                                                         |
 | [`SECRET_SEGMENTS`](#ocracy.kit.translation.SECRET_SEGMENTS) | Name segments (split on `_ - .`, spaces and camelCase, case-insensitive) that make a value secret wherever they appear: `api_key`, `x-api-key`, `aws_access_key_id`, `accessToken`, `client_secret_value`. |
-| [`SECRET_VALUE`](#ocracy.kit.translation.SECRET_VALUE)    | an auth scheme (`Bearer ...`), a URL carrying a user:password or a key-like query.                                                                                                                         |
+| [`SECRET_VALUE`](#ocracy.kit.translation.SECRET_VALUE)    | an auth scheme followed by an opaque token (`Bearer sk-...`, `Basic dXNlcjpwdw==`, whatever follows it), a URL carrying a user:password, or a key-like query.                                              |
 
 ### Functions
 
@@ -114,15 +114,22 @@ make a value secret wherever they appear: `api_key`, `x-api-key`,
 toward hiding: `key_frames` or a musical `key` are hidden too, which costs a
 drop note its value and nothing else.
 
-### ocracy.kit.translation.SECRET_VALUE *= re.compile('^\\\\s\*(bearer|basic|token)\\\\s+\\\\S|://[^/\\\\s:@]+:[^/\\\\s@]+@|[?&#](api_?key|key|token|access_token|auth|sig|signature|password)=', re.IGNORECASE)*
+### ocracy.kit.translation.SECRET_VALUE *= re.compile('^\\\\s\*(bearer|basic|token)\\\\s+(?!(?-i:[A-Za-z][a-z]{0,18})(?:\\\\s|$))\\\\S|://[^/\\\\s:@]+:[^/\\\\s@]+@|[?&#](api_?key|key|token|access_token|auth|sig|signature|password)=', re.IGNORECASE)*
 
 an auth
-scheme (`Bearer ...`), a URL carrying a user:password or a key-like query.
+scheme followed by an opaque token (`Bearer sk-...`, `Basic dXNlcjpwdw==`,
+whatever follows it), a URL carrying a user:password, or a key-like query. Only
+the first word after the scheme is judged: a short plain word (`drums`,
+`Drums`) means ordinary prose (`'basic drums'`, `'Token budget'`, `'bearer
+of bad news'`) and is shown, while one with digits, punctuation or capitals
+inside it (`SECRET`, `abc123`, `sk-x`), or any word of 20+ characters, is
+hidden. The exception to erring toward hiding: a short all-letter password after
+a scheme (`token hunter`) shows.
 
 * **Type:**
   String values that are credentials whatever the parameter is called
 
-### *class* ocracy.kit.translation.Translation(kwargs=<factory>, notes=<factory>, dropped=<factory>)
+### *class* ocracy.kit.translation.Translation(kwargs=dict(), notes=list(), dropped=list())
 
 Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
 
@@ -132,13 +139,22 @@ What a translator produced: the native kwargs, and every change it made.
 
 The native kwargs to pass to the backend.
 
+* **Type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
+
 #### notes
 
 One human-readable line per drop or clamp, for the facade’s result.
 
+* **Type:**
+  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)
+
 #### dropped
 
 The canonical names that were dropped.
+
+* **Type:**
+  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)
 
 ### *exception* ocracy.kit.translation.UnsupportedParameter
 

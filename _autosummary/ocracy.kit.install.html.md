@@ -46,7 +46,7 @@ nothing else from ocracy.
 | [`Requirements`](#ocracy.kit.install.Requirements)(backend_id, implemented, ...[, ...])   | What a backend needs to run, structured for an agent to act on.   |
 |------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------|
 
-### *class* ocracy.kit.install.Requirements(backend_id, implemented, available, is_local, is_remote, pip_command, extra=None, system=<factory>, system_note=None, gpu=None, weights=None, heavy=False, alternative=None, credentials=<factory>, notes=<factory>, verify_command=None, alternative_label='Lighter alternative')
+### *class* ocracy.kit.install.Requirements(backend_id, implemented, available, is_local, is_remote, pip_command, extra=None, system=list(), system_note=None, gpu=None, weights=None, heavy=False, alternative=None, credentials=list(), notes=list(), verify_command=None, alternative_label='Lighter alternative')
 
 Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
 

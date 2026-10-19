@@ -84,7 +84,7 @@ Resolve a credential for a remote backend.
   * **provider** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – A known provider id (see [`PROVIDER_ENV_VARS`](#ocracy.credentials.PROVIDER_ENV_VARS)) used to
     infer default env-var names, and the key for [`using_credentials()`](#ocracy.credentials.using_credentials).
   * **api_key** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – An explicit value; if given, it wins and is returned as-is.
-  * **env_var** (`Union`[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Sequence`](https://docs.python.org/3/library/typing.html#typing.Sequence)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)], [`None`](https://docs.python.org/3/builtins/constants.html#None)]) – Extra env-var name(s) to check (checked before provider defaults).
+  * **env_var** ([`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Sequence`](https://docs.python.org/3/library/typing.html#typing.Sequence)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)], [`None`](https://docs.python.org/3/builtins/constants.html#None)]) – Extra env-var name(s) to check (checked before provider defaults).
   * **required** ([`bool`](https://docs.python.org/3/builtins/functions.html#bool)) – If True (default), raise [`MissingCredentialError`](#ocracy.credentials.MissingCredentialError) when
     nothing resolves; if False, return `None`.
   * **prompt_if_missing** ([`bool`](https://docs.python.org/3/builtins/functions.html#bool)) – If True and running interactively, prompt the user
@@ -103,9 +103,6 @@ Pass a mapping for provider ids that are not identifiers (`"google-vision"`)
 or keywords for the rest. Falsy values are ignored, so an optional request
 header can be passed straight through.
 
-* **Return type:**
-  [`Iterator`](https://docs.python.org/3/library/typing.html#typing.Iterator)[[`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)]
-
 ```pycon
 >>> with using_credentials(acme="outer"):
 ...     with using_credentials({"acme": "inner", "other": None}):
@@ -114,3 +111,6 @@ header can be passed straight through.
 >>> inner, outer
 ({'acme': 'inner'}, {'acme': 'outer'})
 ```
+
+* **Return type:**
+  [`Iterator`](https://docs.python.org/3/library/typing.html#typing.Iterator)[[`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)]

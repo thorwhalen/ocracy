@@ -116,7 +116,7 @@ have to flesh out `param_map` and implement `adapter.py`’s `_read`.
   * **backend_id** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – The ledger id (e.g. `"easyocr"`, `"google-vision"`). The
     on-disk module name uses underscores; the config `id` keeps the id
     verbatim.
-  * **dest** (`Union`[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path), [`None`](https://docs.python.org/3/builtins/constants.html#None)]) – Target directory (defaults to `ocracy/backends/<id_underscored>`).
+  * **dest** ([`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path), [`None`](https://docs.python.org/3/builtins/constants.html#None)]) – Target directory (defaults to `ocracy/backends/<id_underscored>`).
   * **overwrite** ([`bool`](https://docs.python.org/3/builtins/functions.html#bool)) – Allow writing into an existing non-empty directory.
   * **ledger** ([`Any`](https://docs.python.org/3/library/typing.html#typing.Any)) – A [`Catalog`](ocracy.html.md#ocracy.Catalog) to read the record from
     (defaults to the shipped catalog).

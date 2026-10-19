@@ -61,7 +61,7 @@ polygon is preserved for callers that care about rotation.
 
 `(x, y, width, height)` — the convention many drawing libs expect.
 
-### *class* ocracy.base.OcrResult(text, blocks=<factory>, backend='', raw=None, meta=<factory>)
+### *class* ocracy.base.OcrResult(text, blocks=list(), backend='', raw=None, meta=dict())
 
 Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
 
@@ -103,7 +103,7 @@ surviving blocks (joined by newline).
 * **Return type:**
   [`OcrResult`](#ocracy.base.OcrResult)
 
-#### *classmethod* from_blocks(blocks, , backend='', raw=None, text=None, joiner='\\\\n', \*\*meta)
+#### *classmethod* from_blocks(blocks, , backend='', raw=None, text=None, joiner='\\n', \*\*meta)
 
 Build a result from structured blocks.
 
@@ -121,15 +121,15 @@ Build a minimal result from just a text string (no geometry).
 * **Return type:**
   [`OcrResult`](#ocracy.base.OcrResult)
 
-#### *property* markdown *: [str](https://docs.python.org/3/builtins/stdtypes.html#str) | [None](https://docs.python.org/3/builtins/constants.html#None)*
+#### *property* markdown *: [Optional](https://docs.python.org/3/library/typing.html#typing.Optional)[[str](https://docs.python.org/3/builtins/stdtypes.html#str)]*
 
 Markdown rendering if the backend produced one (else `None`).
 
-#### *property* mean_confidence *: [float](https://docs.python.org/3/builtins/functions.html#float) | [None](https://docs.python.org/3/builtins/constants.html#None)*
+#### *property* mean_confidence *: [Optional](https://docs.python.org/3/library/typing.html#typing.Optional)[[float](https://docs.python.org/3/builtins/functions.html#float)]*
 
 Mean confidence over blocks that report one, or `None`.
 
-### *class* ocracy.base.TextBlock(text, bbox=None, confidence=None, level='line', language=None, meta=<factory>)
+### *class* ocracy.base.TextBlock(text, bbox=None, confidence=None, level='line', language=None, meta=dict())
 
 Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
 
@@ -139,23 +139,41 @@ One recognized unit of text.
 
 The recognized string for this unit.
 
+* **Type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
 #### bbox
 
 Where it was found (pixel coordinates), if the backend reports it.
+
+* **Type:**
+  [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BBox`](#ocracy.base.BBox)]
 
 #### confidence
 
 Recognition confidence in `[0, 1]` (normalized by ocracy
 from whatever scale the backend used), if available.
 
+* **Type:**
+  [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/builtins/functions.html#float)]
+
 #### level
 
 Granularity — one of `ocracy.base.LEVELS` (“word”, “line”, …).
+
+* **Type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 #### language
 
 Detected/declared language code for this unit, if any.
 
+* **Type:**
+  [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
+
 #### meta
 
 Backend-specific extras (font size, style, page index, …).
+
+* **Type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)

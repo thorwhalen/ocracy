@@ -1,4 +1,4 @@
-> built 2026-10-14 02:29 UTC from 4de5796 (main) · ocracy 0.1.13. Details: build_info.json
+> built 2026-10-19 12:01 UTC from 4a7d148 (main) · ocracy 0.1.14. Details: build_info.json
 
 # index.html.md
 
@@ -1112,7 +1112,7 @@ polygon is preserved for callers that care about rotation.
 
 `(x, y, width, height)` — the convention many drawing libs expect.
 
-### *class* ocracy.base.OcrResult(text, blocks=<factory>, backend='', raw=None, meta=<factory>)
+### *class* ocracy.base.OcrResult(text, blocks=list(), backend='', raw=None, meta=dict())
 
 Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
 
@@ -1154,7 +1154,7 @@ surviving blocks (joined by newline).
 * **Return type:**
   [`OcrResult`](_autosummary/ocracy.base.html.md#ocracy.base.OcrResult)
 
-#### *classmethod* from_blocks(blocks, , backend='', raw=None, text=None, joiner='\\\\n', \*\*meta)
+#### *classmethod* from_blocks(blocks, , backend='', raw=None, text=None, joiner='\\n', \*\*meta)
 
 Build a result from structured blocks.
 
@@ -1172,15 +1172,15 @@ Build a minimal result from just a text string (no geometry).
 * **Return type:**
   [`OcrResult`](_autosummary/ocracy.base.html.md#ocracy.base.OcrResult)
 
-#### *property* markdown *: [str](https://docs.python.org/3/builtins/stdtypes.html#str) | [None](https://docs.python.org/3/builtins/constants.html#None)*
+#### *property* markdown *: [Optional](https://docs.python.org/3/library/typing.html#typing.Optional)[[str](https://docs.python.org/3/builtins/stdtypes.html#str)]*
 
 Markdown rendering if the backend produced one (else `None`).
 
-#### *property* mean_confidence *: [float](https://docs.python.org/3/builtins/functions.html#float) | [None](https://docs.python.org/3/builtins/constants.html#None)*
+#### *property* mean_confidence *: [Optional](https://docs.python.org/3/library/typing.html#typing.Optional)[[float](https://docs.python.org/3/builtins/functions.html#float)]*
 
 Mean confidence over blocks that report one, or `None`.
 
-### *class* ocracy.base.TextBlock(text, bbox=None, confidence=None, level='line', language=None, meta=<factory>)
+### *class* ocracy.base.TextBlock(text, bbox=None, confidence=None, level='line', language=None, meta=dict())
 
 Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
 
@@ -1190,26 +1190,44 @@ One recognized unit of text.
 
 The recognized string for this unit.
 
+* **Type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
 #### bbox
 
 Where it was found (pixel coordinates), if the backend reports it.
+
+* **Type:**
+  [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BBox`](_autosummary/ocracy.base.html.md#ocracy.base.BBox)]
 
 #### confidence
 
 Recognition confidence in `[0, 1]` (normalized by ocracy
 from whatever scale the backend used), if available.
 
+* **Type:**
+  [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/builtins/functions.html#float)]
+
 #### level
 
 Granularity — one of `ocracy.base.LEVELS` (“word”, “line”, …).
+
+* **Type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 #### language
 
 Detected/declared language code for this unit, if any.
 
+* **Type:**
+  [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
+
 #### meta
 
 Backend-specific extras (font size, style, page index, …).
+
+* **Type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
 
 
 # _autosummary/ocracy.catalog.html.md
@@ -1317,7 +1335,7 @@ Resolve a credential for a remote backend.
   * **provider** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – A known provider id (see [`PROVIDER_ENV_VARS`](_autosummary/ocracy.credentials.html.md#ocracy.credentials.PROVIDER_ENV_VARS)) used to
     infer default env-var names, and the key for [`using_credentials()`](_autosummary/ocracy.credentials.html.md#ocracy.credentials.using_credentials).
   * **api_key** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – An explicit value; if given, it wins and is returned as-is.
-  * **env_var** (`Union`[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Sequence`](https://docs.python.org/3/library/typing.html#typing.Sequence)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)], [`None`](https://docs.python.org/3/builtins/constants.html#None)]) – Extra env-var name(s) to check (checked before provider defaults).
+  * **env_var** ([`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Sequence`](https://docs.python.org/3/library/typing.html#typing.Sequence)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)], [`None`](https://docs.python.org/3/builtins/constants.html#None)]) – Extra env-var name(s) to check (checked before provider defaults).
   * **required** ([`bool`](https://docs.python.org/3/builtins/functions.html#bool)) – If True (default), raise [`MissingCredentialError`](_autosummary/ocracy.credentials.html.md#ocracy.credentials.MissingCredentialError) when
     nothing resolves; if False, return `None`.
   * **prompt_if_missing** ([`bool`](https://docs.python.org/3/builtins/functions.html#bool)) – If True and running interactively, prompt the user
@@ -1336,9 +1354,6 @@ Pass a mapping for provider ids that are not identifiers (`"google-vision"`)
 or keywords for the rest. Falsy values are ignored, so an optional request
 header can be passed straight through.
 
-* **Return type:**
-  [`Iterator`](https://docs.python.org/3/library/typing.html#typing.Iterator)[[`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)]
-
 ```pycon
 >>> with using_credentials(acme="outer"):
 ...     with using_credentials({"acme": "inner", "other": None}):
@@ -1347,6 +1362,9 @@ header can be passed straight through.
 >>> inner, outer
 ({'acme': 'inner'}, {'acme': 'outer'})
 ```
+
+* **Return type:**
+  [`Iterator`](https://docs.python.org/3/library/typing.html#typing.Iterator)[[`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)]
 
 
 # _autosummary/ocracy.html.md
@@ -1566,7 +1584,7 @@ Backends whose `languages_note` mentions `language` (name or code).
 
 Return a pandas DataFrame of the catalog (pandas imported lazily).
 
-### *class* ocracy.OcrResult(text, blocks=<factory>, backend='', raw=None, meta=<factory>)
+### *class* ocracy.OcrResult(text, blocks=list(), backend='', raw=None, meta=dict())
 
 Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
 
@@ -1608,7 +1626,7 @@ surviving blocks (joined by newline).
 * **Return type:**
   [`OcrResult`](_autosummary/ocracy.base.html.md#ocracy.base.OcrResult)
 
-#### *classmethod* from_blocks(blocks, , backend='', raw=None, text=None, joiner='\\\\n', \*\*meta)
+#### *classmethod* from_blocks(blocks, , backend='', raw=None, text=None, joiner='\\n', \*\*meta)
 
 Build a result from structured blocks.
 
@@ -1626,15 +1644,15 @@ Build a minimal result from just a text string (no geometry).
 * **Return type:**
   [`OcrResult`](_autosummary/ocracy.base.html.md#ocracy.base.OcrResult)
 
-#### *property* markdown *: [str](https://docs.python.org/3/builtins/stdtypes.html#str) | [None](https://docs.python.org/3/builtins/constants.html#None)*
+#### *property* markdown *: [Optional](https://docs.python.org/3/library/typing.html#typing.Optional)[[str](https://docs.python.org/3/builtins/stdtypes.html#str)]*
 
 Markdown rendering if the backend produced one (else `None`).
 
-#### *property* mean_confidence *: [float](https://docs.python.org/3/builtins/functions.html#float) | [None](https://docs.python.org/3/builtins/constants.html#None)*
+#### *property* mean_confidence *: [Optional](https://docs.python.org/3/library/typing.html#typing.Optional)[[float](https://docs.python.org/3/builtins/functions.html#float)]*
 
 Mean confidence over blocks that report one, or `None`.
 
-### *class* ocracy.Requirements(backend_id, implemented, available, is_local, is_remote, pip_command, extra=None, system=<factory>, system_note=None, gpu=None, weights=None, heavy=False, alternative=None, credentials=<factory>, notes=<factory>, verify_command=None, alternative_label='Lighter alternative')
+### *class* ocracy.Requirements(backend_id, implemented, available, is_local, is_remote, pip_command, extra=None, system=list(), system_note=None, gpu=None, weights=None, heavy=False, alternative=None, credentials=list(), notes=list(), verify_command=None, alternative_label='Lighter alternative')
 
 Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
 
@@ -1656,7 +1674,7 @@ Lazy mapping of backend ids -> `ServiceHandle`.
 Supports dict-style (`services['tesseract']`) and attribute-style
 (`services.tesseract`) access.
 
-### *class* ocracy.TextBlock(text, bbox=None, confidence=None, level='line', language=None, meta=<factory>)
+### *class* ocracy.TextBlock(text, bbox=None, confidence=None, level='line', language=None, meta=dict())
 
 Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
 
@@ -1666,26 +1684,44 @@ One recognized unit of text.
 
 The recognized string for this unit.
 
+* **Type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
+
 #### bbox
 
 Where it was found (pixel coordinates), if the backend reports it.
+
+* **Type:**
+  [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`BBox`](_autosummary/ocracy.base.html.md#ocracy.base.BBox)]
 
 #### confidence
 
 Recognition confidence in `[0, 1]` (normalized by ocracy
 from whatever scale the backend used), if available.
 
+* **Type:**
+  [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`float`](https://docs.python.org/3/builtins/functions.html#float)]
+
 #### level
 
 Granularity — one of `ocracy.base.LEVELS` (“word”, “line”, …).
+
+* **Type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 #### language
 
 Detected/declared language code for this unit, if any.
 
+* **Type:**
+  [`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
+
 #### meta
 
 Backend-specific extras (font size, style, page index, …).
+
+* **Type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
 
 ### ocracy.available_backends()
 
@@ -1841,13 +1877,13 @@ percent-scale engines).
 Read text from an image with any backend, returning a normalized result.
 
 * **Parameters:**
-  * **image** (ImageInput) – A path, `http(s)` URL, `bytes`, PIL image, or numpy array.
+  * **image** ([`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path), [`bytes`](https://docs.python.org/3/builtins/stdtypes.html#bytes), PILImage, NDArray]) – A path, `http(s)` URL, `bytes`, PIL image, or numpy array.
   * **backend** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – Backend id (see [`list_backends()`](_autosummary/ocracy.html.md#ocracy.list_backends)). Defaults to the first
     *installed* implemented backend (see [`get_default_backend()`](_autosummary/ocracy.html.md#ocracy.get_default_backend)).
   * **\*\*kwargs** – Normalized, backend-translated options (e.g. `languages`).
     Unknown options for the chosen backend are warned about and dropped.
 * **Return type:**
-  OcrResult
+  [`OcrResult`](_autosummary/ocracy.base.html.md#ocracy.base.OcrResult)
 * **Returns:**
   An [`OcrResult`](_autosummary/ocracy.base.html.md#ocracy.base.OcrResult) (`str(result)` is the text).
 
@@ -1893,7 +1929,7 @@ have to flesh out `param_map` and implement `adapter.py`’s `_read`.
   * **backend_id** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – The ledger id (e.g. `"easyocr"`, `"google-vision"`). The
     on-disk module name uses underscores; the config `id` keeps the id
     verbatim.
-  * **dest** (`Union`[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path), [`None`](https://docs.python.org/3/builtins/constants.html#None)]) – Target directory (defaults to `ocracy/backends/<id_underscored>`).
+  * **dest** ([`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path), [`None`](https://docs.python.org/3/builtins/constants.html#None)]) – Target directory (defaults to `ocracy/backends/<id_underscored>`).
   * **overwrite** ([`bool`](https://docs.python.org/3/builtins/functions.html#bool)) – Allow writing into an existing non-empty directory.
   * **ledger** ([`Any`](https://docs.python.org/3/library/typing.html#typing.Any)) – A [`Catalog`](_autosummary/ocracy.html.md#ocracy.Catalog) to read the record from
     (defaults to the shipped catalog).
@@ -2071,8 +2107,8 @@ Resolve a provider’s credential through the chain in the module docstring.
 * **Parameters:**
   * **provider** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – The provider id, used for bindings, table rows and messages.
   * **api_key** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – An explicit value; wins when non-empty.
-  * **env_var** (`Union`[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Sequence`](https://docs.python.org/3/library/typing.html#typing.Sequence)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)], [`None`](https://docs.python.org/3/builtins/constants.html#None)]) – Env var name(s) checked before the provider’s table row.
-  * **provider_env_vars** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Mapping`](https://docs.python.org/3/library/typing.html#typing.Mapping)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), `Union`[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Sequence`](https://docs.python.org/3/library/typing.html#typing.Sequence)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)], [`None`](https://docs.python.org/3/builtins/constants.html#None)]]]) – The package’s provider -> env var(s) table.
+  * **env_var** ([`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Sequence`](https://docs.python.org/3/library/typing.html#typing.Sequence)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)], [`None`](https://docs.python.org/3/builtins/constants.html#None)]) – Env var name(s) checked before the provider’s table row.
+  * **provider_env_vars** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Mapping`](https://docs.python.org/3/library/typing.html#typing.Mapping)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Sequence`](https://docs.python.org/3/library/typing.html#typing.Sequence)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)], [`None`](https://docs.python.org/3/builtins/constants.html#None)]]]) – The package’s provider -> env var(s) table.
   * **guidance** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Mapping`](https://docs.python.org/3/library/typing.html#typing.Mapping)]) – The package’s provider -> `{note, get_key_url}` table.
   * **store** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Mapping`](https://docs.python.org/3/library/typing.html#typing.Mapping)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]]) – A mapping keyed by env-var name, read after the environment.
   * **dotenv** ([`bool`](https://docs.python.org/3/builtins/functions.html#bool)) – On an environment miss, load a project `.env` (searched from the
@@ -2096,9 +2132,6 @@ Pass a mapping for provider ids that are not identifiers (`"google-vision"`)
 or keywords for the rest. Falsy values are ignored, so an optional request
 header can be passed straight through.
 
-* **Return type:**
-  [`Iterator`](https://docs.python.org/3/library/typing.html#typing.Iterator)[[`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)]
-
 ```pycon
 >>> with using_credentials(acme="outer"):
 ...     with using_credentials({"acme": "inner", "other": None}):
@@ -2107,6 +2140,9 @@ header can be passed straight through.
 >>> inner, outer
 ({'acme': 'inner'}, {'acme': 'outer'})
 ```
+
+* **Return type:**
+  [`Iterator`](https://docs.python.org/3/library/typing.html#typing.Iterator)[[`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)]
 
 
 # _autosummary/ocracy.kit.html.md
@@ -2186,7 +2222,7 @@ The env vars that were checked, in order.
 
 Where to get a key, when the guidance table knows.
 
-### *class* ocracy.kit.Requirements(backend_id, implemented, available, is_local, is_remote, pip_command, extra=None, system=<factory>, system_note=None, gpu=None, weights=None, heavy=False, alternative=None, credentials=<factory>, notes=<factory>, verify_command=None, alternative_label='Lighter alternative')
+### *class* ocracy.kit.Requirements(backend_id, implemented, available, is_local, is_remote, pip_command, extra=None, system=list(), system_note=None, gpu=None, weights=None, heavy=False, alternative=None, credentials=list(), notes=list(), verify_command=None, alternative_label='Lighter alternative')
 
 Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
 
@@ -2199,7 +2235,7 @@ An agent- and human-readable, copy-pasteable install plan.
 * **Return type:**
   [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
-### *class* ocracy.kit.Translation(kwargs=<factory>, notes=<factory>, dropped=<factory>)
+### *class* ocracy.kit.Translation(kwargs=dict(), notes=list(), dropped=list())
 
 Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
 
@@ -2209,13 +2245,22 @@ What a translator produced: the native kwargs, and every change it made.
 
 The native kwargs to pass to the backend.
 
+* **Type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
+
 #### notes
 
 One human-readable line per drop or clamp, for the facade’s result.
 
+* **Type:**
+  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)
+
 #### dropped
 
 The canonical names that were dropped.
+
+* **Type:**
+  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)
 
 ### *exception* ocracy.kit.UnsupportedParameter
 
@@ -2325,8 +2370,8 @@ Resolve a provider’s credential through the chain in the module docstring.
 * **Parameters:**
   * **provider** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – The provider id, used for bindings, table rows and messages.
   * **api_key** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – An explicit value; wins when non-empty.
-  * **env_var** (`Union`[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Sequence`](https://docs.python.org/3/library/typing.html#typing.Sequence)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)], [`None`](https://docs.python.org/3/builtins/constants.html#None)]) – Env var name(s) checked before the provider’s table row.
-  * **provider_env_vars** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Mapping`](https://docs.python.org/3/library/typing.html#typing.Mapping)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), `Union`[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Sequence`](https://docs.python.org/3/library/typing.html#typing.Sequence)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)], [`None`](https://docs.python.org/3/builtins/constants.html#None)]]]) – The package’s provider -> env var(s) table.
+  * **env_var** ([`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Sequence`](https://docs.python.org/3/library/typing.html#typing.Sequence)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)], [`None`](https://docs.python.org/3/builtins/constants.html#None)]) – Env var name(s) checked before the provider’s table row.
+  * **provider_env_vars** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Mapping`](https://docs.python.org/3/library/typing.html#typing.Mapping)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Sequence`](https://docs.python.org/3/library/typing.html#typing.Sequence)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)], [`None`](https://docs.python.org/3/builtins/constants.html#None)]]]) – The package’s provider -> env var(s) table.
   * **guidance** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Mapping`](https://docs.python.org/3/library/typing.html#typing.Mapping)]) – The package’s provider -> `{note, get_key_url}` table.
   * **store** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`Mapping`](https://docs.python.org/3/library/typing.html#typing.Mapping)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]]) – A mapping keyed by env-var name, read after the environment.
   * **dotenv** ([`bool`](https://docs.python.org/3/builtins/functions.html#bool)) – On an environment miss, load a project `.env` (searched from the
@@ -2367,9 +2412,6 @@ Pass a mapping for provider ids that are not identifiers (`"google-vision"`)
 or keywords for the rest. Falsy values are ignored, so an optional request
 header can be passed straight through.
 
-* **Return type:**
-  [`Iterator`](https://docs.python.org/3/library/typing.html#typing.Iterator)[[`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)]
-
 ```pycon
 >>> with using_credentials(acme="outer"):
 ...     with using_credentials({"acme": "inner", "other": None}):
@@ -2378,6 +2420,9 @@ header can be passed straight through.
 >>> inner, outer
 ({'acme': 'inner'}, {'acme': 'outer'})
 ```
+
+* **Return type:**
+  [`Iterator`](https://docs.python.org/3/library/typing.html#typing.Iterator)[[`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)]
 
 ### Modules
 
@@ -2437,7 +2482,7 @@ nothing else from ocracy.
 | [`Requirements`](_autosummary/ocracy.kit.install.html.md#ocracy.kit.install.Requirements)(backend_id, implemented, ...[, ...])   | What a backend needs to run, structured for an agent to act on.   |
 |------------------------------------------------------------------------------------------------------|-------------------------------------------------------------------|
 
-### *class* ocracy.kit.install.Requirements(backend_id, implemented, available, is_local, is_remote, pip_command, extra=None, system=<factory>, system_note=None, gpu=None, weights=None, heavy=False, alternative=None, credentials=<factory>, notes=<factory>, verify_command=None, alternative_label='Lighter alternative')
+### *class* ocracy.kit.install.Requirements(backend_id, implemented, available, is_local, is_remote, pip_command, extra=None, system=list(), system_note=None, gpu=None, weights=None, heavy=False, alternative=None, credentials=list(), notes=list(), verify_command=None, alternative_label='Lighter alternative')
 
 Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
 
@@ -2578,7 +2623,7 @@ Stdlib only; imports nothing else from ocracy.
 |------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | [`OUT_OF_RANGE`](_autosummary/ocracy.kit.translation.html.md#ocracy.kit.translation.OUT_OF_RANGE)    | How a value outside a spec's `choices` / `min` / `max` is handled.                                                                                                                                         |
 | [`SECRET_SEGMENTS`](_autosummary/ocracy.kit.translation.html.md#ocracy.kit.translation.SECRET_SEGMENTS) | Name segments (split on `_ - .`, spaces and camelCase, case-insensitive) that make a value secret wherever they appear: `api_key`, `x-api-key`, `aws_access_key_id`, `accessToken`, `client_secret_value`. |
-| [`SECRET_VALUE`](_autosummary/ocracy.kit.translation.html.md#ocracy.kit.translation.SECRET_VALUE)    | an auth scheme (`Bearer ...`), a URL carrying a user:password or a key-like query.                                                                                                                         |
+| [`SECRET_VALUE`](_autosummary/ocracy.kit.translation.html.md#ocracy.kit.translation.SECRET_VALUE)    | an auth scheme followed by an opaque token (`Bearer sk-...`, `Basic dXNlcjpwdw==`, whatever follows it), a URL carrying a user:password, or a key-like query.                                              |
 
 ### Functions
 
@@ -2613,15 +2658,22 @@ make a value secret wherever they appear: `api_key`, `x-api-key`,
 toward hiding: `key_frames` or a musical `key` are hidden too, which costs a
 drop note its value and nothing else.
 
-### ocracy.kit.translation.SECRET_VALUE *= re.compile('^\\\\s\*(bearer|basic|token)\\\\s+\\\\S|://[^/\\\\s:@]+:[^/\\\\s@]+@|[?&#](api_?key|key|token|access_token|auth|sig|signature|password)=', re.IGNORECASE)*
+### ocracy.kit.translation.SECRET_VALUE *= re.compile('^\\\\s\*(bearer|basic|token)\\\\s+(?!(?-i:[A-Za-z][a-z]{0,18})(?:\\\\s|$))\\\\S|://[^/\\\\s:@]+:[^/\\\\s@]+@|[?&#](api_?key|key|token|access_token|auth|sig|signature|password)=', re.IGNORECASE)*
 
 an auth
-scheme (`Bearer ...`), a URL carrying a user:password or a key-like query.
+scheme followed by an opaque token (`Bearer sk-...`, `Basic dXNlcjpwdw==`,
+whatever follows it), a URL carrying a user:password, or a key-like query. Only
+the first word after the scheme is judged: a short plain word (`drums`,
+`Drums`) means ordinary prose (`'basic drums'`, `'Token budget'`, `'bearer
+of bad news'`) and is shown, while one with digits, punctuation or capitals
+inside it (`SECRET`, `abc123`, `sk-x`), or any word of 20+ characters, is
+hidden. The exception to erring toward hiding: a short all-letter password after
+a scheme (`token hunter`) shows.
 
 * **Type:**
   String values that are credentials whatever the parameter is called
 
-### *class* ocracy.kit.translation.Translation(kwargs=<factory>, notes=<factory>, dropped=<factory>)
+### *class* ocracy.kit.translation.Translation(kwargs=dict(), notes=list(), dropped=list())
 
 Bases: [`object`](https://docs.python.org/3/builtins/functions.html#object)
 
@@ -2631,13 +2683,22 @@ What a translator produced: the native kwargs, and every change it made.
 
 The native kwargs to pass to the backend.
 
+* **Type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
+
 #### notes
 
 One human-readable line per drop or clamp, for the facade’s result.
 
+* **Type:**
+  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)
+
 #### dropped
 
 The canonical names that were dropped.
+
+* **Type:**
+  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)
 
 ### *exception* ocracy.kit.translation.UnsupportedParameter
 
@@ -2809,7 +2870,7 @@ have to flesh out `param_map` and implement `adapter.py`’s `_read`.
   * **backend_id** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – The ledger id (e.g. `"easyocr"`, `"google-vision"`). The
     on-disk module name uses underscores; the config `id` keeps the id
     verbatim.
-  * **dest** (`Union`[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path), [`None`](https://docs.python.org/3/builtins/constants.html#None)]) – Target directory (defaults to `ocracy/backends/<id_underscored>`).
+  * **dest** ([`Union`](https://docs.python.org/3/library/typing.html#typing.Union)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Path`](https://docs.python.org/3/library/pathlib.html#pathlib.Path), [`None`](https://docs.python.org/3/builtins/constants.html#None)]) – Target directory (defaults to `ocracy/backends/<id_underscored>`).
   * **overwrite** ([`bool`](https://docs.python.org/3/builtins/functions.html#bool)) – Allow writing into an existing non-empty directory.
   * **ledger** ([`Any`](https://docs.python.org/3/library/typing.html#typing.Any)) – A [`Catalog`](_autosummary/ocracy.html.md#ocracy.Catalog) to read the record from
     (defaults to the shipped catalog).
@@ -3262,7 +3323,7 @@ Decided structurally (and via duck typing for PIL/numpy) so we never import
 Pillow or numpy just to look at the input.
 
 * **Return type:**
-  str
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 ### ocracy.util.cleanup_temp(path, is_temp)
 
@@ -3281,7 +3342,7 @@ the caller is responsible for cleanup (use [`cleanup_temp()`](_autosummary/ocrac
 the [`image_path()`](_autosummary/ocracy.util.html.md#ocracy.util.image_path) context manager).
 
 * **Return type:**
-  Tuple[str, bool]
+  [`Tuple`](https://docs.python.org/3/library/typing.html#typing.Tuple)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`bool`](https://docs.python.org/3/builtins/functions.html#bool)]
 
 ### ocracy.util.image_path(image, , suffix='.png')
 
@@ -3295,7 +3356,7 @@ with image_path(pil_image) as p:
 ```
 
 * **Return type:**
-  Iterator[str]
+  [`Iterator`](https://docs.python.org/3/library/typing.html#typing.Iterator)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]
 
 ### ocracy.util.is_url(x)
 
@@ -3312,7 +3373,7 @@ Pass-through for `bytes`; reads files; fetches URLs; encodes PIL/numpy
 inputs as `fmt` (PNG by default — lossless and universally accepted).
 
 * **Return type:**
-  bytes
+  [`bytes`](https://docs.python.org/3/builtins/stdtypes.html#bytes)
 
 ### ocracy.util.to_numpy(image)
 
@@ -3329,18 +3390,18 @@ Convert any supported input into a PIL `Image` (lazy import).
 
 # About this build
 
-This documentation was built on **2026-10-14 02:29 UTC** from commit <a href="https://github.com/thorwhalen/ocracy/commit/4de579644780e1348cc516ef3beabd72fbed418a"><code>4de5796</code></a> on branch <code>main</code>, for **ocracy 0.1.13** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-10-19 12:01 UTC** from commit <a href="https://github.com/thorwhalen/ocracy/commit/4a7d1488ccb3648efa6182ac9875cc4ec3b51002"><code>4a7d148</code></a> on branch <code>main</code>, for **ocracy 0.1.14** (from <code>pyproject.toml</code>).
 
 #### WARNING
 The documentation and the package may be misaligned:
 
-- The documented version (0.1.13) is behind the latest release on PyPI (0.1.14): `pip install ocracy` gives newer code than these docs describe.
+- The documented version (0.1.14) is behind the latest release on PyPI (0.1.15): `pip install ocracy` gives newer code than these docs describe.
 
 ## Source
 
 |                     |                                                                                                                                                          |
 |---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/ocracy/commit/4de579644780e1348cc516ef3beabd72fbed418a"><code>4de579644780e1348cc516ef3beabd72fbed418a</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/ocracy/commit/4a7d1488ccb3648efa6182ac9875cc4ec3b51002"><code>4a7d1488ccb3648efa6182ac9875cc4ec3b51002</code></a> |
 | Branch              | <code>main</code>                                                                                                                                        |
 | Tags at this commit | none                                                                                                                                                     |
 | Working tree        | clean                                                                                                                                                    |
@@ -3351,15 +3412,15 @@ The documentation and the package may be misaligned:
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/ocracy</code>                                                             |
-| Run          | <a href="https://github.com/thorwhalen/ocracy/actions/runs/38501134999">38501134999</a>    |
+| Run          | <a href="https://github.com/thorwhalen/ocracy/actions/runs/39248734394">39248734394</a>    |
 | Ref          | <code>refs/heads/main</code>                                                               |
-| Event commit | <code>4de579644780e1348cc516ef3beabd72fbed418a</code> (in the history of the built commit) |
+| Event commit | <code>4a7d1488ccb3648efa6182ac9875cc4ec3b51002</code> (in the history of the built commit) |
 
 ## Tools
 
 |          |         |
 |----------|---------|
-| epythet  | 0.2.17  |
+| epythet  | 0.2.18  |
 | Sphinx   | 9.1.0   |
 | docutils | 0.22.4  |
 | Python   | 3.12.15 |
@@ -3378,14 +3439,14 @@ The documentation and the package may be misaligned:
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/ocracy/0.1.14/">0.1.14</a>, newer than the documented version (0.1.13).
+Latest release: <a href="https://pypi.org/project/ocracy/0.1.15/">0.1.15</a>, newer than the documented version (0.1.14).
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/thorwhalen/ocracy && cd ocracy
-git checkout 4de579644780e1348cc516ef3beabd72fbed418a
-pip install "epythet==0.2.17"
+git checkout 4a7d1488ccb3648efa6182ac9875cc4ec3b51002
+pip install "epythet==0.2.18"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```
 
