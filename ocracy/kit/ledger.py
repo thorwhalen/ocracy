@@ -37,7 +37,6 @@ Stdlib only; imports nothing else from ocracy. pandas is imported by
 
 from __future__ import annotations
 
-import copy
 import importlib
 import os
 from collections.abc import Mapping
@@ -70,7 +69,8 @@ DEFAULT_COMPARE_FIELDS = (
 )
 
 #: Field values that mean "this backend has the capability", for :meth:`Catalog.can`.
-#: Compared by identity for ``True``, so a count of ``1`` is not a capability.
+#: Compared by identity for ``True``, so a count of ``1`` is not a capability --
+#: and neither is a numpy ``True`` or the string ``"True"``: JSON gives real bools.
 CAPABILITY_VALUES = ("yes", True)
 
 
@@ -105,9 +105,11 @@ class BackendInfo(Mapping):
         return len(self._record)
 
     def __getattr__(self, name: str) -> Any:
-        # Only called when normal attribute lookup fails.
+        # Only called when normal attribute lookup fails. Read ``_record`` from
+        # ``__dict__``: during copy/pickle it is not set yet, and ``self._record``
+        # would recurse into this method.
         try:
-            return self._record[name]
+            return self.__dict__["_record"][name]
         except KeyError:
             raise AttributeError(name)
 
@@ -167,6 +169,16 @@ def _nothing_implemented() -> Iterable[str]:
     return ()
 
 
+def _names(value: Iterable[str], arg: str) -> tuple:
+    """``value`` as a tuple of names; a bare string would be split into letters."""
+    if isinstance(value, str):
+        raise TypeError(
+            f"{arg} takes a collection of names, not the string {value!r}; "
+            f"write ({value!r},)"
+        )
+    return tuple(value)
+
+
 class Catalog(Mapping):
     """A filterable, dict-like collection of :class:`BackendInfo`, keyed by id.
 
@@ -184,11 +196,19 @@ class Catalog(Mapping):
             environment says otherwise.
         env_var: An environment variable that overrides ``default_path``.
         implemented: Returns the ids that have a working adapter; called once,
-            on first load.
+            on first load (a filtered subset reuses the flags already computed).
+            An exception it raises propagates: catch it in the binding if a
+            broken registry should read as "nothing implemented".
         text_fields: Fields filtered by case-insensitive membership.
-        capability_suffixes: Field-name suffixes :meth:`can` also checks:
-            ``("", "_formula")`` makes ``can("math")`` read ``math_formula``.
+        capability_suffixes: Extra field-name suffixes :meth:`can` checks besides
+            the capability's own field: ``("_formula",)`` makes ``can("math")``
+            also read ``math_formula``.
         compare_fields: Default columns of :meth:`compare`.
+
+    ``text_fields``, ``capability_suffixes`` and ``compare_fields`` take
+    collections of names; a bare string is refused rather than split into letters.
+    A subclass binding a facade's data should keep no derived state of its own:
+    :meth:`filter` builds a subset from these settings alone.
     """
 
     def __init__(
@@ -200,17 +220,24 @@ class Catalog(Mapping):
         env_var: Optional[str] = None,
         implemented: Callable[[], Iterable[str]] = _nothing_implemented,
         text_fields: Iterable[str] = DEFAULT_TEXT_FIELDS,
-        capability_suffixes: Iterable[str] = ("",),
+        capability_suffixes: Iterable[str] = (),
         compare_fields: Iterable[str] = DEFAULT_COMPARE_FIELDS,
     ):
         self._path = Path(path) if path else None
         self._explicit_records = records
+        self._implemented = implemented
+        self._settings = dict(
+            default_path=default_path,
+            env_var=env_var,
+            text_fields=text_fields,
+            capability_suffixes=capability_suffixes,
+            compare_fields=compare_fields,
+        )
         self._default_path = Path(default_path) if default_path else None
         self._env_var = env_var
-        self._implemented = implemented
-        self._text_fields = frozenset(text_fields)
-        self._capability_suffixes = tuple(capability_suffixes)
-        self._compare_fields = tuple(compare_fields)
+        self._text_fields = frozenset(_names(text_fields, "text_fields"))
+        self._capability_suffixes = _names(capability_suffixes, "capability_suffixes")
+        self._compare_fields = _names(compare_fields, "compare_fields")
         self._cache: Optional[Dict[str, BackendInfo]] = None
 
     # -- loading ------------------------------------------------------------
@@ -242,11 +269,13 @@ class Catalog(Mapping):
         return self._cache
 
     def _subset(self, records: List[dict]) -> "Catalog":
-        """A catalog with this one's settings over ``records``."""
-        subset = copy.copy(self)
-        subset._path = None
-        subset._explicit_records = records
-        subset._cache = None
+        """A catalog of this one's class and settings over ``records``.
+
+        Built from the settings alone (no copy of this instance's state), and with
+        no ``implemented`` call: the records already carry their flags.
+        """
+        subset = object.__new__(type(self))
+        Catalog.__init__(subset, records=records, **self._settings)
         return subset
 
     # -- Mapping interface --------------------------------------------------
@@ -305,10 +334,11 @@ class Catalog(Mapping):
     def can(self, capability: str) -> "Catalog":
         """Backends with ``capability``: listed in ``beyond_text``, or a field set.
 
-        A field counts when it is named ``capability`` plus one of the catalog's
-        ``capability_suffixes`` and its value is one of :data:`CAPABILITY_VALUES`.
+        A field counts when it is named ``capability``, or that plus one of the
+        catalog's ``capability_suffixes``, and its value is one of
+        :data:`CAPABILITY_VALUES`.
         """
-        names = [capability + suffix for suffix in self._capability_suffixes]
+        names = [capability] + [capability + s for s in self._capability_suffixes]
 
         def has(info: BackendInfo) -> bool:
             record = info._record

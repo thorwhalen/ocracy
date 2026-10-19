@@ -44,10 +44,10 @@ LEDGER_ENV_VAR = "OCRACY_LEDGER"
 
 # Fields whose meaning is "membership in a free-text description", handled
 # specially by :meth:`Catalog.filter` rather than by exact equality.
-_TEXT_MEMBERSHIP_FIELDS = set(DEFAULT_TEXT_FIELDS)
+_TEXT_MEMBERSHIP_FIELDS = frozenset(DEFAULT_TEXT_FIELDS)
 
 # ``can("math")`` also reads the ledger's ``math_formula`` field.
-_CAPABILITY_SUFFIXES = ("", "_formula")
+_CAPABILITY_SUFFIXES = ("_formula",)
 
 _COMPARE_FIELDS = (
     "name",

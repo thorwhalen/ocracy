@@ -1032,10 +1032,47 @@ def test_ledger_can_reads_yes_true_and_suffixes_but_not_counts():
     assert cat.can("streaming").ids == ["b"]  # True
     assert cat.can("languages_count").ids == []  # 1 is a count, not True
     assert cat.can("math").ids == []
-    assert Catalog(records=_LEDGER, capability_suffixes=("", "_formula")).can(
+    assert Catalog(records=_LEDGER, capability_suffixes=("_formula",)).can(
         "math"
     ).ids == ["b"]
     assert cat.supports_language("french").ids == ["a"]
+
+
+def test_ledger_refuses_a_bare_string_for_a_names_seam():
+    from ocracy.kit.ledger import Catalog
+
+    for arg in ("text_fields", "capability_suffixes", "compare_fields"):
+        with pytest.raises(TypeError, match=f"{arg} takes a collection"):
+            Catalog(records=_LEDGER, **{arg: "pros"})
+
+
+def test_ledger_subset_keeps_class_and_settings_but_not_derived_state():
+    import copy
+    import pickle
+    from functools import cached_property
+
+    from ocracy.kit.ledger import Catalog
+
+    calls = []
+
+    class Bound(Catalog):
+        def __init__(self):
+            super().__init__(
+                records=_LEDGER, implemented=lambda: calls.append(1) or ["a"]
+            )
+
+        @cached_property
+        def remote_ids(self):
+            return [i for i in self if self[i].is_remote]
+
+    cat = Bound()
+    assert cat.remote_ids == ["b"]
+    sub = cat.filter(id="a")
+    assert isinstance(sub, Bound) and sub.remote_ids == []
+    assert sub.filter(open_source=True).ids == ["a"] and sub["a"].implemented
+    assert calls == [1]  # subsets reuse the flags; the registry is asked once
+    info = copy.deepcopy(cat["a"])  # used to recurse in __getattr__
+    assert pickle.loads(pickle.dumps(info)) == info
 
 
 def test_ledger_compare_uses_the_catalog_default_columns():
