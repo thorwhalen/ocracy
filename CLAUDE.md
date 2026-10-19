@@ -68,7 +68,7 @@ if not result.words:
 | Run that plan | `ocracy.install("rapidocr", yes=True)` |
 | Readiness of everything, four levels | `ocracy.status_table()` |
 | Wrap a 16th engine | `scaffold_backend(id)` → adapter → `validate_adapter(id)` |
-| Build *another* facade (translator, key chain, install plans) | `ocracy.kit` — `make_translator`, `resolve_credential`, `using_credentials`, `build_requirements` |
+| Build *another* facade (translator, key chain, install plans, ledger) | `ocracy.kit` — `make_translator`, `resolve_credential`, `using_credentials`, `build_requirements`, `Catalog` |
 
 Every name above except the last row is a top-level `ocracy` export (`scaffold_backend` / `validate_adapter` also live in `ocracy.make_backend`, which is where new façade-building machinery goes). The CLI mirrors it (`ocracy read|backends|find|info|status|doctor|requirements|install|scaffold|validate`), built by `cw` from the signatures in `ocracy/tools.py` — so a new CLI command is a new function in `_dispatch_funcs`, never an argparse edit.
 
@@ -82,9 +82,10 @@ Translation     normalized kwargs -> native kwargs       (translation.py -> kit,
 Adapters        one subpackage per engine                (backends/<id>/{config,adapter}.py)
 Normalization   OcrResult / TextBlock / BBox             (base.py)
 
-Ledger          64 records, data not code                (data/backends.json, read by catalog.py)
+Ledger          64 records, data not code                (data/backends.json, read by catalog.py -> kit/ledger.py)
 Readiness       all ⊇ implemented ⊇ set_up ⊇ tested      (status.py, install.py, credentials.py)
-Kit             translator, key chain, install plans      (kit/ — stdlib-only, shared with other facades)
+Kit             translator, key chain, install plans,     (kit/ — stdlib-only, shared with other facades)
+                ledger loader
 ```
 
 A backend is discovered structurally — a subpackage of `ocracy.backends` with a `BACKEND_CONFIG` in `config.py` and an `Adapter` in `adapter.py`. There is no registration list to edit; a leading `_` (as in `_template`) excludes a directory. Third parties can add one at runtime with `register_backend`.
@@ -116,7 +117,7 @@ A backend is discovered structurally — a subpackage of `ocracy.backends` with 
 
 ## The facade kit (`ocracy/kit/`)
 
-`ocracy.kit` is the shared translator, credential chain and install-plan machinery that the fleet's facades (foley, falaw, voxy, scribed, …) import instead of copying. Two rules, both enforced by `tests/test_kit.py`: **kit modules import only the standard library and `ocracy.kit`** (so the kit can become its own distribution with a `git mv`), and **importing it loads nothing heavy** (no engine SDK, Pillow, numpy, `importlib.metadata`, `subprocess`). Every consumer pays for `ocracy/__init__.py` when it imports the kit, so keep the root cheap — that is why `__version__` is computed lazily. A change to kit behaviour is a change to every consumer: check the `Consumer:` sections of the test file, and the ADR (`docs/adr/0001-facade-kit.md`) for why each seam exists.
+`ocracy.kit` is the shared translator, credential chain, install-plan and ledger-loader machinery that the fleet's facades (foley, falaw, voxy, scribed, …) import instead of copying. Two rules, both enforced by `tests/test_kit.py`: **kit modules import only the standard library and `ocracy.kit`** (so the kit can become its own distribution with a `git mv`), and **importing it loads nothing heavy** (no engine SDK, Pillow, numpy, `importlib.metadata`, `subprocess`). Every consumer pays for `ocracy/__init__.py` when it imports the kit, so keep the root cheap — that is why `__version__` is computed lazily. A change to kit behaviour is a change to every consumer: check the `Consumer:` sections of the test file, and the ADR (`docs/adr/0001-facade-kit.md`) for why each seam exists.
 
 ## Conventions
 

@@ -9,7 +9,9 @@ illustration, aix, foley, falaw, voxy) carried its own drifting copy:
   silently (every drop and clamp comes back as a note);
 - :mod:`~ocracy.kit.credentials` -- the key chain (explicit -> bound in context ->
   env -> store -> prompt), whose error names the env vars and where to get a key;
-- :mod:`~ocracy.kit.install` -- per-OS install plans an agent can act on.
+- :mod:`~ocracy.kit.install` -- per-OS install plans an agent can act on;
+- :mod:`~ocracy.kit.ledger` -- the filterable catalog over a facade's
+  ``backends.json``, with ``implemented`` computed from its registry.
 
 Usage::
 
@@ -40,6 +42,7 @@ from ocracy.kit.install import (
     current_platform,
     run_install,
 )
+from ocracy.kit.ledger import BackendInfo, Catalog
 from ocracy.kit.translation import (
     OUT_OF_RANGE,
     POLICIES,
@@ -70,4 +73,7 @@ __all__ = [
     "build_requirements",
     "run_install",
     "current_platform",
+    # ledger
+    "Catalog",
+    "BackendInfo",
 ]

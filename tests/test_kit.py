@@ -393,9 +393,9 @@ def test_nan_is_never_within_a_min_or_max():
         make_translator({"d": spec})({"d": nan})
     with pytest.raises(ValueError, match="not a number"):  # no bound to clamp to
         make_translator({"d": {**spec, "out_of_range": "clamp"}})({"d": nan})
-    t = make_translator(
-        {"d": {**spec, "out_of_range": "drop"}}, on_unsupported="note"
-    )({"d": nan})
+    t = make_translator({"d": {**spec, "out_of_range": "drop"}}, on_unsupported="note")(
+        {"d": nan}
+    )
     assert t.kwargs == {} and t.dropped == ["d"] and "not a number" in t.notes[0]
     with pytest.raises(ValueError, match="not a number"):
         check_range("d", nan, {"max": 1})  # one bound is enough
@@ -420,9 +420,7 @@ def test_nan_bound_is_refused_when_the_translator_is_built():
         with pytest.raises(ValueError, match="is NaN"):
             check_range("d", 1.0, {bound: nan})
     # An infinite bound is a real (if unbounded) bound, and stays allowed.
-    assert make_translator({"d": {"min": float("-inf")}})({"d": -5}).kwargs == {
-        "d": -5
-    }
+    assert make_translator({"d": {"min": float("-inf")}})({"d": -5}).kwargs == {"d": -5}
 
 
 def test_check_range_standalone():
@@ -963,6 +961,121 @@ def test_run_install_runs_pip_then_verifies(monkeypatch):
 
 
 # ---------------------------------------------------------------------------
+# Ledger
+# ---------------------------------------------------------------------------
+
+_LEDGER = [
+    {
+        "id": "a",
+        "is_local": True,
+        "open_source": True,
+        "languages_note": "English, French",
+        "beyond_text": ["tables"],
+        "diarization": "yes",
+        "pros": ["Fast on CPU"],
+    },
+    {
+        "id": "b",
+        "is_remote": True,
+        "open_source": False,
+        "languages_count": 1,
+        "languages_note": "English",
+        "math_formula": "yes",
+        "streaming": True,
+    },
+]
+
+
+def test_ledger_reads_a_file_the_env_var_or_records(tmp_path, monkeypatch):
+    from ocracy.kit.ledger import Catalog
+
+    f = tmp_path / "backends.json"
+    f.write_text('{"backends": [{"id": "x"}]}')
+    other = tmp_path / "other.json"
+    other.write_text('[{"id": "y"}]')  # a bare list works too
+    assert Catalog(default_path=f).ids == ["x"]
+    monkeypatch.setenv("ACME_LEDGER", str(other))
+    assert Catalog(default_path=f, env_var="ACME_LEDGER").ids == ["y"]
+    assert Catalog(f, env_var="ACME_LEDGER").ids == ["x"]  # an explicit path wins
+    assert Catalog(default_path=tmp_path / "missing.json").ids == []
+    assert Catalog(records=_LEDGER).ids == ["a", "b"]
+    assert Catalog().ids == []
+
+
+def test_ledger_implemented_is_computed_and_filters_keep_the_settings():
+    from ocracy.kit.ledger import BackendInfo, Catalog
+
+    calls = []
+
+    def implemented():
+        calls.append(1)
+        return ["a"]
+
+    cat = Catalog(records=_LEDGER, implemented=implemented, text_fields={"pros"})
+    assert isinstance(cat["a"], BackendInfo) and cat["a"].implemented is True
+    assert cat["b"].implemented is False and calls == [1]
+    assert cat.filter(implemented=True).ids == ["a"]
+    assert cat.filter(is_local=True).filter(open_source=True).ids == ["a"]
+    # A subset keeps the parent's text fields, so `pros` stays a membership filter.
+    assert cat.filter(open_source={True, False}).filter(pros="fast").ids == ["a"]
+    assert repr(cat) == "<Catalog 2 backends | 1 implemented | 1 local, 1 remote>"
+    with pytest.raises(KeyError, match="Unknown backend id: 'z'"):
+        cat["z"]
+
+
+def test_ledger_can_reads_yes_true_and_suffixes_but_not_counts():
+    from ocracy.kit.ledger import Catalog
+
+    cat = Catalog(records=_LEDGER)
+    assert cat.can("tables").ids == ["a"]  # from beyond_text
+    assert cat.can("diarization").ids == ["a"]  # "yes"
+    assert cat.can("streaming").ids == ["b"]  # True
+    assert cat.can("languages_count").ids == []  # 1 is a count, not True
+    assert cat.can("math").ids == []
+    assert Catalog(records=_LEDGER, capability_suffixes=("", "_formula")).can(
+        "math"
+    ).ids == ["b"]
+    assert cat.supports_language("french").ids == ["a"]
+
+
+def test_ledger_compare_uses_the_catalog_default_columns():
+    from ocracy.kit.ledger import Catalog
+
+    cat = Catalog(records=_LEDGER, compare_fields=("streaming",))
+    assert cat.compare() == [
+        {"id": "a", "streaming": None},
+        {"id": "b", "streaming": True},
+    ]
+    assert cat.compare(["b"], fields=["open_source"]) == [
+        {"id": "b", "open_source": False}
+    ]
+
+
+# Consumer: scribed (ASR ledger: SCRIBED_LEDGER, pros/cons as text fields, True
+# capability values, its own compare columns)
+
+
+def test_consumer_scribed_binding_shape(tmp_path, monkeypatch):
+    from ocracy.kit.ledger import DEFAULT_TEXT_FIELDS, Catalog
+
+    f = tmp_path / "backends.json"
+    f.write_text(
+        '{"backends": [{"id": "vosk", "streaming": true, "cons": ["Older models"]}]}'
+    )
+    monkeypatch.setenv("SCRIBED_LEDGER", str(f))
+    cat = Catalog(
+        default_path=tmp_path / "unused.json",
+        env_var="SCRIBED_LEDGER",
+        implemented=lambda: {"vosk"},
+        text_fields=DEFAULT_TEXT_FIELDS | {"pros", "cons"},
+        compare_fields=("name", "streaming"),
+    )
+    assert cat.can("streaming").ids == ["vosk"]
+    assert cat.filter(cons="older").ids == ["vosk"]
+    assert cat.compare() == [{"id": "vosk", "name": None, "streaming": True}]
+
+
+# ---------------------------------------------------------------------------
 # Import hygiene: what depending on the kit costs a consumer
 # ---------------------------------------------------------------------------
 
@@ -1056,12 +1169,16 @@ def test_root_exports_win_over_same_named_submodules():
 
 
 def test_submodules_stay_reachable_as_attributes():
-    out = _fresh("import ocracy; print(ocracy.status.__name__, ocracy.registry.__name__)")
+    out = _fresh(
+        "import ocracy; print(ocracy.status.__name__, ocracy.registry.__name__)"
+    )
     assert out == "ocracy.status ocracy.registry"
 
 
 def test_star_import_and_facade_still_work():
-    out = _fresh("from ocracy import *; print(len(find()) > 0, callable(ocr), LEVELS[0])")
+    out = _fresh(
+        "from ocracy import *; print(len(find()) > 0, callable(ocr), LEVELS[0])"
+    )
     assert out == "True True all"
 
 
