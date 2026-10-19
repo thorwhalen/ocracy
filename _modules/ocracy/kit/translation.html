@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../../../_static/documentation_options.js?v=d50bcae4"></script>
+    <script src="../../../_static/documentation_options.js?v=71734efd"></script>
     <script src="../../../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../../../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../../../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -411,7 +411,7 @@ window.runMermaid = runMermaid;</script>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.1.16" />
+  <meta name="docsearch:version" content="0.1.17" />
   
     
     <script src="../../../_static/searchtools.js"></script>
@@ -744,9 +744,10 @@ window.runMermaid = runMermaid;</script>
 <span class="sd">- a mapping with any of: ``native_name`` (``name`` is accepted as an alias),</span>
 <span class="sd">  ``coerce``, ``default`` (injected when the caller omits the parameter),</span>
 <span class="sd">  ``choices`` / ``min`` / ``max`` (checked on the *canonical* value, which for</span>
-<span class="sd">  ``min`` / ``max`` must be a scalar: an array is compared elementwise and is not</span>
-<span class="sd">  range-checked reliably, so a facade taking arrays checks them itself; a NaN</span>
-<span class="sd">  bound is refused when the translator is built), and</span>
+<span class="sd">  ``min`` / ``max`` must be a scalar: a list, mapping or array (anything with an</span>
+<span class="sd">  ``ndim`` above 0) raises ``TypeError`` whatever ``out_of_range`` says, so a</span>
+<span class="sd">  facade taking arrays checks them itself; a 0-d array counts as its scalar. A</span>
+<span class="sd">  NaN or non-scalar bound is refused when the translator is built), and</span>
 <span class="sd">  ``out_of_range`` -- ``'raise'``, ``'clamp'`` (``min``/``max`` only, with a note) or</span>
 <span class="sd">  ``'drop'`` (handled like an unsupported parameter); the translator's</span>
 <span class="sd">  ``out_of_range=`` is the default -- plus ``unit`` (shown in the clamp note).</span>
@@ -939,6 +940,11 @@ window.runMermaid = runMermaid;</script>
         <span class="k">if</span> <span class="n">native</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
         <span class="k">for</span> <span class="n">bound</span> <span class="ow">in</span> <span class="p">(</span><span class="s2">"min"</span><span class="p">,</span> <span class="s2">"max"</span><span class="p">):</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">_is_scalar</span><span class="p">(</span><span class="n">spec</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">bound</span><span class="p">)):</span>
+                <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+                    <span class="sa">f</span><span class="s2">"param_map[</span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">][</span><span class="si">{</span><span class="n">bound</span><span class="si">!r}</span><span class="s2">] must be a scalar, got "</span>
+                    <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">spec</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">bound</span><span class="p">))</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">"</span>
+                <span class="p">)</span>
             <span class="k">if</span> <span class="n">_is_nan</span><span class="p">(</span><span class="n">spec</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">bound</span><span class="p">)):</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                     <span class="sa">f</span><span class="s2">"param_map[</span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2">][</span><span class="si">{</span><span class="n">bound</span><span class="si">!r}</span><span class="s2">] is NaN, which every value "</span>
@@ -1055,12 +1061,16 @@ window.runMermaid = runMermaid;</script>
 <span class="sd">    breaks any ``min``/``max`` (it compares false with every bound, so it would</span>
 <span class="sd">    otherwise slip through); it is reported as ``'nan'``: ``'raise'`` and ``'drop'``</span>
 <span class="sd">    treat it like any other out-of-range value, and ``'clamp'`` raises, since there is</span>
-<span class="sd">    no bound a NaN is nearer to.</span>
+<span class="sd">    no bound a NaN is nearer to. A non-scalar value against a ``min``/``max`` is</span>
+<span class="sd">    ``'not_scalar'``, which raises ``TypeError`` under every policy.</span>
 <span class="sd">    """</span>
     <span class="k">if</span> <span class="n">value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">spec</span><span class="o">.</span><span class="n">min</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">spec</span><span class="o">.</span><span class="n">max</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">and</span> <span class="n">_is_nan</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">"nan"</span>
+    <span class="k">if</span> <span class="n">spec</span><span class="o">.</span><span class="n">min</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">spec</span><span class="o">.</span><span class="n">max</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">_is_scalar</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s2">"not_scalar"</span>
+        <span class="k">if</span> <span class="n">_is_nan</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+            <span class="k">return</span> <span class="s2">"nan"</span>
     <span class="k">if</span> <span class="n">spec</span><span class="o">.</span><span class="n">min</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">value</span> <span class="o">&lt;</span> <span class="n">spec</span><span class="o">.</span><span class="n">min</span><span class="p">:</span>
         <span class="k">return</span> <span class="s2">"min"</span>
     <span class="k">if</span> <span class="n">spec</span><span class="o">.</span><span class="n">max</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">value</span> <span class="o">&gt;</span> <span class="n">spec</span><span class="o">.</span><span class="n">max</span><span class="p">:</span>
@@ -1070,8 +1080,38 @@ window.runMermaid = runMermaid;</script>
     <span class="k">return</span> <span class="kc">None</span>
 
 
+<span class="k">def</span><span class="w"> </span><span class="nf">_ndim</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""``value.ndim`` for array-likes (numpy, pandas, torch...), else 0."""</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">ndim</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">"ndim"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>  <span class="c1"># noqa: BLE001 - a property that raises is not an array</span>
+        <span class="k">return</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="n">ndim</span> <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">ndim</span><span class="p">)</span> <span class="ow">is</span> <span class="nb">int</span> <span class="k">else</span> <span class="mi">0</span>  <span class="c1"># not bool, not a method</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_is_scalar</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Whether ``value`` can be compared with a ``min``/``max`` as one value."""</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="n">Mapping</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">,</span> <span class="nb">set</span><span class="p">,</span> <span class="nb">frozenset</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="kc">False</span>
+    <span class="k">return</span> <span class="n">_ndim</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_as_scalar</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Any</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""A 0-d array as the scalar it holds (``np.array(nan)`` -&gt; ``nan``)."""</span>
+    <span class="n">item</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">"item"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">"ndim"</span><span class="p">)</span> <span class="ow">and</span> <span class="n">_ndim</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="nb">callable</span><span class="p">(</span><span class="n">item</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">item</span><span class="p">()</span>
+        <span class="k">except</span> <span class="ne">Exception</span><span class="p">:</span>  <span class="c1"># noqa: BLE001 - not an array after all</span>
+            <span class="k">return</span> <span class="n">value</span>
+    <span class="k">return</span> <span class="n">value</span>
+
+
 <span class="k">def</span><span class="w"> </span><span class="nf">_is_nan</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">"""Whether ``value`` is a numeric NaN (``float``, ``Decimal``, numpy...)."""</span>
+    <span class="n">value</span> <span class="o">=</span> <span class="n">_as_scalar</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">numbers</span><span class="o">.</span><span class="n">Number</span><span class="p">):</span>
         <span class="k">return</span> <span class="kc">False</span>
     <span class="n">is_nan</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s2">"is_nan"</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>  <span class="c1"># Decimal: comparing an sNaN raises</span>
@@ -1085,6 +1125,11 @@ window.runMermaid = runMermaid;</script>
     <span class="n">problem</span> <span class="o">=</span> <span class="n">_range_problem</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">spec</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">problem</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span>
+    <span class="k">if</span> <span class="n">problem</span> <span class="o">==</span> <span class="s2">"not_scalar"</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"Parameter </span><span class="si">{</span><span class="n">name</span><span class="si">!r}</span><span class="s2"> has a min/max, which applies to one value, but got "</span>
+            <span class="sa">f</span><span class="s2">"a </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">; check its elements before translating"</span>
+        <span class="p">)</span>
     <span class="n">shown</span> <span class="o">=</span> <span class="n">_value_text</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">as_str</span><span class="o">=</span><span class="n">problem</span> <span class="o">!=</span> <span class="s2">"choices"</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">problem</span> <span class="o">==</span> <span class="s2">"nan"</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
@@ -1216,8 +1261,10 @@ window.runMermaid = runMermaid;</script>
                 <span class="k">continue</span>
             <span class="n">problem</span> <span class="o">=</span> <span class="n">_range_problem</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">spec</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">problem</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">spec</span><span class="o">.</span><span class="n">out_of_range</span> <span class="o">==</span> <span class="s2">"raise"</span> <span class="ow">or</span> <span class="p">(</span>
-                    <span class="n">problem</span> <span class="o">==</span> <span class="s2">"nan"</span> <span class="ow">and</span> <span class="n">spec</span><span class="o">.</span><span class="n">out_of_range</span> <span class="o">==</span> <span class="s2">"clamp"</span>
+                <span class="k">if</span> <span class="p">(</span>
+                    <span class="n">spec</span><span class="o">.</span><span class="n">out_of_range</span> <span class="o">==</span> <span class="s2">"raise"</span>
+                    <span class="ow">or</span> <span class="n">problem</span> <span class="o">==</span> <span class="s2">"not_scalar"</span>
+                    <span class="ow">or</span> <span class="p">(</span><span class="n">problem</span> <span class="o">==</span> <span class="s2">"nan"</span> <span class="ow">and</span> <span class="n">spec</span><span class="o">.</span><span class="n">out_of_range</span> <span class="o">==</span> <span class="s2">"clamp"</span><span class="p">)</span>
                 <span class="p">):</span>
                     <span class="n">_raise_if_out_of_range</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">spec</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">spec</span><span class="o">.</span><span class="n">out_of_range</span> <span class="o">==</span> <span class="s2">"drop"</span><span class="p">:</span>

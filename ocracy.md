@@ -1,4 +1,4 @@
-> built 2026-10-19 12:18 UTC from 18fa60f (main) · ocracy 0.1.16. Details: build_info.json
+> built 2026-10-19 12:43 UTC from f40f146 (main) · ocracy 0.1.17. Details: build_info.json
 
 # index.html.md
 
@@ -2800,9 +2800,10 @@ A spec is one of:
 - a mapping with any of: `native_name` (`name` is accepted as an alias),
   `coerce`, `default` (injected when the caller omits the parameter),
   `choices` / `min` / `max` (checked on the *canonical* value, which for
-  `min` / `max` must be a scalar: an array is compared elementwise and is not
-  range-checked reliably, so a facade taking arrays checks them itself; a NaN
-  bound is refused when the translator is built), and
+  `min` / `max` must be a scalar: a list, mapping or array (anything with an
+  `ndim` above 0) raises `TypeError` whatever `out_of_range` says, so a
+  facade taking arrays checks them itself; a 0-d array counts as its scalar. A
+  NaN or non-scalar bound is refused when the translator is built), and
   `out_of_range` – `'raise'`, `'clamp'` (`min`/`max` only, with a note) or
   `'drop'` (handled like an unsupported parameter); the translator’s
   `out_of_range=` is the default – plus `unit` (shown in the clamp note).
@@ -3618,18 +3619,16 @@ Convert any supported input into a PIL `Image` (lazy import).
 
 # About this build
 
-This documentation was built on **2026-10-19 12:18 UTC** from commit <a href="https://github.com/thorwhalen/ocracy/commit/18fa60fb7aa1dfe5bcef9997ee638a20e3ec6954"><code>18fa60f</code></a> on branch <code>main</code>, for **ocracy 0.1.16** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-10-19 12:43 UTC** from commit <a href="https://github.com/thorwhalen/ocracy/commit/f40f14649d574a09559d1456639126efd856191f"><code>f40f146</code></a> on branch <code>main</code>, for **ocracy 0.1.17** (from <code>pyproject.toml</code>).
 
-#### WARNING
-The documentation and the package may be misaligned:
-
-- The documented version (0.1.16) is behind the latest release on PyPI (0.1.17): `pip install ocracy` gives newer code than these docs describe.
+#### NOTE
+Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
 
 ## Source
 
 |                     |                                                                                                                                                          |
 |---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/ocracy/commit/18fa60fb7aa1dfe5bcef9997ee638a20e3ec6954"><code>18fa60fb7aa1dfe5bcef9997ee638a20e3ec6954</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/ocracy/commit/f40f14649d574a09559d1456639126efd856191f"><code>f40f14649d574a09559d1456639126efd856191f</code></a> |
 | Branch              | <code>main</code>                                                                                                                                        |
 | Tags at this commit | none                                                                                                                                                     |
 | Working tree        | clean                                                                                                                                                    |
@@ -3640,9 +3639,9 @@ The documentation and the package may be misaligned:
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/ocracy</code>                                                             |
-| Run          | <a href="https://github.com/thorwhalen/ocracy/actions/runs/39250822751">39250822751</a>    |
+| Run          | <a href="https://github.com/thorwhalen/ocracy/actions/runs/39254123350">39254123350</a>    |
 | Ref          | <code>refs/heads/main</code>                                                               |
-| Event commit | <code>18fa60fb7aa1dfe5bcef9997ee638a20e3ec6954</code> (in the history of the built commit) |
+| Event commit | <code>f40f14649d574a09559d1456639126efd856191f</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -3667,13 +3666,13 @@ The documentation and the package may be misaligned:
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/ocracy/0.1.17/">0.1.17</a>, newer than the documented version (0.1.16).
+Latest release: <a href="https://pypi.org/project/ocracy/0.1.17/">0.1.17</a>, the same as the documented version.
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/thorwhalen/ocracy && cd ocracy
-git checkout 18fa60fb7aa1dfe5bcef9997ee638a20e3ec6954
+git checkout f40f14649d574a09559d1456639126efd856191f
 pip install "epythet==0.2.18"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```

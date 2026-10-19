@@ -31,9 +31,10 @@ A spec is one of:
 - a mapping with any of: `native_name` (`name` is accepted as an alias),
   `coerce`, `default` (injected when the caller omits the parameter),
   `choices` / `min` / `max` (checked on the *canonical* value, which for
-  `min` / `max` must be a scalar: an array is compared elementwise and is not
-  range-checked reliably, so a facade taking arrays checks them itself; a NaN
-  bound is refused when the translator is built), and
+  `min` / `max` must be a scalar: a list, mapping or array (anything with an
+  `ndim` above 0) raises `TypeError` whatever `out_of_range` says, so a
+  facade taking arrays checks them itself; a 0-d array counts as its scalar. A
+  NaN or non-scalar bound is refused when the translator is built), and
   `out_of_range` – `'raise'`, `'clamp'` (`min`/`max` only, with a note) or
   `'drop'` (handled like an unsupported parameter); the translator’s
   `out_of_range=` is the default – plus `unit` (shown in the clamp note).
