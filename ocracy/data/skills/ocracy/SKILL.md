@@ -42,6 +42,7 @@ print(result)  # str(result) is the text
 | Local, free, simple printed text | `tesseract` (default) | `pip install "ocracy[tesseract]"` (+ system `tesseract`) |
 | Local, free, many scripts / scene text | `easyocr` or `rapidocr` | `pip install "ocracy[easyocr]"` / `"ocracy[rapidocr]"` |
 | Local, top accuracy / CJK | `paddleocr` | `pip install "ocracy[paddleocr]"` |
+| Local tables / layout / formulas → Markdown | `paddleocr-ppstructure` (slow on CPU) | `pip install "ocracy[paddleocr-ppstructure]"` |
 | macOS, free, on-device, handwriting | `ocrmac` | `pip install "ocracy[ocrmac]"` |
 | High-accuracy cloud + handwriting | `google-vision` | `pip install "ocracy[google-vision]"` |
 | Forms/tables/key-value (cloud) | `aws-textract` / `azure-document-intelligence` | `"ocracy[aws-textract]"` / `"ocracy[azure]"` |
@@ -89,7 +90,7 @@ not produce returns `[]` — silently, with no error and no warning.**
 | What the backend fills | Backends |
 |---|---|
 | `.words` (and `.lines` is **empty**) | `tesseract`, `google-vision`, `aws-textract`, `azure-document-intelligence`, `ocr-space` |
-| `.lines` (and `.words` is **empty**) | `easyocr`, `rapidocr`, `paddleocr`, `ocrmac` |
+| `.lines` (and `.words` is **empty**) | `easyocr`, `rapidocr`, `paddleocr`, `paddleocr-ppstructure`, `ocrmac` |
 | neither — `blocks == []`, text only | `claude-vision`, `gpt-4o-vision`, `mathpix`, `mistral-ocr`, `pix2tex-latex-ocr`, `trocr-handwritten` |
 
 ```python

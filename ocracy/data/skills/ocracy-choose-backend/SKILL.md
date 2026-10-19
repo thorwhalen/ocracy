@@ -70,12 +70,16 @@ From the shell: `ocracy find --local --free --handwriting`, `ocracy info <id>`.
 
 ## Quick recommendations
 
-- **Local + free, just works:** `tesseract` (printed, 100+ langs); `rapidocr`
-  (**recommended light default** — same PP-OCR models as Paddle, CPU-only, trivial
-  install); `paddleocr` (the *platform* — pick it over rapidocr only when you need
-  the larger server models, GPU throughput, fine-tuning, or to grow into
-  PP-Structure tables/layout/formula or PaddleOCR-VL); `easyocr` (scene text);
-  `ocrmac` (macOS, on-device, handwriting).
+- **Local + free, just works:** `tesseract` (printed, 100+ langs); `paddleocr`
+  (PaddleOCR 3.x with PP-OCRv6 models: the most accurate local plain-text engine
+  measured in [#1](https://github.com/thorwhalen/ocracy/issues/1), about 3 s a
+  page on CPU, heavy install); `rapidocr` (light and fast, CPU-only, but its
+  PP-OCRv4 models drop word spaces on clean print until
+  [#22](https://github.com/thorwhalen/ocracy/issues/22) moves it to PP-OCRv6);
+  `easyocr` (scene text); `ocrmac` (macOS, on-device, handwriting).
+- **Local tables / layout / formulas:** `paddleocr-ppstructure` (PP-StructureV3:
+  tables as HTML inside `result.markdown`, plus text lines; about 25 s a page on
+  CPU, so batch it or use a GPU).
 - **Cloud, high accuracy:** `google-vision` (general + handwriting),
   `azure-document-intelligence` / `aws-textract` (forms/tables/layout),
   `mistral-ocr` (cheap modern VLM → Markdown).

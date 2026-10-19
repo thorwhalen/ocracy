@@ -75,10 +75,11 @@ _RECIPES: Dict[str, dict] = {
         "extra": "rapidocr",
         "weights": "Model weights ship inside the wheel — no first-run download.",
         "notes": [
-            "Light, CPU-only (ONNXRuntime); the recommended default for local plain-text OCR.",
-            "Runs the same PP-OCR models as paddleocr. For tables/layout/formula "
-            "(PP-Structure), the larger server models, GPU-scale throughput, or "
-            "fine-tuning, use paddleocr instead.",
+            "Light, CPU-only (ONNXRuntime) and fast (about 0.5 s a page).",
+            "Ships PP-OCRv4 mobile models, which drop word spaces on clean print; "
+            "paddleocr's PP-OCRv6 models are far more accurate today (ocracy#1). "
+            "Moving rapidocr to PP-OCRv6 is ocracy#22. For tables/layout/formula, "
+            "use paddleocr-ppstructure.",
         ],
     },
     "paddleocr": {
@@ -86,16 +87,30 @@ _RECIPES: Dict[str, dict] = {
         "heavy": True,
         "gpu": "For GPU, replace paddlepaddle with the CUDA build: pip install paddlepaddle-gpu "
         "(match your CUDA version per https://www.paddlepaddle.org.cn/en/install/quick).",
-        "weights": "Downloads PP-OCR model weights on first use (cached under ~/.paddleocr).",
-        "alt": "rapidocr — the same PP-OCR text models via ONNX, lighter and CPU-only "
-        "(plain-text recognition only)",
+        "weights": "Downloads PP-OCR model weights on first use (cached under ~/.paddlex).",
+        "alt": "rapidocr — PP-OCR text models via ONNX, much lighter and CPU-only, "
+        "but less accurate until ocracy#22 (plain-text recognition only)",
         "notes": [
-            "For plain printed text, prefer rapidocr (lighter, same models). Choose "
-            "paddleocr when you want the larger server models, GPU throughput, "
-            "fine-tuning, or to grow into PP-Structure (tables/layout/formula) / "
-            "PaddleOCR-VL — capabilities RapidOCR does not provide.",
+            "PaddleOCR 3.x runs PP-OCRv6 models: the most accurate local plain-text "
+            "engine measured in ocracy#1, at about 3 s a page on CPU.",
+            "For tables/layout/formula, use paddleocr-ppstructure (same install plus "
+            "the doc-parser extra).",
             "PaddlePaddle wheels are platform/Python-version sensitive; if the install "
             "fights you and you only need plain text, switch to rapidocr.",
+        ],
+    },
+    "paddleocr-ppstructure": {
+        "extra": "paddleocr-ppstructure",
+        "heavy": True,
+        "gpu": "For GPU, replace paddlepaddle with the CUDA build: pip install paddlepaddle-gpu "
+        "(match your CUDA version per https://www.paddlepaddle.org.cn/en/install/quick).",
+        "weights": "Downloads the layout, table, formula and PP-OCR models on first use "
+        "(about 2 GB, a few minutes; cached under ~/.paddlex).",
+        "alt": "paddleocr — the text lines only, about 8x faster",
+        "notes": [
+            "PP-StructureV3 returns tables as HTML inside result.markdown, plus the "
+            "text lines. About 25 s a page on an Apple-silicon CPU (ocracy#1); batch "
+            "it or use a GPU.",
         ],
     },
     "ocrmac": {

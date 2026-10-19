@@ -12,13 +12,15 @@ from ocracy import registry
 from ocracy.make_backend import validate_adapter
 
 IMPLEMENTED = [
-    "tesseract", "easyocr", "rapidocr", "paddleocr", "ocrmac",
-    "pix2tex-latex-ocr", "trocr-handwritten",
+    "tesseract", "easyocr", "rapidocr", "paddleocr", "paddleocr-ppstructure",
+    "ocrmac", "pix2tex-latex-ocr", "trocr-handwritten",
     "ocr-space", "google-vision", "mistral-ocr", "mathpix",
     "aws-textract", "azure-document-intelligence",
     "claude-vision", "gpt-4o-vision",
 ]
-LOCAL = ["tesseract", "easyocr", "rapidocr", "paddleocr", "ocrmac"]
+LOCAL = [
+    "tesseract", "easyocr", "rapidocr", "paddleocr", "paddleocr-ppstructure", "ocrmac"
+]
 
 
 @pytest.mark.parametrize("bid", IMPLEMENTED)

@@ -40,8 +40,9 @@ one granularity, so `result.words` is empty on a line-level backend and
 |---|---|---|---|---|---|---|
 | Tesseract | `tesseract` | local | free | `ocracy[tesseract]` (+ system `tesseract`) | **word** | 100+ language baseline |
 | EasyOCR | `easyocr` | local | free | `ocracy[easyocr]` | **line** | 80+ languages, scene text |
-| RapidOCR | `rapidocr` | local | free | `ocracy[rapidocr]` | **line** | same PP-OCR models as Paddle, light CPU/ONNX — **recommended default for local plain text** |
-| PaddleOCR | `paddleocr` | local | free | `ocracy[paddleocr]` | **line** | the platform: server models, GPU, on-ramp to tables/layout (PP-Structure) & VL — heavier install |
+| RapidOCR | `rapidocr` | local | free | `ocracy[rapidocr]` | **line** | light CPU/ONNX, fast; today ships older PP-OCRv4 models that can drop word spaces (moving to PP-OCRv6: [#22](https://github.com/thorwhalen/ocracy/issues/22)) |
+| PaddleOCR | `paddleocr` | local | free | `ocracy[paddleocr]` | **line** | PaddleOCR 3.x, PP-OCRv6 models: the most accurate local plain-text engine here ([#1](https://github.com/thorwhalen/ocracy/issues/1)); heavier install, ~3 s/page CPU |
+| PaddleOCR PP-StructureV3 | `paddleocr-ppstructure` | local | free | `ocracy[paddleocr-ppstructure]` | **line** | tables (HTML), layout and formulas → `result.markdown`; slow on CPU (~25 s/page) |
 | ocrmac (Apple Vision) | `ocrmac` | local (macOS) | free | `ocracy[ocrmac]` | **line** | on-device, handwriting |
 | pix2tex (LaTeX-OCR) | `pix2tex-latex-ocr` | local | free | `ocracy[pix2tex]` | *text only* | one printed equation → LaTeX, offline |
 | TrOCR (handwritten) | `trocr-handwritten` | local | free | `ocracy[trocr]` | *text only* | one pre-segmented handwritten line, MIT weights |
@@ -54,7 +55,7 @@ one granularity, so `result.words` is empty on a line-level backend and
 | Claude Vision | `claude-vision` | remote | paid | `ocracy[anthropic]` | *text only* | prompt-driven "read + reason" over messy/mixed documents |
 | GPT-4o Vision | `gpt-4o-vision` | remote | paid | `ocracy[openai]` | *text only* | same, via OpenAI; schema-constrained JSON output |
 
-…plus **49 more** engines/services catalogued in the ledger that you can turn into
+…plus **48 more** engines/services catalogued in the ledger that you can turn into
 a working façade with one command (see *Add a backend* below).
 
 ### Granularity: which backends fill `.words`, which fill `.lines`
@@ -77,7 +78,7 @@ r.lines  # [] — tesseract reports words
 - **word-level** (`.words` populated, `.lines` empty): `tesseract`, `google-vision`,
   `aws-textract`, `azure-document-intelligence`, `ocr-space`.
 - **line-level** (`.lines` populated, `.words` empty): `easyocr`, `rapidocr`,
-  `paddleocr`, `ocrmac`.
+  `paddleocr`, `paddleocr-ppstructure`, `ocrmac`.
 - **text only** (`blocks == []`, so *both* are empty and `mean_confidence` is `None`):
   `claude-vision`, `gpt-4o-vision`, `mathpix`, `mistral-ocr`, `pix2tex-latex-ocr`,
   `trocr-handwritten`. Use `result.text` / `result.markdown`.

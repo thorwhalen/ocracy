@@ -29,7 +29,8 @@ _ISO1_TO_PADDLE = {
 }
 
 
-def _to_paddle_lang(languages):
+def to_paddle_lang(languages):
+    """ocracy's ``languages`` -> one PaddleOCR ``lang`` code (also used by paddleocr-ppstructure)."""
     if languages is None:
         return "en"
     code = languages[0] if isinstance(languages, (list, tuple)) else languages
@@ -55,7 +56,7 @@ BACKEND_CONFIG = {
     "param_map": {
         "languages": {
             "native_name": "lang",
-            "coerce": _to_paddle_lang,
+            "coerce": to_paddle_lang,
             "default": "en",
         },
     },
