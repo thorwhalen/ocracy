@@ -412,6 +412,19 @@ def test_nan_is_never_within_a_min_or_max():
     assert math.isnan(make_translator({"d": {}})({"d": nan}).kwargs["d"])
 
 
+def test_nan_bound_is_refused_when_the_translator_is_built():
+    nan = float("nan")
+    for bound in ("min", "max"):
+        with pytest.raises(ValueError, match=f"'{bound}'.* is NaN"):
+            make_translator({"d": {bound: nan}})
+        with pytest.raises(ValueError, match="is NaN"):
+            check_range("d", 1.0, {bound: nan})
+    # An infinite bound is a real (if unbounded) bound, and stays allowed.
+    assert make_translator({"d": {"min": float("-inf")}})({"d": -5}).kwargs == {
+        "d": -5
+    }
+
+
 def test_check_range_standalone():
     assert check_range("t", 0.5, {"min": 0, "max": 1}) == 0.5
     with pytest.raises(ValueError, match="below minimum"):
