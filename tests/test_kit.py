@@ -423,6 +423,60 @@ def test_nan_bound_is_refused_when_the_translator_is_built():
     assert make_translator({"d": {"min": float("-inf")}})({"d": -5}).kwargs == {"d": -5}
 
 
+class _FakeArray:
+    """Just enough of an array for the kit's checks, without numpy."""
+
+    def __init__(self, *values):
+        self.values = values
+        self.ndim = 0 if len(values) == 1 else 1
+
+    def item(self):
+        return self.values[0]
+
+    def __lt__(self, other):  # elementwise, like numpy: never a plain bool
+        return _FakeArray(*(v < other for v in self.values))
+
+    __gt__ = __lt__
+
+
+def test_min_max_refuse_non_scalars_under_every_policy():
+    for policy in ("raise", "clamp", "drop"):
+        translate = make_translator(
+            {"d": {"min": 0, "max": 1, "out_of_range": policy}}, on_unsupported="note"
+        )
+        for value in (_FakeArray(0.5, 2.0), [0.5], {"a": 1}):
+            with pytest.raises(TypeError, match="applies to one value"):
+                translate({"d": value})
+    with pytest.raises(TypeError, match="applies to one value"):
+        check_range("d", (1, 2), {"max": 3})
+    assert check_range("d", "b", {"min": "a"}) == "b"  # strings are scalars
+    assert check_range("d", 2, {"choices": [[1], 2]}) == 2  # choices: unchanged
+
+
+def test_zero_d_arrays_count_as_their_scalar():
+    with pytest.raises(ValueError, match="not a number"):
+        check_range("d", _FakeArray(float("nan")), {"max": 1})
+    with pytest.raises(ValueError, match="is NaN"):
+        make_translator({"d": {"max": _FakeArray(float("nan"))}})
+    with pytest.raises(TypeError, match="must be a scalar"):
+        make_translator({"d": {"min": [0, 1]}})
+
+
+def test_numpy_arrays_and_bounds():
+    np = pytest.importorskip("numpy")
+    with pytest.raises(TypeError, match="applies to one value"):
+        check_range("d", np.array([1.0, np.nan]), {"min": 0})
+    with pytest.raises(TypeError, match="applies to one value"):
+        check_range("d", np.array([np.nan]), {"min": 0})  # was silently accepted
+    with pytest.raises(ValueError, match="not a number"):
+        check_range("d", np.array(np.nan), {"min": 0})
+    with pytest.raises(ValueError, match="is NaN"):
+        check_range("d", 1e9, {"max": np.array(np.nan)})
+    with pytest.raises(TypeError, match="must be a scalar"):
+        make_translator({"d": {"max": np.array([1, 2])}})
+    assert check_range("d", np.float64(0.5), {"min": 0, "max": 1}) == 0.5
+
+
 def test_check_range_standalone():
     assert check_range("t", 0.5, {"min": 0, "max": 1}) == 0.5
     with pytest.raises(ValueError, match="below minimum"):

@@ -27,9 +27,10 @@ A spec is one of:
 - a mapping with any of: ``native_name`` (``name`` is accepted as an alias),
   ``coerce``, ``default`` (injected when the caller omits the parameter),
   ``choices`` / ``min`` / ``max`` (checked on the *canonical* value, which for
-  ``min`` / ``max`` must be a scalar: an array is compared elementwise and is not
-  range-checked reliably, so a facade taking arrays checks them itself; a NaN
-  bound is refused when the translator is built), and
+  ``min`` / ``max`` must be a scalar: a list, mapping or array (anything with an
+  ``ndim`` above 0) raises ``TypeError`` whatever ``out_of_range`` says, so a
+  facade taking arrays checks them itself; a 0-d array counts as its scalar. A
+  NaN or non-scalar bound is refused when the translator is built), and
   ``out_of_range`` -- ``'raise'``, ``'clamp'`` (``min``/``max`` only, with a note) or
   ``'drop'`` (handled like an unsupported parameter); the translator's
   ``out_of_range=`` is the default -- plus ``unit`` (shown in the clamp note).
@@ -216,6 +217,11 @@ def _parse_spec(
         if native is None:
             return None
         for bound in ("min", "max"):
+            if not _is_scalar(spec.get(bound)):
+                raise TypeError(
+                    f"param_map[{name!r}][{bound!r}] must be a scalar, got "
+                    f"{type(spec.get(bound)).__name__}"
+                )
             if _is_nan(spec.get(bound)):
                 raise ValueError(
                     f"param_map[{name!r}][{bound!r}] is NaN, which every value "
@@ -326,12 +332,16 @@ def _range_problem(value: Any, spec: _Spec) -> Optional[str]:
     breaks any ``min``/``max`` (it compares false with every bound, so it would
     otherwise slip through); it is reported as ``'nan'``: ``'raise'`` and ``'drop'``
     treat it like any other out-of-range value, and ``'clamp'`` raises, since there is
-    no bound a NaN is nearer to.
+    no bound a NaN is nearer to. A non-scalar value against a ``min``/``max`` is
+    ``'not_scalar'``, which raises ``TypeError`` under every policy.
     """
     if value is None:
         return None
-    if (spec.min is not None or spec.max is not None) and _is_nan(value):
-        return "nan"
+    if spec.min is not None or spec.max is not None:
+        if not _is_scalar(value):
+            return "not_scalar"
+        if _is_nan(value):
+            return "nan"
     if spec.min is not None and value < spec.min:
         return "min"
     if spec.max is not None and value > spec.max:
@@ -341,8 +351,38 @@ def _range_problem(value: Any, spec: _Spec) -> Optional[str]:
     return None
 
 
+def _ndim(value: Any) -> int:
+    """``value.ndim`` for array-likes (numpy, pandas, torch...), else 0."""
+    try:
+        ndim = getattr(value, "ndim", 0)
+    except Exception:  # noqa: BLE001 - a property that raises is not an array
+        return 0
+    return ndim if type(ndim) is int else 0  # not bool, not a method
+
+
+def _is_scalar(value: Any) -> bool:
+    """Whether ``value`` can be compared with a ``min``/``max`` as one value."""
+    if isinstance(value, (str, bytes)):
+        return True
+    if isinstance(value, (Mapping, list, tuple, set, frozenset)):
+        return False
+    return _ndim(value) == 0
+
+
+def _as_scalar(value: Any) -> Any:
+    """A 0-d array as the scalar it holds (``np.array(nan)`` -> ``nan``)."""
+    item = getattr(value, "item", None)
+    if hasattr(value, "ndim") and _ndim(value) == 0 and callable(item):
+        try:
+            return item()
+        except Exception:  # noqa: BLE001 - not an array after all
+            return value
+    return value
+
+
 def _is_nan(value: Any) -> bool:
     """Whether ``value`` is a numeric NaN (``float``, ``Decimal``, numpy...)."""
+    value = _as_scalar(value)
     if not isinstance(value, numbers.Number):
         return False
     is_nan = getattr(value, "is_nan", None)  # Decimal: comparing an sNaN raises
@@ -356,6 +396,11 @@ def _raise_if_out_of_range(name: str, value: Any, spec: _Spec) -> None:
     problem = _range_problem(value, spec)
     if problem is None:
         return
+    if problem == "not_scalar":
+        raise TypeError(
+            f"Parameter {name!r} has a min/max, which applies to one value, but got "
+            f"a {type(value).__name__}; check its elements before translating"
+        )
     shown = _value_text(name, value, as_str=problem != "choices")
     if problem == "nan":
         raise ValueError(
@@ -485,8 +530,10 @@ def make_translator(
                 continue
             problem = _range_problem(value, spec)
             if problem is not None:
-                if spec.out_of_range == "raise" or (
-                    problem == "nan" and spec.out_of_range == "clamp"
+                if (
+                    spec.out_of_range == "raise"
+                    or problem == "not_scalar"
+                    or (problem == "nan" and spec.out_of_range == "clamp")
                 ):
                     _raise_if_out_of_range(name, value, spec)
                 if spec.out_of_range == "drop":
