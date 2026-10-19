@@ -69,7 +69,7 @@ _RECIPES: Dict[str, dict] = {
         "heavy": True,
         "gpu": "For GPU, install a CUDA build of torch first (see https://pytorch.org/get-started/locally/).",
         "weights": "Downloads recognition/detection model weights on first use (cached under ~/.EasyOCR).",
-        "alt": "rapidocr (same PP-OCR-class accuracy, much lighter install, no Torch)",
+        "alt": "rapidocr (PP-OCR text models via ONNX: much lighter install, no Torch)",
     },
     "rapidocr": {
         "extra": "rapidocr",
@@ -87,12 +87,13 @@ _RECIPES: Dict[str, dict] = {
         "heavy": True,
         "gpu": "For GPU, replace paddlepaddle with the CUDA build: pip install paddlepaddle-gpu "
         "(match your CUDA version per https://www.paddlepaddle.org.cn/en/install/quick).",
-        "weights": "Downloads PP-OCR model weights on first use (cached under ~/.paddlex).",
+        "weights": "Downloads PP-OCR model weights on first use (cached under ~/.paddlex "
+        "on PaddleOCR 3.x, ~/.paddleocr on 2.x).",
         "alt": "rapidocr — PP-OCR text models via ONNX, much lighter and CPU-only, "
         "but less accurate until ocracy#22 (plain-text recognition only)",
         "notes": [
-            "PaddleOCR 3.x runs PP-OCRv6 models: the most accurate local plain-text "
-            "engine measured in ocracy#1, at about 3 s a page on CPU.",
+            "PaddleOCR 3.x runs PP-OCRv6 models: near-perfect on the printed pages "
+            "measured in ocracy#1 (against rapidocr only), at about 3 s a page on CPU.",
             "For tables/layout/formula, use paddleocr-ppstructure (same install plus "
             "the doc-parser extra).",
             "PaddlePaddle wheels are platform/Python-version sensitive; if the install "

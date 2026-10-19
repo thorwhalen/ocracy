@@ -7,16 +7,16 @@ Markdown (tables as HTML inside it). It is the capability RapidOCR and the plain
 Apple-silicon Mac, after a first-run download of the models (about 3 minutes).
 See https://github.com/thorwhalen/ocracy/issues/1 for the measurements.
 
-``languages`` is coerced exactly as for ``paddleocr`` (the same text models).
+``languages`` is handled exactly as for ``paddleocr`` (the same text models).
 """
 
-from ocracy.backends.paddleocr.config import to_paddle_lang
+from ocracy.backends.paddleocr.config import first_language
 
 BACKEND_CONFIG = {
     "id": "paddleocr-ppstructure",
     "name": "paddleocr-ppstructure",
     "display_name": "PaddleOCR PP-StructureV3 (tables, layout, formulas)",
-    "pip_install": 'paddleocr[doc-parser] paddlepaddle',
+    "pip_install": "paddleocr[doc-parser] paddlepaddle",
     "import_name": "paddleocr",
     "license": "Apache-2.0",
     "is_local": True,
@@ -32,7 +32,7 @@ BACKEND_CONFIG = {
     "param_map": {
         "languages": {
             "native_name": "lang",
-            "coerce": to_paddle_lang,
+            "coerce": first_language,
             "default": "en",
         },
     },

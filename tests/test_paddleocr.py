@@ -17,7 +17,11 @@ from ocracy.backends.paddleocr_ppstructure import adapter as structure_adapter
 from ocracy.backends.paddleocr_ppstructure.config import BACKEND_CONFIG as STRUCT_CFG
 
 POLY = [[0, 0], [10, 0], [10, 5], [0, 5]]
-V3_PAGE = {"rec_texts": ["Item", "Qty"], "rec_scores": [0.9, 0.8], "rec_polys": [POLY, POLY]}
+V3_PAGE = {
+    "rec_texts": ["Item", "Qty"],
+    "rec_scores": [0.9, 0.8],
+    "rec_polys": [POLY, POLY],
+}
 
 
 class _Result(dict):
@@ -65,23 +69,36 @@ def test_v3_and_v2_result_shapes_become_line_blocks():
 def test_paddleocr_uses_the_3x_api_with_preprocessors_off(fake_paddle):
     r = paddle_adapter.Adapter(PADDLE_CFG).read("img", languages=["fr"])
     assert [b.text for b in r.lines] == ["Item", "Qty"] and r.words == []
-    (name, kw), = fake_paddle
-    assert name == "PaddleOCR" and kw["lang"] == "french"
+    ((name, kw),) = fake_paddle
+    assert name == "PaddleOCR" and kw["lang"] == "fr"  # 3.x takes ISO codes
     assert kw["use_doc_unwarping"] is False and "show_log" not in kw
 
 
-def test_paddleocr_falls_back_to_the_2x_api(monkeypatch):
-    class PaddleOCR:  # 2.x: no 3.x switches, classic ocr() output
-        def __init__(self, use_angle_cls=None, lang=None, show_log=None):
-            pass
+def test_paddleocr_uses_the_2x_api_when_there_is_no_predict(monkeypatch):
+    built = []
+
+    class PaddleOCR:  # 2.x: accepts any keyword, has ocr() but no predict()
+        def __init__(self, **kwargs):
+            built.append(kwargs)
 
         def ocr(self, arr, cls=True):
             return [[[POLY, ("Old", 0.7)]]]
 
-    monkeypatch.setitem(sys.modules, "paddleocr", types.SimpleNamespace(PaddleOCR=PaddleOCR))
+    monkeypatch.setitem(
+        sys.modules, "paddleocr", types.SimpleNamespace(PaddleOCR=PaddleOCR)
+    )
     monkeypatch.setattr("ocracy.util.to_numpy", lambda image: image)
-    r = paddle_adapter.Adapter(PADDLE_CFG).read("img")
+    r = paddle_adapter.Adapter(PADDLE_CFG).read("img", languages=["ru"])
     assert [b.text for b in r.lines] == ["Old"]
+    assert built == [{"use_angle_cls": True, "lang": "cyrillic", "show_log": False}]
+
+
+def test_language_codes_per_version():
+    from ocracy.backends.paddleocr.config import V2_LANG, V3_LANG, first_language
+
+    assert first_language(None) == "en" and first_language(["ZH-TW", "en"]) == "zh-tw"
+    assert V3_LANG.get("zh-tw") == "chinese_cht" and "ru" not in V3_LANG  # 3.x: ISO
+    assert V2_LANG["ru"] == "cyrillic" and V2_LANG["fr"] == "french"
 
 
 def test_ppstructure_returns_markdown_and_lines(fake_paddle):

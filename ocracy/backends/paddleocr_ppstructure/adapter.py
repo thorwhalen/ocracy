@@ -11,6 +11,7 @@ turns that into an ``ImportError`` that names the install line.
 """
 
 from ocracy.backends.paddleocr.adapter import V3_PREPROCESSORS_OFF, blocks_from_v3
+from ocracy.backends.paddleocr.config import V3_LANG
 from ocracy.base import OcrResult
 from ocracy.make_backend import BaseOcrAdapter
 
@@ -34,10 +35,15 @@ class Adapter(BaseOcrAdapter):
                     f"extra: {_INSTALL}"
                 ) from e
             try:
-                self._pipelines[lang] = PPStructureV3(lang=lang, **V3_PREPROCESSORS_OFF)
-            except RuntimeError as e:  # paddlex's DependencyError, re-raised
+                self._pipelines[lang] = PPStructureV3(
+                    lang=V3_LANG.get(lang, lang), **V3_PREPROCESSORS_OFF
+                )
+            except (
+                RuntimeError
+            ) as e:  # how paddleocr re-raises paddlex's DependencyError
                 raise ImportError(
-                    f"PP-StructureV3 is missing dependencies ({e}). Install them: {_INSTALL}"
+                    f"PP-StructureV3 could not be built ({e}). The usual cause is the "
+                    f"missing doc-parser extra: {_INSTALL}"
                 ) from e
         return self._pipelines[lang]
 

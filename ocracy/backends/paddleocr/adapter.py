@@ -1,15 +1,17 @@
 """Adapter for PaddleOCR — image -> text + quad boxes via PP-OCR.
 
 PaddleOCR 3.x replaced the 2.x API: the constructor refuses 2.x keywords such as
-``show_log`` (with a ``ValueError``), and ``predict()`` returns result objects
-holding ``rec_texts`` / ``rec_scores`` / ``rec_polys`` instead of 2.x ``ocr()``'s
-``[[box, (text, score)], ...]``. The adapter builds a 3.x engine first and falls
-back to the 2.x one, and parses whichever shape comes back. The 3.x document
+``show_log``, ``predict()`` returns result objects holding ``rec_texts`` /
+``rec_scores`` / ``rec_polys`` instead of 2.x ``ocr()``'s ``[[box, (text, score)],
+...]``, and language names changed (3.x takes ISO codes). The adapter tells the two
+apart by whether ``PaddleOCR`` has ``predict`` (2.x accepts any keyword, so a
+constructor error cannot), then builds and parses accordingly. The 3.x document
 pre-processors (page orientation, unwarping, text-line orientation) are off: they
 are for photographed pages, and they slow every call. Engines are cached per
 language.
 """
 
+from ocracy.backends.paddleocr.config import V2_LANG, V3_LANG
 from ocracy.base import OcrResult
 from ocracy.make_backend import BaseOcrAdapter, make_block
 
@@ -19,6 +21,11 @@ V3_PREPROCESSORS_OFF = {
     "use_doc_unwarping": False,
     "use_textline_orientation": False,
 }
+
+
+def is_v3(paddle_class) -> bool:
+    """Whether a PaddleOCR pipeline class has the 3.x API (``predict``)."""
+    return callable(getattr(paddle_class, "predict", None))
 
 
 def blocks_from_v3(page) -> list:
@@ -62,11 +69,13 @@ class Adapter(BaseOcrAdapter):
         if lang not in self._engines:
             from paddleocr import PaddleOCR
 
-            try:
-                engine, v3 = PaddleOCR(lang=lang, **V3_PREPROCESSORS_OFF), True
-            except (TypeError, ValueError):  # 2.x does not know the 3.x switches
-                engine, v3 = PaddleOCR(use_angle_cls=True, lang=lang, show_log=False), False
-            self._engines[lang] = (engine, v3)
+            if is_v3(PaddleOCR):
+                native = V3_LANG.get(lang, lang)
+                engine = PaddleOCR(lang=native, **V3_PREPROCESSORS_OFF)
+            else:
+                native = V2_LANG.get(lang, lang)
+                engine = PaddleOCR(use_angle_cls=True, lang=native, show_log=False)
+            self._engines[lang] = (engine, is_v3(PaddleOCR))
         return self._engines[lang]
 
     def _read(self, image, *, lang="en", **extra) -> OcrResult:

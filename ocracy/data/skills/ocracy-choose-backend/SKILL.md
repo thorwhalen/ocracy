@@ -71,8 +71,9 @@ From the shell: `ocracy find --local --free --handwriting`, `ocracy info <id>`.
 ## Quick recommendations
 
 - **Local + free, just works:** `tesseract` (printed, 100+ langs); `paddleocr`
-  (PaddleOCR 3.x with PP-OCRv6 models: the most accurate local plain-text engine
-  measured in [#1](https://github.com/thorwhalen/ocracy/issues/1), about 3 s a
+  (PaddleOCR 3.x with PP-OCRv6 models: near-perfect on the printed pages measured
+  in [#1](https://github.com/thorwhalen/ocracy/issues/1), which compared it only
+  with rapidocr; about 3 s a
   page on CPU, heavy install); `rapidocr` (light and fast, CPU-only, but its
   PP-OCRv4 models drop word spaces on clean print until
   [#22](https://github.com/thorwhalen/ocracy/issues/22) moves it to PP-OCRv6);
