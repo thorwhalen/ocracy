@@ -1,6 +1,6 @@
 # ocracy — agent & contributor guide
 
-`ocracy` is one façade over many OCR engines — `ocracy.ocr(image) -> OcrResult`, the same shape whichever engine ran — plus a **ledger**: a researched, filterable catalog of 64 engines/services, of which **15 have a working façade today**. The ledger is data (`ocracy/data/backends.json`), not code; `implemented` is computed live from the registry, so it cannot lie about what runs.
+`ocracy` is one façade over many OCR engines — `ocracy.ocr(image) -> OcrResult`, the same shape whichever engine ran — plus a **ledger**: a researched, filterable catalog of 64 engines/services, of which **16 have a working façade today**. The ledger is data (`ocracy/data/backends.json`), not code; `implemented` is computed live from the registry, so it cannot lie about what runs.
 
 It is **AI-first**: four skills ship inside the package (`ocracy/data/skills/`, bridged to `.claude/skills/` by relative symlinks), so an agent that `pip install ocracy`-ed gets the operating manual with the code.
 
@@ -27,6 +27,7 @@ Background: [`ocracy/data/SCHEMA.md`](ocracy/data/SCHEMA.md) documents every led
 | `easyocr` | `line` | **empty** | populated |
 | `rapidocr` | `line` | **empty** | populated |
 | `paddleocr` | `line` | **empty** | populated |
+| `paddleocr-ppstructure` | `line` | **empty** | populated (+ `result.markdown` with tables) |
 | `ocrmac` | `line` | **empty** | populated |
 | `claude-vision` | *(none)* | **empty** | **empty** |
 | `gpt-4o-vision` | *(none)* | **empty** | **empty** |
@@ -61,13 +62,13 @@ if not result.words:
 | A specific engine, its own options | `ocracy.services.tesseract.read(img, psm=6)` |
 | The raw engine object | `ocracy.services.tesseract.adapter` |
 | Which engines run *here, now* | `ocracy.available_backends()` / `ocracy.doctor()` |
-| Which engines ocracy can run at all | `ocracy.list_backends()` (15) |
+| Which engines ocracy can run at all | `ocracy.list_backends()` (16) |
 | Every engine researched | `ocracy.catalog` (64) |
 | Pick an engine on the merits | `ocracy.find(is_local=True, open_source=True)`, `.can("math")`, `.supports_language("Arabic")` |
 | The exact install plan for this OS | `ocracy.requirements("paddleocr").instructions()` |
 | Run that plan | `ocracy.install("rapidocr", yes=True)` |
 | Readiness of everything, four levels | `ocracy.status_table()` |
-| Wrap a 16th engine | `scaffold_backend(id)` → adapter → `validate_adapter(id)` |
+| Wrap a 17th engine | `scaffold_backend(id)` → adapter → `validate_adapter(id)` |
 | Build *another* facade (translator, key chain, install plans, ledger) | `ocracy.kit` — `make_translator`, `resolve_credential`, `using_credentials`, `build_requirements`, `Catalog` |
 
 Every name above except the last row is a top-level `ocracy` export (`scaffold_backend` / `validate_adapter` also live in `ocracy.make_backend`, which is where new façade-building machinery goes). The CLI mirrors it (`ocracy read|backends|find|info|status|doctor|requirements|install|scaffold|validate`), built by `cw` from the signatures in `ocracy/tools.py` — so a new CLI command is a new function in `_dispatch_funcs`, never an argparse edit.
@@ -104,7 +105,7 @@ A backend is discovered structurally — a subpackage of `ocracy.backends` with 
 ## Known gaps and consolidation opportunities
 
 - **`dn` reads text out of scanned PDFs with its own Tesseract integration, bypassing ocracy entirely.** `$PP/t/dn/dn/ocr.py` (306 lines, zero references to ocracy anywhere in the repo) shells to `pytesseract` directly and carries its own copy of exactly what ocracy exists to own: a `find_tesseract()` binary search with a hardcoded candidate-path list, an `_importable()` probe, a `check_ocr_requirements()` / `ocr_is_available()` readiness pair, and an `_INSTALL_HINTS` table of per-OS install commands. Those are `ocracy.install.requirements()` / `check()` / `doctor()` and the `_RECIPES["tesseract"]` entry, re-derived. The consolidation is `dn` calling `ocracy.ocr(page_image, backend=...)`, which would also make `dn`'s OCR engine-swappable (its docstring's "the fix is ... run it through Tesseract" is currently a hard-coded choice) at the cost of one dependency in `dn[ocr]`. **Not done, and not ocracy's call to make** — `dn` is a separate package with its own release cycle; raise it there.
-- **Nothing in the code declares what an adapter emits, so the granularity table above lives in prose — in three places (here, the README, the `ocracy` skill).** That is exactly the shape that drifts, and it is discoverable today only by reading fifteen `adapter.py` files for their `level=` argument. The fix is a **declared field on `BACKEND_CONFIG`** — say `"emits_levels": ["word"]` — *not* a ledger field: the ledger describes 64 engines' *capabilities*, and putting granularity there would repeat the exact category error that makes `bounding_boxes` over-report. Declared per adapter it is (a) mechanically testable — `tests/test_backends.py` already runs `validate_adapter` per backend, so one assertion that the emitted blocks' levels match the declaration makes the docs self-enforcing; (b) surfaceable through `ServiceHandle.info`; and (c) free to filter on, because `Catalog._load` already merges a computed per-record field (`implemented`) from the registry, and `Catalog.filter(**criteria)` is open over record fields — so `ocracy.find(implemented=True, emits_levels="word")` would work with no filter change, provided `emits_levels` joins `catalog._TEXT_MEMBERSHIP_FIELDS` so a list-valued field gets membership rather than equality semantics. **Not implemented.**
+- **Nothing in the code declares what an adapter emits, so the granularity table above lives in prose — in three places (here, the README, the `ocracy` skill).** That is exactly the shape that drifts, and it is discoverable today only by reading sixteen `adapter.py` files for their `level=` argument. The fix is a **declared field on `BACKEND_CONFIG`** — say `"emits_levels": ["word"]` — *not* a ledger field: the ledger describes 64 engines' *capabilities*, and putting granularity there would repeat the exact category error that makes `bounding_boxes` over-report. Declared per adapter it is (a) mechanically testable — `tests/test_backends.py` already runs `validate_adapter` per backend, so one assertion that the emitted blocks' levels match the declaration makes the docs self-enforcing; (b) surfaceable through `ServiceHandle.info`; and (c) free to filter on, because `Catalog._load` already merges a computed per-record field (`implemented`) from the registry, and `Catalog.filter(**criteria)` is open over record fields — so `ocracy.find(implemented=True, emits_levels="word")` would work with no filter change, provided `emits_levels` joins `catalog._TEXT_MEMBERSHIP_FIELDS` so a list-valued field gets membership rather than equality semantics. **Not implemented.**
 - **`ocracy` reads images, not PDFs.** Callers rasterize pages first. This is why `dn` grew its own path.
 - **Only `tesseract` is `default_for` "read"**, so `get_default_backend()` falls through to the first *available* candidate alphabetically when pytesseract is absent — which on a machine with only `requests` installed is `mathpix`, a paid remote backend. `tests/test_registry_services.py::test_default_backend_resolves` asserts `tesseract` and therefore only passes where pytesseract is importable.
 
