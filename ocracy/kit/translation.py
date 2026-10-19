@@ -353,8 +353,11 @@ def _range_problem(value: Any, spec: _Spec) -> Optional[str]:
 
 def _ndim(value: Any) -> int:
     """``value.ndim`` for array-likes (numpy, pandas, torch...), else 0."""
-    ndim = getattr(value, "ndim", 0)
-    return ndim if isinstance(ndim, int) else 0
+    try:
+        ndim = getattr(value, "ndim", 0)
+    except Exception:  # noqa: BLE001 - a property that raises is not an array
+        return 0
+    return ndim if type(ndim) is int else 0  # not bool, not a method
 
 
 def _is_scalar(value: Any) -> bool:
