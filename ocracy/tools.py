@@ -23,6 +23,7 @@ __all__ = [
     "doctor",
     "install",
     "status",
+    "benchmark",
 ]
 
 
@@ -245,6 +246,34 @@ def status(*, level: str = "all", run_tests: bool = False, names: bool = False):
     return "\n".join(out)
 
 
+def benchmark(
+    corpus: str,
+    *,
+    backends: Optional[str] = None,
+    languages: Optional[str] = None,
+    output: str = "table",
+):
+    """Score backends on a labelled corpus (CER, WER, seconds per page).
+
+    :param corpus: A folder holding ``truth.json`` ({image file name: reference text}), or that JSON file.
+    :param backends: Comma-separated backend ids (default: every installed one).
+    :param languages: Comma-separated language codes passed to every backend.
+    :param output: ``table`` (per-backend means, default) or ``json`` (one row per backend and image).
+    """
+    from ocracy import benchmark as run
+    from ocracy.benchmark import summary
+
+    if output not in ("table", "json"):
+        raise ValueError(f"output must be 'table' or 'json', not {output!r}")
+    kwargs = {}
+    if languages:
+        kwargs["languages"] = _split_csv(languages)
+    rows = run(corpus, backends, **kwargs)
+    if output == "json":
+        return json.dumps(rows, indent=2, ensure_ascii=False)
+    return summary(rows)
+
+
 # SSOT list of CLI-dispatchable functions.
 _dispatch_funcs = [
     read,
@@ -257,4 +286,5 @@ _dispatch_funcs = [
     doctor,
     install,
     status,
+    benchmark,
 ]

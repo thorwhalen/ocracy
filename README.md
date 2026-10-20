@@ -155,6 +155,7 @@ ocracy backends --capability math
 ocracy status                                 # readiness table: all / implemented / set-up / tested
 ocracy status --level set_up --names          # one level + the "Name (website)" lists
 ocracy status --run-tests                     # also OCR-test set-up backends (real calls for remotes)
+ocracy benchmark my_scans/ --backends tesseract,easyocr   # CER / WER / seconds on a folder with truth.json
 ocracy find --local --free --handwriting      # browse/filter the ledger
 ocracy info google-vision                     # a backend's full record
 ocracy scaffold surya                          # start a new façade from the ledger
