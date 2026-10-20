@@ -223,7 +223,12 @@ def summary(rows: Iterable[Mapping]) -> str:
     columns = [k for k in (rows[0] if rows else {}) if k not in skip]
     lines = [
         "  ".join(
-            [f"{'backend':<28}", *(f"{c:>8}" for c in columns), f"{'seconds':>8}", "ok/failed"]
+            [
+                f"{'backend':<28}",
+                *(f"{c:>8}" for c in columns),
+                f"{'seconds':>8}",
+                "ok/failed",
+            ]
         )
     ]
     for backend in dict.fromkeys(r["backend"] for r in rows):
@@ -231,7 +236,9 @@ def summary(rows: Iterable[Mapping]) -> str:
         good = [r for r in mine if r["error"] is None]
 
         def mean(key):
-            return f"{sum(r[key] for r in good) / len(good):8.3f}" if good else f"{'-':>8}"
+            return (
+                f"{sum(r[key] for r in good) / len(good):8.3f}" if good else f"{'-':>8}"
+            )
 
         lines.append(
             "  ".join(
