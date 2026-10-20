@@ -40,8 +40,8 @@ one granularity, so `result.words` is empty on a line-level backend and
 |---|---|---|---|---|---|---|
 | Tesseract | `tesseract` | local | free | `ocracy[tesseract]` (+ system `tesseract`) | **word** | 100+ language baseline |
 | EasyOCR | `easyocr` | local | free | `ocracy[easyocr]` | **line** | 80+ languages, scene text |
-| RapidOCR | `rapidocr` | local | free | `ocracy[rapidocr]` | **line** | light CPU/ONNX, fast; today ships older PP-OCRv4 models that can drop word spaces (moving to PP-OCRv6: [#22](https://github.com/thorwhalen/ocracy/issues/22)) |
-| PaddleOCR | `paddleocr` | local | free | `ocracy[paddleocr]` | **line** | PaddleOCR 3.x, PP-OCRv6 models: near-perfect on clean and degraded print, and well ahead of `rapidocr` today ([#1](https://github.com/thorwhalen/ocracy/issues/1)); heavier install, ~3 s/page CPU |
+| RapidOCR | `rapidocr` | local | free | `ocracy[rapidocr]` | **line** | the same PP-OCRv6 models as `paddleocr` via ONNX, without PaddlePaddle: light CPU install, ~2.5 s/page at `model_size="medium"` (default), `"small"`/`"tiny"` faster ([#22](https://github.com/thorwhalen/ocracy/issues/22)) |
+| PaddleOCR | `paddleocr` | local | free | `ocracy[paddleocr]` | **line** | PaddleOCR 3.x, PP-OCRv6 models: near-perfect on clean and degraded print, ([#1](https://github.com/thorwhalen/ocracy/issues/1)); heavier install, and `rapidocr` runs the same models more lightly, ~3 s/page CPU |
 | PaddleOCR PP-StructureV3 | `paddleocr-ppstructure` | local | free | `ocracy[paddleocr-ppstructure]` | **line** | tables (HTML), layout and formulas → `result.markdown`; slow on CPU (~25 s/page) |
 | ocrmac (Apple Vision) | `ocrmac` | local (macOS) | free | `ocracy[ocrmac]` | **line** | on-device, handwriting |
 | pix2tex (LaTeX-OCR) | `pix2tex-latex-ocr` | local | free | `ocracy[pix2tex]` | *text only* | one printed equation → LaTeX, offline |

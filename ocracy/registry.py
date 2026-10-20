@@ -110,11 +110,14 @@ def _is_available(backend_id: str) -> bool:
     if not import_name:
         # No declared import probe: assume available and let usage surface errors.
         return True
-    try:
-        importlib.import_module(import_name)
-        return True
-    except Exception:
-        return False
+    # ``import_alternatives``: other packages that also provide the engine (an older install).
+    for name in (import_name, *entry["config"].get("import_alternatives", ())):
+        try:
+            importlib.import_module(name)
+            return True
+        except Exception:
+            continue
+    return False
 
 
 # ---------------------------------------------------------------------------
