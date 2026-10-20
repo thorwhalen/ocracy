@@ -143,7 +143,11 @@ DFLT_SYNTHETIC_TEXTS = (
 DFLT_SYNTHETIC_FONTS = ("DejaVuSans.ttf", "DejaVuSerif.ttf", "DejaVuSansMono.ttf")
 
 #: The default table: header row then data rows.
-DFLT_SYNTHETIC_TABLE = (("Item", "Qty", "Price"), ("Apple", "3", "1.20"), ("Pear", "12", "0.75"))
+DFLT_SYNTHETIC_TABLE = (
+    ("Item", "Qty", "Price"),
+    ("Apple", "3", "1.20"),
+    ("Pear", "12", "0.75"),
+)
 
 
 def _load_font(font: str, size: int):
@@ -161,8 +165,15 @@ def _degrade(image, rng: Random):
 
     image = image.filter(ImageFilter.GaussianBlur(radius=1.0))
     image = image.rotate(rng.uniform(-2, 2), expand=True, fillcolor=255)
-    noise = Image.new("L", image.size)  # not Image.effect_noise: that one cannot be seeded
-    noise.putdata([min(255, max(0, round(rng.gauss(128, 24)))) for _ in range(image.size[0] * image.size[1])])
+    noise = Image.new(
+        "L", image.size
+    )  # not Image.effect_noise: that one cannot be seeded
+    noise.putdata(
+        [
+            min(255, max(0, round(rng.gauss(128, 24))))
+            for _ in range(image.size[0] * image.size[1])
+        ]
+    )
     return Image.blend(image, noise, 0.15)
 
 
@@ -191,10 +202,16 @@ def synthetic_corpus(
     try:
         from PIL import Image, ImageDraw
     except ImportError as e:  # pragma: no cover - depends on environment
-        raise ImportError("synthetic_corpus needs Pillow: `pip install ocracy[image]`.") from e
+        raise ImportError(
+            "synthetic_corpus needs Pillow: `pip install ocracy[image]`."
+        ) from e
     import tempfile
 
-    folder = Path(out_dir) if out_dir is not None else Path(tempfile.mkdtemp(prefix="ocracy-corpus-"))
+    folder = (
+        Path(out_dir)
+        if out_dir is not None
+        else Path(tempfile.mkdtemp(prefix="ocracy-corpus-"))
+    )
     folder.mkdir(parents=True, exist_ok=True)
     rng = Random(seed)
     corpus: dict[str, str] = {}
@@ -213,20 +230,36 @@ def synthetic_corpus(
                 for i, text in enumerate(texts):
                     width = int(font.getlength(text)) + 2 * size
                     image = Image.new("L", (width, 3 * size), 255)
-                    ImageDraw.Draw(image).text((size, size // 2 + size // 4), text, font=font, fill=0)
+                    ImageDraw.Draw(image).text(
+                        (size, size // 2 + size // 4), text, font=font, fill=0
+                    )
                     save(image, f"text{i}-{stem}-{size}", text, bad)
                 if table:
-                    cell_w = max(int(font.getlength(c)) for row in table for c in row) + size
-                    image = Image.new("L", (cell_w * len(table[0]) + size, 2 * size * len(table) + size), 255)
+                    cell_w = (
+                        max(int(font.getlength(c)) for row in table for c in row) + size
+                    )
+                    image = Image.new(
+                        "L",
+                        (cell_w * len(table[0]) + size, 2 * size * len(table) + size),
+                        255,
+                    )
                     draw = ImageDraw.Draw(image)
                     for r, row in enumerate(table):
                         for c, cell in enumerate(row):
                             x, y = size // 2 + c * cell_w, size // 2 + r * 2 * size
                             draw.rectangle([x, y, x + cell_w, y + 2 * size], outline=0)
-                            draw.text((x + size // 2, y + size // 2), cell, font=font, fill=0)
-                    save(image, f"table-{stem}-{size}", " ".join(c for row in table for c in row), bad)
+                            draw.text(
+                                (x + size // 2, y + size // 2), cell, font=font, fill=0
+                            )
+                    save(
+                        image,
+                        f"table-{stem}-{size}",
+                        " ".join(c for row in table for c in row),
+                        bad,
+                    )
     (folder / TRUTH_FILE).write_text(
-        json.dumps({Path(k).name: v for k, v in corpus.items()}, indent=2), encoding="utf-8"
+        json.dumps({Path(k).name: v for k, v in corpus.items()}, indent=2),
+        encoding="utf-8",
     )
     return corpus
 
