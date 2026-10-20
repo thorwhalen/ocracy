@@ -38,6 +38,10 @@ BACKEND_CONFIG = {
     ),
     "param_map": {
         "languages": {"native_name": "lang", "coerce": first_language, "default": "en"},
-        "model_size": {"native_name": "model_size", "choices": MODEL_SIZES, "default": "medium"},
+        "model_size": {
+            "native_name": "model_size",
+            "choices": MODEL_SIZES,
+            "default": "medium",
+        },
     },
 }

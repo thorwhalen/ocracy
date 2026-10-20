@@ -95,7 +95,11 @@ class Adapter(BaseOcrAdapter):
         engine = self._engine(lang, model_size)
         if is_v3_package():
             raw = engine(arr, **extra)
-            return OcrResult.from_blocks(blocks_from_v3(raw), backend=self.backend_id, raw=raw)
+            return OcrResult.from_blocks(
+                blocks_from_v3(raw), backend=self.backend_id, raw=raw
+            )
         # Legacy: engine(img) -> (result, elapse).
         raw, _elapse = engine(arr, **extra)
-        return OcrResult.from_blocks(blocks_from_legacy(raw), backend=self.backend_id, raw=raw)
+        return OcrResult.from_blocks(
+            blocks_from_legacy(raw), backend=self.backend_id, raw=raw
+        )
