@@ -22,10 +22,11 @@ OCR_VERSION = "PP-OCRv6"
 def is_v3_package() -> bool:
     """Whether the ``rapidocr`` 3.x package (not just the legacy one) is importable."""
     try:
-        import rapidocr  # noqa: F401
+        import rapidocr
     except ImportError:
         return False
-    return True
+    # 1.x / 2.x install the same module name without the 3.x model selection.
+    return hasattr(rapidocr, "OCRVersion")
 
 
 def v6_params(lang: str, model_size: str) -> dict:

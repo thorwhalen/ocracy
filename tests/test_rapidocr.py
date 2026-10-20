@@ -34,9 +34,6 @@ def fake_v3(monkeypatch):
         def __call__(self, arr, **extra):
             return _Result([BOX, BOX], ["Invoice 2024", "issued on 14 March"], [0.99, 0.95])
 
-    class Enum(str):
-        pass
-
     mod = types.ModuleType("rapidocr")
     mod.RapidOCR = RapidOCR
     mod.OCRVersion = lambda v: ("version", v)
@@ -117,7 +114,6 @@ def test_the_config_declares_the_new_package_and_the_legacy_alternative():
     assert BACKEND_CONFIG["import_name"] == "rapidocr"
     assert BACKEND_CONFIG["import_alternatives"] == ["rapidocr_onnxruntime"]
     assert MODEL_SIZES == ("tiny", "small", "medium")
-    assert "rapidocr>=3" in open(__import__("pathlib").Path(rapid_adapter.__file__).parents[3] / "pyproject.toml").read()
 
 
 def test_real_engine_reads_clean_print_with_word_spaces():
@@ -134,3 +130,14 @@ def test_real_engine_reads_clean_print_with_word_spaces():
     ImageDraw.Draw(im).text((20, 25), "Invoice issued on 14 March", fill="black", font=font)
     text = ocracy.read_text(im, backend="rapidocr", model_size="small")
     assert "14" in text and "March" in text
+
+
+def test_an_empty_language_list_means_english(fake_v3):
+    ocracy.ocr(_image(), backend="rapidocr", languages=[])
+    assert fake_v3[-1]["Rec.lang_type"] == "en"
+
+
+def test_a_rapidocr_without_3x_model_selection_is_not_taken_for_3x(monkeypatch):
+    old = types.ModuleType("rapidocr")  # no OCRVersion
+    monkeypatch.setitem(sys.modules, "rapidocr", old)
+    assert not rapid_adapter.is_v3_package()

@@ -34,7 +34,7 @@ def first_language(languages):
     The adapter maps it to the installed PaddleOCR's spelling (:data:`V3_LANG` /
     :data:`V2_LANG`); ``paddleocr-ppstructure`` uses the same coercion.
     """
-    if languages is None:
+    if languages is None or (isinstance(languages, (list, tuple)) and not languages):
         return "en"
     code = languages[0] if isinstance(languages, (list, tuple)) else languages
     return str(code).lower()
