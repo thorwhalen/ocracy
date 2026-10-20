@@ -1,32 +1,32 @@
 {
   "schema_version": 1,
-  "built_at": "2026-10-20T10:01:02Z",
+  "built_at": "2026-10-20T10:32:02Z",
   "package": {
     "name": "ocracy",
-    "version": "0.1.20",
+    "version": "0.1.21",
     "display_name": "ocracy",
     "source": "pyproject.toml"
   },
   "git": {
     "available": true,
-    "commit": "3a8234ecae34197cdfccda4652b79ec1efe820f0",
-    "short_commit": "3a8234e",
+    "commit": "ea5cc7366741487c79b3a114a4c7542cd40aa036",
+    "short_commit": "ea5cc73",
     "branch": "main",
     "tags": [],
     "dirty": false,
     "remote_url": "https://github.com/thorwhalen/ocracy",
-    "commit_url": "https://github.com/thorwhalen/ocracy/commit/3a8234ecae34197cdfccda4652b79ec1efe820f0",
+    "commit_url": "https://github.com/thorwhalen/ocracy/commit/ea5cc7366741487c79b3a114a4c7542cd40aa036",
     "error": null
   },
   "ci": {
     "provider": "github",
     "repository": "thorwhalen/ocracy",
-    "sha": "3a8234ecae34197cdfccda4652b79ec1efe820f0",
+    "sha": "ea5cc7366741487c79b3a114a4c7542cd40aa036",
     "sha_in_history": true,
     "ref": "refs/heads/main",
     "ref_name": "main",
-    "run_id": "39404673620",
-    "run_url": "https://github.com/thorwhalen/ocracy/actions/runs/39404673620",
+    "run_id": "39408447032",
+    "run_url": "https://github.com/thorwhalen/ocracy/actions/runs/39408447032",
     "server_url": "https://github.com"
   },
   "tools": {
@@ -61,15 +61,13 @@
   "pypi": {
     "checked": true,
     "latest": "0.1.21",
-    "relation": "behind",
+    "relation": "same",
     "error": null
   },
-  "reproduce": "git clone https://github.com/thorwhalen/ocracy && cd ocracy\ngit checkout 3a8234ecae34197cdfccda4652b79ec1efe820f0\npip install \"epythet==0.2.18\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
+  "reproduce": "git clone https://github.com/thorwhalen/ocracy && cd ocracy\ngit checkout ea5cc7366741487c79b3a114a4c7542cd40aa036\npip install \"epythet==0.2.18\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
   "warnings": [],
   "alignment": {
-    "aligned": false,
-    "notes": [
-      "The documented version (0.1.20) is behind the latest release on PyPI (0.1.21): `pip install ocracy` gives newer code than these docs describe."
-    ]
+    "aligned": true,
+    "notes": []
   }
 }
