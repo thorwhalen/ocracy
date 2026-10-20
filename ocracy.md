@@ -1,4 +1,4 @@
-> built 2026-10-20 03:27 UTC from 32741bb (main) · ocracy 0.1.19. Details: build_info.json
+> built 2026-10-20 10:01 UTC from 3a8234e (main) · ocracy 0.1.20. Details: build_info.json
 
 # index.html.md
 
@@ -163,6 +163,7 @@ ocracy backends --capability math
 ocracy status                                 # readiness table: all / implemented / set-up / tested
 ocracy status --level set_up --names          # one level + the "Name (website)" lists
 ocracy status --run-tests                     # also OCR-test set-up backends (real calls for remotes)
+ocracy benchmark my_scans/ --backends tesseract,easyocr   # CER / WER / seconds on a folder with truth.json
 ocracy find --local --free --handwriting      # browse/filter the ledger
 ocracy info google-vision                     # a backend's full record
 ocracy scaffold surya                          # start a new façade from the ledger
@@ -1593,6 +1594,7 @@ ocracy.services.tesseract.adapter              # raw engine adapter
 |---------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------|
 | [`read_text`](_autosummary/ocracy.html.md#ocracy.read_text)(image, \*[, backend])                  | Like [`ocr()`](_autosummary/ocracy.html.md#ocracy.ocr) but returns just the recognized text string.  |
 | [`find`](_autosummary/ocracy.html.md#ocracy.find)(\*\*criteria)                               | Filter the ledger; shorthand for `ocracy.catalog.Catalog.filter()`.                                       |
+| [`benchmark`](_autosummary/ocracy.html.md#ocracy.benchmark)(corpus[, backends, metric, read, ...]) | Run each backend over each image of `corpus` and score what it read.                                      |
 | [`list_backends`](_autosummary/ocracy.html.md#ocracy.list_backends)([capability])                      | Sorted ids of implemented backends, optionally filtered by capability.                                    |
 | [`register_backend`](_autosummary/ocracy.html.md#ocracy.register_backend)(backend_id, config[, adapter])  | Register a backend at runtime (for third-party plugins).                                                  |
 | [`get_default_backend`](_autosummary/ocracy.html.md#ocracy.get_default_backend)([capability, ...])           | Pick a sensible default backend id for a capability.                                                      |
@@ -1879,6 +1881,34 @@ Per-backend status: every ledger field plus `implemented`/`set_up`/`tested`.
 * **Returns:**
   `{id: {..., "name", "website", "implemented", "set_up", "tested"}}` where
   `tested` is `True`/`False`/`None` (None = not attempted).
+
+### ocracy.benchmark(corpus, backends=None, \*, metric=None, read=None, normalize=<function \_collapse_whitespace>, \*\*read_kwargs)
+
+Run each backend over each image of `corpus` and score what it read.
+
+* **Parameters:**
+  * **corpus** – `{image: reference text}`, or a folder with a `truth.json`
+    (see `load_corpus()`).
+  * **backends** ([`Iterable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)] | [`str`](https://docs.python.org/3/builtins/stdtypes.html#str) | [`None`](https://docs.python.org/3/builtins/constants.html#None)) – Backend ids (list, or comma-separated string). Default: every
+    implemented backend that is installed right now.
+  * **metric** ([`Callable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable)[[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)], [`float`](https://docs.python.org/3/builtins/functions.html#float)] | [`Mapping`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Callable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable)[[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)], [`float`](https://docs.python.org/3/builtins/functions.html#float)]] | [`None`](https://docs.python.org/3/builtins/constants.html#None)) – A `(reference, hypothesis) -> float` callable (column `score`) or a
+    `{column: callable}` mapping. Default: `DFLT_METRICS` (`cer`, `wer`).
+  * **read** ([`Callable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable) | [`None`](https://docs.python.org/3/builtins/constants.html#None)) – `(image, *, backend, **read_kwargs) -> OcrResult`; default [`ocracy.ocr()`](_autosummary/ocracy.html.md#ocracy.ocr).
+  * **normalize** ([`Callable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable)[[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)], [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – Applied to reference and hypothesis before scoring.
+  * **\*\*read_kwargs** – Passed to every read, e.g. `languages=["en"]`.
+* **Returns:**
+  `backend`, `image`, one key per metric,
+  `seconds`, `error` (`None` unless the backend raised) and `hypothesis`.
+  A failed read has `None` scores; it never stops the run.
+* **Return type:**
+  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)]
+
+```pycon
+>>> fake = lambda image, *, backend, **kw: type("R", (), {"text": "helo"})()
+>>> rows = benchmark({"a.png": "hello"}, ["x"], read=fake)
+>>> rows[0]["backend"], rows[0]["cer"], rows[0]["error"]
+('x', 0.2, None)
+```
 
 ### ocracy.check(backend_id)
 
@@ -3531,6 +3561,7 @@ turns their signatures into subcommands and options. Run `ocracy <command>
 | [`doctor`](_autosummary/ocracy.tools.html.md#ocracy.tools.doctor)()                                          | Report which backends are usable now, and how to install the rest.                  |
 | [`install`](_autosummary/ocracy.tools.html.md#ocracy.tools.install)(backend_id, \*[, gpu, yes])               | Plan (default) or run (`--yes`) the pip install for a backend.                      |
 | [`status`](_autosummary/ocracy.tools.html.md#ocracy.tools.status)(\*[, level, run_tests, names])             | Print an OCR-backend readiness table (levels: all ⊇ implemented ⊇ set_up ⊇ tested). |
+| [`benchmark`](_autosummary/ocracy.tools.html.md#ocracy.tools.benchmark)(corpus, \*[, backends, languages, ...]) | Score backends on a labelled corpus (CER, WER, seconds per page).                   |
 
 ### ocracy.tools.backends(, capability=None)
 
@@ -3538,6 +3569,16 @@ List the backends ocracy can run right now (optionally by capability).
 
 * **Parameters:**
   **capability** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – Filter to a capability, e.g. `math`, `tables`, `handwriting`.
+
+### ocracy.tools.benchmark(corpus, , backends=None, languages=None, output='table')
+
+Score backends on a labelled corpus (CER, WER, seconds per page).
+
+* **Parameters:**
+  * **corpus** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – A folder holding `truth.json` ({image file name: reference text}), or that JSON file.
+  * **backends** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – Comma-separated backend ids (default: every installed one).
+  * **languages** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – Comma-separated language codes passed to every backend.
+  * **output** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – `table` (per-backend means, default) or `json` (one row per backend and image).
 
 ### ocracy.tools.doctor()
 
@@ -3787,16 +3828,18 @@ Convert any supported input into a PIL `Image` (lazy import).
 
 # About this build
 
-This documentation was built on **2026-10-20 03:27 UTC** from commit <a href="https://github.com/thorwhalen/ocracy/commit/32741bbe64a783ecdbffae46be1a1be60b07736b"><code>32741bb</code></a> on branch <code>main</code>, for **ocracy 0.1.19** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-10-20 10:01 UTC** from commit <a href="https://github.com/thorwhalen/ocracy/commit/3a8234ecae34197cdfccda4652b79ec1efe820f0"><code>3a8234e</code></a> on branch <code>main</code>, for **ocracy 0.1.20** (from <code>pyproject.toml</code>).
 
-#### NOTE
-Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
+#### WARNING
+The documentation and the package may be misaligned:
+
+- The documented version (0.1.20) is behind the latest release on PyPI (0.1.21): `pip install ocracy` gives newer code than these docs describe.
 
 ## Source
 
 |                     |                                                                                                                                                          |
 |---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/ocracy/commit/32741bbe64a783ecdbffae46be1a1be60b07736b"><code>32741bbe64a783ecdbffae46be1a1be60b07736b</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/ocracy/commit/3a8234ecae34197cdfccda4652b79ec1efe820f0"><code>3a8234ecae34197cdfccda4652b79ec1efe820f0</code></a> |
 | Branch              | <code>main</code>                                                                                                                                        |
 | Tags at this commit | none                                                                                                                                                     |
 | Working tree        | clean                                                                                                                                                    |
@@ -3807,9 +3850,9 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/ocracy</code>                                                             |
-| Run          | <a href="https://github.com/thorwhalen/ocracy/actions/runs/39364230817">39364230817</a>    |
+| Run          | <a href="https://github.com/thorwhalen/ocracy/actions/runs/39404673620">39404673620</a>    |
 | Ref          | <code>refs/heads/main</code>                                                               |
-| Event commit | <code>32741bbe64a783ecdbffae46be1a1be60b07736b</code> (in the history of the built commit) |
+| Event commit | <code>3a8234ecae34197cdfccda4652b79ec1efe820f0</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -3834,13 +3877,13 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/ocracy/0.1.19/">0.1.19</a>, the same as the documented version.
+Latest release: <a href="https://pypi.org/project/ocracy/0.1.21/">0.1.21</a>, newer than the documented version (0.1.20).
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/thorwhalen/ocracy && cd ocracy
-git checkout 32741bbe64a783ecdbffae46be1a1be60b07736b
+git checkout 3a8234ecae34197cdfccda4652b79ec1efe820f0
 pip install "epythet==0.2.18"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```

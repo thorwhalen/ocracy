@@ -18,4 +18,5 @@ ocracy.tools
       doctor
       install
       status
+      benchmark
    

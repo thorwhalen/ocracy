@@ -41,7 +41,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../_static/documentation_options.js?v=3d116926"></script>
+    <script src="../_static/documentation_options.js?v=17aaaefc"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -411,7 +411,7 @@ window.runMermaid = runMermaid;</script>
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.1.19" />
+  <meta name="docsearch:version" content="0.1.20" />
   
     
     <script src="../_static/searchtools.js"></script>
@@ -779,6 +779,7 @@ window.runMermaid = runMermaid;</script>
     <span class="s2">"BackendInfo"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"ocracy.catalog"</span><span class="p">,</span> <span class="s2">"BackendInfo"</span><span class="p">),</span>
     <span class="s2">"Catalog"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"ocracy.catalog"</span><span class="p">,</span> <span class="s2">"Catalog"</span><span class="p">),</span>
     <span class="s2">"catalog"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"ocracy.catalog"</span><span class="p">,</span> <span class="s2">"catalog"</span><span class="p">),</span>
+    <span class="s2">"benchmark"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"ocracy.benchmark"</span><span class="p">,</span> <span class="s2">"benchmark"</span><span class="p">),</span>
     <span class="s2">"get_config"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"ocracy.registry"</span><span class="p">,</span> <span class="s2">"get_config"</span><span class="p">),</span>
     <span class="s2">"get_default_backend"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"ocracy.registry"</span><span class="p">,</span> <span class="s2">"get_default_backend"</span><span class="p">),</span>
     <span class="s2">"list_backends"</span><span class="p">:</span> <span class="p">(</span><span class="s2">"ocracy.registry"</span><span class="p">,</span> <span class="s2">"list_backends"</span><span class="p">),</span>
@@ -811,11 +812,12 @@ window.runMermaid = runMermaid;</script>
 <span class="c1">#: import and so won. Lazily, importing the submodule later would make the</span>
 <span class="c1">#: import system bind the MODULE over the root name; :class:`_Root` refuses</span>
 <span class="c1">#: exactly that binding, so the root export keeps winning.</span>
-<span class="n">_SUBMODULE_SHADOWED</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">({</span><span class="s2">"catalog"</span><span class="p">,</span> <span class="s2">"install"</span><span class="p">,</span> <span class="s2">"services"</span><span class="p">})</span>
+<span class="n">_SUBMODULE_SHADOWED</span> <span class="o">=</span> <span class="nb">frozenset</span><span class="p">({</span><span class="s2">"benchmark"</span><span class="p">,</span> <span class="s2">"catalog"</span><span class="p">,</span> <span class="s2">"install"</span><span class="p">,</span> <span class="s2">"services"</span><span class="p">})</span>
 
 <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>  <span class="c1"># pragma: no cover - static view of the lazy names</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">LEVELS</span> <span class="k">as</span> <span class="n">GRANULARITY_LEVELS</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.base</span><span class="w"> </span><span class="kn">import</span> <span class="n">BBox</span><span class="p">,</span> <span class="n">ImageInput</span><span class="p">,</span> <span class="n">OcrResult</span><span class="p">,</span> <span class="n">TextBlock</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.benchmark</span><span class="w"> </span><span class="kn">import</span> <span class="n">benchmark</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.catalog</span><span class="w"> </span><span class="kn">import</span> <span class="n">BackendInfo</span><span class="p">,</span> <span class="n">Catalog</span><span class="p">,</span> <span class="n">catalog</span>
     <span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.install</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
         <span class="n">Requirements</span><span class="p">,</span>
@@ -857,6 +859,7 @@ window.runMermaid = runMermaid;</script>
     <span class="s2">"services"</span><span class="p">,</span>
     <span class="s2">"catalog"</span><span class="p">,</span>
     <span class="s2">"find"</span><span class="p">,</span>
+    <span class="s2">"benchmark"</span><span class="p">,</span>
     <span class="s2">"list_backends"</span><span class="p">,</span>
     <span class="s2">"register_backend"</span><span class="p">,</span>
     <span class="s2">"get_default_backend"</span><span class="p">,</span>

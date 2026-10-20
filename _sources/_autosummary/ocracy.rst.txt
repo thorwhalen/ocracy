@@ -11,6 +11,7 @@
       ocr
       read_text
       find
+      benchmark
       list_backends
       register_backend
       get_default_backend

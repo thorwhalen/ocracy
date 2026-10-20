@@ -50,6 +50,7 @@ ocracy.services.tesseract.adapter              # raw engine adapter
 |---------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------|
 | [`read_text`](#ocracy.read_text)(image, \*[, backend])                  | Like [`ocr()`](#ocracy.ocr) but returns just the recognized text string.  |
 | [`find`](#ocracy.find)(\*\*criteria)                               | Filter the ledger; shorthand for `ocracy.catalog.Catalog.filter()`.                                       |
+| [`benchmark`](#ocracy.benchmark)(corpus[, backends, metric, read, ...]) | Run each backend over each image of `corpus` and score what it read.                                      |
 | [`list_backends`](#ocracy.list_backends)([capability])                      | Sorted ids of implemented backends, optionally filtered by capability.                                    |
 | [`register_backend`](#ocracy.register_backend)(backend_id, config[, adapter])  | Register a backend at runtime (for third-party plugins).                                                  |
 | [`get_default_backend`](#ocracy.get_default_backend)([capability, ...])           | Pick a sensible default backend id for a capability.                                                      |
@@ -336,6 +337,34 @@ Per-backend status: every ledger field plus `implemented`/`set_up`/`tested`.
 * **Returns:**
   `{id: {..., "name", "website", "implemented", "set_up", "tested"}}` where
   `tested` is `True`/`False`/`None` (None = not attempted).
+
+### ocracy.benchmark(corpus, backends=None, \*, metric=None, read=None, normalize=<function \_collapse_whitespace>, \*\*read_kwargs)
+
+Run each backend over each image of `corpus` and score what it read.
+
+* **Parameters:**
+  * **corpus** – `{image: reference text}`, or a folder with a `truth.json`
+    (see `load_corpus()`).
+  * **backends** ([`Iterable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterable)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)] | [`str`](https://docs.python.org/3/builtins/stdtypes.html#str) | [`None`](https://docs.python.org/3/builtins/constants.html#None)) – Backend ids (list, or comma-separated string). Default: every
+    implemented backend that is installed right now.
+  * **metric** ([`Callable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable)[[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)], [`float`](https://docs.python.org/3/builtins/functions.html#float)] | [`Mapping`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`Callable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable)[[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str), [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)], [`float`](https://docs.python.org/3/builtins/functions.html#float)]] | [`None`](https://docs.python.org/3/builtins/constants.html#None)) – A `(reference, hypothesis) -> float` callable (column `score`) or a
+    `{column: callable}` mapping. Default: `DFLT_METRICS` (`cer`, `wer`).
+  * **read** ([`Callable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable) | [`None`](https://docs.python.org/3/builtins/constants.html#None)) – `(image, *, backend, **read_kwargs) -> OcrResult`; default [`ocracy.ocr()`](#ocracy.ocr).
+  * **normalize** ([`Callable`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Callable)[[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)], [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – Applied to reference and hypothesis before scoring.
+  * **\*\*read_kwargs** – Passed to every read, e.g. `languages=["en"]`.
+* **Returns:**
+  `backend`, `image`, one key per metric,
+  `seconds`, `error` (`None` unless the backend raised) and `hypothesis`.
+  A failed read has `None` scores; it never stops the run.
+* **Return type:**
+  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)[[`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)]
+
+```pycon
+>>> fake = lambda image, *, backend, **kw: type("R", (), {"text": "helo"})()
+>>> rows = benchmark({"a.png": "hello"}, ["x"], read=fake)
+>>> rows[0]["backend"], rows[0]["cer"], rows[0]["error"]
+('x', 0.2, None)
+```
 
 ### ocracy.check(backend_id)
 

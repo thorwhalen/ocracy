@@ -19,6 +19,7 @@ turns their signatures into subcommands and options. Run `ocracy <command>
 | [`doctor`](#ocracy.tools.doctor)()                                          | Report which backends are usable now, and how to install the rest.                  |
 | [`install`](#ocracy.tools.install)(backend_id, \*[, gpu, yes])               | Plan (default) or run (`--yes`) the pip install for a backend.                      |
 | [`status`](#ocracy.tools.status)(\*[, level, run_tests, names])             | Print an OCR-backend readiness table (levels: all ⊇ implemented ⊇ set_up ⊇ tested). |
+| [`benchmark`](#ocracy.tools.benchmark)(corpus, \*[, backends, languages, ...]) | Score backends on a labelled corpus (CER, WER, seconds per page).                   |
 
 ### ocracy.tools.backends(, capability=None)
 
@@ -26,6 +27,16 @@ List the backends ocracy can run right now (optionally by capability).
 
 * **Parameters:**
   **capability** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – Filter to a capability, e.g. `math`, `tables`, `handwriting`.
+
+### ocracy.tools.benchmark(corpus, , backends=None, languages=None, output='table')
+
+Score backends on a labelled corpus (CER, WER, seconds per page).
+
+* **Parameters:**
+  * **corpus** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – A folder holding `truth.json` ({image file name: reference text}), or that JSON file.
+  * **backends** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – Comma-separated backend ids (default: every installed one).
+  * **languages** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – Comma-separated language codes passed to every backend.
+  * **output** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – `table` (per-backend means, default) or `json` (one row per backend and image).
 
 ### ocracy.tools.doctor()
 
