@@ -1,37 +1,37 @@
 {
   "schema_version": 1,
-  "built_at": "2026-10-19T13:50:10Z",
+  "built_at": "2026-10-20T03:27:04Z",
   "package": {
     "name": "ocracy",
-    "version": "0.1.18",
+    "version": "0.1.19",
     "display_name": "ocracy",
     "source": "pyproject.toml"
   },
   "git": {
     "available": true,
-    "commit": "aa561645bd7ad7511790d4886bbf14dc9d749455",
-    "short_commit": "aa56164",
+    "commit": "32741bbe64a783ecdbffae46be1a1be60b07736b",
+    "short_commit": "32741bb",
     "branch": "main",
     "tags": [],
     "dirty": false,
     "remote_url": "https://github.com/thorwhalen/ocracy",
-    "commit_url": "https://github.com/thorwhalen/ocracy/commit/aa561645bd7ad7511790d4886bbf14dc9d749455",
+    "commit_url": "https://github.com/thorwhalen/ocracy/commit/32741bbe64a783ecdbffae46be1a1be60b07736b",
     "error": null
   },
   "ci": {
     "provider": "github",
     "repository": "thorwhalen/ocracy",
-    "sha": "aa561645bd7ad7511790d4886bbf14dc9d749455",
+    "sha": "32741bbe64a783ecdbffae46be1a1be60b07736b",
     "sha_in_history": true,
     "ref": "refs/heads/main",
     "ref_name": "main",
-    "run_id": "39263331977",
-    "run_url": "https://github.com/thorwhalen/ocracy/actions/runs/39263331977",
+    "run_id": "39364230817",
+    "run_url": "https://github.com/thorwhalen/ocracy/actions/runs/39364230817",
     "server_url": "https://github.com"
   },
   "tools": {
     "epythet": "0.2.18",
-    "sphinx": "9.1.0",
+    "sphinx": "9.1.1",
     "docutils": "0.22.4",
     "python": "3.12.15"
   },
@@ -56,20 +56,18 @@
   },
   "site": {
     "modules_documented": 65,
-    "objects_documented": 208
+    "objects_documented": 213
   },
   "pypi": {
     "checked": true,
     "latest": "0.1.19",
-    "relation": "behind",
+    "relation": "same",
     "error": null
   },
-  "reproduce": "git clone https://github.com/thorwhalen/ocracy && cd ocracy\ngit checkout aa561645bd7ad7511790d4886bbf14dc9d749455\npip install \"epythet==0.2.18\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
+  "reproduce": "git clone https://github.com/thorwhalen/ocracy && cd ocracy\ngit checkout 32741bbe64a783ecdbffae46be1a1be60b07736b\npip install \"epythet==0.2.18\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
   "warnings": [],
   "alignment": {
-    "aligned": false,
-    "notes": [
-      "The documented version (0.1.18) is behind the latest release on PyPI (0.1.19): `pip install ocracy` gives newer code than these docs describe."
-    ]
+    "aligned": true,
+    "notes": []
   }
 }

@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../_static/documentation_options.js?v=9969ed3f"></script>
+    <script src="../_static/documentation_options.js?v=3d116926"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -58,7 +58,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.1.18" />
+  <meta name="docsearch:version" content="0.1.19" />
   
     
     <script src="../_static/searchtools.js"></script>
@@ -430,11 +430,46 @@
   <section id="module-ocracy.backends.rapidocr.adapter">
 <span id="ocracy-backends-rapidocr-adapter"></span><h1>ocracy.backends.rapidocr.adapter<a class="headerlink" href="#module-ocracy.backends.rapidocr.adapter" title="Link to this heading">#</a></h1>
 <p>Adapter for RapidOCR — image -&gt; text + quad boxes via ONNXRuntime PP-OCR.</p>
+<p><code class="docutils literal notranslate"><span class="pre">rapidocr</span></code> 3.x runs the same PP-OCRv6 models as PaddleOCR through ONNX, without
+PaddlePaddle (measured in <a class="github reference external" href="https://github.com/thorwhalen/ocracy/issues/22">thorwhalen/ocracy#22</a>). Its
+result is an object with <code class="docutils literal notranslate"><span class="pre">boxes</span></code> / <code class="docutils literal notranslate"><span class="pre">txts</span></code> / <code class="docutils literal notranslate"><span class="pre">scores</span></code> (all <code class="docutils literal notranslate"><span class="pre">None</span></code> when
+nothing is found). The adapter builds the v6 pipeline at the requested <code class="docutils literal notranslate"><span class="pre">lang</span></code> and
+<code class="docutils literal notranslate"><span class="pre">model_size</span></code> (one engine cached per pair).</p>
+<p>An install that only has the older <code class="docutils literal notranslate"><span class="pre">rapidocr_onnxruntime</span></code> package (PP-OCRv4,
+which can drop word spaces) keeps working: the adapter falls back to it, ignores
+<code class="docutils literal notranslate"><span class="pre">lang</span></code> / <code class="docutils literal notranslate"><span class="pre">model_size</span></code> there (that package selects scripts itself).</p>
+<p class="rubric">Module Attributes</p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ocracy.backends.rapidocr.adapter.OCR_VERSION" title="ocracy.backends.rapidocr.adapter.OCR_VERSION"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OCR_VERSION</span></code></a></p></td>
+<td><p>PP-OCRv6 is multilingual, so <code class="docutils literal notranslate"><span class="pre">lang</span></code> selects the recogniser's script set and <code class="docutils literal notranslate"><span class="pre">model_size</span></code> the size of both detector and recogniser.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+<p class="rubric">Functions</p>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ocracy.backends.rapidocr.adapter.blocks_from_legacy" title="ocracy.backends.rapidocr.adapter.blocks_from_legacy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">blocks_from_legacy</span></code></a>(result)</p></td>
+<td><p>Line blocks from <code class="docutils literal notranslate"><span class="pre">rapidocr_onnxruntime</span></code>'s <code class="docutils literal notranslate"><span class="pre">[[box,</span> <span class="pre">text,</span> <span class="pre">score],</span> <span class="pre">...]</span></code> (or <code class="docutils literal notranslate"><span class="pre">None</span></code>).</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ocracy.backends.rapidocr.adapter.blocks_from_v3" title="ocracy.backends.rapidocr.adapter.blocks_from_v3"><code class="xref py py-obj docutils literal notranslate"><span class="pre">blocks_from_v3</span></code></a>(result)</p></td>
+<td><p>Line blocks from a 3.x result object (<code class="docutils literal notranslate"><span class="pre">boxes</span></code> / <code class="docutils literal notranslate"><span class="pre">txts</span></code> / <code class="docutils literal notranslate"><span class="pre">scores</span></code>).</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ocracy.backends.rapidocr.adapter.is_v3_package" title="ocracy.backends.rapidocr.adapter.is_v3_package"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_v3_package</span></code></a>()</p></td>
+<td><p>Whether the <code class="docutils literal notranslate"><span class="pre">rapidocr</span></code> 3.x package (not just the legacy one) is importable.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ocracy.backends.rapidocr.adapter.v6_params" title="ocracy.backends.rapidocr.adapter.v6_params"><code class="xref py py-obj docutils literal notranslate"><span class="pre">v6_params</span></code></a>(lang, model_size)</p></td>
+<td><p>The <code class="docutils literal notranslate"><span class="pre">RapidOCR(params=...)</span></code> dict that selects PP-OCRv6 at <code class="docutils literal notranslate"><span class="pre">lang</span></code> and <code class="docutils literal notranslate"><span class="pre">model_size</span></code>.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
 <p class="rubric">Classes</p>
 <div class="pst-scrollable-table-container"><table class="autosummary longtable table">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ocracy.backends.rapidocr.adapter.Adapter" title="ocracy.backends.rapidocr.adapter.Adapter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Adapter</span></code></a>(config)</p></td>
-<td><p>RapidOCR adapter (lazily builds and caches one engine).</p></td>
+<td><p>RapidOCR adapter (caches one engine per <code class="docutils literal notranslate"><span class="pre">(lang,</span> <span class="pre">model_size)</span></code>).</p></td>
 </tr>
 </tbody>
 </table>
@@ -443,8 +478,59 @@
 <dt class="sig sig-object py" id="ocracy.backends.rapidocr.adapter.Adapter">
 <span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ocracy.backends.rapidocr.adapter.</span></span><span class="sig-name descname"><span class="pre">Adapter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocracy/backends/rapidocr/adapter.html#Adapter"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.backends.rapidocr.adapter.Adapter" title="Link to this definition">#</a></dt>
 <dd><p>Bases: <a class="reference internal" href="ocracy.make_backend.html#ocracy.make_backend.BaseOcrAdapter" title="ocracy.make_backend.BaseOcrAdapter"><code class="xref py py-class docutils literal notranslate"><span class="pre">BaseOcrAdapter</span></code></a></p>
-<p>RapidOCR adapter (lazily builds and caches one engine).</p>
+<p>RapidOCR adapter (caches one engine per <code class="docutils literal notranslate"><span class="pre">(lang,</span> <span class="pre">model_size)</span></code>).</p>
 <dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="ocracy.backends.rapidocr.adapter.OCR_VERSION">
+<span class="sig-prename descclassname"><span class="pre">ocracy.backends.rapidocr.adapter.</span></span><span class="sig-name descname"><span class="pre">OCR_VERSION</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'PP-OCRv6'</span></span><a class="headerlink" href="#ocracy.backends.rapidocr.adapter.OCR_VERSION" title="Link to this definition">#</a></dt>
+<dd><p>PP-OCRv6 is multilingual, so <code class="docutils literal notranslate"><span class="pre">lang</span></code> selects the recogniser’s script set and
+<code class="docutils literal notranslate"><span class="pre">model_size</span></code> the size of both detector and recogniser.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ocracy.backends.rapidocr.adapter.blocks_from_legacy">
+<span class="sig-prename descclassname"><span class="pre">ocracy.backends.rapidocr.adapter.</span></span><span class="sig-name descname"><span class="pre">blocks_from_legacy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocracy/backends/rapidocr/adapter.html#blocks_from_legacy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.backends.rapidocr.adapter.blocks_from_legacy" title="Link to this definition">#</a></dt>
+<dd><p>Line blocks from <code class="docutils literal notranslate"><span class="pre">rapidocr_onnxruntime</span></code>’s <code class="docutils literal notranslate"><span class="pre">[[box,</span> <span class="pre">text,</span> <span class="pre">score],</span> <span class="pre">...]</span></code> (or <code class="docutils literal notranslate"><span class="pre">None</span></code>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ocracy.backends.rapidocr.adapter.blocks_from_v3">
+<span class="sig-prename descclassname"><span class="pre">ocracy.backends.rapidocr.adapter.</span></span><span class="sig-name descname"><span class="pre">blocks_from_v3</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocracy/backends/rapidocr/adapter.html#blocks_from_v3"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.backends.rapidocr.adapter.blocks_from_v3" title="Link to this definition">#</a></dt>
+<dd><p>Line blocks from a 3.x result object (<code class="docutils literal notranslate"><span class="pre">boxes</span></code> / <code class="docutils literal notranslate"><span class="pre">txts</span></code> / <code class="docutils literal notranslate"><span class="pre">scores</span></code>).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ocracy.backends.rapidocr.adapter.is_v3_package">
+<span class="sig-prename descclassname"><span class="pre">ocracy.backends.rapidocr.adapter.</span></span><span class="sig-name descname"><span class="pre">is_v3_package</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocracy/backends/rapidocr/adapter.html#is_v3_package"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.backends.rapidocr.adapter.is_v3_package" title="Link to this definition">#</a></dt>
+<dd><p>Whether the <code class="docutils literal notranslate"><span class="pre">rapidocr</span></code> 3.x package (not just the legacy one) is importable.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/functions.html#bool" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ocracy.backends.rapidocr.adapter.v6_params">
+<span class="sig-prename descclassname"><span class="pre">ocracy.backends.rapidocr.adapter.</span></span><span class="sig-name descname"><span class="pre">v6_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">lang</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">model_size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocracy/backends/rapidocr/adapter.html#v6_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.backends.rapidocr.adapter.v6_params" title="Link to this definition">#</a></dt>
+<dd><p>The <code class="docutils literal notranslate"><span class="pre">RapidOCR(params=...)</span></code> dict that selects PP-OCRv6 at <code class="docutils literal notranslate"><span class="pre">lang</span></code> and <code class="docutils literal notranslate"><span class="pre">model_size</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#dict" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></a></span></p>
+</dd>
 </dl>
 </dd></dl>
 
@@ -498,6 +584,11 @@
   <nav id="pst-page-toc-nav" class="page-toc" aria-labelledby="pst-page-navigation-heading-2">
     <ul class="pst-show_toc_level nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ocracy.backends.rapidocr.adapter.Adapter"><code class="docutils literal notranslate"><span class="pre">Adapter</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ocracy.backends.rapidocr.adapter.OCR_VERSION"><code class="docutils literal notranslate"><span class="pre">OCR_VERSION</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ocracy.backends.rapidocr.adapter.blocks_from_legacy"><code class="docutils literal notranslate"><span class="pre">blocks_from_legacy()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ocracy.backends.rapidocr.adapter.blocks_from_v3"><code class="docutils literal notranslate"><span class="pre">blocks_from_v3()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ocracy.backends.rapidocr.adapter.is_v3_package"><code class="docutils literal notranslate"><span class="pre">is_v3_package()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ocracy.backends.rapidocr.adapter.v6_params"><code class="docutils literal notranslate"><span class="pre">v6_params()</span></code></a></li>
 </ul>
   </nav></div>
 

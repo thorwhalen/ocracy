@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="_static/documentation_options.js?v=9969ed3f"></script>
+    <script src="_static/documentation_options.js?v=3d116926"></script>
     <script src="_static/doctools.js?v=fd6eb6e6"></script>
     <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/clipboard.min.js?v=a7894cd8"></script>
@@ -57,7 +57,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.1.18" />
+  <meta name="docsearch:version" content="0.1.19" />
   
     
     <script src="_static/searchtools.js"></script>
@@ -402,7 +402,7 @@ one granularity, so <code class="docutils literal notranslate"><span class="pre"
 <td><p>free</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">ocracy[rapidocr]</span></code></p></td>
 <td><p><strong>line</strong></p></td>
-<td><p>light CPU/ONNX, fast; today ships older PP-OCRv4 models that can drop word spaces (moving to PP-OCRv6: <a class="reference external" href="https://github.com/thorwhalen/ocracy/issues/22">#22</a>)</p></td>
+<td><p>the same PP-OCRv6 models as <code class="docutils literal notranslate"><span class="pre">paddleocr</span></code> via ONNX, without PaddlePaddle: light CPU install, ~2.5 s/page at <code class="docutils literal notranslate"><span class="pre">model_size=&quot;medium&quot;</span></code> (default), <code class="docutils literal notranslate"><span class="pre">&quot;small&quot;</span></code>/<code class="docutils literal notranslate"><span class="pre">&quot;tiny&quot;</span></code> faster (<a class="reference external" href="https://github.com/thorwhalen/ocracy/issues/22">#22</a>)</p></td>
 </tr>
 <tr class="row-odd"><td><p>PaddleOCR</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">paddleocr</span></code></p></td>
@@ -410,7 +410,7 @@ one granularity, so <code class="docutils literal notranslate"><span class="pre"
 <td><p>free</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">ocracy[paddleocr]</span></code></p></td>
 <td><p><strong>line</strong></p></td>
-<td><p>PaddleOCR 3.x, PP-OCRv6 models: near-perfect on clean and degraded print, and well ahead of <code class="docutils literal notranslate"><span class="pre">rapidocr</span></code> today (<a class="reference external" href="https://github.com/thorwhalen/ocracy/issues/1">#1</a>); heavier install, ~3 s/page CPU</p></td>
+<td><p>PaddleOCR 3.x, PP-OCRv6 models: near-perfect on clean and degraded print, (<a class="reference external" href="https://github.com/thorwhalen/ocracy/issues/1">#1</a>); heavier install, and <code class="docutils literal notranslate"><span class="pre">rapidocr</span></code> runs the same models more lightly, ~3 s/page CPU</p></td>
 </tr>
 <tr class="row-even"><td><p>PaddleOCR PP-StructureV3</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">paddleocr-ppstructure</span></code></p></td>
@@ -785,7 +785,7 @@ voxy, scribed) use it instead of copying it:</p>
 </section>
 </section>
 
-<p class="epythet-provenance" style="font-size:.8em;opacity:.65;margin-top:2.5em;text-align:right">built 2026-10-19 13:50 UTC from <a href="https://github.com/thorwhalen/ocracy/commit/aa561645bd7ad7511790d4886bbf14dc9d749455">aa56164</a> (main) · ocracy 0.1.18 · <a href="about-this-build.html">about this build</a></p>
+<p class="epythet-provenance" style="font-size:.8em;opacity:.65;margin-top:2.5em;text-align:right">built 2026-10-20 03:27 UTC from <a href="https://github.com/thorwhalen/ocracy/commit/32741bbe64a783ecdbffae46be1a1be60b07736b">32741bb</a> (main) · ocracy 0.1.19 · <a href="about-this-build.html">about this build</a></p>
 
                 </article>
               

@@ -4,6 +4,21 @@ ocracy.backends.rapidocr.adapter
 .. automodule:: ocracy.backends.rapidocr.adapter
 
    
+   .. rubric:: Module Attributes
+
+   .. autosummary::
+   
+      OCR_VERSION
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      blocks_from_legacy
+      blocks_from_v3
+      is_v3_package
+      v6_params
+   
    .. rubric:: Classes
 
    .. autosummary::

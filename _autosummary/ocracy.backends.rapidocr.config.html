@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=18bd87630a240e9c25be" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=18bd87630a240e9c25be" />
 
-    <script src="../_static/documentation_options.js?v=9969ed3f"></script>
+    <script src="../_static/documentation_options.js?v=3d116926"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -58,7 +58,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.1.18" />
+  <meta name="docsearch:version" content="0.1.19" />
   
     
     <script src="../_static/searchtools.js"></script>
@@ -430,10 +430,17 @@
   <section id="module-ocracy.backends.rapidocr.config">
 <span id="ocracy-backends-rapidocr-config"></span><h1>ocracy.backends.rapidocr.config<a class="headerlink" href="#module-ocracy.backends.rapidocr.config" title="Link to this heading">#</a></h1>
 <p>Configuration for the RapidOCR backend (ONNXRuntime).</p>
-<p>RapidOCR runs the PP-OCR models via ONNXRuntime — PaddleOCR-grade accuracy with a
-light, framework-free install and fast CPU inference. It bundles multilingual
-models and selects scripts internally, so there is no per-call <code class="docutils literal notranslate"><span class="pre">languages</span></code>
-parameter; callers can still tune detection/recognition via <code class="docutils literal notranslate"><span class="pre">**kwargs</span></code>.</p>
+<p><code class="docutils literal notranslate"><span class="pre">rapidocr</span></code> 3.x runs the PP-OCRv6 models via ONNXRuntime — PaddleOCR-grade
+accuracy (the same models) with a light, framework-free install. PP-OCRv6 is
+multilingual: <code class="docutils literal notranslate"><span class="pre">languages</span></code> (ISO-639-1; the first is used) selects the
+recogniser’s script set, and <code class="docutils literal notranslate"><span class="pre">model_size</span></code> (<code class="docutils literal notranslate"><span class="pre">tiny</span></code> / <code class="docutils literal notranslate"><span class="pre">small</span></code> / <code class="docutils literal notranslate"><span class="pre">medium</span></code>,
+default <code class="docutils literal notranslate"><span class="pre">medium</span></code>) trades speed for accuracy: medium is about 2.5 s a page on a
+CPU, near-perfect on clean and degraded print; the older PP-OCRv4 mobile models
+read about 0.5 s a page but made about 10% character errors on clean print
+(<a class="github reference external" href="https://github.com/thorwhalen/ocracy/issues/22">thorwhalen/ocracy#22</a>). An unsupported language is
+refused by the engine, listing the ones it supports.</p>
+<p>An existing install with only <code class="docutils literal notranslate"><span class="pre">rapidocr_onnxruntime</span></code> still works (see the
+adapter), which is why that package is an <code class="docutils literal notranslate"><span class="pre">import_alternatives</span></code> entry.</p>
 </section>
 
 
