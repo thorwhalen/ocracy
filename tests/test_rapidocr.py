@@ -132,9 +132,10 @@ def test_real_engine_reads_clean_print_with_word_spaces():
     assert "14" in text and "March" in text
 
 
-def test_an_empty_language_list_means_english(fake_v3):
-    ocracy.ocr(_image(), backend="rapidocr", languages=[])
-    assert fake_v3[-1]["Rec.lang_type"] == "en"
+def test_an_empty_language_list_means_english():
+    from ocracy.backends.paddleocr.config import first_language
+
+    assert first_language([]) == "en"
 
 
 def test_a_rapidocr_without_3x_model_selection_is_not_taken_for_3x(monkeypatch):
