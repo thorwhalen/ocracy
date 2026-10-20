@@ -65,6 +65,7 @@ _LAZY_EXPORTS: dict[str, tuple[str, str]] = {
     "BackendInfo": ("ocracy.catalog", "BackendInfo"),
     "Catalog": ("ocracy.catalog", "Catalog"),
     "catalog": ("ocracy.catalog", "catalog"),
+    "benchmark": ("ocracy.benchmark", "benchmark"),
     "get_config": ("ocracy.registry", "get_config"),
     "get_default_backend": ("ocracy.registry", "get_default_backend"),
     "list_backends": ("ocracy.registry", "list_backends"),
@@ -97,11 +98,12 @@ _LAZY_EXPORTS: dict[str, tuple[str, str]] = {
 #: import and so won. Lazily, importing the submodule later would make the
 #: import system bind the MODULE over the root name; :class:`_Root` refuses
 #: exactly that binding, so the root export keeps winning.
-_SUBMODULE_SHADOWED = frozenset({"catalog", "install", "services"})
+_SUBMODULE_SHADOWED = frozenset({"benchmark", "catalog", "install", "services"})
 
 if TYPE_CHECKING:  # pragma: no cover - static view of the lazy names
     from ocracy.base import LEVELS as GRANULARITY_LEVELS
     from ocracy.base import BBox, ImageInput, OcrResult, TextBlock
+    from ocracy.benchmark import benchmark
     from ocracy.catalog import BackendInfo, Catalog, catalog
     from ocracy.install import (
         Requirements,
@@ -143,6 +145,7 @@ __all__ = [
     "services",
     "catalog",
     "find",
+    "benchmark",
     "list_backends",
     "register_backend",
     "get_default_backend",
