@@ -153,3 +153,27 @@ def test_function_wins_over_the_submodule_in_every_import_spelling():
         "assert type(sys.modules['ocracy.benchmark']).__name__ == 'module'"
     ).replace("import ocracy;", "import sys, ocracy;", 1)
     subprocess.run([sys.executable, "-c", code], check=True)
+
+
+def test_synthetic_corpus_is_a_corpus_benchmark_accepts(tmp_path):
+    pytest.importorskip("PIL")
+    from pathlib import Path
+
+    from ocracy.benchmark import synthetic_corpus
+
+    corpus = synthetic_corpus(tmp_path, sizes=[16], fonts=["DejaVuSans.ttf"])
+    assert len(corpus) == 2 * (2 + 1)  # clean/degraded x (2 texts + a table)
+    assert all(Path(p).exists() for p in corpus)
+    assert load_corpus(tmp_path) == {str(tmp_path / Path(p).name): t for p, t in corpus.items()}
+    exact = lambda image, *, backend, **kw: SimpleNamespace(text=corpus[str(image)])
+    rows = ocracy.benchmark(corpus, ["x"], read=exact)
+    assert {r["cer"] for r in rows} == {0.0}
+
+
+def test_synthetic_corpus_is_seeded(tmp_path):
+    pytest.importorskip("PIL")
+    from ocracy.benchmark import synthetic_corpus
+
+    a = synthetic_corpus(tmp_path / "a", sizes=[16], fonts=["DejaVuSans.ttf"], seed=3)
+    b = synthetic_corpus(tmp_path / "b", sizes=[16], fonts=["DejaVuSans.ttf"], seed=3)
+    assert [open(x, "rb").read() for x in a] == [open(y, "rb").read() for y in b]
