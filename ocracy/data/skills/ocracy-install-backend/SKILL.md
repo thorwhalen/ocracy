@@ -79,9 +79,9 @@ ocracy.validate_adapter("rapidocr")  # end-to-end smoke test on a generated imag
 ## Tips for tricky ones
 
 - **PaddleOCR** install fighting you? Use **`rapidocr`** — PP-OCR models via ONNX,
-  no PaddlePaddle framework, CPU-only, trivial install. It is less accurate today
-  (older models; [#22](https://github.com/thorwhalen/ocracy/issues/22) moves it to
-  PaddleOCR's). `req.alternative` flags this automatically.
+  no PaddlePaddle framework, CPU-only, trivial install, and the same PP-OCRv6
+  models ([#22](https://github.com/thorwhalen/ocracy/issues/22)). `req.alternative`
+  flags this automatically.
 - **EasyOCR / TrOCR / pix2tex** pull PyTorch (large) and download weights — expect
   a multi-hundred-MB first install; on a CPU box they work but are slow.
 - **ocrmac** is macOS-only (built-in Apple Vision; nothing to install but the

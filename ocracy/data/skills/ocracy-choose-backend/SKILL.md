@@ -74,9 +74,10 @@ From the shell: `ocracy find --local --free --handwriting`, `ocracy info <id>`.
   (PaddleOCR 3.x with PP-OCRv6 models: near-perfect on the printed pages measured
   in [#1](https://github.com/thorwhalen/ocracy/issues/1), which compared it only
   with rapidocr; about 3 s a
-  page on CPU, heavy install); `rapidocr` (light and fast, CPU-only, but its
-  PP-OCRv4 models drop word spaces on clean print until
-  [#22](https://github.com/thorwhalen/ocracy/issues/22) moves it to PP-OCRv6);
+  page on CPU, heavy install); `rapidocr` (the same
+  PP-OCRv6 models via ONNX, CPU-only, light install; about 2.5 s a page at the
+  default `model_size="medium"`, faster at `"small"`/`"tiny"`;
+  [#22](https://github.com/thorwhalen/ocracy/issues/22));
   `easyocr` (scene text); `ocrmac` (macOS, on-device, handwriting).
 - **Local tables / layout / formulas:** `paddleocr-ppstructure` (PP-StructureV3:
   tables as HTML inside `result.markdown`, plus text lines; about 25 s a page on

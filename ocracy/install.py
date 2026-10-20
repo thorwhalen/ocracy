@@ -73,12 +73,15 @@ _RECIPES: Dict[str, dict] = {
     },
     "rapidocr": {
         "extra": "rapidocr",
-        "weights": "Model weights ship inside the wheel — no first-run download.",
+        "weights": "rapidocr 3.x downloads the PP-OCRv6 model on first use (about 50 MB for medium, "
+        "cached inside the package); the older rapidocr-onnxruntime ships its models in the wheel.",
         "notes": [
-            "Light, CPU-only (ONNXRuntime) and fast (about 0.5 s a page).",
-            "Ships PP-OCRv4 mobile models, which drop word spaces on clean print; "
-            "paddleocr's PP-OCRv6 models are far more accurate today (ocracy#1). "
-            "Moving rapidocr to PP-OCRv6 is ocracy#22. For tables/layout/formula, "
+            "Light, CPU-only (ONNXRuntime), no PaddlePaddle. Runs the same PP-OCRv6 models as "
+            "paddleocr: near-perfect on printed pages (ocracy#22). model_size='medium' (default) "
+            "is about 2.5 s a page; 'small' or 'tiny' trade accuracy for speed.",
+            "An install with only the older rapidocr-onnxruntime (PP-OCRv4, which drops word "
+            "spaces on clean print) still works, ignoring model_size and languages; "
+            "pip install rapidocr onnxruntime upgrades it. For tables/layout/formula, "
             "use paddleocr-ppstructure.",
         ],
     },
@@ -89,8 +92,8 @@ _RECIPES: Dict[str, dict] = {
         "(match your CUDA version per https://www.paddlepaddle.org.cn/en/install/quick).",
         "weights": "Downloads PP-OCR model weights on first use (cached under ~/.paddlex "
         "on PaddleOCR 3.x, ~/.paddleocr on 2.x).",
-        "alt": "rapidocr — PP-OCR text models via ONNX, much lighter and CPU-only, "
-        "but less accurate until ocracy#22 (plain-text recognition only)",
+        "alt": "rapidocr — the same PP-OCRv6 text models via ONNX, much lighter and CPU-only "
+        "(plain-text recognition only)",
         "notes": [
             "PaddleOCR 3.x runs PP-OCRv6 models: near-perfect on the printed pages "
             "measured in ocracy#1 (against rapidocr only), at about 3 s a page on CPU.",
