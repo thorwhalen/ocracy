@@ -107,3 +107,49 @@ def test_tool_verb_runs_on_the_registered_reader(tmp_path, monkeypatch):
     assert rows[0]["backend"] == "t" and rows[0]["cer"] == 0.0
     assert "t" in tools.benchmark(str(tmp_path), backends="t")
     assert tools.benchmark in tools._dispatch_funcs
+
+
+def test_empty_corpus_and_no_backends_raise():
+    with pytest.raises(ValueError, match="empty"):
+        ocracy.benchmark({}, ["x"], read=fake_read({}))
+    with pytest.raises(ValueError, match="No backends"):
+        ocracy.benchmark({"a.png": "a"}, [], read=fake_read({}))
+
+
+def test_a_raising_metric_or_none_text_is_a_row_error_not_a_crash():
+    def boom(r, h):
+        raise ValueError("bad metric")
+
+    (row,) = ocracy.benchmark({"a": "x"}, "t", read=fake_read({"t": "x"}), metric=boom)
+    assert row["error"] == "ValueError: bad metric"
+    (row,) = ocracy.benchmark({"a": "x"}, "t", read=fake_read({"t": None}))
+    assert row["error"] is None and row["cer"] == 1.0 and row["hypothesis"] == ""
+
+
+def test_summary_counts_partial_failures():
+    def read(image, *, backend, **kw):
+        if image == "bad.png":
+            raise OSError("no file")
+        return SimpleNamespace(text="a")
+
+    rows = ocracy.benchmark({"ok.png": "a", "bad.png": "a"}, "t", read=read)
+    assert summary(rows).splitlines()[1].split()[-1] == "1/1"
+
+
+def test_output_is_validated(tmp_path):
+    (tmp_path / "truth.json").write_text("{}")
+    with pytest.raises(ValueError, match="output"):
+        tools.benchmark(str(tmp_path), output="xml")
+
+
+def test_function_wins_over_the_submodule_in_every_import_spelling():
+    import subprocess
+    import sys
+
+    code = (
+        "import ocracy; import ocracy.benchmark; "
+        "from ocracy.benchmark import summary; from ocracy import benchmark; "
+        "assert callable(ocracy.benchmark) and benchmark is ocracy.benchmark; "
+        "assert type(sys.modules['ocracy.benchmark']).__name__ == 'module'"
+    ).replace("import ocracy;", "import sys, ocracy;", 1)
+    subprocess.run([sys.executable, "-c", code], check=True)

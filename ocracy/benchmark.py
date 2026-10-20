@@ -23,6 +23,10 @@ Three seams, all keyword arguments:
   defaults to :func:`ocracy.ocr`. Swap it to benchmark anything else, or to test offline.
 * ``normalize`` - applied to reference and hypothesis before scoring (default: collapse
   whitespace, so line-break differences do not count as errors).
+
+Note: at the package root ``ocracy.benchmark`` is the function (as ``ocracy.catalog`` is the
+ledger), so reach this module's other names with ``from ocracy.benchmark import summary``,
+not ``import ocracy.benchmark as m``.
 """
 
 from __future__ import annotations
@@ -181,35 +185,38 @@ def benchmark(
         from ocracy import ocr as read
     metrics = _as_metrics(metric)
     references = load_corpus(corpus)
+    if not references:
+        raise ValueError("The corpus is empty: nothing to benchmark.")
+    backend_ids = _split_backends(backends)
+    if not backend_ids:
+        raise ValueError(
+            "No backends to run: none is installed. Pass backends=[...] or see `ocracy doctor`."
+        )
     rows = []
-    for backend in _split_backends(backends):
+    for backend in backend_ids:
         for image, reference in references.items():
             row = {"backend": backend, "image": image, **dict.fromkeys(metrics)}
             start = time.perf_counter()
             try:
-                hypothesis = read(image, backend=backend, **read_kwargs).text
-            except Exception as e:  # one bad backend/image must not sink the run
+                hypothesis = read(image, backend=backend, **read_kwargs).text or ""
+                seconds = time.perf_counter() - start
+                ref, hyp = normalize(reference), normalize(hypothesis)
+                scores = {name: fn(ref, hyp) for name, fn in metrics.items()}
+            except Exception as e:  # one bad backend/image/metric must not sink the run
                 row.update(
                     seconds=time.perf_counter() - start,
                     error=f"{type(e).__name__}: {e}",
                     hypothesis=None,
                 )
             else:
-                seconds = time.perf_counter() - start
-                ref, hyp = normalize(reference), normalize(hypothesis)
-                row.update(
-                    {name: fn(ref, hyp) for name, fn in metrics.items()},
-                    seconds=seconds,
-                    error=None,
-                    hypothesis=hypothesis,
-                )
+                row.update(scores, seconds=seconds, error=None, hypothesis=hypothesis)
             rows.append(row)
     return rows
 
 
 def summary(rows: Iterable[Mapping]) -> str:
     """A text table: per backend, the mean of every score and of ``seconds`` over the images
-    it read, plus how many it read and how many failed.
+    it read successfully, then ``ok/failed`` image counts. Columns come from the first row.
     """
     rows = list(rows)
     skip = {"backend", "image", "error", "hypothesis", "seconds"}

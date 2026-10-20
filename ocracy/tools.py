@@ -246,7 +246,6 @@ def status(*, level: str = "all", run_tests: bool = False, names: bool = False):
     return "\n".join(out)
 
 
-# SSOT list of CLI-dispatchable functions.
 def benchmark(
     corpus: str,
     *,
@@ -264,6 +263,8 @@ def benchmark(
     from ocracy import benchmark as run
     from ocracy.benchmark import summary
 
+    if output not in ("table", "json"):
+        raise ValueError(f"output must be 'table' or 'json', not {output!r}")
     kwargs = {}
     if languages:
         kwargs["languages"] = _split_csv(languages)
@@ -273,6 +274,7 @@ def benchmark(
     return summary(rows)
 
 
+# SSOT list of CLI-dispatchable functions.
 _dispatch_funcs = [
     read,
     backends,
