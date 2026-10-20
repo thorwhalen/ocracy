@@ -8,8 +8,7 @@ nothing is found). The adapter builds the v6 pipeline at the requested ``lang`` 
 
 An install that only has the older ``rapidocr_onnxruntime`` package (PP-OCRv4,
 which can drop word spaces) keeps working: the adapter falls back to it, ignores
-``lang`` / ``model_size`` there (that package selects scripts itself), and says so
-in the result's ``warnings`` when the caller asked for either.
+``lang`` / ``model_size`` there (that package selects scripts itself).
 """
 
 from ocracy.base import OcrResult
