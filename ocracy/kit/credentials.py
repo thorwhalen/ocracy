@@ -91,7 +91,7 @@ class MissingCredentialError(RuntimeError):
         provider: Optional[str] = None,
         env_vars: Sequence[str] = (),
         get_key_url: Optional[str] = None,
-    ):
+    ) -> None:
         """Carry the ``message`` plus the ``provider``, the ``env_vars`` to set and a ``get_key_url``."""
         super().__init__(message)
         self.provider = provider

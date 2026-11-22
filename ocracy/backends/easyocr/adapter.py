@@ -7,7 +7,7 @@ from ocracy.make_backend import BaseOcrAdapter, make_block
 class Adapter(BaseOcrAdapter):
     """EasyOCR adapter (caches one Reader per language-set + gpu flag)."""
 
-    def __init__(self, config: dict):
+    def __init__(self, config: dict) -> None:
         """Initialize the adapter with its backend ``config``; the engine itself is loaded lazily on first use."""
         super().__init__(config)
         self._readers: dict = {}

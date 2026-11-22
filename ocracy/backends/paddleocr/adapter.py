@@ -61,7 +61,7 @@ def blocks_from_v2(page) -> list:
 class Adapter(BaseOcrAdapter):
     """PaddleOCR adapter (caches one engine per language)."""
 
-    def __init__(self, config: dict):
+    def __init__(self, config: dict) -> None:
         """Initialize the adapter with its backend ``config``; the engine itself is loaded lazily on first use."""
         super().__init__(config)
         self._engines: dict = {}

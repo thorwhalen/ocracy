@@ -235,7 +235,7 @@ class _Root(_types.ModuleType):
     but ``type(ocracy) is ModuleType`` does not.
     """
 
-    def __setattr__(self, name, value):
+    def __setattr__(self, name, value) -> None:
         if (
             name in _SUBMODULE_SHADOWED
             and isinstance(value, _types.ModuleType)

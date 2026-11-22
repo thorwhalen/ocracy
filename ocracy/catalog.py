@@ -90,7 +90,7 @@ class Catalog(_LedgerCatalog):
         path: Optional[Union[str, Path]] = None,
         *,
         _records: Optional[List[dict]] = None,
-    ):
+    ) -> None:
         """Load the ocracy ledger from ``path`` (default: the shipped ``backends.json``)."""
         super().__init__(
             path,

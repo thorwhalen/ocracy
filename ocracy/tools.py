@@ -164,7 +164,7 @@ def find(
     return header + "\n" + "\n".join(lines)
 
 
-def scaffold(backend_id: str, *, dest: Optional[str] = None):
+def scaffold(backend_id: str, *, dest: Optional[str] = None) -> str:
     """Generate a new backend package from its ledger entry.
 
     :param backend_id: The ledger id to scaffold (e.g. ``surya``).

@@ -26,7 +26,7 @@ from ocracy import registry
 class ServiceHandle:
     """Per-backend access point: normalized ``read`` + native ``adapter``."""
 
-    def __init__(self, backend_id: str):
+    def __init__(self, backend_id: str) -> None:
         """Handle for the backend ``backend_id`` (nothing is loaded yet)."""
         self._id = backend_id
 
@@ -83,7 +83,7 @@ class ServiceCollection(Mapping):
     (``services.tesseract``) access.
     """
 
-    def __init__(self):
+    def __init__(self) -> None:
         """Create an empty collection; handles are created lazily."""
         self._handles: dict = {}
 
@@ -118,17 +118,17 @@ class ServiceCollection(Mapping):
         self._ensure()
         return iter(sorted(registry._registry))
 
-    def __len__(self):
+    def __len__(self) -> int:
         """Number of discovered backends."""
         self._ensure()
         return len(registry._registry)
 
-    def __contains__(self, name):
+    def __contains__(self, name) -> bool:
         """Whether ``name`` is a discovered backend."""
         self._ensure()
         return name in registry._registry
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         """Show the backend ids."""
         return f"<ServiceCollection backends={list(self)}>"
 

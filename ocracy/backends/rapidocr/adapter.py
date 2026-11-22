@@ -71,7 +71,7 @@ def blocks_from_legacy(result) -> list:
 class Adapter(BaseOcrAdapter):
     """RapidOCR adapter (caches one engine per ``(lang, model_size)``)."""
 
-    def __init__(self, config: dict):
+    def __init__(self, config: dict) -> None:
         """Initialize the adapter with its backend ``config``; the engine itself is loaded lazily on first use."""
         super().__init__(config)
         self._engines: dict = {}
