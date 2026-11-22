@@ -343,6 +343,7 @@
 and VLM readers — each with its own install, API, pricing, and language coverage.
 <code class="docutils literal notranslate"><span class="pre">ocracy</span></code> gives you a uniform call, a browsable catalog of every option, and the
 tools to wrap any of them.</p>
+<!-- wads-docs: skip - needs your own scan.png -->
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">ocracy</span>
 
 <span class="n">text</span> <span class="o">=</span> <span class="n">ocracy</span><span class="o">.</span><span class="n">read_text</span><span class="p">(</span><span class="s2">"scan.png"</span><span class="p">)</span>  <span class="c1"># just the text, default backend</span>
@@ -519,6 +520,7 @@ a working façade with one command (see <em>Add a backend</em> below).</p>
 lines or splits lines into words, and <code class="docutils literal notranslate"><span class="pre">result.words</span></code> / <code class="docutils literal notranslate"><span class="pre">result.lines</span></code> are just
 filters over the one flat <code class="docutils literal notranslate"><span class="pre">blocks</span></code> list — so <strong>asking for the level a backend does
 not produce returns <code class="docutils literal notranslate"><span class="pre">[]</span></code>, silently</strong>:</p>
+<!-- wads-docs: skip - needs your own scan.png -->
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">r</span> <span class="o">=</span> <span class="n">ocracy</span><span class="o">.</span><span class="n">ocr</span><span class="p">(</span><span class="s2">"scan.png"</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="s2">"rapidocr"</span><span class="p">)</span>
 <span class="n">r</span><span class="o">.</span><span class="n">lines</span>  <span class="c1"># populated</span>
 <span class="n">r</span><span class="o">.</span><span class="n">words</span>  <span class="c1"># [] — rapidocr reports lines, and nothing raises</span>
@@ -544,6 +546,7 @@ you, at its own level — it is not “lines by default”.</p>
 APIs can return geometry) while ocracy’s façades for them return text only. Treat
 <code class="docutils literal notranslate"><span class="pre">ocracy.find(bounding_boxes=True)</span></code> as “engines worth wrapping for geometry”, and
 the list above as what you get today. If your code needs a level, assert it:</p>
+<!-- wads-docs: skip - fragment: img and chosen are the reader's -->
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">result</span> <span class="o">=</span> <span class="n">ocracy</span><span class="o">.</span><span class="n">ocr</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="n">chosen</span><span class="p">)</span>
 <span class="k">if</span> <span class="ow">not</span> <span class="n">result</span><span class="o">.</span><span class="n">words</span><span class="p">:</span>
     <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">chosen</span><span class="si">}</span><span class="s2"> does not report word-level boxes"</span><span class="p">)</span>
@@ -555,6 +558,7 @@ the list above as what you get today. If your code needs a level, assert it:</p>
 <p>Some backends need more than <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span></code> (Tesseract’s <em>system</em> binary, Paddle’s
 framework, GPU wheels, first-run model weights, or an API key). ocracy turns that
 into structured, OS-aware guidance — handy for humans and AI agents alike:</p>
+<!-- wads-docs: skip - ocracy.install(yes=True) pip-installs rapidocr -->
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ocracy</span><span class="o">.</span><span class="n">doctor</span><span class="p">()</span>  <span class="c1"># what's usable now vs what each missing one needs</span>
 <span class="n">ocracy</span><span class="o">.</span><span class="n">check</span><span class="p">(</span><span class="s2">"paddleocr"</span><span class="p">)</span>  <span class="c1"># -&gt; True/False (usable right now?)</span>
 <span class="nb">print</span><span class="p">(</span>
@@ -575,6 +579,7 @@ PaddleOCR → RapidOCR). The <code class="docutils literal notranslate"><span cl
 <section id="three-tiers-of-access">
 <h2>Three tiers of access<a class="headerlink" href="#three-tiers-of-access" title="Link to this heading">#</a></h2>
 <p>From simplest to most powerful — reach for the next tier only when you need it:</p>
+<!-- wads-docs: skip - fragment: img is the reader's -->
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ocracy</span><span class="o">.</span><span class="n">ocr</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>  <span class="c1"># 1. facade, default (installed) backend</span>
 <span class="n">ocracy</span><span class="o">.</span><span class="n">ocr</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="s2">"easyocr"</span><span class="p">,</span> <span class="n">languages</span><span class="o">=</span><span class="p">[</span><span class="s2">"en"</span><span class="p">,</span> <span class="s2">"fr"</span><span class="p">])</span>
 <span class="n">ocracy</span><span class="o">.</span><span class="n">services</span><span class="o">.</span><span class="n">tesseract</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">psm</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>  <span class="c1"># 2. pick a backend explicitly</span>
@@ -619,7 +624,9 @@ tab completion when activated.</p>
 not only the ones with a working façade — so you can compare on the axes that
 matter (local vs remote, price, accuracy, languages, handwriting, math, tables,
 privacy). The data lives in <code class="docutils literal notranslate"><span class="pre">ocracy/data/backends.json</span></code>, separate from code.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ocracy</span><span class="o">.</span><span class="n">catalog</span>  <span class="c1"># &lt;Catalog … backends … implemented …&gt;</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">ocracy</span>
+
+<span class="n">ocracy</span><span class="o">.</span><span class="n">catalog</span>  <span class="c1"># &lt;Catalog … backends … implemented …&gt;</span>
 <span class="n">ocracy</span><span class="o">.</span><span class="n">catalog</span><span class="p">[</span><span class="s2">"google-vision"</span><span class="p">]</span>  <span class="c1"># one backend's full record</span>
 <span class="n">ocracy</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">is_local</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">open_source</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>  <span class="c1"># filter the ledger</span>
 <span class="n">ocracy</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="n">handwriting</span><span class="o">=</span><span class="s2">"yes"</span><span class="p">,</span> <span class="n">is_remote</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -638,6 +645,7 @@ report behind the ledger is in <a class="reference internal" href="#misc/docs/oc
 <h2>Getting API keys (remote backends)<a class="headerlink" href="#getting-api-keys-remote-backends" title="Link to this heading">#</a></h2>
 <p>Remote backends need a credential in an environment variable. ocracy tells you
 exactly which one — <strong>with a link to get it</strong> — the moment it’s missing:</p>
+<!-- wads-docs: skip - shows the error raised when OCR_SPACE_API_KEY is not set -->
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">ocracy</span><span class="o">.</span><span class="n">ocr</span><span class="p">(</span><span class="s2">"receipt.png"</span><span class="p">,</span> <span class="n">backend</span><span class="o">=</span><span class="s2">"ocr-space"</span><span class="p">)</span>
 <span class="go">MissingCredentialError: No credential found for ocr-space (set one of: OCR_SPACE_API_KEY).</span>
 <span class="go">How to get a credential for ocr-space: Register a free API key by email; free tier</span>
@@ -689,6 +697,7 @@ if that package is installed.</p>
 <p>The catalog is large; <code class="docutils literal notranslate"><span class="pre">ocracy</span></code> ships façades for a curated subset and gives you
 the machinery to add any other one. Scaffold a backend straight from its ledger
 entry, fill in the adapter, and validate it:</p>
+<!-- wads-docs: skip - scaffolds a backend inside the installed package -->
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">ocracy.make_backend</span><span class="w"> </span><span class="kn">import</span> <span class="n">scaffold_backend</span><span class="p">,</span> <span class="n">validate_adapter</span>
 
 <span class="n">scaffold_backend</span><span class="p">(</span>
@@ -786,7 +795,7 @@ voxy, scribed) use it instead of copying it:</p>
 </section>
 </section>
 
-<p class="epythet-provenance" style="font-size:.8em;opacity:.65;margin-top:2.5em;text-align:right">built 2026-11-22 17:07 UTC from <a href="https://github.com/thorwhalen/ocracy/commit/ab80219a030af913c8f001eb6e090e4b4a8a3a7f">ab80219</a> (main) · ocracy 0.1.22 · <a href="about-this-build.html">about this build</a></p>
+<p class="epythet-provenance" style="font-size:.8em;opacity:.65;margin-top:2.5em;text-align:right">built 2026-11-22 19:12 UTC from <a href="https://github.com/thorwhalen/ocracy/commit/c8f84e6a178143629036eb1a99173f143a12d0d9">c8f84e6</a> (main) · ocracy 0.1.22 · <a href="about-this-build.html">about this build</a></p>
 
                 </article>
               

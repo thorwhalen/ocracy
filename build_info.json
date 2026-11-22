@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "built_at": "2026-11-22T17:07:06Z",
+  "built_at": "2026-11-22T19:12:41Z",
   "package": {
     "name": "ocracy",
     "version": "0.1.22",
@@ -9,24 +9,24 @@
   },
   "git": {
     "available": true,
-    "commit": "ab80219a030af913c8f001eb6e090e4b4a8a3a7f",
-    "short_commit": "ab80219",
+    "commit": "c8f84e6a178143629036eb1a99173f143a12d0d9",
+    "short_commit": "c8f84e6",
     "branch": "main",
     "tags": [],
     "dirty": false,
     "remote_url": "https://github.com/thorwhalen/ocracy",
-    "commit_url": "https://github.com/thorwhalen/ocracy/commit/ab80219a030af913c8f001eb6e090e4b4a8a3a7f",
+    "commit_url": "https://github.com/thorwhalen/ocracy/commit/c8f84e6a178143629036eb1a99173f143a12d0d9",
     "error": null
   },
   "ci": {
     "provider": "github",
     "repository": "thorwhalen/ocracy",
-    "sha": "ab80219a030af913c8f001eb6e090e4b4a8a3a7f",
+    "sha": "c8f84e6a178143629036eb1a99173f143a12d0d9",
     "sha_in_history": true,
     "ref": "refs/heads/main",
     "ref_name": "main",
-    "run_id": "45047482952",
-    "run_url": "https://github.com/thorwhalen/ocracy/actions/runs/45047482952",
+    "run_id": "45059297308",
+    "run_url": "https://github.com/thorwhalen/ocracy/actions/runs/45059297308",
     "server_url": "https://github.com"
   },
   "tools": {
@@ -64,7 +64,7 @@
     "relation": "same",
     "error": null
   },
-  "reproduce": "git clone https://github.com/thorwhalen/ocracy && cd ocracy\ngit checkout ab80219a030af913c8f001eb6e090e4b4a8a3a7f\npip install \"epythet==0.2.23\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
+  "reproduce": "git clone https://github.com/thorwhalen/ocracy && cd ocracy\ngit checkout c8f84e6a178143629036eb1a99173f143a12d0d9\npip install \"epythet==0.2.23\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
   "warnings": [],
   "alignment": {
     "aligned": true,

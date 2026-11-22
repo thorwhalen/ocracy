@@ -1,4 +1,4 @@
-> built 2026-11-22 17:07 UTC from ab80219 (main) · ocracy 0.1.22. Details: build_info.json
+> built 2026-11-22 19:12 UTC from c8f84e6 (main) · ocracy 0.1.22. Details: build_info.json
 
 # index.html.md
 
@@ -14,6 +14,7 @@ and VLM readers — each with its own install, API, pricing, and language covera
 `ocracy` gives you a uniform call, a browsable catalog of every option, and the
 tools to wrap any of them.
 
+<!-- wads-docs: skip - needs your own scan.png -->
 ```python
 import ocracy
 
@@ -71,6 +72,7 @@ lines or splits lines into words, and `result.words` / `result.lines` are just
 filters over the one flat `blocks` list — so **asking for the level a backend does
 not produce returns `[]`, silently**:
 
+<!-- wads-docs: skip - needs your own scan.png -->
 ```python
 r = ocracy.ocr("scan.png", backend="rapidocr")
 r.lines  # populated
@@ -98,6 +100,7 @@ APIs can return geometry) while ocracy’s façades for them return text only. T
 `ocracy.find(bounding_boxes=True)` as “engines worth wrapping for geometry”, and
 the list above as what you get today. If your code needs a level, assert it:
 
+<!-- wads-docs: skip - fragment: img and chosen are the reader's -->
 ```python
 result = ocracy.ocr(img, backend=chosen)
 if not result.words:
@@ -110,6 +113,7 @@ Some backends need more than `pip install` (Tesseract’s *system* binary, Paddl
 framework, GPU wheels, first-run model weights, or an API key). ocracy turns that
 into structured, OS-aware guidance — handy for humans and AI agents alike:
 
+<!-- wads-docs: skip - ocracy.install(yes=True) pip-installs rapidocr -->
 ```python
 ocracy.doctor()  # what's usable now vs what each missing one needs
 ocracy.check("paddleocr")  # -> True/False (usable right now?)
@@ -132,6 +136,7 @@ PaddleOCR → RapidOCR). The `ocracy-install-backend` skill drives all of this.
 
 From simplest to most powerful — reach for the next tier only when you need it:
 
+<!-- wads-docs: skip - fragment: img is the reader's -->
 ```python
 ocracy.ocr(img)  # 1. facade, default (installed) backend
 ocracy.ocr(img, backend="easyocr", languages=["en", "fr"])
@@ -182,6 +187,8 @@ matter (local vs remote, price, accuracy, languages, handwriting, math, tables,
 privacy). The data lives in `ocracy/data/backends.json`, separate from code.
 
 ```python
+import ocracy
+
 ocracy.catalog  # <Catalog … backends … implemented …>
 ocracy.catalog["google-vision"]  # one backend's full record
 ocracy.find(is_local=True, open_source=True)  # filter the ledger
@@ -202,6 +209,7 @@ report behind the ledger is in [`misc/docs/ocr_landscape_research.md`]().
 Remote backends need a credential in an environment variable. ocracy tells you
 exactly which one — **with a link to get it** — the moment it’s missing:
 
+<!-- wads-docs: skip - shows the error raised when OCR_SPACE_API_KEY is not set -->
 ```python
 >>> ocracy.ocr("receipt.png", backend="ocr-space")
 MissingCredentialError: No credential found for ocr-space (set one of: OCR_SPACE_API_KEY).
@@ -229,6 +237,7 @@ The catalog is large; `ocracy` ships façades for a curated subset and gives you
 the machinery to add any other one. Scaffold a backend straight from its ledger
 entry, fill in the adapter, and validate it:
 
+<!-- wads-docs: skip - scaffolds a backend inside the installed package -->
 ```python
 from ocracy.make_backend import scaffold_backend, validate_adapter
 
@@ -3993,7 +4002,7 @@ Convert any supported input into a PIL `Image` (lazy import).
 
 # About this build
 
-This documentation was built on **2026-11-22 17:07 UTC** from commit <a href="https://github.com/thorwhalen/ocracy/commit/ab80219a030af913c8f001eb6e090e4b4a8a3a7f"><code>ab80219</code></a> on branch <code>main</code>, for **ocracy 0.1.22** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-22 19:12 UTC** from commit <a href="https://github.com/thorwhalen/ocracy/commit/c8f84e6a178143629036eb1a99173f143a12d0d9"><code>c8f84e6</code></a> on branch <code>main</code>, for **ocracy 0.1.22** (from <code>pyproject.toml</code>).
 
 #### NOTE
 Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
@@ -4002,7 +4011,7 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 |                     |                                                                                                                                                          |
 |---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/ocracy/commit/ab80219a030af913c8f001eb6e090e4b4a8a3a7f"><code>ab80219a030af913c8f001eb6e090e4b4a8a3a7f</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/ocracy/commit/c8f84e6a178143629036eb1a99173f143a12d0d9"><code>c8f84e6a178143629036eb1a99173f143a12d0d9</code></a> |
 | Branch              | <code>main</code>                                                                                                                                        |
 | Tags at this commit | none                                                                                                                                                     |
 | Working tree        | clean                                                                                                                                                    |
@@ -4013,9 +4022,9 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/ocracy</code>                                                             |
-| Run          | <a href="https://github.com/thorwhalen/ocracy/actions/runs/45047482952">45047482952</a>    |
+| Run          | <a href="https://github.com/thorwhalen/ocracy/actions/runs/45059297308">45059297308</a>    |
 | Ref          | <code>refs/heads/main</code>                                                               |
-| Event commit | <code>ab80219a030af913c8f001eb6e090e4b4a8a3a7f</code> (in the history of the built commit) |
+| Event commit | <code>c8f84e6a178143629036eb1a99173f143a12d0d9</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -4046,7 +4055,7 @@ Latest release: <a href="https://pypi.org/project/ocracy/0.1.22/">0.1.22</a>, th
 
 ```bash
 git clone https://github.com/thorwhalen/ocracy && cd ocracy
-git checkout ab80219a030af913c8f001eb6e090e4b4a8a3a7f
+git checkout c8f84e6a178143629036eb1a99173f143a12d0d9
 pip install "epythet==0.2.23"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```
