@@ -66,6 +66,7 @@ class BaseOcrAdapter:
     ADAPTER_KWARGS = ("api_key", "app_key", "app_id")
 
     def __init__(self, config: dict):
+        """Keep the backend ``config`` and prepare its parameter translator."""
         self.config = config
         self.backend_id = config.get("id") or config.get("name", "")
         param_map = config.get("param_map")

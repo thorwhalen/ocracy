@@ -72,6 +72,7 @@ class Adapter(BaseOcrAdapter):
     """RapidOCR adapter (caches one engine per ``(lang, model_size)``)."""
 
     def __init__(self, config: dict):
+        """Initialize the adapter with its backend ``config``; the engine itself is loaded lazily on first use."""
         super().__init__(config)
         self._engines: dict = {}
 

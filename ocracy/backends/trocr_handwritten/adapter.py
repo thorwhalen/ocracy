@@ -13,6 +13,7 @@ class Adapter(BaseOcrAdapter):
     """TrOCR adapter (caches the processor + model per checkpoint)."""
 
     def __init__(self, config: dict):
+        """Initialize the adapter with its backend ``config``; the engine itself is loaded lazily on first use."""
         super().__init__(config)
         self._processor = None
         self._model = None

@@ -22,6 +22,7 @@ class Adapter(BaseOcrAdapter):
     """PP-StructureV3 adapter (caches one pipeline per language)."""
 
     def __init__(self, config: dict):
+        """Initialize the adapter with its backend ``config``; the engine itself is loaded lazily on first use."""
         super().__init__(config)
         self._pipelines: dict = {}
 

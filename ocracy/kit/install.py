@@ -114,6 +114,7 @@ class Requirements:
         return "\n".join(lines)
 
     def __str__(self) -> str:
+        """The human-readable install instructions."""
         return self.instructions()
 
 

@@ -92,19 +92,24 @@ class BackendInfo(Mapping):
     """
 
     def __init__(self, record: dict, *, implemented: bool = False):
+        """Wrap a ledger ``record``; ``implemented`` is the default for records that do not say."""
         self._record: Dict[str, Any] = dict(record)
         self._record.setdefault("implemented", implemented)
 
     def __getitem__(self, key: str) -> Any:
+        """The raw record field ``key``."""
         return self._record[key]
 
     def __iter__(self) -> Iterator[str]:
+        """Iterate over the record field names."""
         return iter(self._record)
 
     def __len__(self) -> int:
+        """Number of record fields."""
         return len(self._record)
 
     def __getattr__(self, name: str) -> Any:
+        """Expose record fields as attributes (``AttributeError`` for an unknown field)."""
         # Only called when normal attribute lookup fails. Read ``_record`` from
         # ``__dict__``: during copy/pickle it is not set yet, and ``self._record``
         # would recurse into this method.
@@ -115,28 +120,35 @@ class BackendInfo(Mapping):
 
     @property
     def id(self) -> str:
+        """The backend id (``""`` if absent)."""
         return self._record.get("id", "")
 
     @property
     def name(self) -> str:
+        """The display name, falling back to the id."""
         return self._record.get("name", self.id)
 
     @property
     def is_local(self) -> bool:
+        """Whether the engine runs locally."""
         return bool(self._record.get("is_local", False))
 
     @property
     def is_remote(self) -> bool:
+        """Whether the engine is a remote service."""
         return bool(self._record.get("is_remote", False))
 
     @property
     def implemented(self) -> bool:
+        """Whether a working facade exists for this backend."""
         return bool(self._record.get("implemented", False))
 
     def to_dict(self) -> dict:
+        """A plain-dict copy of the record."""
         return dict(self._record)
 
     def __repr__(self) -> str:
+        """Short representation: id, where it runs, and whether it is implemented."""
         where = (
             "+".join(
                 w
@@ -223,6 +235,7 @@ class Catalog(Mapping):
         capability_suffixes: Iterable[str] = (),
         compare_fields: Iterable[str] = DEFAULT_COMPARE_FIELDS,
     ):
+        """Build a ledger from ``path`` or ``records``; the remaining arguments are seams (see the class docstring)."""
         self._path = Path(path) if path else None
         self._explicit_records = records
         self._implemented = implemented
@@ -280,6 +293,7 @@ class Catalog(Mapping):
 
     # -- Mapping interface --------------------------------------------------
     def __getitem__(self, key: str) -> BackendInfo:
+        """The :class:`BackendInfo` for ``key``; ``KeyError`` naming known ids if absent."""
         try:
             return self._load()[key]
         except KeyError:
@@ -289,9 +303,11 @@ class Catalog(Mapping):
             )
 
     def __iter__(self) -> Iterator[str]:
+        """Iterate over backend ids."""
         return iter(self._load())
 
     def __len__(self) -> int:
+        """Number of backends."""
         return len(self._load())
 
     # -- filtering / querying ----------------------------------------------
@@ -351,9 +367,11 @@ class Catalog(Mapping):
     # -- export -------------------------------------------------------------
     @property
     def ids(self) -> List[str]:
+        """All backend ids, sorted."""
         return sorted(self._load().keys())
 
     def to_records(self) -> List[dict]:
+        """All records as plain dicts."""
         return [i.to_dict() for i in self._load().values()]
 
     def to_dataframe(self, *, columns: Optional[Iterable[str]] = None):
@@ -388,6 +406,7 @@ class Catalog(Mapping):
         return out
 
     def __repr__(self) -> str:
+        """Short representation: record count and how many are implemented."""
         records = self._load()
         n_impl = sum(1 for i in records.values() if i.implemented)
         n_local = sum(1 for i in records.values() if i.is_local)
