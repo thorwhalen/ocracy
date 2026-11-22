@@ -1,4 +1,4 @@
-> built 2026-11-22 19:12 UTC from c8f84e6 (main) · ocracy 0.1.22. Details: build_info.json
+> built 2026-11-22 22:02 UTC from aa7a8ad (main) · ocracy 0.1.22. Details: build_info.json
 
 # index.html.md
 
@@ -3818,6 +3818,8 @@ Generate a new backend package from its ledger entry.
 * **Parameters:**
   * **backend_id** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – The ledger id to scaffold (e.g. `surya`).
   * **dest** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – Optional destination directory.
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 ### ocracy.tools.status(, level='all', run_tests=False, names=False)
 
@@ -4002,7 +4004,7 @@ Convert any supported input into a PIL `Image` (lazy import).
 
 # About this build
 
-This documentation was built on **2026-11-22 19:12 UTC** from commit <a href="https://github.com/thorwhalen/ocracy/commit/c8f84e6a178143629036eb1a99173f143a12d0d9"><code>c8f84e6</code></a> on branch <code>main</code>, for **ocracy 0.1.22** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-22 22:02 UTC** from commit <a href="https://github.com/thorwhalen/ocracy/commit/aa7a8ad27999338ab002e79753b3e510e048c06f"><code>aa7a8ad</code></a> on branch <code>main</code>, for **ocracy 0.1.22** (from <code>pyproject.toml</code>).
 
 #### NOTE
 Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
@@ -4011,7 +4013,7 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 |                     |                                                                                                                                                          |
 |---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/ocracy/commit/c8f84e6a178143629036eb1a99173f143a12d0d9"><code>c8f84e6a178143629036eb1a99173f143a12d0d9</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/ocracy/commit/aa7a8ad27999338ab002e79753b3e510e048c06f"><code>aa7a8ad27999338ab002e79753b3e510e048c06f</code></a> |
 | Branch              | <code>main</code>                                                                                                                                        |
 | Tags at this commit | none                                                                                                                                                     |
 | Working tree        | clean                                                                                                                                                    |
@@ -4022,9 +4024,9 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/ocracy</code>                                                             |
-| Run          | <a href="https://github.com/thorwhalen/ocracy/actions/runs/45059297308">45059297308</a>    |
+| Run          | <a href="https://github.com/thorwhalen/ocracy/actions/runs/45075237633">45075237633</a>    |
 | Ref          | <code>refs/heads/main</code>                                                               |
-| Event commit | <code>c8f84e6a178143629036eb1a99173f143a12d0d9</code> (in the history of the built commit) |
+| Event commit | <code>aa7a8ad27999338ab002e79753b3e510e048c06f</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -4055,7 +4057,7 @@ Latest release: <a href="https://pypi.org/project/ocracy/0.1.22/">0.1.22</a>, th
 
 ```bash
 git clone https://github.com/thorwhalen/ocracy && cd ocracy
-git checkout c8f84e6a178143629036eb1a99173f143a12d0d9
+git checkout aa7a8ad27999338ab002e79753b3e510e048c06f
 pip install "epythet==0.2.23"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```

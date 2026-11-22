@@ -102,6 +102,8 @@ Generate a new backend package from its ledger entry.
 * **Parameters:**
   * **backend_id** ([`str`](https://docs.python.org/3/builtins/stdtypes.html#str)) – The ledger id to scaffold (e.g. `surya`).
   * **dest** ([`Optional`](https://docs.python.org/3/library/typing.html#typing.Optional)[[`str`](https://docs.python.org/3/builtins/stdtypes.html#str)]) – Optional destination directory.
+* **Return type:**
+  [`str`](https://docs.python.org/3/builtins/stdtypes.html#str)
 
 ### ocracy.tools.status(, level='all', run_tests=False, names=False)
 
