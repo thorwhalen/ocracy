@@ -8,6 +8,7 @@ class Adapter(BaseOcrAdapter):
     """Google Cloud Vision adapter (caches the client)."""
 
     def __init__(self, config: dict):
+        """Initialize the adapter with its backend ``config``; the engine itself is loaded lazily on first use."""
         super().__init__(config)
         self._client = None
 

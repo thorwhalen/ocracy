@@ -20,6 +20,7 @@ above keeps working with no adapter.
 
 
 def main() -> None:
+    """Run the ``ocracy`` command line through ``cw``; exits with the command status."""
     try:
         import cw
     except ImportError:  # pragma: no cover - exercised only without the extra

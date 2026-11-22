@@ -91,6 +91,7 @@ class Catalog(_LedgerCatalog):
         *,
         _records: Optional[List[dict]] = None,
     ):
+        """Load the ocracy ledger from ``path`` (default: the shipped ``backends.json``)."""
         super().__init__(
             path,
             records=_records,

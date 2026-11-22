@@ -71,14 +71,17 @@ class BBox:
 
     @property
     def width(self) -> float:
+        """Horizontal extent ``x1 - x0``."""
         return self.x1 - self.x0
 
     @property
     def height(self) -> float:
+        """Vertical extent ``y1 - y0``."""
         return self.y1 - self.y0
 
     @property
     def area(self) -> float:
+        """``width * height``."""
         return max(0.0, self.width) * max(0.0, self.height)
 
     @property
@@ -93,6 +96,7 @@ class BBox:
 
     @classmethod
     def from_xywh(cls, x: float, y: float, w: float, h: float) -> "BBox":
+        """Build a box from top-left ``x, y`` and size ``w, h``."""
         return cls(x0=x, y0=y, x1=x + w, y1=y + h)
 
     @classmethod
@@ -137,6 +141,7 @@ class TextBlock:
     meta: dict = field(default_factory=dict)
 
     def __str__(self) -> str:
+        """The block text."""
         return self.text
 
 
@@ -175,15 +180,19 @@ class OcrResult:
 
     # -- string / iteration sugar ------------------------------------------
     def __str__(self) -> str:
+        """The recognized text."""
         return self.text
 
     def __len__(self) -> int:
+        """Length of the recognized text."""
         return len(self.text)
 
     def __iter__(self) -> Iterator[TextBlock]:
+        """Iterate over the blocks."""
         return iter(self.blocks)
 
     def __bool__(self) -> bool:
+        """True when there is any non-blank text or any block."""
         return bool(self.text.strip()) or bool(self.blocks)
 
     # -- structured views ---------------------------------------------------
@@ -193,14 +202,17 @@ class OcrResult:
 
     @property
     def words(self) -> List[TextBlock]:
+        """The blocks at ``word`` level (empty if the backend reports another level)."""
         return self.at_level("word")
 
     @property
     def lines(self) -> List[TextBlock]:
+        """The blocks at ``line`` level (empty if the backend reports another level)."""
         return self.at_level("line")
 
     @property
     def paragraphs(self) -> List[TextBlock]:
+        """The blocks at ``paragraph`` level (empty if the backend reports another level)."""
         return self.at_level("paragraph")
 
     @property

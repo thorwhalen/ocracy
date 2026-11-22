@@ -27,18 +27,22 @@ class ServiceHandle:
     """Per-backend access point: normalized ``read`` + native ``adapter``."""
 
     def __init__(self, backend_id: str):
+        """Handle for the backend ``backend_id`` (nothing is loaded yet)."""
         self._id = backend_id
 
     @property
     def name(self) -> str:
+        """The backend id."""
         return self._id
 
     @functools.cached_property
     def config(self) -> dict:
+        """The backend configuration, read without loading the adapter."""
         return registry.get_config(self._id)
 
     @functools.cached_property
     def adapter(self) -> Any:
+        """The adapter instance, loaded on first access."""
         return registry.get_backend(self._id)["adapter"]
 
     @functools.cached_property
@@ -67,6 +71,7 @@ class ServiceHandle:
             raise AttributeError(f"Backend {self._id!r} has no attribute {name!r}")
 
     def __repr__(self) -> str:
+        """Show the id and capabilities."""
         caps = self.config.get("capabilities", [])
         return f"<ServiceHandle {self._id!r} capabilities={caps}>"
 
@@ -79,12 +84,14 @@ class ServiceCollection(Mapping):
     """
 
     def __init__(self):
+        """Create an empty collection; handles are created lazily."""
         self._handles: dict = {}
 
     def _ensure(self):
         registry._discover_backends()
 
     def __getitem__(self, backend_id: str) -> ServiceHandle:
+        """The :class:`ServiceHandle` for ``backend_id``; ``KeyError`` listing the available ids if unknown."""
         self._ensure()
         if backend_id not in registry._registry:
             raise KeyError(
@@ -96,6 +103,7 @@ class ServiceCollection(Mapping):
         return self._handles[backend_id]
 
     def __getattr__(self, name: str) -> ServiceHandle:
+        """Attribute-style access to a handle (``services.tesseract``)."""
         if name.startswith("_"):
             raise AttributeError(name)
         try:
@@ -106,18 +114,22 @@ class ServiceCollection(Mapping):
             )
 
     def __iter__(self):
+        """Iterate over backend ids, sorted."""
         self._ensure()
         return iter(sorted(registry._registry))
 
     def __len__(self):
+        """Number of discovered backends."""
         self._ensure()
         return len(registry._registry)
 
     def __contains__(self, name):
+        """Whether ``name`` is a discovered backend."""
         self._ensure()
         return name in registry._registry
 
     def __repr__(self):
+        """Show the backend ids."""
         return f"<ServiceCollection backends={list(self)}>"
 
 
