@@ -8,6 +8,7 @@ and VLM readers — each with its own install, API, pricing, and language covera
 `ocracy` gives you a uniform call, a browsable catalog of every option, and the
 tools to wrap any of them.
 
+<!-- wads-docs: skip - needs your own scan.png -->
 ```python
 import ocracy
 
@@ -65,6 +66,7 @@ lines or splits lines into words, and `result.words` / `result.lines` are just
 filters over the one flat `blocks` list — so **asking for the level a backend does
 not produce returns `[]`, silently**:
 
+<!-- wads-docs: skip - needs your own scan.png -->
 ```python
 r = ocracy.ocr("scan.png", backend="rapidocr")
 r.lines  # populated
@@ -92,6 +94,7 @@ APIs can return geometry) while ocracy's façades for them return text only. Tre
 `ocracy.find(bounding_boxes=True)` as "engines worth wrapping for geometry", and
 the list above as what you get today. If your code needs a level, assert it:
 
+<!-- wads-docs: skip - fragment: img and chosen are the reader's -->
 ```python
 result = ocracy.ocr(img, backend=chosen)
 if not result.words:
@@ -104,6 +107,7 @@ Some backends need more than `pip install` (Tesseract's *system* binary, Paddle'
 framework, GPU wheels, first-run model weights, or an API key). ocracy turns that
 into structured, OS-aware guidance — handy for humans and AI agents alike:
 
+<!-- wads-docs: skip - ocracy.install(yes=True) pip-installs rapidocr -->
 ```python
 ocracy.doctor()  # what's usable now vs what each missing one needs
 ocracy.check("paddleocr")  # -> True/False (usable right now?)
@@ -124,6 +128,7 @@ PaddleOCR → RapidOCR). The `ocracy-install-backend` skill drives all of this.
 
 From simplest to most powerful — reach for the next tier only when you need it:
 
+<!-- wads-docs: skip - fragment: img is the reader's -->
 ```python
 ocracy.ocr(img)  # 1. facade, default (installed) backend
 ocracy.ocr(img, backend="easyocr", languages=["en", "fr"])
@@ -174,6 +179,8 @@ matter (local vs remote, price, accuracy, languages, handwriting, math, tables,
 privacy). The data lives in `ocracy/data/backends.json`, separate from code.
 
 ```python
+import ocracy
+
 ocracy.catalog  # <Catalog … backends … implemented …>
 ocracy.catalog["google-vision"]  # one backend's full record
 ocracy.find(is_local=True, open_source=True)  # filter the ledger
@@ -194,6 +201,7 @@ report behind the ledger is in [`misc/docs/ocr_landscape_research.md`](misc/docs
 Remote backends need a credential in an environment variable. ocracy tells you
 exactly which one — **with a link to get it** — the moment it's missing:
 
+<!-- wads-docs: skip - shows the error raised when OCR_SPACE_API_KEY is not set -->
 ```python
 >>> ocracy.ocr("receipt.png", backend="ocr-space")
 MissingCredentialError: No credential found for ocr-space (set one of: OCR_SPACE_API_KEY).
@@ -221,6 +229,7 @@ The catalog is large; `ocracy` ships façades for a curated subset and gives you
 the machinery to add any other one. Scaffold a backend straight from its ledger
 entry, fill in the adapter, and validate it:
 
+<!-- wads-docs: skip - scaffolds a backend inside the installed package -->
 ```python
 from ocracy.make_backend import scaffold_backend, validate_adapter
 
