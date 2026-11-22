@@ -12,7 +12,7 @@ from ocracy.make_backend import BaseOcrAdapter
 class Adapter(BaseOcrAdapter):
     """TrOCR adapter (caches the processor + model per checkpoint)."""
 
-    def __init__(self, config: dict):
+    def __init__(self, config: dict) -> None:
         """Initialize the adapter with its backend ``config``; the engine itself is loaded lazily on first use."""
         super().__init__(config)
         self._processor = None

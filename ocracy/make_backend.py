@@ -65,7 +65,7 @@ class BaseOcrAdapter:
     #: dropped. On a local backend they are dropped with a (redacted) note.
     ADAPTER_KWARGS = ("api_key", "app_key", "app_id")
 
-    def __init__(self, config: dict):
+    def __init__(self, config: dict) -> None:
         """Keep the backend ``config`` and prepare its parameter translator."""
         self.config = config
         self.backend_id = config.get("id") or config.get("name", "")

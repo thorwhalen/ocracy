@@ -12,7 +12,7 @@ from ocracy.make_backend import BaseOcrAdapter
 class Adapter(BaseOcrAdapter):
     """pix2tex (LaTeX-OCR) adapter (caches the model)."""
 
-    def __init__(self, config: dict):
+    def __init__(self, config: dict) -> None:
         """Initialize the adapter with its backend ``config``; the engine itself is loaded lazily on first use."""
         super().__init__(config)
         self._model = None

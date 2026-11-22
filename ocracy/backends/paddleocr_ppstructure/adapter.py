@@ -21,7 +21,7 @@ _INSTALL = 'pip install "ocracy[paddleocr-ppstructure]"'
 class Adapter(BaseOcrAdapter):
     """PP-StructureV3 adapter (caches one pipeline per language)."""
 
-    def __init__(self, config: dict):
+    def __init__(self, config: dict) -> None:
         """Initialize the adapter with its backend ``config``; the engine itself is loaded lazily on first use."""
         super().__init__(config)
         self._pipelines: dict = {}

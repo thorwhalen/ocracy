@@ -91,7 +91,7 @@ class BackendInfo(Mapping):
     properties.
     """
 
-    def __init__(self, record: dict, *, implemented: bool = False):
+    def __init__(self, record: dict, *, implemented: bool = False) -> None:
         """Wrap a ledger ``record``; ``implemented`` is the default for records that do not say."""
         self._record: Dict[str, Any] = dict(record)
         self._record.setdefault("implemented", implemented)
@@ -234,7 +234,7 @@ class Catalog(Mapping):
         text_fields: Iterable[str] = DEFAULT_TEXT_FIELDS,
         capability_suffixes: Iterable[str] = (),
         compare_fields: Iterable[str] = DEFAULT_COMPARE_FIELDS,
-    ):
+    ) -> None:
         """Build a ledger from ``path`` or ``records``; the remaining arguments are seams (see the class docstring)."""
         self._path = Path(path) if path else None
         self._explicit_records = records
