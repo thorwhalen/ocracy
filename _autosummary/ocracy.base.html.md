@@ -43,6 +43,10 @@ An axis-aligned bounding box in pixel coordinates (origin = top-left).
 sequence of `(x, y)` points; the axis-aligned `x0/y0/x1/y1` are always
 populated (derived from the polygon if a backend only gives one).
 
+#### *property* area *: [float](https://docs.python.org/3/builtins/functions.html#float)*
+
+`width * height`.
+
 #### *property* as_tuple *: [Tuple](https://docs.python.org/3/library/typing.html#typing.Tuple)[[float](https://docs.python.org/3/builtins/functions.html#float), [float](https://docs.python.org/3/builtins/functions.html#float), [float](https://docs.python.org/3/builtins/functions.html#float), [float](https://docs.python.org/3/builtins/functions.html#float)]*
 
 `(x0, y0, x1, y1)` — the convention PIL’s `crop` expects.
@@ -56,6 +60,21 @@ polygon is preserved for callers that care about rotation.
 
 * **Return type:**
   [`BBox`](#ocracy.base.BBox)
+
+#### *classmethod* from_xywh(x, y, w, h)
+
+Build a box from top-left `x, y` and size `w, h`.
+
+* **Return type:**
+  [`BBox`](#ocracy.base.BBox)
+
+#### *property* height *: [float](https://docs.python.org/3/builtins/functions.html#float)*
+
+Vertical extent `y1 - y0`.
+
+#### *property* width *: [float](https://docs.python.org/3/builtins/functions.html#float)*
+
+Horizontal extent `x1 - x0`.
 
 #### *property* xywh *: [Tuple](https://docs.python.org/3/library/typing.html#typing.Tuple)[[float](https://docs.python.org/3/builtins/functions.html#float), [float](https://docs.python.org/3/builtins/functions.html#float), [float](https://docs.python.org/3/builtins/functions.html#float), [float](https://docs.python.org/3/builtins/functions.html#float)]*
 
@@ -121,6 +140,10 @@ Build a minimal result from just a text string (no geometry).
 * **Return type:**
   [`OcrResult`](#ocracy.base.OcrResult)
 
+#### *property* lines *: [List](https://docs.python.org/3/library/typing.html#typing.List)[[TextBlock](#ocracy.base.TextBlock)]*
+
+The blocks at `line` level (empty if the backend reports another level).
+
 #### *property* markdown *: [Optional](https://docs.python.org/3/library/typing.html#typing.Optional)[[str](https://docs.python.org/3/builtins/stdtypes.html#str)]*
 
 Markdown rendering if the backend produced one (else `None`).
@@ -128,6 +151,14 @@ Markdown rendering if the backend produced one (else `None`).
 #### *property* mean_confidence *: [Optional](https://docs.python.org/3/library/typing.html#typing.Optional)[[float](https://docs.python.org/3/builtins/functions.html#float)]*
 
 Mean confidence over blocks that report one, or `None`.
+
+#### *property* paragraphs *: [List](https://docs.python.org/3/library/typing.html#typing.List)[[TextBlock](#ocracy.base.TextBlock)]*
+
+The blocks at `paragraph` level (empty if the backend reports another level).
+
+#### *property* words *: [List](https://docs.python.org/3/library/typing.html#typing.List)[[TextBlock](#ocracy.base.TextBlock)]*
+
+The blocks at `word` level (empty if the backend reports another level).
 
 ### *class* ocracy.base.TextBlock(text, bbox=None, confidence=None, level='line', language=None, meta=dict())
 

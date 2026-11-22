@@ -61,6 +61,33 @@ New fields added to the JSON are available at once (`info.price_note`,
 `info["price_note"]`) with no code change; a few common fields get typed
 properties.
 
+#### *property* id *: [str](https://docs.python.org/3/builtins/stdtypes.html#str)*
+
+The backend id (`""` if absent).
+
+#### *property* implemented *: [bool](https://docs.python.org/3/builtins/functions.html#bool)*
+
+Whether a working facade exists for this backend.
+
+#### *property* is_local *: [bool](https://docs.python.org/3/builtins/functions.html#bool)*
+
+Whether the engine runs locally.
+
+#### *property* is_remote *: [bool](https://docs.python.org/3/builtins/functions.html#bool)*
+
+Whether the engine is a remote service.
+
+#### *property* name *: [str](https://docs.python.org/3/builtins/stdtypes.html#str)*
+
+The display name, falling back to the id.
+
+#### to_dict()
+
+A plain-dict copy of the record.
+
+* **Return type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
+
 ### ocracy.kit.ledger.CAPABILITY_VALUES *= ('yes', True)*
 
 Field values that mean “this backend has the capability”, for [`Catalog.can()`](#ocracy.kit.ledger.Catalog.can).
@@ -141,6 +168,10 @@ Example:
 catalog.filter(is_local=True, open_source=True)
 ```
 
+#### *property* ids *: [List](https://docs.python.org/3/library/typing.html#typing.List)[[str](https://docs.python.org/3/builtins/stdtypes.html#str)]*
+
+All backend ids, sorted.
+
 #### supports_language(language)
 
 Backends whose `languages_note` mentions `language` (name or code).
@@ -151,6 +182,13 @@ Backends whose `languages_note` mentions `language` (name or code).
 #### to_dataframe(, columns=None)
 
 Return a pandas DataFrame of the catalog (pandas imported lazily).
+
+#### to_records()
+
+All records as plain dicts.
+
+* **Return type:**
+  [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)]
 
 ### ocracy.kit.ledger.DEFAULT_COMPARE_FIELDS *= ('name', 'is_local', 'is_remote', 'open_source', 'pricing_model', 'price_note', 'accuracy_tier', 'languages_count', 'best_for')*
 

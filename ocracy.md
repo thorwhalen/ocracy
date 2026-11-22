@@ -1,4 +1,4 @@
-> built 2026-10-20 10:32 UTC from ea5cc73 (main) · ocracy 0.1.21. Details: build_info.json
+> built 2026-11-22 17:07 UTC from ab80219 (main) · ocracy 0.1.22. Details: build_info.json
 
 # index.html.md
 
@@ -1264,6 +1264,10 @@ An axis-aligned bounding box in pixel coordinates (origin = top-left).
 sequence of `(x, y)` points; the axis-aligned `x0/y0/x1/y1` are always
 populated (derived from the polygon if a backend only gives one).
 
+#### *property* area *: [float](https://docs.python.org/3/builtins/functions.html#float)*
+
+`width * height`.
+
 #### *property* as_tuple *: [Tuple](https://docs.python.org/3/library/typing.html#typing.Tuple)[[float](https://docs.python.org/3/builtins/functions.html#float), [float](https://docs.python.org/3/builtins/functions.html#float), [float](https://docs.python.org/3/builtins/functions.html#float), [float](https://docs.python.org/3/builtins/functions.html#float)]*
 
 `(x0, y0, x1, y1)` — the convention PIL’s `crop` expects.
@@ -1277,6 +1281,21 @@ polygon is preserved for callers that care about rotation.
 
 * **Return type:**
   [`BBox`](_autosummary/ocracy.base.html.md#ocracy.base.BBox)
+
+#### *classmethod* from_xywh(x, y, w, h)
+
+Build a box from top-left `x, y` and size `w, h`.
+
+* **Return type:**
+  [`BBox`](_autosummary/ocracy.base.html.md#ocracy.base.BBox)
+
+#### *property* height *: [float](https://docs.python.org/3/builtins/functions.html#float)*
+
+Vertical extent `y1 - y0`.
+
+#### *property* width *: [float](https://docs.python.org/3/builtins/functions.html#float)*
+
+Horizontal extent `x1 - x0`.
 
 #### *property* xywh *: [Tuple](https://docs.python.org/3/library/typing.html#typing.Tuple)[[float](https://docs.python.org/3/builtins/functions.html#float), [float](https://docs.python.org/3/builtins/functions.html#float), [float](https://docs.python.org/3/builtins/functions.html#float), [float](https://docs.python.org/3/builtins/functions.html#float)]*
 
@@ -1342,6 +1361,10 @@ Build a minimal result from just a text string (no geometry).
 * **Return type:**
   [`OcrResult`](_autosummary/ocracy.base.html.md#ocracy.base.OcrResult)
 
+#### *property* lines *: [List](https://docs.python.org/3/library/typing.html#typing.List)[[TextBlock](_autosummary/ocracy.base.html.md#ocracy.base.TextBlock)]*
+
+The blocks at `line` level (empty if the backend reports another level).
+
 #### *property* markdown *: [Optional](https://docs.python.org/3/library/typing.html#typing.Optional)[[str](https://docs.python.org/3/builtins/stdtypes.html#str)]*
 
 Markdown rendering if the backend produced one (else `None`).
@@ -1349,6 +1372,14 @@ Markdown rendering if the backend produced one (else `None`).
 #### *property* mean_confidence *: [Optional](https://docs.python.org/3/library/typing.html#typing.Optional)[[float](https://docs.python.org/3/builtins/functions.html#float)]*
 
 Mean confidence over blocks that report one, or `None`.
+
+#### *property* paragraphs *: [List](https://docs.python.org/3/library/typing.html#typing.List)[[TextBlock](_autosummary/ocracy.base.html.md#ocracy.base.TextBlock)]*
+
+The blocks at `paragraph` level (empty if the backend reports another level).
+
+#### *property* words *: [List](https://docs.python.org/3/library/typing.html#typing.List)[[TextBlock](_autosummary/ocracy.base.html.md#ocracy.base.TextBlock)]*
+
+The blocks at `word` level (empty if the backend reports another level).
 
 ### *class* ocracy.base.TextBlock(text, bbox=None, confidence=None, level='line', language=None, meta=dict())
 
@@ -1636,6 +1667,10 @@ An axis-aligned bounding box in pixel coordinates (origin = top-left).
 sequence of `(x, y)` points; the axis-aligned `x0/y0/x1/y1` are always
 populated (derived from the polygon if a backend only gives one).
 
+#### *property* area *: [float](https://docs.python.org/3/builtins/functions.html#float)*
+
+`width * height`.
+
 #### *property* as_tuple *: [Tuple](https://docs.python.org/3/library/typing.html#typing.Tuple)[[float](https://docs.python.org/3/builtins/functions.html#float), [float](https://docs.python.org/3/builtins/functions.html#float), [float](https://docs.python.org/3/builtins/functions.html#float), [float](https://docs.python.org/3/builtins/functions.html#float)]*
 
 `(x0, y0, x1, y1)` — the convention PIL’s `crop` expects.
@@ -1650,6 +1685,21 @@ polygon is preserved for callers that care about rotation.
 * **Return type:**
   [`BBox`](_autosummary/ocracy.base.html.md#ocracy.base.BBox)
 
+#### *classmethod* from_xywh(x, y, w, h)
+
+Build a box from top-left `x, y` and size `w, h`.
+
+* **Return type:**
+  [`BBox`](_autosummary/ocracy.base.html.md#ocracy.base.BBox)
+
+#### *property* height *: [float](https://docs.python.org/3/builtins/functions.html#float)*
+
+Vertical extent `y1 - y0`.
+
+#### *property* width *: [float](https://docs.python.org/3/builtins/functions.html#float)*
+
+Horizontal extent `x1 - x0`.
+
 #### *property* xywh *: [Tuple](https://docs.python.org/3/library/typing.html#typing.Tuple)[[float](https://docs.python.org/3/builtins/functions.html#float), [float](https://docs.python.org/3/builtins/functions.html#float), [float](https://docs.python.org/3/builtins/functions.html#float), [float](https://docs.python.org/3/builtins/functions.html#float)]*
 
 `(x, y, width, height)` — the convention many drawing libs expect.
@@ -1663,6 +1713,33 @@ One backend’s ledger entry: a read-only record, by key or by attribute.
 New fields added to the JSON are available at once (`info.price_note`,
 `info["price_note"]`) with no code change; a few common fields get typed
 properties.
+
+#### *property* id *: [str](https://docs.python.org/3/builtins/stdtypes.html#str)*
+
+The backend id (`""` if absent).
+
+#### *property* implemented *: [bool](https://docs.python.org/3/builtins/functions.html#bool)*
+
+Whether a working facade exists for this backend.
+
+#### *property* is_local *: [bool](https://docs.python.org/3/builtins/functions.html#bool)*
+
+Whether the engine runs locally.
+
+#### *property* is_remote *: [bool](https://docs.python.org/3/builtins/functions.html#bool)*
+
+Whether the engine is a remote service.
+
+#### *property* name *: [str](https://docs.python.org/3/builtins/stdtypes.html#str)*
+
+The display name, falling back to the id.
+
+#### to_dict()
+
+A plain-dict copy of the record.
+
+* **Return type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
 
 ### *class* ocracy.BaseOcrAdapter(config)
 
@@ -1770,6 +1847,10 @@ Build a minimal result from just a text string (no geometry).
 * **Return type:**
   [`OcrResult`](_autosummary/ocracy.base.html.md#ocracy.base.OcrResult)
 
+#### *property* lines *: [List](https://docs.python.org/3/library/typing.html#typing.List)[[TextBlock](_autosummary/ocracy.base.html.md#ocracy.base.TextBlock)]*
+
+The blocks at `line` level (empty if the backend reports another level).
+
 #### *property* markdown *: [Optional](https://docs.python.org/3/library/typing.html#typing.Optional)[[str](https://docs.python.org/3/builtins/stdtypes.html#str)]*
 
 Markdown rendering if the backend produced one (else `None`).
@@ -1777,6 +1858,14 @@ Markdown rendering if the backend produced one (else `None`).
 #### *property* mean_confidence *: [Optional](https://docs.python.org/3/library/typing.html#typing.Optional)[[float](https://docs.python.org/3/builtins/functions.html#float)]*
 
 Mean confidence over blocks that report one, or `None`.
+
+#### *property* paragraphs *: [List](https://docs.python.org/3/library/typing.html#typing.List)[[TextBlock](_autosummary/ocracy.base.html.md#ocracy.base.TextBlock)]*
+
+The blocks at `paragraph` level (empty if the backend reports another level).
+
+#### *property* words *: [List](https://docs.python.org/3/library/typing.html#typing.List)[[TextBlock](_autosummary/ocracy.base.html.md#ocracy.base.TextBlock)]*
+
+The blocks at `word` level (empty if the backend reports another level).
 
 ### *class* ocracy.Requirements(backend_id, implemented, available, is_local, is_remote, pip_command, extra=None, system=list(), system_note=None, gpu=None, weights=None, heavy=False, alternative=None, credentials=list(), notes=list(), verify_command=None, alternative_label='Lighter alternative')
 
@@ -2372,6 +2461,33 @@ New fields added to the JSON are available at once (`info.price_note`,
 `info["price_note"]`) with no code change; a few common fields get typed
 properties.
 
+#### *property* id *: [str](https://docs.python.org/3/builtins/stdtypes.html#str)*
+
+The backend id (`""` if absent).
+
+#### *property* implemented *: [bool](https://docs.python.org/3/builtins/functions.html#bool)*
+
+Whether a working facade exists for this backend.
+
+#### *property* is_local *: [bool](https://docs.python.org/3/builtins/functions.html#bool)*
+
+Whether the engine runs locally.
+
+#### *property* is_remote *: [bool](https://docs.python.org/3/builtins/functions.html#bool)*
+
+Whether the engine is a remote service.
+
+#### *property* name *: [str](https://docs.python.org/3/builtins/stdtypes.html#str)*
+
+The display name, falling back to the id.
+
+#### to_dict()
+
+A plain-dict copy of the record.
+
+* **Return type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
+
 ### *class* ocracy.kit.Catalog(path=None, \*, records=None, default_path=None, env_var=None, implemented=<function \_nothing_implemented>, text_fields=frozenset({'beyond_text', 'languages_note', 'output_formats'}), capability_suffixes=(), compare_fields=('name', 'is_local', 'is_remote', 'open_source', 'pricing_model', 'price_note', 'accuracy_tier', 'languages_count', 'best_for'))
 
 Bases: [`Mapping`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping)
@@ -2446,6 +2562,10 @@ Example:
 catalog.filter(is_local=True, open_source=True)
 ```
 
+#### *property* ids *: [List](https://docs.python.org/3/library/typing.html#typing.List)[[str](https://docs.python.org/3/builtins/stdtypes.html#str)]*
+
+All backend ids, sorted.
+
 #### supports_language(language)
 
 Backends whose `languages_note` mentions `language` (name or code).
@@ -2456,6 +2576,13 @@ Backends whose `languages_note` mentions `language` (name or code).
 #### to_dataframe(, columns=None)
 
 Return a pandas DataFrame of the catalog (pandas imported lazily).
+
+#### to_records()
+
+All records as plain dicts.
+
+* **Return type:**
+  [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)]
 
 ### *exception* ocracy.kit.MissingCredentialError(message='', , provider=None, env_vars=(), get_key_url=None)
 
@@ -2859,6 +2986,33 @@ New fields added to the JSON are available at once (`info.price_note`,
 `info["price_note"]`) with no code change; a few common fields get typed
 properties.
 
+#### *property* id *: [str](https://docs.python.org/3/builtins/stdtypes.html#str)*
+
+The backend id (`""` if absent).
+
+#### *property* implemented *: [bool](https://docs.python.org/3/builtins/functions.html#bool)*
+
+Whether a working facade exists for this backend.
+
+#### *property* is_local *: [bool](https://docs.python.org/3/builtins/functions.html#bool)*
+
+Whether the engine runs locally.
+
+#### *property* is_remote *: [bool](https://docs.python.org/3/builtins/functions.html#bool)*
+
+Whether the engine is a remote service.
+
+#### *property* name *: [str](https://docs.python.org/3/builtins/stdtypes.html#str)*
+
+The display name, falling back to the id.
+
+#### to_dict()
+
+A plain-dict copy of the record.
+
+* **Return type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
+
 ### ocracy.kit.ledger.CAPABILITY_VALUES *= ('yes', True)*
 
 Field values that mean “this backend has the capability”, for [`Catalog.can()`](_autosummary/ocracy.kit.ledger.html.md#ocracy.kit.ledger.Catalog.can).
@@ -2939,6 +3093,10 @@ Example:
 catalog.filter(is_local=True, open_source=True)
 ```
 
+#### *property* ids *: [List](https://docs.python.org/3/library/typing.html#typing.List)[[str](https://docs.python.org/3/builtins/stdtypes.html#str)]*
+
+All backend ids, sorted.
+
 #### supports_language(language)
 
 Backends whose `languages_note` mentions `language` (name or code).
@@ -2949,6 +3107,13 @@ Backends whose `languages_note` mentions `language` (name or code).
 #### to_dataframe(, columns=None)
 
 Return a pandas DataFrame of the catalog (pandas imported lazily).
+
+#### to_records()
+
+All records as plain dicts.
+
+* **Return type:**
+  [`List`](https://docs.python.org/3/library/typing.html#typing.List)[[`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)]
 
 ### ocracy.kit.ledger.DEFAULT_COMPARE_FIELDS *= ('name', 'is_local', 'is_remote', 'open_source', 'pricing_model', 'price_note', 'accuracy_tier', 'languages_count', 'best_for')*
 
@@ -3828,7 +3993,7 @@ Convert any supported input into a PIL `Image` (lazy import).
 
 # About this build
 
-This documentation was built on **2026-10-20 10:32 UTC** from commit <a href="https://github.com/thorwhalen/ocracy/commit/ea5cc7366741487c79b3a114a4c7542cd40aa036"><code>ea5cc73</code></a> on branch <code>main</code>, for **ocracy 0.1.21** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-22 17:07 UTC** from commit <a href="https://github.com/thorwhalen/ocracy/commit/ab80219a030af913c8f001eb6e090e4b4a8a3a7f"><code>ab80219</code></a> on branch <code>main</code>, for **ocracy 0.1.22** (from <code>pyproject.toml</code>).
 
 #### NOTE
 Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
@@ -3837,7 +4002,7 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 |                     |                                                                                                                                                          |
 |---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/ocracy/commit/ea5cc7366741487c79b3a114a4c7542cd40aa036"><code>ea5cc7366741487c79b3a114a4c7542cd40aa036</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/ocracy/commit/ab80219a030af913c8f001eb6e090e4b4a8a3a7f"><code>ab80219a030af913c8f001eb6e090e4b4a8a3a7f</code></a> |
 | Branch              | <code>main</code>                                                                                                                                        |
 | Tags at this commit | none                                                                                                                                                     |
 | Working tree        | clean                                                                                                                                                    |
@@ -3848,18 +4013,18 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/ocracy</code>                                                             |
-| Run          | <a href="https://github.com/thorwhalen/ocracy/actions/runs/39408447032">39408447032</a>    |
+| Run          | <a href="https://github.com/thorwhalen/ocracy/actions/runs/45047482952">45047482952</a>    |
 | Ref          | <code>refs/heads/main</code>                                                               |
-| Event commit | <code>ea5cc7366741487c79b3a114a4c7542cd40aa036</code> (in the history of the built commit) |
+| Event commit | <code>ab80219a030af913c8f001eb6e090e4b4a8a3a7f</code> (in the history of the built commit) |
 
 ## Tools
 
 |          |         |
 |----------|---------|
-| epythet  | 0.2.18  |
+| epythet  | 0.2.23  |
 | Sphinx   | 9.1.1   |
 | docutils | 0.22.4  |
-| Python   | 3.12.15 |
+| Python   | 3.12.16 |
 
 ## Configuration as resolved
 
@@ -3875,14 +4040,14 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/ocracy/0.1.21/">0.1.21</a>, the same as the documented version.
+Latest release: <a href="https://pypi.org/project/ocracy/0.1.22/">0.1.22</a>, the same as the documented version.
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/thorwhalen/ocracy && cd ocracy
-git checkout ea5cc7366741487c79b3a114a4c7542cd40aa036
-pip install "epythet==0.2.18"
+git checkout ab80219a030af913c8f001eb6e090e4b4a8a3a7f
+pip install "epythet==0.2.23"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```
 
