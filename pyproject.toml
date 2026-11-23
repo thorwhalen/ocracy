@@ -36,6 +36,10 @@ Documentation = "https://thorwhalen.github.io/ocracy"
 [project.scripts]
 ocracy = "ocracy.__main__:main"
 
+# The credentials ocracy reads, declared for setup tools (ocracy.kit.credentials).
+[project.entry-points."ocracy.credentials.v1"]
+ocracy = "ocracy.credentials:declared_credentials"
+
 [project.optional-dependencies]
 # --- per-backend extras (install only what you use) ---
 tesseract = ["pytesseract>=0.3.10", "Pillow>=9"]

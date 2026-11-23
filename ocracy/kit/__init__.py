@@ -28,7 +28,10 @@ The decisions behind its shape are in ``docs/adr/0001-facade-kit.md``.
 """
 
 from ocracy.kit.credentials import (
+    CREDENTIALS_ENTRY_POINT_GROUP,
     MissingCredentialError,
+    credential_rows,
+    read_declared_credentials,
     credential_help,
     credential_lines,
     current_credentials,
@@ -68,6 +71,9 @@ __all__ = [
     "credential_help",
     "credential_lines",
     "MissingCredentialError",
+    "CREDENTIALS_ENTRY_POINT_GROUP",
+    "credential_rows",
+    "read_declared_credentials",
     # install plans
     "Requirements",
     "build_requirements",

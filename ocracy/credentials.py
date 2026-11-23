@@ -27,6 +27,7 @@ from ocracy.kit.credentials import (
 )
 
 __all__ = [
+    "declared_credentials",
     "resolve_credential",
     "credential_help",
     "using_credentials",
@@ -108,6 +109,17 @@ CREDENTIAL_GUIDANCE = {
         "note": "Create an API key in Google AI Studio.",
     },
 }
+
+
+def declared_credentials() -> list:
+    """The credentials ocracy reads, as declared-credential rows (exposed under
+    :data:`ocracy.kit.credentials.CREDENTIALS_ENTRY_POINT_GROUP`).
+
+    >>> {r["provider"]: r["env_vars"] for r in declared_credentials()}["gemini"]
+    ['GOOGLE_API_KEY', 'GEMINI_API_KEY']
+    """
+    unlocks = {p: f"ocracy: the {p} OCR backend" for p in PROVIDER_ENV_VARS}
+    return _kit.credential_rows(PROVIDER_ENV_VARS, CREDENTIAL_GUIDANCE, unlocks=unlocks)
 
 
 def credential_help(provider: str) -> str:

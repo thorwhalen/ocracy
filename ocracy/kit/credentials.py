@@ -46,6 +46,25 @@ Two properties of the binding (step 2) that a server must know:
 A package binds its own tables once, with :func:`functools.partial` or a thin
 wrapper, and keeps its public names; ocracy's :mod:`ocracy.credentials` is the
 worked example. Stdlib only; imports nothing else from ocracy.
+
+**Declaring the credentials a package reads.** A tool that sets a machine up
+(a workbench doctor, an onboarding script) needs every key the installed
+packages read, without a hand-kept list that drifts. A package declares them as
+*rows* under the entry-point group :data:`CREDENTIALS_ENTRY_POINT_GROUP`; the
+target is a list of rows or a zero-argument callable returning one::
+
+    [project.entry-points."ocracy.credentials.v1"]
+    mypkg = "mypkg.credentials:declared_credentials"
+
+A row is the kit's two tables for one provider, flattened: ``provider``,
+``env_vars`` (the canonical name first, then every other name the package reads
+it under, i.e. the provider's ``provider_env_vars`` row), and, when known,
+``get_key_url`` and ``note`` (its ``guidance``), ``unlocks`` (one line: what the
+key turns on) and ``cost`` (one line: what using it costs). :func:`credential_rows`
+builds rows from the tables a package already holds; :func:`read_declared_credentials`
+reads every installed package's rows. Declaring needs no dependency on ocracy:
+the contract is the group name and the row shape. The ``.v1`` is that shape's
+version: a breaking change to it is a new group, read beside this one.
 """
 
 from __future__ import annotations
@@ -58,6 +77,11 @@ from contextvars import ContextVar
 from typing import Callable, Iterator, Mapping, Optional, Sequence, Union
 
 __all__ = [
+    "CREDENTIALS_ENTRY_POINT_GROUP",
+    "CREDENTIAL_ROW_FIELDS",
+    "credential_rows",
+    "normalize_credential_row",
+    "read_declared_credentials",
     "MissingCredentialError",
     "resolve_credential",
     "env_var_names",
@@ -68,6 +92,21 @@ __all__ = [
 ]
 
 EnvVars = Union[str, Sequence[str], None]
+
+#: The entry-point group under which a package declares the credentials it reads
+#: (see the module docstring). Versioned: ``v1`` is the row shape below.
+CREDENTIALS_ENTRY_POINT_GROUP = "ocracy.credentials.v1"
+
+#: The fields of a declared credential row: ``provider`` and ``env_vars`` are
+#: required, the rest optional one-line strings.
+CREDENTIAL_ROW_FIELDS: tuple = (
+    "provider",
+    "env_vars",
+    "get_key_url",
+    "note",
+    "unlocks",
+    "cost",
+)
 
 #: Keys bound by :func:`using_credentials`, provider -> key. Replaced, never mutated.
 _BOUND: "ContextVar[Optional[Mapping[str, str]]]" = ContextVar(
@@ -296,3 +335,104 @@ def _missing_message(provider, names, guidance, hint) -> str:
     if help_line:
         message += "\n" + help_line
     return message
+
+
+# --- declaring the credentials a package reads ----------------------------------
+
+
+def credential_rows(
+    provider_env_vars: Mapping[str, EnvVars],
+    guidance: Optional[Mapping[str, Mapping]] = None,
+    *,
+    unlocks: Optional[Mapping[str, str]] = None,
+    cost: Optional[Mapping[str, str]] = None,
+) -> list:
+    """Declared-credential rows from the kit's tables, one per provider.
+
+    ``provider_env_vars`` and ``guidance`` are the tables a package already binds
+    the chain with; ``unlocks`` and ``cost`` are optional ``{provider: line}``
+    tables. A provider with no env var is skipped (nothing to set).
+
+    >>> credential_rows(
+    ...     {"acme": ["ACME_API_KEY", "ACME_KEY"], "local": None},
+    ...     {"acme": {"get_key_url": "https://acme.example/keys"}},
+    ...     unlocks={"acme": "acme transcription"},
+    ... )
+    [{'provider': 'acme', 'env_vars': ['ACME_API_KEY', 'ACME_KEY'], 'get_key_url': 'https://acme.example/keys', 'unlocks': 'acme transcription'}]
+    """
+    rows = []
+    for provider, env in provider_env_vars.items():
+        names = list(dict.fromkeys(_as_list(env)))
+        if not names:
+            continue
+        row: dict = {"provider": provider, "env_vars": names}
+        g = (guidance or {}).get(provider) or {}
+        for field in ("get_key_url", "note"):
+            if g.get(field):
+                row[field] = g[field]
+        for field, table in (("unlocks", unlocks), ("cost", cost)):
+            if table and table.get(provider):
+                row[field] = table[provider]
+        rows.append(row)
+    return rows
+
+
+def normalize_credential_row(row: Mapping) -> dict:
+    """``row`` checked against the v1 shape: ``ValueError`` names what is wrong.
+
+    ``env_vars`` may be one string; it comes back as a list. Fields outside
+    :data:`CREDENTIAL_ROW_FIELDS` are dropped (a newer writer's extras are not
+    an error for an older reader).
+
+    >>> normalize_credential_row({"provider": "acme", "env_vars": "ACME_API_KEY", "x": 1})
+    {'provider': 'acme', 'env_vars': ['ACME_API_KEY']}
+    >>> normalize_credential_row({"provider": "acme"})
+    Traceback (most recent call last):
+        ...
+    ValueError: a credential row needs env_vars (one name or a list): {'provider': 'acme'}
+    """
+    if not isinstance(row, Mapping):
+        raise ValueError(f"a credential row is a mapping, got {row!r}")
+    provider = row.get("provider")
+    if not isinstance(provider, str) or not provider:
+        raise ValueError(f"a credential row needs a provider: {dict(row)!r}")
+    names = _as_list(row.get("env_vars"))
+    if not names or not all(isinstance(n, str) and n for n in names):
+        raise ValueError(
+            f"a credential row needs env_vars (one name or a list): {dict(row)!r}"
+        )
+    out: dict = {"provider": provider, "env_vars": list(dict.fromkeys(names))}
+    for field in CREDENTIAL_ROW_FIELDS[2:]:
+        value = row.get(field)
+        if value:
+            if not isinstance(value, str):
+                raise ValueError(f"a credential row's {field} is a string: {value!r}")
+            out[field] = value
+    return out
+
+
+def read_declared_credentials(
+    group: str = CREDENTIALS_ENTRY_POINT_GROUP,
+) -> "tuple[list, list]":
+    """``(rows, problems)``: every installed package's declared credentials.
+
+    Each row is :func:`normalize_credential_row`'s, plus ``package`` (the
+    distribution that declared it). A declaration that fails to load, or a row
+    that is malformed, is a line in ``problems`` rather than an exception, so
+    one broken package never hides the others' keys. Reads no key's value.
+    """
+    from importlib.metadata import entry_points
+
+    rows: list = []
+    problems: list = []
+    for ep in entry_points(group=group):
+        package = ep.dist.name if getattr(ep, "dist", None) is not None else ep.name
+        try:
+            declared = ep.load()
+            declared = declared() if callable(declared) else declared
+            found = [dict(normalize_credential_row(r), package=package) for r in declared]
+        except Exception as e:  # noqa: BLE001 - one broken declaration is a note
+            problems.append(f"{package}: {type(e).__name__}: {e}")
+            continue
+        rows.extend(found)
+    return rows, problems
