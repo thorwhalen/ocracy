@@ -1,4 +1,4 @@
-> built 2026-11-22 22:02 UTC from aa7a8ad (main) · ocracy 0.1.22. Details: build_info.json
+> built 2026-11-23 03:14 UTC from 4990ea0 (main) · ocracy 0.1.22. Details: build_info.json
 
 # index.html.md
 
@@ -1488,11 +1488,12 @@ or list).
 
 ### Functions
 
-| [`resolve_credential`](_autosummary/ocracy.credentials.html.md#ocracy.credentials.resolve_credential)([provider, api_key, ...])   | Resolve a credential for a remote backend.                                                                                |
-|-------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------|
-| [`credential_help`](_autosummary/ocracy.credentials.html.md#ocracy.credentials.credential_help)(provider)                      | A short, link-bearing 'how to get a key' message for `provider` (or '').                                                  |
-| [`using_credentials`](_autosummary/ocracy.credentials.html.md#ocracy.credentials.using_credentials)([keys])                      | Bind provider keys for the `with` block (overlaying any outer binding).                                                   |
-| [`current_credentials`](_autosummary/ocracy.credentials.html.md#ocracy.credentials.current_credentials)()                          | The provider keys bound in this context by [`using_credentials()`](_autosummary/ocracy.credentials.html.md#ocracy.credentials.using_credentials) (a copy). |
+| [`declared_credentials`](_autosummary/ocracy.credentials.html.md#ocracy.credentials.declared_credentials)()                       | The credentials ocracy reads, as declared-credential rows (exposed under [`ocracy.kit.credentials.CREDENTIALS_ENTRY_POINT_GROUP`](_autosummary/ocracy.kit.credentials.html.md#ocracy.kit.credentials.CREDENTIALS_ENTRY_POINT_GROUP)).   |
+|-----------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`resolve_credential`](_autosummary/ocracy.credentials.html.md#ocracy.credentials.resolve_credential)([provider, api_key, ...]) | Resolve a credential for a remote backend.                                                                                                                                                                                              |
+| [`credential_help`](_autosummary/ocracy.credentials.html.md#ocracy.credentials.credential_help)(provider)                    | A short, link-bearing 'how to get a key' message for `provider` (or '').                                                                                                                                                                |
+| [`using_credentials`](_autosummary/ocracy.credentials.html.md#ocracy.credentials.using_credentials)([keys])                    | Bind provider keys for the `with` block (overlaying any outer binding).                                                                                                                                                                 |
+| [`current_credentials`](_autosummary/ocracy.credentials.html.md#ocracy.credentials.current_credentials)()                        | The provider keys bound in this context by [`using_credentials()`](_autosummary/ocracy.credentials.html.md#ocracy.credentials.using_credentials) (a copy).                                                                                                               |
 
 ### Exceptions
 
@@ -1539,6 +1540,19 @@ The provider keys bound in this context by [`using_credentials()`](_autosummary/
 
 * **Return type:**
   [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
+
+### ocracy.credentials.declared_credentials()
+
+The credentials ocracy reads, as declared-credential rows (exposed under
+[`ocracy.kit.credentials.CREDENTIALS_ENTRY_POINT_GROUP`](_autosummary/ocracy.kit.credentials.html.md#ocracy.kit.credentials.CREDENTIALS_ENTRY_POINT_GROUP)).
+
+```pycon
+>>> {r["provider"]: r["env_vars"] for r in declared_credentials()}["gemini"]
+['GOOGLE_API_KEY', 'GEMINI_API_KEY']
+```
+
+* **Return type:**
+  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)
 
 ### ocracy.credentials.resolve_credential(provider=None, , api_key=None, env_var=None, required=True, prompt_if_missing=False)
 
@@ -2287,10 +2301,40 @@ A package binds its own tables once, with [`functools.partial()`](https://docs.p
 wrapper, and keeps its public names; ocracy’s [`ocracy.credentials`](_autosummary/ocracy.credentials.html.md#module-ocracy.credentials) is the
 worked example. Stdlib only; imports nothing else from ocracy.
 
+**Declaring the credentials a package reads.** A tool that sets a machine up
+(a workbench doctor, an onboarding script) needs every key the installed
+packages read, without a hand-kept list that drifts. A package declares them as
+*rows* under the entry-point group [`CREDENTIALS_ENTRY_POINT_GROUP`](_autosummary/ocracy.kit.credentials.html.md#ocracy.kit.credentials.CREDENTIALS_ENTRY_POINT_GROUP); the
+target is a list of rows or a zero-argument callable returning one:
+
+```default
+[project.entry-points."ocracy.credentials.v1"]
+mypkg = "mypkg.credentials:declared_credentials"
+```
+
+A row is the kit’s two tables for one provider, flattened: `provider`,
+`env_vars` (the canonical name first, then every other name the package reads
+it under, i.e. the provider’s `provider_env_vars` row), and, when known,
+`get_key_url` and `note` (its `guidance`), `unlocks` (one line: what the
+key turns on) and `cost` (one line: what using it costs). [`credential_rows()`](_autosummary/ocracy.kit.credentials.html.md#ocracy.kit.credentials.credential_rows)
+builds rows from the tables a package already holds; [`read_declared_credentials()`](_autosummary/ocracy.kit.credentials.html.md#ocracy.kit.credentials.read_declared_credentials)
+reads every installed package’s rows. Declaring needs no dependency on ocracy:
+the contract is the group name and the row shape. The `.v1` is that shape’s
+version: a breaking change to it is a new group, read beside this one.
+
+### Module Attributes
+
+| [`CREDENTIALS_ENTRY_POINT_GROUP`](_autosummary/ocracy.kit.credentials.html.md#ocracy.kit.credentials.CREDENTIALS_ENTRY_POINT_GROUP)   | The entry-point group under which a package declares the credentials it reads (see the module docstring).   |
+|----------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|
+| [`CREDENTIAL_ROW_FIELDS`](_autosummary/ocracy.kit.credentials.html.md#ocracy.kit.credentials.CREDENTIAL_ROW_FIELDS)           | `provider` and `env_vars` are required, the rest optional one-line strings.                                 |
+
 ### Functions
 
-| [`resolve_credential`](_autosummary/ocracy.kit.credentials.html.md#ocracy.kit.credentials.resolve_credential)([provider, api_key, ...])   | Resolve a provider's credential through the chain in the module docstring.                                                |
+| [`credential_rows`](_autosummary/ocracy.kit.credentials.html.md#ocracy.kit.credentials.credential_rows)(provider_env_vars[, ...])      | Declared-credential rows from the kit's tables, one per provider.                                                         |
 |-------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------|
+| [`normalize_credential_row`](_autosummary/ocracy.kit.credentials.html.md#ocracy.kit.credentials.normalize_credential_row)(row)                  | `row` checked against the v1 shape: `ValueError` names what is wrong.                                                     |
+| [`read_declared_credentials`](_autosummary/ocracy.kit.credentials.html.md#ocracy.kit.credentials.read_declared_credentials)([group])             | `(rows, problems)`: every installed package's declared credentials.                                                       |
+| [`resolve_credential`](_autosummary/ocracy.kit.credentials.html.md#ocracy.kit.credentials.resolve_credential)([provider, api_key, ...])   | Resolve a provider's credential through the chain in the module docstring.                                                |
 | [`env_var_names`](_autosummary/ocracy.kit.credentials.html.md#ocracy.kit.credentials.env_var_names)([provider, env_var, ...])        | The env vars the chain checks: `env_var` first, then the provider's row.                                                  |
 | [`credential_help`](_autosummary/ocracy.kit.credentials.html.md#ocracy.kit.credentials.credential_help)(provider, \*[, guidance])      | A short, link-bearing "how to get a key" line for `provider` (or `''`).                                                   |
 | [`credential_lines`](_autosummary/ocracy.kit.credentials.html.md#ocracy.kit.credentials.credential_lines)(env_var, provider, \*[, ...]) | `export VAR  (get a key: URL)` lines for an install plan (empty if no var).                                               |
@@ -2301,6 +2345,19 @@ worked example. Stdlib only; imports nothing else from ocracy.
 
 | [`MissingCredentialError`](_autosummary/ocracy.kit.credentials.html.md#ocracy.kit.credentials.MissingCredentialError)([message, provider, ...])   | A required credential could not be resolved; the message says how to get one.   |
 |-----------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------|
+
+### ocracy.kit.credentials.CREDENTIALS_ENTRY_POINT_GROUP *= 'ocracy.credentials.v1'*
+
+The entry-point group under which a package declares the credentials it reads
+(see the module docstring). Versioned: `v1` is the row shape below.
+
+### ocracy.kit.credentials.CREDENTIAL_ROW_FIELDS *: [tuple](https://docs.python.org/3/builtins/stdtypes.html#tuple)* *= ('provider', 'env_vars', 'get_key_url', 'note', 'unlocks', 'cost')*
+
+`provider` and `env_vars` are
+required, the rest optional one-line strings.
+
+* **Type:**
+  The fields of a declared credential row
 
 ### *exception* ocracy.kit.credentials.MissingCredentialError(message='', , provider=None, env_vars=(), get_key_url=None)
 
@@ -2338,6 +2395,26 @@ Several env vars (alternatives) are shown as `A / B`.
 * **Return type:**
   [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)
 
+### ocracy.kit.credentials.credential_rows(provider_env_vars, guidance=None, , unlocks=None, cost=None)
+
+Declared-credential rows from the kit’s tables, one per provider.
+
+`provider_env_vars` and `guidance` are the tables a package already binds
+the chain with; `unlocks` and `cost` are optional `{provider: line}`
+tables. A provider with no env var is skipped (nothing to set).
+
+```pycon
+>>> credential_rows(
+...     {"acme": ["ACME_API_KEY", "ACME_KEY"], "local": None},
+...     {"acme": {"get_key_url": "https://acme.example/keys"}},
+...     unlocks={"acme": "acme transcription"},
+... )
+[{'provider': 'acme', 'env_vars': ['ACME_API_KEY', 'ACME_KEY'], 'get_key_url': 'https://acme.example/keys', 'unlocks': 'acme transcription'}]
+```
+
+* **Return type:**
+  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)
+
 ### ocracy.kit.credentials.current_credentials()
 
 The provider keys bound in this context by [`using_credentials()`](_autosummary/ocracy.kit.credentials.html.md#ocracy.kit.credentials.using_credentials) (a copy).
@@ -2351,6 +2428,38 @@ The env vars the chain checks: `env_var` first, then the provider’s row.
 
 * **Return type:**
   [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)
+
+### ocracy.kit.credentials.normalize_credential_row(row)
+
+`row` checked against the v1 shape: `ValueError` names what is wrong.
+
+`env_vars` may be one string; it comes back as a list. Fields outside
+[`CREDENTIAL_ROW_FIELDS`](_autosummary/ocracy.kit.credentials.html.md#ocracy.kit.credentials.CREDENTIAL_ROW_FIELDS) are dropped (a newer writer’s extras are not
+an error for an older reader).
+
+```pycon
+>>> normalize_credential_row({"provider": "acme", "env_vars": "ACME_API_KEY", "x": 1})
+{'provider': 'acme', 'env_vars': ['ACME_API_KEY']}
+>>> normalize_credential_row({"provider": "acme"})
+Traceback (most recent call last):
+    ...
+ValueError: a credential row needs env_vars (one name or a list): {'provider': 'acme'}
+```
+
+* **Return type:**
+  [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
+
+### ocracy.kit.credentials.read_declared_credentials(group='ocracy.credentials.v1')
+
+`(rows, problems)`: every installed package’s declared credentials.
+
+Each row is [`normalize_credential_row()`](_autosummary/ocracy.kit.credentials.html.md#ocracy.kit.credentials.normalize_credential_row)’s, plus `package` (the
+distribution that declared it). A declaration that fails to load, or a row
+that is malformed, is a line in `problems` rather than an exception, so
+one broken package never hides the others’ keys. Reads no key’s value.
+
+* **Return type:**
+  [`tuple`](https://docs.python.org/3/builtins/stdtypes.html#tuple)[[`list`](https://docs.python.org/3/builtins/stdtypes.html#list), [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)]
 
 ### ocracy.kit.credentials.resolve_credential(provider=None, \*, api_key=None, env_var=None, provider_env_vars=None, guidance=None, store=None, dotenv=False, prompt_if_missing=False, required=True, error=<class 'ocracy.kit.credentials.MissingCredentialError'>, hint='')
 
@@ -2442,6 +2551,8 @@ The decisions behind its shape are in `docs/adr/0001-facade-kit.md`.
 | [`env_var_names`](_autosummary/ocracy.kit.html.md#ocracy.kit.env_var_names)([provider, env_var, ...])          | The env vars the chain checks: `env_var` first, then the provider's row.                                                  |
 | [`credential_help`](_autosummary/ocracy.kit.html.md#ocracy.kit.credential_help)(provider, \*[, guidance])        | A short, link-bearing "how to get a key" line for `provider` (or `''`).                                                   |
 | [`credential_lines`](_autosummary/ocracy.kit.html.md#ocracy.kit.credential_lines)(env_var, provider, \*[, ...])   | `export VAR  (get a key: URL)` lines for an install plan (empty if no var).                                               |
+| [`credential_rows`](_autosummary/ocracy.kit.html.md#ocracy.kit.credential_rows)(provider_env_vars[, ...])        | Declared-credential rows from the kit's tables, one per provider.                                                         |
+| [`read_declared_credentials`](_autosummary/ocracy.kit.html.md#ocracy.kit.read_declared_credentials)([group])               | `(rows, problems)`: every installed package's declared credentials.                                                       |
 | [`build_requirements`](_autosummary/ocracy.kit.html.md#ocracy.kit.build_requirements)(backend_id, \*, package, ...) | Build [`Requirements`](_autosummary/ocracy.kit.html.md#ocracy.kit.Requirements) for `backend_id` from its recipe and known facts.     |
 | [`run_install`](_autosummary/ocracy.kit.html.md#ocracy.kit.run_install)(req, \*, package[, yes, ...])        | Plan (default) or run (`yes=True`) the pip install that `req` describes.                                                  |
 | [`current_platform`](_autosummary/ocracy.kit.html.md#ocracy.kit.current_platform)()                               | `'darwin'`, `'linux'`, `'windows'`, or `sys.platform` for anything else.                                                  |
@@ -2705,6 +2816,26 @@ Several env vars (alternatives) are shown as `A / B`.
 * **Return type:**
   [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)
 
+### ocracy.kit.credential_rows(provider_env_vars, guidance=None, , unlocks=None, cost=None)
+
+Declared-credential rows from the kit’s tables, one per provider.
+
+`provider_env_vars` and `guidance` are the tables a package already binds
+the chain with; `unlocks` and `cost` are optional `{provider: line}`
+tables. A provider with no env var is skipped (nothing to set).
+
+```pycon
+>>> credential_rows(
+...     {"acme": ["ACME_API_KEY", "ACME_KEY"], "local": None},
+...     {"acme": {"get_key_url": "https://acme.example/keys"}},
+...     unlocks={"acme": "acme transcription"},
+... )
+[{'provider': 'acme', 'env_vars': ['ACME_API_KEY', 'ACME_KEY'], 'get_key_url': 'https://acme.example/keys', 'unlocks': 'acme transcription'}]
+```
+
+* **Return type:**
+  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)
+
 ### ocracy.kit.current_credentials()
 
 The provider keys bound in this context by [`using_credentials()`](_autosummary/ocracy.kit.html.md#ocracy.kit.using_credentials) (a copy).
@@ -2751,6 +2882,18 @@ Build `translate(kwargs, *, on_unsupported=None) -> Translation` from a map.
   `translate`. Its optional `on_unsupported=` is the *caller’s* policy for
   this one call; when given it replaces both the backend’s policy and
   `always_raise`.
+
+### ocracy.kit.read_declared_credentials(group='ocracy.credentials.v1')
+
+`(rows, problems)`: every installed package’s declared credentials.
+
+Each row is `normalize_credential_row()`’s, plus `package` (the
+distribution that declared it). A declaration that fails to load, or a row
+that is malformed, is a line in `problems` rather than an exception, so
+one broken package never hides the others’ keys. Reads no key’s value.
+
+* **Return type:**
+  [`tuple`](https://docs.python.org/3/builtins/stdtypes.html#tuple)[[`list`](https://docs.python.org/3/builtins/stdtypes.html#list), [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)]
 
 ### ocracy.kit.resolve_credential(provider=None, \*, api_key=None, env_var=None, provider_env_vars=None, guidance=None, store=None, dotenv=False, prompt_if_missing=False, required=True, error=<class 'ocracy.kit.credentials.MissingCredentialError'>, hint='')
 
@@ -4004,16 +4147,18 @@ Convert any supported input into a PIL `Image` (lazy import).
 
 # About this build
 
-This documentation was built on **2026-11-22 22:02 UTC** from commit <a href="https://github.com/thorwhalen/ocracy/commit/aa7a8ad27999338ab002e79753b3e510e048c06f"><code>aa7a8ad</code></a> on branch <code>main</code>, for **ocracy 0.1.22** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-23 03:14 UTC** from commit <a href="https://github.com/thorwhalen/ocracy/commit/4990ea01ad1b36ae358c7746e1d409c1b26e30b3"><code>4990ea0</code></a> on branch <code>main</code>, for **ocracy 0.1.22** (from <code>pyproject.toml</code>).
 
-#### NOTE
-Nothing suggests a mismatch: the tree was clean at the commit above, and the documented version is the one on PyPI.
+#### WARNING
+The documentation and the package may be misaligned:
+
+- The documented version (0.1.22) is behind the latest release on PyPI (0.1.23): `pip install ocracy` gives newer code than these docs describe.
 
 ## Source
 
 |                     |                                                                                                                                                          |
 |---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/ocracy/commit/aa7a8ad27999338ab002e79753b3e510e048c06f"><code>aa7a8ad27999338ab002e79753b3e510e048c06f</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/ocracy/commit/4990ea01ad1b36ae358c7746e1d409c1b26e30b3"><code>4990ea01ad1b36ae358c7746e1d409c1b26e30b3</code></a> |
 | Branch              | <code>main</code>                                                                                                                                        |
 | Tags at this commit | none                                                                                                                                                     |
 | Working tree        | clean                                                                                                                                                    |
@@ -4024,9 +4169,9 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/ocracy</code>                                                             |
-| Run          | <a href="https://github.com/thorwhalen/ocracy/actions/runs/45075237633">45075237633</a>    |
+| Run          | <a href="https://github.com/thorwhalen/ocracy/actions/runs/45104642770">45104642770</a>    |
 | Ref          | <code>refs/heads/main</code>                                                               |
-| Event commit | <code>aa7a8ad27999338ab002e79753b3e510e048c06f</code> (in the history of the built commit) |
+| Event commit | <code>4990ea01ad1b36ae358c7746e1d409c1b26e30b3</code> (in the history of the built commit) |
 
 ## Tools
 
@@ -4051,13 +4196,13 @@ Nothing suggests a mismatch: the tree was clean at the commit above, and the doc
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/ocracy/0.1.22/">0.1.22</a>, the same as the documented version.
+Latest release: <a href="https://pypi.org/project/ocracy/0.1.23/">0.1.23</a>, newer than the documented version (0.1.22).
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/thorwhalen/ocracy && cd ocracy
-git checkout aa7a8ad27999338ab002e79753b3e510e048c06f
+git checkout 4990ea01ad1b36ae358c7746e1d409c1b26e30b3
 pip install "epythet==0.2.23"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```

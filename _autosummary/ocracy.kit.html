@@ -476,6 +476,12 @@ The decisions behind its shape are in <code class="docutils literal notranslate"
 <tr class="row-even"><td><p><a class="reference internal" href="#ocracy.kit.credential_lines" title="ocracy.kit.credential_lines"><code class="xref py py-obj docutils literal notranslate"><span class="pre">credential_lines</span></code></a>(env_var, provider, *[, ...])</p></td>
 <td><p><code class="docutils literal notranslate"><span class="pre">export</span> <span class="pre">VAR</span>&#160; <span class="pre">(get</span> <span class="pre">a</span> <span class="pre">key:</span> <span class="pre">URL)</span></code> lines for an install plan (empty if no var).</p></td>
 </tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ocracy.kit.credential_rows" title="ocracy.kit.credential_rows"><code class="xref py py-obj docutils literal notranslate"><span class="pre">credential_rows</span></code></a>(provider_env_vars[, ...])</p></td>
+<td><p>Declared-credential rows from the kit's tables, one per provider.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ocracy.kit.read_declared_credentials" title="ocracy.kit.read_declared_credentials"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_declared_credentials</span></code></a>([group])</p></td>
+<td><p><code class="docutils literal notranslate"><span class="pre">(rows,</span> <span class="pre">problems)</span></code>: every installed package's declared credentials.</p></td>
+</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#ocracy.kit.build_requirements" title="ocracy.kit.build_requirements"><code class="xref py py-obj docutils literal notranslate"><span class="pre">build_requirements</span></code></a>(backend_id, *, package, ...)</p></td>
 <td><p>Build <a class="reference internal" href="#ocracy.kit.Requirements" title="ocracy.kit.Requirements"><code class="xref py py-class docutils literal notranslate"><span class="pre">Requirements</span></code></a> for <code class="docutils literal notranslate"><span class="pre">backend_id</span></code> from its recipe and known facts.</p></td>
 </tr>
@@ -856,6 +862,28 @@ use a case-insensitive substring match.</p></li>
 </dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="ocracy.kit.credential_rows">
+<span class="sig-prename descclassname"><span class="pre">ocracy.kit.</span></span><span class="sig-name descname"><span class="pre">credential_rows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">provider_env_vars</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">guidance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">unlocks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocracy/kit/credentials.html#credential_rows"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.kit.credential_rows" title="Link to this definition">#</a></dt>
+<dd><p>Declared-credential rows from the kit’s tables, one per provider.</p>
+<p><code class="docutils literal notranslate"><span class="pre">provider_env_vars</span></code> and <code class="docutils literal notranslate"><span class="pre">guidance</span></code> are the tables a package already binds
+the chain with; <code class="docutils literal notranslate"><span class="pre">unlocks</span></code> and <code class="docutils literal notranslate"><span class="pre">cost</span></code> are optional <code class="docutils literal notranslate"><span class="pre">{provider:</span> <span class="pre">line}</span></code>
+tables. A provider with no env var is skipped (nothing to set).</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">credential_rows</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="p">{</span><span class="s2">"acme"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"ACME_API_KEY"</span><span class="p">,</span> <span class="s2">"ACME_KEY"</span><span class="p">],</span> <span class="s2">"local"</span><span class="p">:</span> <span class="kc">None</span><span class="p">},</span>
+<span class="gp">... </span>    <span class="p">{</span><span class="s2">"acme"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"get_key_url"</span><span class="p">:</span> <span class="s2">"https://acme.example/keys"</span><span class="p">}},</span>
+<span class="gp">... </span>    <span class="n">unlocks</span><span class="o">=</span><span class="p">{</span><span class="s2">"acme"</span><span class="p">:</span> <span class="s2">"acme transcription"</span><span class="p">},</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="go">[{'provider': 'acme', 'env_vars': ['ACME_API_KEY', 'ACME_KEY'], 'get_key_url': 'https://acme.example/keys', 'unlocks': 'acme transcription'}]</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a></span></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="ocracy.kit.current_credentials">
 <span class="sig-prename descclassname"><span class="pre">ocracy.kit.</span></span><span class="sig-name descname"><span class="pre">current_credentials</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocracy/kit/credentials.html#current_credentials"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.kit.current_credentials" title="Link to this definition">#</a></dt>
 <dd><p>The provider keys bound in this context by <a class="reference internal" href="#ocracy.kit.using_credentials" title="ocracy.kit.using_credentials"><code class="xref py py-func docutils literal notranslate"><span class="pre">using_credentials()</span></code></a> (a copy).</p>
@@ -918,6 +946,21 @@ calls <code class="docutils literal notranslate"><span class="pre">translate</sp
 <dd class="field-odd"><p><code class="docutils literal notranslate"><span class="pre">translate</span></code>. Its optional <code class="docutils literal notranslate"><span class="pre">on_unsupported=</span></code> is the <em>caller’s</em> policy for
 this one call; when given it replaces both the backend’s policy and
 <code class="docutils literal notranslate"><span class="pre">always_raise</span></code>.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ocracy.kit.read_declared_credentials">
+<span class="sig-prename descclassname"><span class="pre">ocracy.kit.</span></span><span class="sig-name descname"><span class="pre">read_declared_credentials</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">group</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ocracy.credentials.v1'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocracy/kit/credentials.html#read_declared_credentials"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.kit.read_declared_credentials" title="Link to this definition">#</a></dt>
+<dd><p><code class="docutils literal notranslate"><span class="pre">(rows,</span> <span class="pre">problems)</span></code>: every installed package’s declared credentials.</p>
+<p>Each row is <code class="xref py py-func docutils literal notranslate"><span class="pre">normalize_credential_row()</span></code>’s, plus <code class="docutils literal notranslate"><span class="pre">package</span></code> (the
+distribution that declared it). A declaration that fails to load, or a row
+that is malformed, is a line in <code class="docutils literal notranslate"><span class="pre">problems</span></code> rather than an exception, so
+one broken package never hides the others’ keys. Reads no key’s value.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#tuple" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code></a>[<a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>, <a class="reference external" href="https://docs.python.org/3/builtins/stdtypes.html#list" title="(in Python v3.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></a>]</span></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1108,10 +1151,12 @@ header can be passed straight through.</p>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ocracy.kit.check_range"><code class="docutils literal notranslate"><span class="pre">check_range()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ocracy.kit.credential_help"><code class="docutils literal notranslate"><span class="pre">credential_help()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ocracy.kit.credential_lines"><code class="docutils literal notranslate"><span class="pre">credential_lines()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ocracy.kit.credential_rows"><code class="docutils literal notranslate"><span class="pre">credential_rows()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ocracy.kit.current_credentials"><code class="docutils literal notranslate"><span class="pre">current_credentials()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ocracy.kit.current_platform"><code class="docutils literal notranslate"><span class="pre">current_platform()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ocracy.kit.env_var_names"><code class="docutils literal notranslate"><span class="pre">env_var_names()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ocracy.kit.make_translator"><code class="docutils literal notranslate"><span class="pre">make_translator()</span></code></a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ocracy.kit.read_declared_credentials"><code class="docutils literal notranslate"><span class="pre">read_declared_credentials()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ocracy.kit.resolve_credential"><code class="docutils literal notranslate"><span class="pre">resolve_credential()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ocracy.kit.run_install"><code class="docutils literal notranslate"><span class="pre">run_install()</span></code></a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#ocracy.kit.using_credentials"><code class="docutils literal notranslate"><span class="pre">using_credentials()</span></code></a></li>

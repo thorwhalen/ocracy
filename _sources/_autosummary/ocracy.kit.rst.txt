@@ -16,6 +16,8 @@ ocracy.kit
       env_var_names
       credential_help
       credential_lines
+      credential_rows
+      read_declared_credentials
       build_requirements
       run_install
       current_platform

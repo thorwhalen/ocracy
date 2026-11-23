@@ -24,11 +24,12 @@ or list).
 
 ### Functions
 
-| [`resolve_credential`](#ocracy.credentials.resolve_credential)([provider, api_key, ...])   | Resolve a credential for a remote backend.                                                                                |
-|-------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------|
-| [`credential_help`](#ocracy.credentials.credential_help)(provider)                      | A short, link-bearing 'how to get a key' message for `provider` (or '').                                                  |
-| [`using_credentials`](#ocracy.credentials.using_credentials)([keys])                      | Bind provider keys for the `with` block (overlaying any outer binding).                                                   |
-| [`current_credentials`](#ocracy.credentials.current_credentials)()                          | The provider keys bound in this context by [`using_credentials()`](#ocracy.credentials.using_credentials) (a copy). |
+| [`declared_credentials`](#ocracy.credentials.declared_credentials)()                       | The credentials ocracy reads, as declared-credential rows (exposed under [`ocracy.kit.credentials.CREDENTIALS_ENTRY_POINT_GROUP`](ocracy.kit.credentials.html.md#ocracy.kit.credentials.CREDENTIALS_ENTRY_POINT_GROUP)).   |
+|-----------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`resolve_credential`](#ocracy.credentials.resolve_credential)([provider, api_key, ...]) | Resolve a credential for a remote backend.                                                                                                                                                                                              |
+| [`credential_help`](#ocracy.credentials.credential_help)(provider)                    | A short, link-bearing 'how to get a key' message for `provider` (or '').                                                                                                                                                                |
+| [`using_credentials`](#ocracy.credentials.using_credentials)([keys])                    | Bind provider keys for the `with` block (overlaying any outer binding).                                                                                                                                                                 |
+| [`current_credentials`](#ocracy.credentials.current_credentials)()                        | The provider keys bound in this context by [`using_credentials()`](#ocracy.credentials.using_credentials) (a copy).                                                                                                               |
 
 ### Exceptions
 
@@ -75,6 +76,19 @@ The provider keys bound in this context by [`using_credentials()`](#ocracy.crede
 
 * **Return type:**
   [`dict`](https://docs.python.org/3/builtins/stdtypes.html#dict)
+
+### ocracy.credentials.declared_credentials()
+
+The credentials ocracy reads, as declared-credential rows (exposed under
+[`ocracy.kit.credentials.CREDENTIALS_ENTRY_POINT_GROUP`](ocracy.kit.credentials.html.md#ocracy.kit.credentials.CREDENTIALS_ENTRY_POINT_GROUP)).
+
+```pycon
+>>> {r["provider"]: r["env_vars"] for r in declared_credentials()}["gemini"]
+['GOOGLE_API_KEY', 'GEMINI_API_KEY']
+```
+
+* **Return type:**
+  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)
 
 ### ocracy.credentials.resolve_credential(provider=None, , api_key=None, env_var=None, required=True, prompt_if_missing=False)
 

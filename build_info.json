@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "built_at": "2026-11-22T22:02:09Z",
+  "built_at": "2026-11-23T03:14:20Z",
   "package": {
     "name": "ocracy",
     "version": "0.1.22",
@@ -9,24 +9,24 @@
   },
   "git": {
     "available": true,
-    "commit": "aa7a8ad27999338ab002e79753b3e510e048c06f",
-    "short_commit": "aa7a8ad",
+    "commit": "4990ea01ad1b36ae358c7746e1d409c1b26e30b3",
+    "short_commit": "4990ea0",
     "branch": "main",
     "tags": [],
     "dirty": false,
     "remote_url": "https://github.com/thorwhalen/ocracy",
-    "commit_url": "https://github.com/thorwhalen/ocracy/commit/aa7a8ad27999338ab002e79753b3e510e048c06f",
+    "commit_url": "https://github.com/thorwhalen/ocracy/commit/4990ea01ad1b36ae358c7746e1d409c1b26e30b3",
     "error": null
   },
   "ci": {
     "provider": "github",
     "repository": "thorwhalen/ocracy",
-    "sha": "aa7a8ad27999338ab002e79753b3e510e048c06f",
+    "sha": "4990ea01ad1b36ae358c7746e1d409c1b26e30b3",
     "sha_in_history": true,
     "ref": "refs/heads/main",
     "ref_name": "main",
-    "run_id": "45075237633",
-    "run_url": "https://github.com/thorwhalen/ocracy/actions/runs/45075237633",
+    "run_id": "45104642770",
+    "run_url": "https://github.com/thorwhalen/ocracy/actions/runs/45104642770",
     "server_url": "https://github.com"
   },
   "tools": {
@@ -56,18 +56,20 @@
   },
   "site": {
     "modules_documented": 65,
-    "objects_documented": 251
+    "objects_documented": 259
   },
   "pypi": {
     "checked": true,
-    "latest": "0.1.22",
-    "relation": "same",
+    "latest": "0.1.23",
+    "relation": "behind",
     "error": null
   },
-  "reproduce": "git clone https://github.com/thorwhalen/ocracy && cd ocracy\ngit checkout aa7a8ad27999338ab002e79753b3e510e048c06f\npip install \"epythet==0.2.23\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
+  "reproduce": "git clone https://github.com/thorwhalen/ocracy && cd ocracy\ngit checkout 4990ea01ad1b36ae358c7746e1d409c1b26e30b3\npip install \"epythet==0.2.23\"\nepythet quickstart . --ignore tests/ scrap/ examples/",
   "warnings": [],
   "alignment": {
-    "aligned": true,
-    "notes": []
+    "aligned": false,
+    "notes": [
+      "The documented version (0.1.22) is behind the latest release on PyPI (0.1.23): `pip install ocracy` gives newer code than these docs describe."
+    ]
   }
 }

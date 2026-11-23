@@ -41,6 +41,8 @@ The decisions behind its shape are in `docs/adr/0001-facade-kit.md`.
 | [`env_var_names`](#ocracy.kit.env_var_names)([provider, env_var, ...])          | The env vars the chain checks: `env_var` first, then the provider's row.                                                  |
 | [`credential_help`](#ocracy.kit.credential_help)(provider, \*[, guidance])        | A short, link-bearing "how to get a key" line for `provider` (or `''`).                                                   |
 | [`credential_lines`](#ocracy.kit.credential_lines)(env_var, provider, \*[, ...])   | `export VAR  (get a key: URL)` lines for an install plan (empty if no var).                                               |
+| [`credential_rows`](#ocracy.kit.credential_rows)(provider_env_vars[, ...])        | Declared-credential rows from the kit's tables, one per provider.                                                         |
+| [`read_declared_credentials`](#ocracy.kit.read_declared_credentials)([group])               | `(rows, problems)`: every installed package's declared credentials.                                                       |
 | [`build_requirements`](#ocracy.kit.build_requirements)(backend_id, \*, package, ...) | Build [`Requirements`](#ocracy.kit.Requirements) for `backend_id` from its recipe and known facts.     |
 | [`run_install`](#ocracy.kit.run_install)(req, \*, package[, yes, ...])        | Plan (default) or run (`yes=True`) the pip install that `req` describes.                                                  |
 | [`current_platform`](#ocracy.kit.current_platform)()                               | `'darwin'`, `'linux'`, `'windows'`, or `sys.platform` for anything else.                                                  |
@@ -304,6 +306,26 @@ Several env vars (alternatives) are shown as `A / B`.
 * **Return type:**
   [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)
 
+### ocracy.kit.credential_rows(provider_env_vars, guidance=None, , unlocks=None, cost=None)
+
+Declared-credential rows from the kit’s tables, one per provider.
+
+`provider_env_vars` and `guidance` are the tables a package already binds
+the chain with; `unlocks` and `cost` are optional `{provider: line}`
+tables. A provider with no env var is skipped (nothing to set).
+
+```pycon
+>>> credential_rows(
+...     {"acme": ["ACME_API_KEY", "ACME_KEY"], "local": None},
+...     {"acme": {"get_key_url": "https://acme.example/keys"}},
+...     unlocks={"acme": "acme transcription"},
+... )
+[{'provider': 'acme', 'env_vars': ['ACME_API_KEY', 'ACME_KEY'], 'get_key_url': 'https://acme.example/keys', 'unlocks': 'acme transcription'}]
+```
+
+* **Return type:**
+  [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)
+
 ### ocracy.kit.current_credentials()
 
 The provider keys bound in this context by [`using_credentials()`](#ocracy.kit.using_credentials) (a copy).
@@ -350,6 +372,18 @@ Build `translate(kwargs, *, on_unsupported=None) -> Translation` from a map.
   `translate`. Its optional `on_unsupported=` is the *caller’s* policy for
   this one call; when given it replaces both the backend’s policy and
   `always_raise`.
+
+### ocracy.kit.read_declared_credentials(group='ocracy.credentials.v1')
+
+`(rows, problems)`: every installed package’s declared credentials.
+
+Each row is `normalize_credential_row()`’s, plus `package` (the
+distribution that declared it). A declaration that fails to load, or a row
+that is malformed, is a line in `problems` rather than an exception, so
+one broken package never hides the others’ keys. Reads no key’s value.
+
+* **Return type:**
+  [`tuple`](https://docs.python.org/3/builtins/stdtypes.html#tuple)[[`list`](https://docs.python.org/3/builtins/stdtypes.html#list), [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)]
 
 ### ocracy.kit.resolve_credential(provider=None, \*, api_key=None, env_var=None, provider_env_vars=None, guidance=None, store=None, dotenv=False, prompt_if_missing=False, required=True, error=<class 'ocracy.kit.credentials.MissingCredentialError'>, hint='')
 
