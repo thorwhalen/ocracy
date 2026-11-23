@@ -430,7 +430,9 @@ def read_declared_credentials(
         try:
             declared = ep.load()
             declared = declared() if callable(declared) else declared
-            found = [dict(normalize_credential_row(r), package=package) for r in declared]
+            found = [
+                dict(normalize_credential_row(r), package=package) for r in declared
+            ]
         except Exception as e:  # noqa: BLE001 - one broken declaration is a note
             problems.append(f"{package}: {type(e).__name__}: {e}")
             continue
