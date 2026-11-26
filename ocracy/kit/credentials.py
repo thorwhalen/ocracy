@@ -59,8 +59,10 @@ target is a list of rows or a zero-argument callable returning one::
 A row is the kit's two tables for one provider, flattened: ``provider``,
 ``env_vars`` (the canonical name first, then every other name the package reads
 it under, i.e. the provider's ``provider_env_vars`` row), and, when known,
-``get_key_url`` and ``note`` (its ``guidance``), ``unlocks`` (one line: what the
-key turns on) and ``cost`` (one line: what using it costs). :func:`credential_rows`
+``also_requires`` (a list: variables the provider needs *together with* the
+key, e.g. an app id or an endpoint; ``env_vars`` are alternatives, these are
+not), ``get_key_url`` and ``note`` (its ``guidance``), ``unlocks`` (one line:
+what the key turns on) and ``cost`` (one line: what using it costs). :func:`credential_rows`
 builds rows from the tables a package already holds; :func:`read_declared_credentials`
 reads every installed package's rows. Declaring needs no dependency on ocracy:
 the contract is the group name and the row shape. The ``.v1`` is that shape's
@@ -98,10 +100,12 @@ EnvVars = Union[str, Sequence[str], None]
 CREDENTIALS_ENTRY_POINT_GROUP = "ocracy.credentials.v1"
 
 #: The fields of a declared credential row: ``provider`` and ``env_vars`` are
-#: required, the rest optional one-line strings.
+#: required, ``also_requires`` an optional list of names, the rest optional
+#: one-line strings.
 CREDENTIAL_ROW_FIELDS: tuple = (
     "provider",
     "env_vars",
+    "also_requires",
     "get_key_url",
     "note",
     "unlocks",
@@ -346,12 +350,15 @@ def credential_rows(
     *,
     unlocks: Optional[Mapping[str, str]] = None,
     cost: Optional[Mapping[str, str]] = None,
+    also_requires: Optional[Mapping[str, EnvVars]] = None,
 ) -> list:
     """Declared-credential rows from the kit's tables, one per provider.
 
     ``provider_env_vars`` and ``guidance`` are the tables a package already binds
     the chain with; ``unlocks`` and ``cost`` are optional ``{provider: line}``
     tables. A provider with no env var is skipped (nothing to set).
+    ``also_requires`` is an optional ``{provider: names}`` table of the variables
+    needed *with* the key (``env_vars`` are alternatives; these are all required).
 
     >>> credential_rows(
     ...     {"acme": ["ACME_API_KEY", "ACME_KEY"], "local": None},
@@ -359,6 +366,8 @@ def credential_rows(
     ...     unlocks={"acme": "acme transcription"},
     ... )
     [{'provider': 'acme', 'env_vars': ['ACME_API_KEY', 'ACME_KEY'], 'get_key_url': 'https://acme.example/keys', 'unlocks': 'acme transcription'}]
+    >>> credential_rows({"acme": "ACME_KEY"}, also_requires={"acme": ["ACME_APP_ID"]})
+    [{'provider': 'acme', 'env_vars': ['ACME_KEY'], 'also_requires': ['ACME_APP_ID']}]
     """
     rows = []
     for provider, env in provider_env_vars.items():
@@ -366,6 +375,9 @@ def credential_rows(
         if not names:
             continue
         row: dict = {"provider": provider, "env_vars": names}
+        extra = list(dict.fromkeys(_as_list((also_requires or {}).get(provider))))
+        if extra:
+            row["also_requires"] = extra
         g = (guidance or {}).get(provider) or {}
         for field in ("get_key_url", "note"):
             if g.get(field):
@@ -386,6 +398,10 @@ def normalize_credential_row(row: Mapping) -> dict:
 
     >>> normalize_credential_row({"provider": "acme", "env_vars": "ACME_API_KEY", "x": 1})
     {'provider': 'acme', 'env_vars': ['ACME_API_KEY']}
+    >>> normalize_credential_row({"provider": "acme", "env_vars": "K", "note": 0})
+    Traceback (most recent call last):
+        ...
+    ValueError: a credential row's note is a string: 0
     >>> normalize_credential_row({"provider": "acme"})
     Traceback (most recent call last):
         ...
@@ -402,12 +418,22 @@ def normalize_credential_row(row: Mapping) -> dict:
             f"a credential row needs env_vars (one name or a list): {dict(row)!r}"
         )
     out: dict = {"provider": provider, "env_vars": list(dict.fromkeys(names))}
-    for field in CREDENTIAL_ROW_FIELDS[2:]:
+    extra = row.get("also_requires")
+    if extra is not None and extra != []:
+        extra = _as_list(extra) if isinstance(extra, (str, list, tuple)) else None
+        if not extra or not all(isinstance(n, str) and n for n in extra):
+            raise ValueError(
+                "a credential row's also_requires is a name or a list of names: "
+                f"{row.get('also_requires')!r}"
+            )
+        out["also_requires"] = list(dict.fromkeys(extra))
+    for field in CREDENTIAL_ROW_FIELDS[3:]:
         value = row.get(field)
-        if value:
-            if not isinstance(value, str):
-                raise ValueError(f"a credential row's {field} is a string: {value!r}")
-            out[field] = value
+        if value is None or value == "":  # absent; anything else must be a string
+            continue
+        if not isinstance(value, str):
+            raise ValueError(f"a credential row's {field} is a string: {value!r}")
+        out[field] = value
     return out
 
 

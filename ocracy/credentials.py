@@ -33,6 +33,7 @@ __all__ = [
     "using_credentials",
     "current_credentials",
     "PROVIDER_ENV_VARS",
+    "PROVIDER_ALSO_REQUIRES",
     "CREDENTIAL_GUIDANCE",
     "MissingCredentialError",
 ]
@@ -50,6 +51,16 @@ PROVIDER_ENV_VARS = {
     "openai": ["OPENAI_API_KEY"],
     "anthropic": ["ANTHROPIC_API_KEY"],
     "gemini": ["GOOGLE_API_KEY", "GEMINI_API_KEY"],
+}
+
+
+#: Variables a provider needs *together with* its key (the key's alternatives are in
+#: :data:`PROVIDER_ENV_VARS`; these are all required). Declared in the v1 rows as
+#: ``also_requires``.
+PROVIDER_ALSO_REQUIRES = {
+    "aws-textract": ["AWS_SECRET_ACCESS_KEY"],
+    "azure-document-intelligence": ["AZURE_DOCUMENT_INTELLIGENCE_ENDPOINT"],
+    "mathpix": ["MATHPIX_APP_ID"],
 }
 
 
@@ -117,9 +128,16 @@ def declared_credentials() -> list:
 
     >>> {r["provider"]: r["env_vars"] for r in declared_credentials()}["gemini"]
     ['GOOGLE_API_KEY', 'GEMINI_API_KEY']
+    >>> {r["provider"]: r for r in declared_credentials()}["mathpix"]["also_requires"]
+    ['MATHPIX_APP_ID']
     """
     unlocks = {p: f"ocracy: the {p} OCR backend" for p in PROVIDER_ENV_VARS}
-    return _kit.credential_rows(PROVIDER_ENV_VARS, CREDENTIAL_GUIDANCE, unlocks=unlocks)
+    return _kit.credential_rows(
+        PROVIDER_ENV_VARS,
+        CREDENTIAL_GUIDANCE,
+        unlocks=unlocks,
+        also_requires=PROVIDER_ALSO_REQUIRES,
+    )
 
 
 def credential_help(provider: str) -> str:
