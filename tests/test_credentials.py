@@ -125,6 +125,10 @@ def test_credential_rows_skips_providers_with_no_env_var_and_dedupes():
         {"provider": "p", "env_vars": []},
         {"provider": "p", "env_vars": ["A", ""]},
         {"provider": "p", "env_vars": ["A"], "note": 3},
+        {"provider": "p", "env_vars": ["A"], "note": 0},
+        {"provider": "p", "env_vars": ["A"], "cost": False},
+        {"provider": "p", "env_vars": ["A"], "also_requires": [""]},
+        {"provider": "p", "env_vars": ["A"], "also_requires": 3},
     ],
 )
 def test_normalize_refuses_malformed_rows(row):
@@ -132,3 +136,42 @@ def test_normalize_refuses_malformed_rows(row):
 
     with pytest.raises(ValueError):
         normalize_credential_row(row)
+
+
+def test_declared_rows_carry_the_variables_a_provider_needs_together():
+    from ocracy.credentials import declared_credentials
+
+    rows = {r["provider"]: r for r in declared_credentials()}
+    assert rows["mathpix"]["also_requires"] == ["MATHPIX_APP_ID"]
+    assert rows["aws-textract"]["also_requires"] == ["AWS_SECRET_ACCESS_KEY"]
+    assert rows["azure-document-intelligence"]["also_requires"] == [
+        "AZURE_DOCUMENT_INTELLIGENCE_ENDPOINT"
+    ]
+    assert "also_requires" not in rows["openai"]
+
+
+def test_also_requires_is_normalized_and_an_older_reader_may_drop_it():
+    from ocracy.kit.credentials import normalize_credential_row
+
+    row = {"provider": "p", "env_vars": "A", "also_requires": "B"}
+    assert normalize_credential_row(row)["also_requires"] == ["B"]
+    assert "also_requires" not in normalize_credential_row(
+        {"provider": "p", "env_vars": "A", "also_requires": []}
+    )
+
+
+@pytest.mark.parametrize("empty", [None, "", [], (), set()])
+def test_an_empty_also_requires_is_absent(empty):
+    from ocracy.kit.credentials import normalize_credential_row
+
+    row = normalize_credential_row(
+        {"provider": "p", "env_vars": "A", "also_requires": empty}
+    )
+    assert "also_requires" not in row
+
+
+def test_also_requires_accepts_a_tuple_and_dedupes():
+    from ocracy.kit.credentials import normalize_credential_row
+
+    row = {"provider": "p", "env_vars": "A", "also_requires": ("B", "B", "C")}
+    assert normalize_credential_row(row)["also_requires"] == ["B", "C"]
