@@ -65,18 +65,22 @@ mypkg = "mypkg.credentials:declared_credentials"
 A row is the kit’s two tables for one provider, flattened: `provider`,
 `env_vars` (the canonical name first, then every other name the package reads
 it under, i.e. the provider’s `provider_env_vars` row), and, when known,
-`get_key_url` and `note` (its `guidance`), `unlocks` (one line: what the
-key turns on) and `cost` (one line: what using it costs). [`credential_rows()`](#ocracy.kit.credentials.credential_rows)
+`also_requires` (a list: variables the provider needs *together with* the
+key, e.g. an app id or an endpoint; `env_vars` are alternatives, these are
+not), `get_key_url` and `note` (its `guidance`), `unlocks` (one line:
+what the key turns on) and `cost` (one line: what using it costs). [`credential_rows()`](#ocracy.kit.credentials.credential_rows)
 builds rows from the tables a package already holds; [`read_declared_credentials()`](#ocracy.kit.credentials.read_declared_credentials)
 reads every installed package’s rows. Declaring needs no dependency on ocracy:
 the contract is the group name and the row shape. The `.v1` is that shape’s
-version: a breaking change to it is a new group, read beside this one.
+version: a breaking change to it is a new group, read beside this one. Each
+`also_requires` item is a plain name; richer needs (alternatives per variable,
+per-variable help) arrive as new optional fields, which older readers drop.
 
 ### Module Attributes
 
-| [`CREDENTIALS_ENTRY_POINT_GROUP`](#ocracy.kit.credentials.CREDENTIALS_ENTRY_POINT_GROUP)   | The entry-point group under which a package declares the credentials it reads (see the module docstring).   |
-|----------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|
-| [`CREDENTIAL_ROW_FIELDS`](#ocracy.kit.credentials.CREDENTIAL_ROW_FIELDS)           | `provider` and `env_vars` are required, the rest optional one-line strings.                                 |
+| [`CREDENTIALS_ENTRY_POINT_GROUP`](#ocracy.kit.credentials.CREDENTIALS_ENTRY_POINT_GROUP)   | The entry-point group under which a package declares the credentials it reads (see the module docstring).              |
+|----------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------|
+| [`CREDENTIAL_ROW_FIELDS`](#ocracy.kit.credentials.CREDENTIAL_ROW_FIELDS)           | `provider` and `env_vars` are required, `also_requires` an optional list of names, the rest optional one-line strings. |
 
 ### Functions
 
@@ -101,10 +105,11 @@ version: a breaking change to it is a new group, read beside this one.
 The entry-point group under which a package declares the credentials it reads
 (see the module docstring). Versioned: `v1` is the row shape below.
 
-### ocracy.kit.credentials.CREDENTIAL_ROW_FIELDS *: [tuple](https://docs.python.org/3/builtins/stdtypes.html#tuple)* *= ('provider', 'env_vars', 'get_key_url', 'note', 'unlocks', 'cost')*
+### ocracy.kit.credentials.CREDENTIAL_ROW_FIELDS *: [tuple](https://docs.python.org/3/builtins/stdtypes.html#tuple)* *= ('provider', 'env_vars', 'also_requires', 'get_key_url', 'note', 'unlocks', 'cost')*
 
 `provider` and `env_vars` are
-required, the rest optional one-line strings.
+required, `also_requires` an optional list of names, the rest optional
+one-line strings.
 
 * **Type:**
   The fields of a declared credential row
@@ -145,13 +150,15 @@ Several env vars (alternatives) are shown as `A / B`.
 * **Return type:**
   [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)
 
-### ocracy.kit.credentials.credential_rows(provider_env_vars, guidance=None, , unlocks=None, cost=None)
+### ocracy.kit.credentials.credential_rows(provider_env_vars, guidance=None, , unlocks=None, cost=None, also_requires=None)
 
 Declared-credential rows from the kit’s tables, one per provider.
 
 `provider_env_vars` and `guidance` are the tables a package already binds
 the chain with; `unlocks` and `cost` are optional `{provider: line}`
 tables. A provider with no env var is skipped (nothing to set).
+`also_requires` is an optional `{provider: names}` table of the variables
+needed *with* the key (`env_vars` are alternatives; these are all required).
 
 ```pycon
 >>> credential_rows(
@@ -160,6 +167,8 @@ tables. A provider with no env var is skipped (nothing to set).
 ...     unlocks={"acme": "acme transcription"},
 ... )
 [{'provider': 'acme', 'env_vars': ['ACME_API_KEY', 'ACME_KEY'], 'get_key_url': 'https://acme.example/keys', 'unlocks': 'acme transcription'}]
+>>> credential_rows({"acme": "ACME_KEY"}, also_requires={"acme": ["ACME_APP_ID"]})
+[{'provider': 'acme', 'env_vars': ['ACME_KEY'], 'also_requires': ['ACME_APP_ID']}]
 ```
 
 * **Return type:**
@@ -190,6 +199,10 @@ an error for an older reader).
 ```pycon
 >>> normalize_credential_row({"provider": "acme", "env_vars": "ACME_API_KEY", "x": 1})
 {'provider': 'acme', 'env_vars': ['ACME_API_KEY']}
+>>> normalize_credential_row({"provider": "acme", "env_vars": "K", "note": 0})
+Traceback (most recent call last):
+    ...
+ValueError: a credential row's note is a string: 0
 >>> normalize_credential_row({"provider": "acme"})
 Traceback (most recent call last):
     ...

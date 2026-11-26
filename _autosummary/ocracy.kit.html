@@ -44,7 +44,7 @@
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=75c7c72ae941e8b558d8" />
 <link rel="preload" as="script" href="../_static/scripts/pydata-sphinx-theme.js?digest=75c7c72ae941e8b558d8" />
 
-    <script src="../_static/documentation_options.js?v=842aa08f"></script>
+    <script src="../_static/documentation_options.js?v=20522496"></script>
     <script src="../_static/doctools.js?v=fd6eb6e6"></script>
     <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/clipboard.min.js?v=a7894cd8"></script>
@@ -58,7 +58,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="color-scheme" content="light dark"/>
   <meta name="docsearch:language" content="en"/>
-  <meta name="docsearch:version" content="0.1.22" />
+  <meta name="docsearch:version" content="0.1.23" />
   
     
     <script src="../_static/searchtools.js"></script>
@@ -863,17 +863,21 @@ use a case-insensitive substring match.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ocracy.kit.credential_rows">
-<span class="sig-prename descclassname"><span class="pre">ocracy.kit.</span></span><span class="sig-name descname"><span class="pre">credential_rows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">provider_env_vars</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">guidance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">unlocks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocracy/kit/credentials.html#credential_rows"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.kit.credential_rows" title="Link to this definition">#</a></dt>
+<span class="sig-prename descclassname"><span class="pre">ocracy.kit.</span></span><span class="sig-name descname"><span class="pre">credential_rows</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">provider_env_vars</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">guidance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="keyword-only-separator o"><abbr title="Keyword-only parameters separator (PEP 3102)"><span class="pre">*</span></abbr></span></em>, <em class="sig-param"><span class="n"><span class="pre">unlocks</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">also_requires</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ocracy/kit/credentials.html#credential_rows"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ocracy.kit.credential_rows" title="Link to this definition">#</a></dt>
 <dd><p>Declared-credential rows from the kit’s tables, one per provider.</p>
 <p><code class="docutils literal notranslate"><span class="pre">provider_env_vars</span></code> and <code class="docutils literal notranslate"><span class="pre">guidance</span></code> are the tables a package already binds
 the chain with; <code class="docutils literal notranslate"><span class="pre">unlocks</span></code> and <code class="docutils literal notranslate"><span class="pre">cost</span></code> are optional <code class="docutils literal notranslate"><span class="pre">{provider:</span> <span class="pre">line}</span></code>
-tables. A provider with no env var is skipped (nothing to set).</p>
+tables. A provider with no env var is skipped (nothing to set).
+<code class="docutils literal notranslate"><span class="pre">also_requires</span></code> is an optional <code class="docutils literal notranslate"><span class="pre">{provider:</span> <span class="pre">names}</span></code> table of the variables
+needed <em>with</em> the key (<code class="docutils literal notranslate"><span class="pre">env_vars</span></code> are alternatives; these are all required).</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">credential_rows</span><span class="p">(</span>
 <span class="gp">... </span>    <span class="p">{</span><span class="s2">"acme"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"ACME_API_KEY"</span><span class="p">,</span> <span class="s2">"ACME_KEY"</span><span class="p">],</span> <span class="s2">"local"</span><span class="p">:</span> <span class="kc">None</span><span class="p">},</span>
 <span class="gp">... </span>    <span class="p">{</span><span class="s2">"acme"</span><span class="p">:</span> <span class="p">{</span><span class="s2">"get_key_url"</span><span class="p">:</span> <span class="s2">"https://acme.example/keys"</span><span class="p">}},</span>
 <span class="gp">... </span>    <span class="n">unlocks</span><span class="o">=</span><span class="p">{</span><span class="s2">"acme"</span><span class="p">:</span> <span class="s2">"acme transcription"</span><span class="p">},</span>
 <span class="gp">... </span><span class="p">)</span>
 <span class="go">[{'provider': 'acme', 'env_vars': ['ACME_API_KEY', 'ACME_KEY'], 'get_key_url': 'https://acme.example/keys', 'unlocks': 'acme transcription'}]</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">credential_rows</span><span class="p">({</span><span class="s2">"acme"</span><span class="p">:</span> <span class="s2">"ACME_KEY"</span><span class="p">},</span> <span class="n">also_requires</span><span class="o">=</span><span class="p">{</span><span class="s2">"acme"</span><span class="p">:</span> <span class="p">[</span><span class="s2">"ACME_APP_ID"</span><span class="p">]})</span>
+<span class="go">[{'provider': 'acme', 'env_vars': ['ACME_KEY'], 'also_requires': ['ACME_APP_ID']}]</span>
 </pre></div>
 </div>
 <dl class="field-list simple">

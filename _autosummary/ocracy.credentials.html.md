@@ -18,9 +18,10 @@ or list).
 
 ### Module Attributes
 
-| [`PROVIDER_ENV_VARS`](#ocracy.credentials.PROVIDER_ENV_VARS)   | Friendly provider -> canonical env-var name(s) for well-known services.                               |
-|----------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------|
-| [`CREDENTIAL_GUIDANCE`](#ocracy.credentials.CREDENTIAL_GUIDANCE) | Where/how to get a key, per provider — powers the dynamic "missing credential" errors AND the README. |
+| [`PROVIDER_ENV_VARS`](#ocracy.credentials.PROVIDER_ENV_VARS)      | Friendly provider -> canonical env-var name(s) for well-known services.                                                                                                        |
+|-------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`PROVIDER_ALSO_REQUIRES`](#ocracy.credentials.PROVIDER_ALSO_REQUIRES) | Variables a provider needs *together with* its key (the key's alternatives are in [`PROVIDER_ENV_VARS`](#ocracy.credentials.PROVIDER_ENV_VARS); these are all required). |
+| [`CREDENTIAL_GUIDANCE`](#ocracy.credentials.CREDENTIAL_GUIDANCE)    | Where/how to get a key, per provider — powers the dynamic "missing credential" errors AND the README.                                                                          |
 
 ### Functions
 
@@ -59,6 +60,12 @@ The env vars that were checked, in order.
 
 Where to get a key, when the guidance table knows.
 
+### ocracy.credentials.PROVIDER_ALSO_REQUIRES *= {'aws-textract': ['AWS_SECRET_ACCESS_KEY'], 'azure-document-intelligence': ['AZURE_DOCUMENT_INTELLIGENCE_ENDPOINT'], 'mathpix': ['MATHPIX_APP_ID']}*
+
+Variables a provider needs *together with* its key (the key’s alternatives are in
+[`PROVIDER_ENV_VARS`](#ocracy.credentials.PROVIDER_ENV_VARS); these are all required). Declared in the v1 rows as
+`also_requires`.
+
 ### ocracy.credentials.PROVIDER_ENV_VARS *= {'anthropic': ['ANTHROPIC_API_KEY'], 'aws-textract': ['AWS_ACCESS_KEY_ID'], 'azure-document-intelligence': ['AZURE_DOCUMENT_INTELLIGENCE_KEY'], 'azure-vision': ['AZURE_VISION_KEY', 'AZURE_COMPUTER_VISION_KEY'], 'gemini': ['GOOGLE_API_KEY', 'GEMINI_API_KEY'], 'google-document-ai': ['GOOGLE_APPLICATION_CREDENTIALS'], 'google-vision': ['GOOGLE_APPLICATION_CREDENTIALS', 'GOOGLE_API_KEY'], 'mathpix': ['MATHPIX_APP_KEY'], 'mistral-ocr': ['MISTRAL_API_KEY'], 'ocr-space': ['OCR_SPACE_API_KEY'], 'openai': ['OPENAI_API_KEY']}*
 
 Friendly provider -> canonical env-var name(s) for well-known services.
@@ -85,6 +92,8 @@ The credentials ocracy reads, as declared-credential rows (exposed under
 ```pycon
 >>> {r["provider"]: r["env_vars"] for r in declared_credentials()}["gemini"]
 ['GOOGLE_API_KEY', 'GEMINI_API_KEY']
+>>> {r["provider"]: r for r in declared_credentials()}["mathpix"]["also_requires"]
+['MATHPIX_APP_ID']
 ```
 
 * **Return type:**

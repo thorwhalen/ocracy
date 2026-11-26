@@ -306,13 +306,15 @@ Several env vars (alternatives) are shown as `A / B`.
 * **Return type:**
   [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)
 
-### ocracy.kit.credential_rows(provider_env_vars, guidance=None, , unlocks=None, cost=None)
+### ocracy.kit.credential_rows(provider_env_vars, guidance=None, , unlocks=None, cost=None, also_requires=None)
 
 Declared-credential rows from the kit’s tables, one per provider.
 
 `provider_env_vars` and `guidance` are the tables a package already binds
 the chain with; `unlocks` and `cost` are optional `{provider: line}`
 tables. A provider with no env var is skipped (nothing to set).
+`also_requires` is an optional `{provider: names}` table of the variables
+needed *with* the key (`env_vars` are alternatives; these are all required).
 
 ```pycon
 >>> credential_rows(
@@ -321,6 +323,8 @@ tables. A provider with no env var is skipped (nothing to set).
 ...     unlocks={"acme": "acme transcription"},
 ... )
 [{'provider': 'acme', 'env_vars': ['ACME_API_KEY', 'ACME_KEY'], 'get_key_url': 'https://acme.example/keys', 'unlocks': 'acme transcription'}]
+>>> credential_rows({"acme": "ACME_KEY"}, also_requires={"acme": ["ACME_APP_ID"]})
+[{'provider': 'acme', 'env_vars': ['ACME_KEY'], 'also_requires': ['ACME_APP_ID']}]
 ```
 
 * **Return type:**

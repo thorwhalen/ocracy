@@ -1,4 +1,4 @@
-> built 2026-11-23 03:14 UTC from 4990ea0 (main) · ocracy 0.1.22. Details: build_info.json
+> built 2026-11-26 14:13 UTC from 6004122 (main) · ocracy 0.1.23. Details: build_info.json
 
 # index.html.md
 
@@ -1482,9 +1482,10 @@ or list).
 
 ### Module Attributes
 
-| [`PROVIDER_ENV_VARS`](_autosummary/ocracy.credentials.html.md#ocracy.credentials.PROVIDER_ENV_VARS)   | Friendly provider -> canonical env-var name(s) for well-known services.                               |
-|----------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------|
-| [`CREDENTIAL_GUIDANCE`](_autosummary/ocracy.credentials.html.md#ocracy.credentials.CREDENTIAL_GUIDANCE) | Where/how to get a key, per provider — powers the dynamic "missing credential" errors AND the README. |
+| [`PROVIDER_ENV_VARS`](_autosummary/ocracy.credentials.html.md#ocracy.credentials.PROVIDER_ENV_VARS)      | Friendly provider -> canonical env-var name(s) for well-known services.                                                                                                        |
+|-------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`PROVIDER_ALSO_REQUIRES`](_autosummary/ocracy.credentials.html.md#ocracy.credentials.PROVIDER_ALSO_REQUIRES) | Variables a provider needs *together with* its key (the key's alternatives are in [`PROVIDER_ENV_VARS`](_autosummary/ocracy.credentials.html.md#ocracy.credentials.PROVIDER_ENV_VARS); these are all required). |
+| [`CREDENTIAL_GUIDANCE`](_autosummary/ocracy.credentials.html.md#ocracy.credentials.CREDENTIAL_GUIDANCE)    | Where/how to get a key, per provider — powers the dynamic "missing credential" errors AND the README.                                                                          |
 
 ### Functions
 
@@ -1523,6 +1524,12 @@ The env vars that were checked, in order.
 
 Where to get a key, when the guidance table knows.
 
+### ocracy.credentials.PROVIDER_ALSO_REQUIRES *= {'aws-textract': ['AWS_SECRET_ACCESS_KEY'], 'azure-document-intelligence': ['AZURE_DOCUMENT_INTELLIGENCE_ENDPOINT'], 'mathpix': ['MATHPIX_APP_ID']}*
+
+Variables a provider needs *together with* its key (the key’s alternatives are in
+[`PROVIDER_ENV_VARS`](_autosummary/ocracy.credentials.html.md#ocracy.credentials.PROVIDER_ENV_VARS); these are all required). Declared in the v1 rows as
+`also_requires`.
+
 ### ocracy.credentials.PROVIDER_ENV_VARS *= {'anthropic': ['ANTHROPIC_API_KEY'], 'aws-textract': ['AWS_ACCESS_KEY_ID'], 'azure-document-intelligence': ['AZURE_DOCUMENT_INTELLIGENCE_KEY'], 'azure-vision': ['AZURE_VISION_KEY', 'AZURE_COMPUTER_VISION_KEY'], 'gemini': ['GOOGLE_API_KEY', 'GEMINI_API_KEY'], 'google-document-ai': ['GOOGLE_APPLICATION_CREDENTIALS'], 'google-vision': ['GOOGLE_APPLICATION_CREDENTIALS', 'GOOGLE_API_KEY'], 'mathpix': ['MATHPIX_APP_KEY'], 'mistral-ocr': ['MISTRAL_API_KEY'], 'ocr-space': ['OCR_SPACE_API_KEY'], 'openai': ['OPENAI_API_KEY']}*
 
 Friendly provider -> canonical env-var name(s) for well-known services.
@@ -1549,6 +1556,8 @@ The credentials ocracy reads, as declared-credential rows (exposed under
 ```pycon
 >>> {r["provider"]: r["env_vars"] for r in declared_credentials()}["gemini"]
 ['GOOGLE_API_KEY', 'GEMINI_API_KEY']
+>>> {r["provider"]: r for r in declared_credentials()}["mathpix"]["also_requires"]
+['MATHPIX_APP_ID']
 ```
 
 * **Return type:**
@@ -2315,18 +2324,22 @@ mypkg = "mypkg.credentials:declared_credentials"
 A row is the kit’s two tables for one provider, flattened: `provider`,
 `env_vars` (the canonical name first, then every other name the package reads
 it under, i.e. the provider’s `provider_env_vars` row), and, when known,
-`get_key_url` and `note` (its `guidance`), `unlocks` (one line: what the
-key turns on) and `cost` (one line: what using it costs). [`credential_rows()`](_autosummary/ocracy.kit.credentials.html.md#ocracy.kit.credentials.credential_rows)
+`also_requires` (a list: variables the provider needs *together with* the
+key, e.g. an app id or an endpoint; `env_vars` are alternatives, these are
+not), `get_key_url` and `note` (its `guidance`), `unlocks` (one line:
+what the key turns on) and `cost` (one line: what using it costs). [`credential_rows()`](_autosummary/ocracy.kit.credentials.html.md#ocracy.kit.credentials.credential_rows)
 builds rows from the tables a package already holds; [`read_declared_credentials()`](_autosummary/ocracy.kit.credentials.html.md#ocracy.kit.credentials.read_declared_credentials)
 reads every installed package’s rows. Declaring needs no dependency on ocracy:
 the contract is the group name and the row shape. The `.v1` is that shape’s
-version: a breaking change to it is a new group, read beside this one.
+version: a breaking change to it is a new group, read beside this one. Each
+`also_requires` item is a plain name; richer needs (alternatives per variable,
+per-variable help) arrive as new optional fields, which older readers drop.
 
 ### Module Attributes
 
-| [`CREDENTIALS_ENTRY_POINT_GROUP`](_autosummary/ocracy.kit.credentials.html.md#ocracy.kit.credentials.CREDENTIALS_ENTRY_POINT_GROUP)   | The entry-point group under which a package declares the credentials it reads (see the module docstring).   |
-|----------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------|
-| [`CREDENTIAL_ROW_FIELDS`](_autosummary/ocracy.kit.credentials.html.md#ocracy.kit.credentials.CREDENTIAL_ROW_FIELDS)           | `provider` and `env_vars` are required, the rest optional one-line strings.                                 |
+| [`CREDENTIALS_ENTRY_POINT_GROUP`](_autosummary/ocracy.kit.credentials.html.md#ocracy.kit.credentials.CREDENTIALS_ENTRY_POINT_GROUP)   | The entry-point group under which a package declares the credentials it reads (see the module docstring).              |
+|----------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------|
+| [`CREDENTIAL_ROW_FIELDS`](_autosummary/ocracy.kit.credentials.html.md#ocracy.kit.credentials.CREDENTIAL_ROW_FIELDS)           | `provider` and `env_vars` are required, `also_requires` an optional list of names, the rest optional one-line strings. |
 
 ### Functions
 
@@ -2351,10 +2364,11 @@ version: a breaking change to it is a new group, read beside this one.
 The entry-point group under which a package declares the credentials it reads
 (see the module docstring). Versioned: `v1` is the row shape below.
 
-### ocracy.kit.credentials.CREDENTIAL_ROW_FIELDS *: [tuple](https://docs.python.org/3/builtins/stdtypes.html#tuple)* *= ('provider', 'env_vars', 'get_key_url', 'note', 'unlocks', 'cost')*
+### ocracy.kit.credentials.CREDENTIAL_ROW_FIELDS *: [tuple](https://docs.python.org/3/builtins/stdtypes.html#tuple)* *= ('provider', 'env_vars', 'also_requires', 'get_key_url', 'note', 'unlocks', 'cost')*
 
 `provider` and `env_vars` are
-required, the rest optional one-line strings.
+required, `also_requires` an optional list of names, the rest optional
+one-line strings.
 
 * **Type:**
   The fields of a declared credential row
@@ -2395,13 +2409,15 @@ Several env vars (alternatives) are shown as `A / B`.
 * **Return type:**
   [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)
 
-### ocracy.kit.credentials.credential_rows(provider_env_vars, guidance=None, , unlocks=None, cost=None)
+### ocracy.kit.credentials.credential_rows(provider_env_vars, guidance=None, , unlocks=None, cost=None, also_requires=None)
 
 Declared-credential rows from the kit’s tables, one per provider.
 
 `provider_env_vars` and `guidance` are the tables a package already binds
 the chain with; `unlocks` and `cost` are optional `{provider: line}`
 tables. A provider with no env var is skipped (nothing to set).
+`also_requires` is an optional `{provider: names}` table of the variables
+needed *with* the key (`env_vars` are alternatives; these are all required).
 
 ```pycon
 >>> credential_rows(
@@ -2410,6 +2426,8 @@ tables. A provider with no env var is skipped (nothing to set).
 ...     unlocks={"acme": "acme transcription"},
 ... )
 [{'provider': 'acme', 'env_vars': ['ACME_API_KEY', 'ACME_KEY'], 'get_key_url': 'https://acme.example/keys', 'unlocks': 'acme transcription'}]
+>>> credential_rows({"acme": "ACME_KEY"}, also_requires={"acme": ["ACME_APP_ID"]})
+[{'provider': 'acme', 'env_vars': ['ACME_KEY'], 'also_requires': ['ACME_APP_ID']}]
 ```
 
 * **Return type:**
@@ -2440,6 +2458,10 @@ an error for an older reader).
 ```pycon
 >>> normalize_credential_row({"provider": "acme", "env_vars": "ACME_API_KEY", "x": 1})
 {'provider': 'acme', 'env_vars': ['ACME_API_KEY']}
+>>> normalize_credential_row({"provider": "acme", "env_vars": "K", "note": 0})
+Traceback (most recent call last):
+    ...
+ValueError: a credential row's note is a string: 0
 >>> normalize_credential_row({"provider": "acme"})
 Traceback (most recent call last):
     ...
@@ -2816,13 +2838,15 @@ Several env vars (alternatives) are shown as `A / B`.
 * **Return type:**
   [`list`](https://docs.python.org/3/builtins/stdtypes.html#list)
 
-### ocracy.kit.credential_rows(provider_env_vars, guidance=None, , unlocks=None, cost=None)
+### ocracy.kit.credential_rows(provider_env_vars, guidance=None, , unlocks=None, cost=None, also_requires=None)
 
 Declared-credential rows from the kit’s tables, one per provider.
 
 `provider_env_vars` and `guidance` are the tables a package already binds
 the chain with; `unlocks` and `cost` are optional `{provider: line}`
 tables. A provider with no env var is skipped (nothing to set).
+`also_requires` is an optional `{provider: names}` table of the variables
+needed *with* the key (`env_vars` are alternatives; these are all required).
 
 ```pycon
 >>> credential_rows(
@@ -2831,6 +2855,8 @@ tables. A provider with no env var is skipped (nothing to set).
 ...     unlocks={"acme": "acme transcription"},
 ... )
 [{'provider': 'acme', 'env_vars': ['ACME_API_KEY', 'ACME_KEY'], 'get_key_url': 'https://acme.example/keys', 'unlocks': 'acme transcription'}]
+>>> credential_rows({"acme": "ACME_KEY"}, also_requires={"acme": ["ACME_APP_ID"]})
+[{'provider': 'acme', 'env_vars': ['ACME_KEY'], 'also_requires': ['ACME_APP_ID']}]
 ```
 
 * **Return type:**
@@ -4147,18 +4173,18 @@ Convert any supported input into a PIL `Image` (lazy import).
 
 # About this build
 
-This documentation was built on **2026-11-23 03:14 UTC** from commit <a href="https://github.com/thorwhalen/ocracy/commit/4990ea01ad1b36ae358c7746e1d409c1b26e30b3"><code>4990ea0</code></a> on branch <code>main</code>, for **ocracy 0.1.22** (from <code>pyproject.toml</code>).
+This documentation was built on **2026-11-26 14:13 UTC** from commit <a href="https://github.com/thorwhalen/ocracy/commit/600412218be1c74d030cd7585eb17f6980b77a9e"><code>6004122</code></a> on branch <code>main</code>, for **ocracy 0.1.23** (from <code>pyproject.toml</code>).
 
 #### WARNING
 The documentation and the package may be misaligned:
 
-- The documented version (0.1.22) is behind the latest release on PyPI (0.1.23): `pip install ocracy` gives newer code than these docs describe.
+- The documented version (0.1.23) is behind the latest release on PyPI (0.1.24): `pip install ocracy` gives newer code than these docs describe.
 
 ## Source
 
 |                     |                                                                                                                                                          |
 |---------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Commit              | <a href="https://github.com/thorwhalen/ocracy/commit/4990ea01ad1b36ae358c7746e1d409c1b26e30b3"><code>4990ea01ad1b36ae358c7746e1d409c1b26e30b3</code></a> |
+| Commit              | <a href="https://github.com/thorwhalen/ocracy/commit/600412218be1c74d030cd7585eb17f6980b77a9e"><code>600412218be1c74d030cd7585eb17f6980b77a9e</code></a> |
 | Branch              | <code>main</code>                                                                                                                                        |
 | Tags at this commit | none                                                                                                                                                     |
 | Working tree        | clean                                                                                                                                                    |
@@ -4169,15 +4195,15 @@ The documentation and the package may be misaligned:
 |              |                                                                                            |
 |--------------|--------------------------------------------------------------------------------------------|
 | Repository   | <code>thorwhalen/ocracy</code>                                                             |
-| Run          | <a href="https://github.com/thorwhalen/ocracy/actions/runs/45104642770">45104642770</a>    |
+| Run          | <a href="https://github.com/thorwhalen/ocracy/actions/runs/45836565312">45836565312</a>    |
 | Ref          | <code>refs/heads/main</code>                                                               |
-| Event commit | <code>4990ea01ad1b36ae358c7746e1d409c1b26e30b3</code> (in the history of the built commit) |
+| Event commit | <code>600412218be1c74d030cd7585eb17f6980b77a9e</code> (in the history of the built commit) |
 
 ## Tools
 
 |          |         |
 |----------|---------|
-| epythet  | 0.2.23  |
+| epythet  | 0.2.25  |
 | Sphinx   | 9.1.1   |
 | docutils | 0.22.4  |
 | Python   | 3.12.16 |
@@ -4196,14 +4222,14 @@ The documentation and the package may be misaligned:
 
 ## Package on PyPI
 
-Latest release: <a href="https://pypi.org/project/ocracy/0.1.23/">0.1.23</a>, newer than the documented version (0.1.22).
+Latest release: <a href="https://pypi.org/project/ocracy/0.1.24/">0.1.24</a>, newer than the documented version (0.1.23).
 
 ## Reproduce
 
 ```bash
 git clone https://github.com/thorwhalen/ocracy && cd ocracy
-git checkout 4990ea01ad1b36ae358c7746e1d409c1b26e30b3
-pip install "epythet==0.2.23"
+git checkout 600412218be1c74d030cd7585eb17f6980b77a9e
+pip install "epythet==0.2.25"
 epythet quickstart . --ignore tests/ scrap/ examples/
 ```
 
