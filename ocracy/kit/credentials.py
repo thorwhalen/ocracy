@@ -66,7 +66,9 @@ what the key turns on) and ``cost`` (one line: what using it costs). :func:`cred
 builds rows from the tables a package already holds; :func:`read_declared_credentials`
 reads every installed package's rows. Declaring needs no dependency on ocracy:
 the contract is the group name and the row shape. The ``.v1`` is that shape's
-version: a breaking change to it is a new group, read beside this one.
+version: a breaking change to it is a new group, read beside this one. Each
+``also_requires`` item is a plain name; richer needs (alternatives per variable,
+per-variable help) arrive as new optional fields, which older readers drop.
 """
 
 from __future__ import annotations
@@ -419,8 +421,8 @@ def normalize_credential_row(row: Mapping) -> dict:
         )
     out: dict = {"provider": provider, "env_vars": list(dict.fromkeys(names))}
     extra = row.get("also_requires")
-    if extra is not None and extra != []:
-        extra = _as_list(extra) if isinstance(extra, (str, list, tuple)) else None
+    if extra not in (None, "", [], (), set()):
+        extra = _as_list(extra) if isinstance(extra, (str, list, tuple, set)) else None
         if not extra or not all(isinstance(n, str) and n for n in extra):
             raise ValueError(
                 "a credential row's also_requires is a name or a list of names: "

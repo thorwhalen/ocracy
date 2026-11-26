@@ -158,3 +158,20 @@ def test_also_requires_is_normalized_and_an_older_reader_may_drop_it():
     assert "also_requires" not in normalize_credential_row(
         {"provider": "p", "env_vars": "A", "also_requires": []}
     )
+
+
+@pytest.mark.parametrize("empty", [None, "", [], (), set()])
+def test_an_empty_also_requires_is_absent(empty):
+    from ocracy.kit.credentials import normalize_credential_row
+
+    row = normalize_credential_row(
+        {"provider": "p", "env_vars": "A", "also_requires": empty}
+    )
+    assert "also_requires" not in row
+
+
+def test_also_requires_accepts_a_tuple_and_dedupes():
+    from ocracy.kit.credentials import normalize_credential_row
+
+    row = {"provider": "p", "env_vars": "A", "also_requires": ("B", "B", "C")}
+    assert normalize_credential_row(row)["also_requires"] == ["B", "C"]
